@@ -1,0 +1,12 @@
+.parent {
+  position: relative;
+}
+.child {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.font-new {
+	font-family: 'Open Sans Condensed', sans-serif;
+}
