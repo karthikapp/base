@@ -23,13 +23,43 @@
     <img src="http://www.svcafe.co.uk/acatalog/Lavazza-Box-Logo-300.jpg" style="width: 90px;padding-top: 7px;">
   </span>
   <nav class="mdl-navigation" style="">
-    <a class="mdl-navigation__link" href="">Dashboard</a>
-    <a class="mdl-navigation__link" href="">Link</a>
-    <a class="mdl-navigation__link" href="">Link</a>
-    <a class="mdl-navigation__link" href="">Link</a>
+
+<li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion">
+  <span class="devsite-nav-title devsite-nav-title-no-path" track-type="leftNav" track-name="expandNavSectionNoLink" track-metadata-position="0" tabindex="0">
+    <span>Companies</span>
+  </span>
+  <a class="devsite-nav-toggle devsite-nav-toggle-expanded material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0"></a>
+  <ul class="devsite-nav-section devsite-nav-section-expanded">
+    <li class="devsite-nav-item devsite-nav-active">
+      <a routerLink="/dashboard/AddCompanies" class="devsite-nav-title gc-analytics-event" track-type="leftNav" track-name="titleLink" track-metadata-position="1" data-category="Site-Wide Custom Events" data-label="Left nav" data-action="click">
+        <span>Add Companies</span>
+      </a>
+    </li>
+    <li class="devsite-nav-item devsite-nav-active">
+      <a routerLink="/dashboard/AddCompanies" class="devsite-nav-title gc-analytics-event" track-type="leftNav" track-name="titleLink" track-metadata-position="1" data-category="Site-Wide Custom Events" data-label="Left nav" data-action="click">
+        <span>List Companies</span>
+      </a>
+    </li>
+    <li class="devsite-nav-item devsite-nav-active">
+      <a routerLink="/dashboard/AddCompanies" class="devsite-nav-title gc-analytics-event" track-type="leftNav" track-name="titleLink" track-metadata-position="1" data-category="Site-Wide Custom Events" data-label="Left nav" data-action="click">
+        <span>View Companies</span>
+      </a>
+    </li>
+  </ul>
+</li>
+
+
+    <a class="mdl-navigation__link" routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+    <a class="mdl-navigation__link" href="">Lead</a>
+    <a class="mdl-navigation__link" href="">Opportunities</a>
+    <a class="mdl-navigation__link" href="">LogOut</a>
   </nav>
+
+
 </div>
 <main class="mdl-layout__content">
-  <div class="page-content" ><!-- Your content goes here --></div>
+  <div class="page-content" ><!-- Your content goes here -->
+    <router-outlet></router-outlet>
+  </div>
 </main>
 </div>
