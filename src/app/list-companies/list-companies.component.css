@@ -1,0 +1,19 @@
+.main{
+	padding:20px 30px 10px 30px;
+}
+
+.wide-card.mdl-card {
+  width: 350px;
+}
+.demo-card-wide > .mdl-card__title {
+  color: #fff;
+  height: 100px;
+}
+.demo-card-wide > .mdl-card__menu {
+  color: #fff;
+}
+
+.item-wr
+{
+	margin: 15px;
+}
