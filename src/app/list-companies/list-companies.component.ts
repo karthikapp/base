@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FirebaseService } from "../services/firebase.service";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-companies',
@@ -10,14 +11,11 @@ export class ListCompaniesComponent implements OnInit {
 
 accounts: accounts[];
 
-  constructor(private firebaseservice : FirebaseService) { }
+  constructor(private firebaseservice : FirebaseService, private router: Router) { }
 
   ngOnInit() {
   	this.firebaseservice.getAccounts().subscribe(accounts => {	
-  	console.log(accounts);	
   		this.accounts = accounts;
-  		console.log(this.accounts);
-
   })
 }
   
@@ -26,9 +24,6 @@ accounts: accounts[];
     {
       return "None";
     } else {
-      
-      //let list = Object.values(contct);
-      //console.log(list);
       return Object.keys(contct).length;
     }
     
@@ -38,6 +33,11 @@ accounts: accounts[];
     let list = Object.values(cntct);
     console.log(list);
     return list;
+  }
+
+  on_edit(company_name){
+     
+      this.router.navigate(['/dashboard/EditCompanies',{'company_name': company_name}]);
   }
 
 }

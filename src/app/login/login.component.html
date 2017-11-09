@@ -1,7 +1,7 @@
 <!-- Wide card with share menu button -->
 
 
-<div style="vertical-align: center; background: url(http://media.allyou.net/7/7817/images/4893955/1.jpg.5000x500_q90.jpg) no-repeat center center fixed; 
+<div style="vertical-align: center; ) no-repeat center center fixed; 
 -webkit-background-size: cover;
 -moz-background-size: cover;
 -o-background-size: cover;
@@ -23,17 +23,17 @@ background-size: cover;max-height: 100%;height: 100vh;font-family: 'Open Sans Co
        <!-- Simple Textfield -->
        <form class="ui form">
         <div class="field font-new">
-          <input type="text" name="first-name" placeholder="Email">
+          <input type="text" name="email" placeholder="email" [(ngModel)]="email">
         </div>
         <div class="field"> 
-          <input type="password" name="last-name" placeholder="Password">
+          <input type="password" name="password" placeholder="Password" [(ngModel)]="password" >
         </div>
       </form>
     </div>
     <br>
     <div class="extra content" style="font-family: 'Open Sans Condensed', sans-serif;">
      <!-- Colored raised button -->
-<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored font-new">
+<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored font-new" (click) = "doLogin(email,password)">
   Login
 </button>
 

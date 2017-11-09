@@ -23,8 +23,8 @@ export class DashboardComponent implements OnInit {
 		console.log(this.edited);
 	}
 
-hideEl()
-{
-	this.edited = false;
-}
+  hideEl()
+  {
+	  this.edited = false;
+  }
 }

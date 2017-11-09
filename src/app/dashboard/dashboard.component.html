@@ -5,6 +5,12 @@
   <header class="mdl-layout__header">
     <div class="mdl-layout__header-row">
       <div class="mdl-layout-spacer"></div>
+        <!-- Right aligned menu below button -->
+        <button id="demo-menu-lower-right"
+          class="mdl-button mdl-js-button mdl-button--icon" [hidden]="!edited">
+          <i class="material-icons">more_vert</i>
+        </button>
+      
       <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
       mdl-textfield--floating-label mdl-textfield--align-right">
         <!--Search button with expandable holder-->
@@ -17,12 +23,6 @@
           <input class="mdl-textfield__input" type="text" name="sample"
         id="fixed-header-drawer-exp">
         </div>
-
-        <!-- Right aligned menu below button -->
-        <button id="demo-menu-lower-right"
-          class="mdl-button mdl-js-button mdl-button--icon" [hidden]="!edited">
-          <i class="material-icons">more_vert</i>
-        </button>
 
       </div>
     </div>
@@ -47,8 +47,8 @@
 <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
     for="demo-menu-lower-right">
   <li class="mdl-menu__item mdl-navigation__link" routerLink="/dashboard/AddCompanies">Add Company</li>
-  <li class="mdl-menu__item mdl-navigation__link">View Company</li>
-  <li class="mdl-menu__item mdl-navigation__link" routerLink="/dashboard/ListCompanies">List Company</li>
+  <li class="mdl-menu__item mdl-navigation__link" routerLink="/dashboard/EditCompanies">Edit Company</li>
+  <!--li class="mdl-menu__item mdl-navigation__link" routerLink="/dashboard/ListCompanies">List Company</li-->
 </ul>
 <main class="mdl-layout__content">
   <div class="page-content" ><!-- Your content goes here -->

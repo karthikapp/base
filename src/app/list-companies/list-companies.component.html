@@ -1,43 +1,50 @@
-
 <!-- Wide card with share menu button -->
 <div class ="main">
-<br>
 <div class="ui stackable two column grid">
 <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand " *ngFor="let acct of accounts">
-  &nbsp;
-  <div class="mdl-card__title" style="background-color: #b2ebf2;">
+  
+  <div class="mdl-card__title">
     <h1 class="mdl-card__title-text">
-      <span style="font-weight: bold;">
+      <span style="font-weight: bold; background-color: #00897b; color: white; padding: 8px;border-radius: 10px;font-size: 20px;">
       {{acct.company_name}}  
     </span>
-    </h1> 
+    </h1>
   </div>
 
+<!--Company Address-->
   <p>  
       {{acct.company_address_line1}}
     <br>
       {{acct.company_address_line2}}
   </p>
 
-     <div class = "mdl-grid">
-               <div class = "mdl-cell mdl-cell--6-col">
-                <h2>{{acct.company_type}}</h2> 
-                <p>Company Type</p>
+<!--Company type, Industry type, Employee Count, Contact Person Count -->
+     <div class = "ui stackable four column grid">
+               <div class = "column">
+                <p><span style="font-size: 20px; font-weight: bold; text-align: center;">{{acct.company_type}}</span> <br>
+                <span style="color: gray; font-size: 12px;">Company Type</span></p>
                </div>
-               <div class = "mdl-cell mdl-cell--6-col">
-                <h2>{{acct.Industry_type}}</h2> 
-                <p> Industry type</p>
+               <div class = "column">
+                <p><span style="font-size: 20px; font-weight: bold;text-align: center;">{{acct.Industry_type}}</span><br> 
+                <span style="color: gray; font-size: 12px;">Industry type</span></p>
                 </div>
-               <div class = "mdl-cell mdl-cell--6-col">
-                <h2>{{acct.employee_count}}</h2>
-                <p> Employee Count </p>
+               <div class = "column">
+                <p><span style="font-size: 20px; font-weight: bold;text-align: center;">{{acct.employee_count}}</span><br>
+                <span style="color: gray; font-size: 12px;">Employee</span></p>
               </div>
-              <div class = "mdl-cell mdl-cell--6-col">
-                <h2>{{somefunction(acct.contact_persons)}}</h2>
-                <p> Contact Persons Count </p>
+              <div class = "column">
+                <p><span style="font-size: 20px; font-weight: bold;text-align: center;">{{somefunction(acct.contact_persons)}}</span><br>
+                <span style="color: gray; font-size: 12px;">Contact Persons</span></p>
               </div>
     </div>
+<br>
 
+  <div class="mdl-card__menu">
+    <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+      <i class="material-icons" (click)="on_edit(acct.company_name)">edit</i>
+    </button>
+  </div>
+  
   <!--table class="mdl-data-table mdl-js-data-table" >
   <thead>
     <tr>
