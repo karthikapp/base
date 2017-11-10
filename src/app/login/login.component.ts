@@ -20,11 +20,9 @@ password: string;
   }
 
   doLogin(email, password){
-
-  	console.log(email,password);
-	this.firebaseservice.loginUser(this.email,this.password);
-
-	this.router.navigateByUrl('/dashboard');
+    //console.log(email,password);
+	  this.firebaseservice.loginUser(this.email,this.password);
+	  this.router.navigate(['/dashboard/ListCompanies']);
   }
 
 }

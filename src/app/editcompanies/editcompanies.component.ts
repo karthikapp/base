@@ -11,66 +11,60 @@ export class EditcompaniesComponent implements OnInit {
 
 	account: any;
 	company_name: string;
-  company_name1: string;
   company_type: string;
   industry_type: string;
-  address1: string;
-  address2: string;
-  employeecount: number;
+  company_address_line1: string;
+  company_address_line2: string;
+  employee_count: number;
   company_id: string;
   
-  contact_persons: any[];
-  contact_person_name: string;
-  contact_person_title: string;
-  Decision_maker: string;
-  primary_contact: string;
-  category: string;
-  contact_person_id: string;
-	
+  contact_persons: any[];	
 
-  constructor(private firebaseservice : FirebaseService, private router: ActivatedRoute) { 
+  constructor(private firebaseservice : FirebaseService, private router: ActivatedRoute, private route: Router) { 
   }
 
   ngOnInit() {
 
-  	this.company_name = this.router.snapshot.params['company_name'];
+  	this.company_id = this.router.snapshot.params['companyid'];
     
-  	this.firebaseservice.getAccount(this.company_name).subscribe(account => {    
+  	this.firebaseservice.getAccount(this.company_id).subscribe(account => {    
+      this.company_name = account[0].companyname;
+      this.company_type = account[0].companytype;
+      this.industry_type = account[0].industrytype;
+      this.company_address_line1 = account[0].company_address_line1;
+      this.company_address_line2 = account[0].company_address_line2;
+      this.employee_count = account[0].employee_count;
+      this.company_id = account[0].companyid;
       this.account = account;
-      this.company_name1 = account[0].company_name;
-      this.company_type = account[0].company_type;
-      this.industry_type = account[0].Industry_type;
-      this.address1 = account[0].company_address_line1;
-      this.address2 = account[0].company_address_line2;
-      this.employeecount = account[0].employee_count;
-      this.company_id = account[0].company_id;
-      this.contact_persons = account[0].contact_persons;
 
+      this.contact_persons = account[0].contact_persons;
   });
   }
 
   save_contact_persons(){
-     //console.log (this.company_name,this.company_type,this.industry_type,this.contact_persons);
+     //console.log (this.company_name,this.company_type,this.industry_type,
+     //this.contact_persons);
 
      let account = {
-          company_name: this.company_name1,
-          company_type:this.company_type,
-          Industry_type: this.industry_type,
-          company_address_line1: this.address1,
-          company_address_line2:this.address2,
-          employee_count: this.employeecount
+          companyname: this.company_name,
+          companytype:this.company_type,
+          industrytype: this.industry_type,
+          company_address_line1: this.company_address_line1,
+          company_address_line2:this.company_address_line2,
+          employee_count: this.employee_count
         };
-
 
      let contact_persons = this.contact_persons;
 
+     console.log('editcompanies',account,contact_persons)
 
-     console.log(account,contact_persons)
-
-     this.firebaseservice.saveAccount(this.company_id,account,contact_persons)
-
-
+     return this.firebaseservice.saveAccount(this.company_id,account,contact_persons).then (success => {
+       this.route.navigate(['/dashboard/ListCompanies'])
+     })
     }
 
+   cancel_contact_persons(){
+    this.route.navigate(['/dashboard/ListCompanies']);
+  }
 
 }

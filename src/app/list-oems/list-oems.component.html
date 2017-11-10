@@ -1,0 +1,92 @@
+<br>
+<br>
+<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored fixedbutton" (click)="addOEMModal()">Add OEM</button>
+  
+<lsu-modal [(ngModel)]="addOEMModal_flag" [options]="modalOptions">
+  
+  <div class="header">
+    Create OEM
+  </div>
+  
+  <div class="description">
+    <br>
+    <!--OEM Name-->
+    <form class="ui mini form">
+      <div class="field" style="padding: 20px;">
+        <label style="font-weight: bold; font-size: 15px;">OEM Name</label>
+        <br>
+        <input type="text"  name="oem_name" placeholder="OEM Name" [(ngModel)]="oem_name" required> 
+      </div>
+    </form>
+  </div>
+
+  <div class="actions">
+    <div class="ui black deny button" (click)="cancelOEMModal()">
+      Cancel
+    </div>
+    <div class="ui positive right labeled icon button" (click)="on_add_oem()">
+      Add
+      <i class="checkmark icon"></i>
+    </div>
+  </div>
+
+</lsu-modal>
+
+
+
+<table class="ui single line striped stackable table">
+  <thead>
+  <tr>
+    <th>OEM Name</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let oem of oems">
+    <td>{{oem.oem_name}}</td>
+    <td>
+    	<a (click)="editOEMModal(oem.oem_id)">
+    		<i class="material-icons">edit</i>
+    	</a>
+    	&nbsp;
+    	<a (click)="on_delete_oem(oem.oem_id)">
+    		<i class="material-icons">delete</i>
+    	</a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+
+<lsu-modal [(ngModel)]="editOEMModal_flag" [options]="modalOptions">
+  
+  <div class="header">
+    Edit OEM
+  </div>
+  
+  <div class="description">
+    <br>
+    <!--OEM Name-->
+    <form class="ui mini form">
+      <div class="field" style="padding: 20px;">
+        <label style="font-weight: bold; font-size: 15px;">OEM Name</label>
+        <br>
+        <input type="text"  name="oemname" placeholder="OEM Name" [(ngModel)]="oemname" required> 
+      </div>
+    </form>
+  </div>
+
+  <div class="actions">
+    <div class="ui black deny button" (click)="cancelOEMModal()">
+      Cancel
+    </div>
+    <div class="ui positive right labeled icon button" (click)="on_edit_oem()">
+      Save changes
+      <i class="checkmark icon"></i>
+    </div>
+  </div>
+
+</lsu-modal>
+
+
+

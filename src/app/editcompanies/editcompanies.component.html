@@ -5,38 +5,41 @@
         		<div class="ui container">
           			<div class="ui segment">
             
+                  <!--Company Name-->
             			<form class="ui form">
               				<div class="field">
                 			<label style="font-weight: bold;">Company Name</label>
-                			<input type="text"  name="company_name1" placeholder="Company Name" [(ngModel)]="company_name1" required> 
+                			<input type="text"  name="company_name" placeholder="Company Name" [(ngModel)]="company_name" required> 
               				</div>
             			</form>
             			<br>
 
+                  <!--Company Address-->
             			<form class="ui form">
               				<div class="field">
                 			<label>Company Address</label>
-                			<input type="text"  name="address1" placeholder="Company Address Line1" [(ngModel)]="address1" required>
+                			<input type="text"  name="company_address_line1" placeholder="Company Address Line1" [(ngModel)]="company_address_line1" required>
                 			<br>
                 			<br>
-                			<input type="text"  name="address2" placeholder="Company Address Line2" [(ngModel)]="address2" required>
+                			<input type="text"  name="company_address_line2" placeholder="Company Address Line2" [(ngModel)]="company_address_line2" required>
               				</div>
             			</form>	
 
             			<div class="ui grid container">
             				<div class="ui two column grid">
             					<div class = "row">
-              				<!--Industry Type-->
+
+              				  <!--Industry Type-->
               					<div class="form-group column">
                 					<label for="exampleFormControlSelect1">Industry Type</label>
                 					&nbsp;
-                					<select class="form-control" id="exampleFormControlSelect1" name="industrytype" [(ngModel)]="industry_type" required>
-                  						<option>SMB</option>
-                  						<option>Others</option>
+                					<select class="form-control" id="exampleFormControlSelect1" name="industry_type" [(ngModel)]="industry_type" required>
+                  					<option>SMB</option>
+                  					<option>Enterprise</option>
                 					</select>
               					</div>
           
-              				<!--Company Type-->
+              				  <!--Company Type-->
               					<div class="form-group column">
                 					<label for="exampleFormControlSelect1">Company Type</label>
                 					&nbsp;
@@ -47,26 +50,25 @@
                 					</select>
               					</div>
 
-              					</div>
               				</div>
               			</div>
+              		</div>
 
-              			<!--Number of Employee-->
+              		<!--Number of Employee-->
             			<form class="ui form">
               				<div class="field">
                 			<label>No. of Employees</label>
-                			<input type="text"  name="ecount" placeholder="Employee Count" [(ngModel)]="employeecount" required>
+                			<input type="text"  name="employee_count" placeholder="Employee Count" [(ngModel)]="employee_count" required>
               				</div>
             			</form>
 
             			<br>
             			<div class="ui fitted divider"></div>
-
             			<br>
 
             			<label style="font-weight: bold;">Contact Person Details</label>
 
-
+                  <!--Contact Person Information-->
             			<table class="ui table">
             				<thead>
               				<tr>
@@ -83,46 +85,45 @@
                      
             					<td class="field">
                          <form class="ui form">
-            						<input type="text"  name="pname" placeholder= "Name" [(ngModel)]="cntct.contact_person_name" required>
+            						<input type="text"  name="contact_person_name" placeholder= "Name" [(ngModel)]="cntct.contact_person_name" required>
                         </form>
             					 </td>
             					    
             					<td class="field">
                         <form class ="ui form">
-            						<input type="text"  name="title" placeholder="title" [(ngModel)]="cntct.contact_person_title" required>
+            						<input type="text"  name="contact_person_title" placeholder="title" [(ngModel)]="cntct.contact_person_title" required>
                       </form>
             				 	</td>
                      
-
             					<td class="form-group column">
-            						<select class="form-control" id="exampleFormControlSelect1" name="decisionmaker" [(ngModel)]="cntct.Decision_maker">
-                  						<option>Yes</option>
-                  						<option>No</option>
-                					</select>
+            						<select class="form-control" id="exampleFormControlSelect1" name="Decision_maker" [(ngModel)]="cntct.Decision_maker">
+                  				<option>Yes</option>
+                  				<option>No</option>
+                				</select>
             					</td>
 
             					<td class="form-group column">
-            						<select class="form-control" id="exampleFormControlSelect1" name="primarycontact" [(ngModel)]="cntct.primary_contact">
-                  						<option>Yes</option>
-                  						<option>No</option>
-                					</select>
+            						<select class="form-control" id="exampleFormControlSelect1" name="Primary_contact" [(ngModel)]="cntct.Primary_contact">
+                					<option>Yes</option>
+              						<option>No</option>
+              					</select>
             					</td>         				
               				
                       <td class="form-group column">
-                        <select class="form-control" id="exampleFormControlSelect1" name="category" [(ngModel)]="cntct.category">
-                              <option>Executive</option>
-                              <option>Finance</option>
-                          </select>
+                        <select class="form-control" id="exampleFormControlSelect1" name="contact_person_category" [(ngModel)]="cntct.contact_person_category">
+                          <option>Executive</option>
+                          <option>Finance</option>
+                        </select>
                       </td> 
+                    </tr>
+            			</tbody>
+          			</table>
 
-
-
-                			</tr>
-            				</tbody>
-          				</table>
-
-                  <button (click)="save_contact_persons()">Save</button>
-  					</div>
+              <button (click)="save_contact_persons()">Save Company</button>
+              &nbsp;
+              <button (click)="cancel_contact_persons()">Cancel</button>          
+  					
+            </div>
 				</div>
 			</div>
 		</div>

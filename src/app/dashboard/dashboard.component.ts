@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-	edited: boolean = false;
+	
 
   	constructor() { 
   		
@@ -18,13 +18,5 @@ export class DashboardComponent implements OnInit {
   		
   	}
 
-	activateEl(){
-		this.edited = !this.edited;
-		console.log(this.edited);
-	}
-
-  hideEl()
-  {
-	  this.edited = false;
-  }
+	
 }

@@ -18,3 +18,9 @@
 	margin: 15px;
 }
 
+.fixedbutton {
+ position:absolute;
+   top:5px;
+   right:5px;
+}
+

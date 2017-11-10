@@ -5,11 +5,7 @@
   <header class="mdl-layout__header">
     <div class="mdl-layout__header-row">
       <div class="mdl-layout-spacer"></div>
-        <!-- Right aligned menu below button -->
-        <button id="demo-menu-lower-right"
-          class="mdl-button mdl-js-button mdl-button--icon" [hidden]="!edited">
-          <i class="material-icons">more_vert</i>
-        </button>
+
       
       <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
       mdl-textfield--floating-label mdl-textfield--align-right">
@@ -23,10 +19,10 @@
           <input class="mdl-textfield__input" type="text" name="sample"
         id="fixed-header-drawer-exp">
         </div>
-
       </div>
+
     </div>
-</header>
+  </header>
 
 <!--Side Menu bar Fixed -->
 <div class="mdl-layout__drawer" style="padding-left: 0px;">
@@ -34,22 +30,17 @@
     <!--img src="http://www.svcafe.co.uk/acatalog/Lavazza-Box-Logo-300.jpg" style="width: 90px;padding-top: 7px;"-->
   </span>
   <nav class="mdl-navigation" style="">
-    <a class="mdl-navigation__link" routerLink="/dashboard/ListCompanies" routerLinkActive="active" (click)="activateEl()">Accounts</a>
-    <a class="mdl-navigation__link" routerLink="/dashboard" routerLinkActive="active" (click)="hideEl()">Dashboard</a>
-    <a class="mdl-navigation__link" href="">Lead</a>
-    <a class="mdl-navigation__link" href="">Opportunities</a>
+    <a class="mdl-navigation__link" routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+    <a class="mdl-navigation__link" routerLink="/dashboard/ListCompanies" routerLinkActive="active">Accounts</a>
+    <a class="mdl-navigation__link" routerLink="/dashboard/ListOEM" routerLinkActive="active">OEMS</a>
+    <a class="mdl-navigation__link" routerLink="/dashboard/Events" routerLinkActive="active">Events</a>
+    <a class="mdl-navigation__link" routerLink="/dashboard/Distributors" routerLinkActive="active">Distributors</a>
     <a class="mdl-navigation__link" href="">LogOut</a>
   </nav>
 </div>
 
 
-<!-- Right aligned menu below button -->
-<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
-    for="demo-menu-lower-right">
-  <li class="mdl-menu__item mdl-navigation__link" routerLink="/dashboard/AddCompanies">Add Company</li>
-  <li class="mdl-menu__item mdl-navigation__link" routerLink="/dashboard/EditCompanies">Edit Company</li>
-  <!--li class="mdl-menu__item mdl-navigation__link" routerLink="/dashboard/ListCompanies">List Company</li-->
-</ul>
+
 <main class="mdl-layout__content">
   <div class="page-content" ><!-- Your content goes here -->
     <router-outlet></router-outlet>

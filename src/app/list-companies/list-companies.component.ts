@@ -9,17 +9,19 @@ import { Router } from '@angular/router';
 })
 export class ListCompaniesComponent implements OnInit {
 
-accounts: accounts[];
+  accounts: any;
 
   constructor(private firebaseservice : FirebaseService, private router: Router) { }
 
   ngOnInit() {
-  	this.firebaseservice.getAccounts().subscribe(accounts => {	
-  		this.accounts = accounts;
-  })
-}
+    //List of companies
+  	return this.firebaseservice.getAccounts().subscribe(accounts => {	
+  		      this.accounts = accounts;
+            //console.log(accounts);
+    })
+  }
   
-  somefunction(contct){
+  countContactPerson(contct){
     if(contct == undefined)
     {
       return "None";
@@ -29,33 +31,17 @@ accounts: accounts[];
     
   }
 
-  somefn(cntct){
-    let list = Object.values(cntct);
-    console.log(list);
-    return list;
+  on_add_account(){
+    this.router.navigate(['/dashboard/AddCompanies']);
   }
 
-  on_edit(company_name){
-     
-      this.router.navigate(['/dashboard/EditCompanies',{'company_name': company_name}]);
+  on_edit_account(companyid){
+     //console.log('companyid',companyid);
+      this.router.navigate(['/dashboard/EditCompanies/:companyid',{'companyid': companyid}]);
   }
 
-}
+  on_delete_account(companyid){
+    this.firebaseservice.deleteAccount(companyid);
+  }
 
-interface accounts {
-$key?: string;
-company_name?: string;
-industry_type?: string;
-company_type?: string;
-employee_count?: string;
-contact_persons?: contact_persons[];
-}
-
-
-interface contact_persons {
-	Decision_maker?: String;
-	primary_contact?: String;
-	contact_person_name?: String;
-	contact_person_id?: String;
-	$key?: String;
 }

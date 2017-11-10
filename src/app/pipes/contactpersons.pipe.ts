@@ -10,7 +10,7 @@ export class ContactpersonsPipe implements PipeTransform {
     return null;
 	} else {
     let list = Object.values(value);
-    console.log(list);
+    //console.log(list);
     return list;
   }
 }
