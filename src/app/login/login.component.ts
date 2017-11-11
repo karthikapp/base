@@ -15,7 +15,9 @@ password: string;
 
   constructor(private firebaseservice : FirebaseService, private router: Router) { }
 
-  ngOnInit() {
+  ngOnInit() 
+  {
+
  
   }
 
