@@ -1,9 +1,10 @@
 <!-- The drawer is always open in large screens. The header is always shown,
   even in small screens. -->
   <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer
-  mdl-layout--fixed-header">
+  mdl-layout--fixed-header mdl-layout--fixed-tabs">
   <header class="mdl-layout__header">
-    <div class="mdl-layout__header-row">
+
+    <div class="mdl-layout__header-row" >
       <div class="mdl-layout-spacer"></div>
 
       
@@ -22,12 +23,13 @@
       </div>
 
     </div>
+
   </header>
 
 <!--Side Menu bar Fixed -->
-<div class="mdl-layout__drawer" style="padding-left: 0px;">
+<div class="mdl-layout__drawer" style="padding-left: 0px;font-family: 'Marvel', sans-serif;" >
   <span class="mdl-layout-title" align="center">
-    <!--img src="http://www.svcafe.co.uk/acatalog/Lavazza-Box-Logo-300.jpg" style="width: 90px;padding-top: 7px;"-->
+    <img src="https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-simple-512.png" style="width: 90px;padding-top: 12px;padding-left: 0px;"/>
   </span>
   <nav class="mdl-navigation" style="">
     <a class="mdl-navigation__link" routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
@@ -35,14 +37,17 @@
     <a class="mdl-navigation__link" routerLink="/dashboard/ListOEM" routerLinkActive="active">OEMS</a>
     <a class="mdl-navigation__link" routerLink="/dashboard/Events" routerLinkActive="active">Events</a>
     <a class="mdl-navigation__link" routerLink="/dashboard/Distributors" routerLinkActive="active">Distributors</a>
-    <a class="mdl-navigation__link" href="">LogOut</a>
+    <a class="mdl-navigation__link" href="">Logout</a>
   </nav>
 </div>
 
 
 
-<main class="mdl-layout__content">
-  <div class="page-content" ><!-- Your content goes here -->
+<main class="mdl-layout__content" style="background: #232526;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #414345, #232526);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #414345, #232526); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+">
+  <div class="page-content" style="font-family: 'Marvel', sans-serif;"><!-- Your content goes here -->
     <router-outlet></router-outlet>
   </div>
 </main>

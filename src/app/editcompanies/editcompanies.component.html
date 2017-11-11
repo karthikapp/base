@@ -1,6 +1,8 @@
-<div class="container">
+<div class="container" align="center">
+  <br>
+  <br>
 	<div class="ui main container" style="width: 100%;height: 100%;">
-    	<div class="ui card" style="width: 100%;height: 100%;">
+    	<div class="ui card" style="width: 90%;height: 100%;">
       		<div class="content">
         		<div class="ui container">
           			<div class="ui segment">
@@ -69,14 +71,14 @@
             			<label style="font-weight: bold;">Contact Person Details</label>
 
                   <!--Contact Person Information-->
-            			<table class="ui table">
+            			<table class="ui table" style="background-color: #757575;">
             				<thead>
               				<tr>
-                				<th>Name</th>
-                				<th>Title</th>
-                				<th>Decision Maker</th>
-                				<th>Primary Contact</th>
-                        <th>Category</th>
+                				<th>NAME</th>
+                				<th>TITLE</th>
+                				<th>DECISION MAKER</th>
+                				<th>PRIMARY CONTACT</th>
+                        <th>CATEGORY</th>
               				</tr>
             				</thead>
 
@@ -91,7 +93,7 @@
             					    
             					<td class="field">
                         <form class ="ui form">
-            						<input type="text"  name="contact_person_title" placeholder="title" [(ngModel)]="cntct.contact_person_title" required>
+            						<input type="text"  name="contact_person_title" placeholder="Title" [(ngModel)]="cntct.contact_person_title" required>
                       </form>
             				 	</td>
                      
@@ -119,9 +121,9 @@
             			</tbody>
           			</table>
 
-              <button (click)="save_contact_persons()">Save Company</button>
+              <button class="ui teal button" (click)="save_contact_persons()">Save Company</button>
               &nbsp;
-              <button (click)="cancel_contact_persons()">Cancel</button>          
+              <button class="ui red button" (click)="cancel_contact_persons()">Cancel</button>          
   					
             </div>
 				</div>

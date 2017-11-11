@@ -1,8 +1,15 @@
+
+<div align="center">
+
+<div style="float:right;padding: 10px;font-family: 'Marvel', sans-serif;">
+  <button class="ui inverted button" (click)="addOEMModal()">Add OEM</button>
+</div>
+
 <br>
 <br>
-<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored fixedbutton" (click)="addOEMModal()">Add OEM</button>
+
   
-<lsu-modal [(ngModel)]="addOEMModal_flag" [options]="modalOptions">
+<lsu-modal [(ngModel)]="addOEMModal_flag" [options]="modalOptions" align="center">
   
   <div class="header">
     Create OEM
@@ -33,8 +40,11 @@
 </lsu-modal>
 
 
+ <div id="" style="overflow-y: scroll; height:400px;">
+  <br>
+<br>
 
-<table class="ui single line striped stackable table">
+<table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp" style="width: 95%;background-color: white;">
   <thead>
   <tr>
     <th>OEM Name</th>
@@ -43,7 +53,7 @@
   </thead>
   <tbody>
   <tr *ngFor="let oem of oems">
-    <td>{{oem.oem_name}}</td>
+    <td class="mdl-data-table__cell--non-numeric">{{oem.oem_name}}</td>
     <td>
     	<a (click)="editOEMModal(oem.oem_id)">
     		<i class="material-icons">edit</i>
@@ -57,7 +67,7 @@
   </tbody>
 </table>
 
-
+</div>
 <lsu-modal [(ngModel)]="editOEMModal_flag" [options]="modalOptions">
   
   <div class="header">
@@ -87,6 +97,7 @@
   </div>
 
 </lsu-modal>
+</div>
 
 
 
