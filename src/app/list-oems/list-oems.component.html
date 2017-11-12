@@ -1,102 +1,93 @@
-
 <div align="center">
-
-<div style="float:right;padding: 10px;font-family: 'Marvel', sans-serif;">
-  <button class="ui inverted button" (click)="addOEMModal()">Add OEM</button>
-</div>
-
-<br>
-<br>
-
-  
-<lsu-modal [(ngModel)]="addOEMModal_flag" [options]="modalOptions" align="center">
-  
-  <div class="header">
-    Create OEM
+  <!--Add OEM Button on top right corner-->
+  <div style="float:right;padding: 10px;font-family: 'Marvel', sans-serif;">
+    <button class="ui inverted button" (click)="addOEMModal()">Add OEM</button>
   </div>
-  
-  <div class="description">
-    <br>
-    <!--OEM Name-->
-    <form class="ui mini form">
-      <div class="field" style="padding: 20px;">
-        <label style="font-weight: bold; font-size: 15px;">OEM Name</label>
-        <br>
-        <input type="text"  name="oem_name" placeholder="OEM Name" [(ngModel)]="oem_name" required> 
-      </div>
-    </form>
-  </div>
-
-  <div class="actions">
-    <div class="ui black deny button" (click)="cancelOEMModal()">
-      Cancel
-    </div>
-    <div class="ui positive right labeled icon button" (click)="on_add_oem()">
-      Add
-      <i class="checkmark icon"></i>
-    </div>
-  </div>
-
-</lsu-modal>
-
-
- <div id="" style="overflow-y: scroll; height:400px;">
   <br>
-<br>
+  <br>
 
-<table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp" style="width: 95%;background-color: white;">
-  <thead>
-  <tr>
-    <th>OEM Name</th>
-    <th>Actions</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let oem of oems">
-    <td class="mdl-data-table__cell--non-numeric">{{oem.oem_name}}</td>
-    <td>
-    	<a (click)="editOEMModal(oem.oem_id)">
-    		<i class="material-icons">edit</i>
-    	</a>
-    	&nbsp;
-    	<a (click)="on_delete_oem(oem.oem_id)">
-    		<i class="material-icons">delete</i>
-    	</a>
-    </td>
-  </tr>
-  </tbody>
-</table>
-
-</div>
-<lsu-modal [(ngModel)]="editOEMModal_flag" [options]="modalOptions">
+  <!--Modal for adding a new OEM-->
+  <lsu-modal [(ngModel)]="addOEMModal_flag" [options]="modalOptions" align="center">
   
-  <div class="header">
-    Edit OEM
-  </div>
+    <div class="header">Create OEM</div>
   
-  <div class="description">
+    <div class="description">
     <br>
-    <!--OEM Name-->
-    <form class="ui mini form">
-      <div class="field" style="padding: 20px;">
-        <label style="font-weight: bold; font-size: 15px;">OEM Name</label>
-        <br>
-        <input type="text"  name="oemname" placeholder="OEM Name" [(ngModel)]="oemname" required> 
+      <!--OEM Name-->
+      <form class="ui mini form">
+        <div class="field" style="padding: 20px;">
+          <label style="font-weight: bold; font-size: 15px;">OEM Name</label>
+          <br>
+          <input type="text"  name="oem_name" placeholder="OEM Name" [(ngModel)]="oem_name" required> 
+        </div>
+      </form>
+    </div>
+
+    <div class="actions">
+      <div class="ui black deny button" (click)="cancelOEMModal()">Cancel</div>
+      <div class="ui positive right labeled icon button" (click)="on_add_oem()">Add
+        <i class="checkmark icon"></i>
       </div>
-    </form>
+    </div>
+
+  </lsu-modal>
+
+  <div id="" style="overflow-y: scroll; height:400px;">
+  <br>
+  <br>
+
+    <!--List OEM in a table with fields oem name and actions (Edit/ Delete)-->
+    <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp" style="width: 95%;background-color: white;">
+      <thead>
+        <tr>
+          <th>OEM Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let oem of oems">
+          <td class="mdl-data-table__cell--non-numeric">{{oem.oem_name}}</td>
+          <td>
+          	<a (click)="editOEMModal(oem.oem_id)">
+          		<i class="material-icons">edit</i>
+          	</a>
+          	&nbsp;
+          	<a (click)="on_delete_oem(oem.oem_id)">
+          		<i class="material-icons">delete</i>
+          	</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
-  <div class="actions">
-    <div class="ui black deny button" (click)="cancelOEMModal()">
-      Cancel
+  <!--Modal for Editing an OEM -->
+  <lsu-modal [(ngModel)]="editOEMModal_flag" [options]="modalOptions">
+    
+    <div class="header">Edit OEM</div>
+    
+    <div class="description">
+    <br>
+      <!--OEM Name-->
+      <form class="ui mini form">
+        <div class="field" style="padding: 20px;">
+          <label style="font-weight: bold; font-size: 15px;">OEM Name</label>
+          <br>
+          <input type="text"  name="oemname" placeholder="OEM Name" [(ngModel)]="oemname" required> 
+        </div>
+      </form>
     </div>
-    <div class="ui positive right labeled icon button" (click)="on_edit_oem()">
-      Save changes
-      <i class="checkmark icon"></i>
-    </div>
-  </div>
 
-</lsu-modal>
+    <div class="actions">
+      <div class="ui black deny button" (click)="cancelOEMModal()">Cancel</div>
+      <div class="ui positive right labeled icon button" (click)="on_edit_oem()">Save changes
+        <i class="checkmark icon"></i>
+      </div>
+    </div>
+
+  </lsu-modal>
+  
 </div>
 
 

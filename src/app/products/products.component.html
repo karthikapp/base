@@ -1,0 +1,111 @@
+<div align="center">
+	<!--Add Product Button on top right corner-->
+	<div style="float:right;padding: 10px;font-family: 'Marvel', sans-serif;">
+  		<button class="ui inverted button" (click)="addProductModal()">Add Product</button>
+	</div>
+	<br>
+	<br>
+ 
+	<!--Modal for adding a new Product-->
+	<lsu-modal [(ngModel)]="addProductModal_flag" [options]="modalOptions" align="center">
+  
+  		<div class="header">Create Product</div>
+  
+  		<div class="description">
+    	<br>
+    	<!--Product Name-->
+    		<form class="ui mini form">
+      			<div class="field" style="padding: 20px;">
+        			<label style="font-weight: bold; font-size: 15px;">Product Name</label>
+        			<br>
+        			<input type="text"  name="Product_name" placeholder="Product Name" [(ngModel)]="Product_name" required> 
+      			</div>
+    		</form>
+    	<!--Brand-->
+    	    <form class="ui mini form">
+      			<div class="field" style="padding: 20px;">
+        			<label style="font-weight: bold; font-size: 15px;">Brand</label>
+        			<br>
+        			<input type="text"  name="Brand" placeholder="Brand" [(ngModel)]="Brand" required> 
+      			</div>
+    		</form>
+  		</div>
+
+  		<div class="actions">
+    		<div class="ui black deny button" (click)="cancelProductModal()">Cancel</div>
+    		<div class="ui positive right labeled icon button" (click)="on_add_product()">Add
+      			<i class="checkmark icon"></i>
+    		</div>
+  		</div>
+	</lsu-modal>
+
+	<div id="" style="overflow-y: scroll; height:400px;">
+  	<br>
+	<br>
+		<!--List Product in a table with fields product name, brand and actions (Edit/ Delete)-->
+		<table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp" style="width: 95%;background-color: white;">
+		  	<thead>
+		  		<tr>
+		    		<th>Product Name</th>
+		    		<th>Brand</th>
+		    		<th>Actions</th>
+		  		</tr>
+		  	</thead>
+
+		  	<tbody>
+		  		<tr *ngFor="let product of products">
+		    		<td class="mdl-data-table__cell--non-numeric">{{product.Product_name}}</td>
+		    		<td class="mdl-data-table__cell--non-numeric">{{product.Brand}}</td>
+		    		<td>
+		    			<a (click)="editProductModal(product.productkey)">
+		    				<i class="material-icons">edit</i>
+		    			</a>
+		    			&nbsp;
+		    			<a (click)="on_delete_product(product.productkey)">
+		    				<i class="material-icons">delete</i>
+		    			</a>
+		    		</td>
+		  		</tr>
+		  	</tbody>
+		</table>
+	</div>
+
+	<!--Modal for Editing an Product -->
+	<lsu-modal [(ngModel)]="editProductModal_flag" [options]="modalOptions">
+  
+  		<div class="header">Edit Product</div>
+  
+  		<div class="description">
+    	<br>
+    	<!--Product Name-->
+    		<form class="ui mini form">
+      			<div class="field" style="padding: 20px;">
+        			<label style="font-weight: bold; font-size: 15px;">Product Name</label>
+        			<br>
+        			<input type="text"  name="productname" placeholder="Product Name" [(ngModel)]="productname" required> 
+      			</div>
+   			</form>
+    	<!--Brand-->
+    		<form class="ui mini form">
+      			<div class="field" style="padding: 20px;">
+        			<label style="font-weight: bold; font-size: 15px;">Brand</label>
+        			<br>
+        			<input type="text"  name="brand" placeholder="brand" [(ngModel)]="brands" required> 
+      			</div>
+   			</form>
+  		</div>
+
+  		<div class="actions">
+    		<div class="ui black deny button" (click)="cancelProductModal()">Cancel</div>
+    		<div class="ui positive right labeled icon button" (click)="on_edit_product()">Save changes
+      			<i class="checkmark icon"></i>
+    		</div>
+  		</div>
+	</lsu-modal>
+	
+</div>
+
+
+
+
+

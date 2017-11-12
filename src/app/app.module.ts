@@ -22,6 +22,7 @@ import { EditcompaniesComponent } from './editcompanies/editcompanies.component'
 import { ListOemsComponent } from './list-oems/list-oems.component';
 import { DistributorsComponent } from './distributors/distributors.component';
 import { EventsComponent } from './events/events.component';
+import { ProductsComponent } from './products/products.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -29,9 +30,10 @@ const appRoutes: Routes = [
     children: [{path:'ListCompanies', component: ListCompaniesComponent},
                {path:'EditCompanies/:companyid', component:EditcompaniesComponent},
                {path:'AddCompanies',component:AddCompaniesComponent},
-               {path:'ListOEM', component: ListOemsComponent},
+               {path:'OEM', component: ListOemsComponent},
                {path:'Events',component: EventsComponent},
                {path:'Distributors',component: DistributorsComponent},
+               {path:'Products',component: ProductsComponent}
               ]
   },
   {
@@ -54,7 +56,8 @@ const appRoutes: Routes = [
     EditcompaniesComponent,
     ListOemsComponent,
     DistributorsComponent,
-    EventsComponent
+    EventsComponent,
+    ProductsComponent
   ],
   imports: [
     BrowserModule ,
