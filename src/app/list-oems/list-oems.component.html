@@ -1,4 +1,17 @@
 <div align="center">
+  <!--Search button with expandable holder-->
+  <div appMzterialDesignLite style="float:right; color: white;">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+      <label class="mdl-button mdl-js-button mdl-button--icon" for="site-search">
+        <i class="material-icons">search</i>
+      </label>
+      <div class="mdl-textfield__expandable-holder">
+        <input class="mdl-textfield__input" type="search" id="site-search" name="site-search" placeholder="OEM Name" [(ngModel)] ="querystring" />
+        <label class="mdl-textfield__label" for="site-search">Search</label>
+      </div>
+    </div>
+  </div>
+
   <!--Add OEM Button on top right corner-->
   <div style="float:right;padding: 10px;font-family: 'Marvel', sans-serif;">
     <button class="ui inverted button" (click)="addOEMModal()">Add OEM</button>
@@ -32,7 +45,7 @@
 
   </lsu-modal>
 
-  <div id="" style="overflow-y: scroll; height:400px;">
+  <div id="" style="overflow-y: scroll;height: auto;">
   <br>
   <br>
 
@@ -46,7 +59,7 @@
       </thead>
 
       <tbody>
-        <tr *ngFor="let oem of oems | sortorder">
+        <tr *ngFor="let oem of oems | filterrecords: querystring : 'oems' | sortorder">
           <td class="mdl-data-table__cell--non-numeric">{{oem.oem_name}}</td>
           <td>
           	<a (click)="editOEMModal(oem.oem_id)">

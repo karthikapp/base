@@ -1,15 +1,15 @@
 <!--Search button with expandable holder-->
-<!--div style="float:right; color: white;">
+<div appMzterialDesignLite style="float:right; color: white;">
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
     <label class="mdl-button mdl-js-button mdl-button--icon" for="site-search">
       <i class="material-icons">search</i>
     </label>
     <div class="mdl-textfield__expandable-holder">
-      <input class="mdl-textfield__input" type="search" id="site-search" name="site-search" [(ngModel)] ="companyname" />
+      <input class="mdl-textfield__input" type="search" id="site-search" name="site-search" placeholder="Company Name" [(ngModel)] ="querystring" />
       <label class="mdl-textfield__label" for="site-search">Search</label>
     </div>
   </div>
-</div-->
+</div>
 
 <!--Add Account on top right corner-->
 <div style="float:right;padding: 10px;font-family: 'Marvel', sans-serif;">
@@ -20,10 +20,10 @@
 
 <!-- Wide card with Edit and Delete button -->
 <div class ="main">
-  <div id="" style="overflow-y: scroll; height:400px;">
+  <div id="" style="overflow-y: scroll;">
     <div class="ui stackable two column grid">
-      <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand " 
-      *ngFor="let acct of accounts | sortorder">
+      <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand" 
+      *ngFor="let acct of accounts | filterrecords: querystring : 'accounts' | sortorder">
 
         <!--Company Name-->
         <div class="mdl-card__title">
@@ -89,8 +89,10 @@
             <i class="material-icons" (click)="on_delete_account(acct.companyid)" style="font-size: 10pt;">delete</i>
           </button>
         </div>
+
       </div>
     </div>
   </div>
 </div>
+
 <br>

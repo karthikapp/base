@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule , RouterLink, RouterLinkActive } from '@angular/router';
 import { ModuleWithProviders }  from '@angular/core';
 
-import { L_SEMANTIC_UI_MODULE } from 'angular2-semantic-ui';
+import { L_SEMANTIC_UI_MODULE} from 'angular2-semantic-ui';
 
 import { FirebaseService} from "./services/firebase.service";
 import { firebaseConfig } from './../environments/firebase.config';
@@ -26,6 +26,8 @@ import { ProductsComponent } from './products/products.component';
 import { SortorderPipe } from './pipes/sortorder.pipe';
 import { ContactpersonsPipe } from './pipes/contactpersons.pipe';
 import { FilterrecordsPipe } from './pipes/filterrecords.pipe';
+
+import { MzterialDesignLiteDirective } from './mzterial-design-lite.directive';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -62,14 +64,15 @@ const appRoutes: Routes = [
     EventsComponent,
     ProductsComponent,
     SortorderPipe,
-    FilterrecordsPipe
+    FilterrecordsPipe,
+    MzterialDesignLiteDirective
   ],
   imports: [
     BrowserModule ,
     FormsModule,
     RouterModule.forRoot(appRoutes
-      //,
-      //{ enableTracing: true } // <-- debugging purposes only
+     // ,
+     // { enableTracing: true } // <-- debugging purposes only
       ),
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,

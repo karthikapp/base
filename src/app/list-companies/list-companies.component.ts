@@ -10,21 +10,24 @@ import { Router } from '@angular/router';
 export class ListCompaniesComponent implements OnInit {
 
   accounts: any;
-  username: any[];
 
-  constructor(private firebaseservice : FirebaseService, private router: Router) { }
+  querystring: string;
+
+  constructor(private firebaseservice : FirebaseService, private router: Router) { 
+  }
 
   ngOnInit() 
   {
-    this.username = ['krishna','bharath'];
     //List of companies/accounts
-  	return this.firebaseservice.getAccounts().subscribe(
+  	this.firebaseservice.getAccounts().subscribe(
       accounts => {	
   		      this.accounts = accounts;
-            console.log(accounts);
+            //console.log(accounts);
                   })
+
   }
-  
+
+
   //Display the count of Contact Persons 
   countContactPerson(contct){
     if(contct == undefined)

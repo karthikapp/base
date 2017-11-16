@@ -23,6 +23,8 @@ export class ProductsComponent implements OnInit {
   modalOptions: any;
   addProductModal_flag: boolean;
   editProductModal_flag: boolean;
+
+   querystring: string;
   
   constructor(private firebaseservice : FirebaseService, 
     private router: Router) 

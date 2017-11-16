@@ -22,6 +22,8 @@ export class DistributorsComponent implements OnInit {
   modalOptions: any;
   addDistributorModal_flag: boolean;
   editDistributorModal_flag: boolean;
+
+   querystring: string;
   
   constructor(private firebaseservice : FirebaseService, 
     private router: Router) 

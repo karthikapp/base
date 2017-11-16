@@ -1,4 +1,17 @@
 <div align="center">
+  <!--Search button with expandable holder-->
+  <div appMzterialDesignLite style="float:right; color: white;">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+      <label class="mdl-button mdl-js-button mdl-button--icon" for="site-search">
+        <i class="material-icons">search</i>
+      </label>
+      <div class="mdl-textfield__expandable-holder">
+        <input class="mdl-textfield__input" type="search" id="site-search" name="site-search" placeholder ="Product Name" [(ngModel)] ="querystring" />
+        <label class="mdl-textfield__label" for="site-search">Search</label>
+      </div>
+    </div>
+  </div>
+
 	<!--Add Product Button on top right corner-->
 	<div style="float:right;padding: 10px;font-family: 'Marvel', sans-serif;">
   		<button class="ui inverted button" (click)="addProductModal()">Add Product</button>
@@ -39,7 +52,7 @@
   		</div>
 	</lsu-modal>
 
-	<div id="" style="overflow-y: scroll; height:400px;">
+	<div id="" style="overflow-y: scroll;height: auto;">
   	<br>
 	<br>
 		<!--List Product in a table with fields product name, brand and actions (Edit/ Delete)-->
@@ -53,7 +66,7 @@
 		  	</thead>
 
 		  	<tbody>
-		  		<tr *ngFor="let product of products | sortorder">
+		  		<tr *ngFor="let product of products | filterrecords: querystring : 'products' | sortorder">
 		    		<td class="mdl-data-table__cell--non-numeric">{{product.Product_name}}</td>
 		    		<td class="mdl-data-table__cell--non-numeric">{{product.Brand}}</td>
 		    		<td>

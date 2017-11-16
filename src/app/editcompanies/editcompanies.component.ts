@@ -11,7 +11,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 export class EditcompaniesComponent implements OnInit {
 
 	account: any;
-	company_name: string;
+	companyname: string;
   company_type: string;
   industry_type: string;
   company_address_line1: string;
@@ -59,7 +59,7 @@ export class EditcompaniesComponent implements OnInit {
   	this.company_id = this.router.snapshot.params['companyid'];
     
   	this.firebaseservice.getAccount(this.company_id).subscribe(account => {    
-      this.company_name = account[0].companyname;
+      this.companyname = account[0].companyname;
       this.company_type = account[0].companytype;
       this.industry_type = account[0].industrytype;
       this.company_address_line1 = account[0].company_address_line1;
@@ -91,10 +91,10 @@ export class EditcompaniesComponent implements OnInit {
 
   //Update the changes for the respective company and if the update is complete redirect to List companies page
   save_contact_persons(){
-     //console.log (this.company_name,this.company_type,this.industry_type,this.contact_persons);
+     //console.log (this.companyname,this.company_type,this.industry_type,this.contact_persons);
 
-     if (this.company_name == undefined) {
-       this.company_name = '';
+     if (this.companyname == undefined) {
+       this.companyname = '';
      } 
      if (this.company_type == undefined) {
        this.company_type = '';
@@ -123,7 +123,7 @@ export class EditcompaniesComponent implements OnInit {
 
 
      let account = {
-          companyname: this.company_name,
+          companyname: this.companyname,
           companytype:this.company_type,
           industrytype: this.industry_type,
           company_address_line1: this.company_address_line1,

@@ -29,8 +29,7 @@ export class FirebaseService {
 		this.accounts = this.af.list('/accounts',
 			{query:
 				{
-				orderByChild: 'created_at',
-				limitToLast: 4
+				orderByChild: 'created_at'
 				}
 			});
 		return this.accounts;
@@ -143,8 +142,7 @@ export class FirebaseService {
 	//Fetch list of OEMS
 	getOEMs(){
 		this.oems = this.af.list('/oems',{query:
-			{orderByChild: 'created_at',
-				limitToLast: 6}});
+			{orderByChild: 'created_at'}});
 		return this.oems;
 	}
 
@@ -189,8 +187,7 @@ export class FirebaseService {
 	//Fetch list of Events
 	getEvents(){
 		this.events = this.af.list('/events',{query:
-			{orderByChild: 'created_at',
-				limitToLast: 6}});
+			{orderByChild: 'created_at'}});
 		return this.events;
 	}
 
@@ -235,8 +232,7 @@ export class FirebaseService {
 	//Fetch list of Distributors
 	getDistributors(){
 		this.distributors = this.af.list('/distributors',{query:
-			{orderByChild: 'created_at',
-				limitToLast: 6}});
+			{orderByChild: 'created_at'}});
 		return this.distributors ;
 	}
 
@@ -282,8 +278,7 @@ export class FirebaseService {
 	//Fetch list of Products
 	getProducts(){
 		this.products = this.af.list('/products',{query:
-			{orderByChild: 'created_at',
-				limitToLast: 6}});
+			{orderByChild: 'created_at'}});
 		return this.products ;
 	}
 

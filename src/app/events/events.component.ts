@@ -22,6 +22,8 @@ export class EventsComponent implements OnInit {
   modalOptions: any;
   addEventModal_flag: boolean;
   editEventModal_flag: boolean;
+
+   querystring: string;
   
   constructor(private firebaseservice : FirebaseService, 
     private router: Router) 
