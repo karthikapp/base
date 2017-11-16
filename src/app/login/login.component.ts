@@ -23,8 +23,14 @@ password: string;
 
   doLogin(email, password){
     //console.log(email,password);
-	  this.firebaseservice.loginUser(this.email,this.password);
-	  this.router.navigate(['/dashboard/ListCompanies']);
+	  this.firebaseservice.loginUser(email,password)
+    .then(success =>{
+      this.router.navigate(['/dashboard/ListCompanies']);
+    })
+    .catch( error => {
+      console.log(error);
+    });
+	  
   }
 
 }

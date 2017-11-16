@@ -45,7 +45,7 @@
   	</thead>
 
   	<tbody>
-  		<tr *ngFor="let event of events">
+  		<tr *ngFor="let event of events| sortorder">
     		<td class="mdl-data-table__cell--non-numeric">{{event.event_name}}</td>
     		<td>
     			<a (click)="editEventModal(event.event_id)">

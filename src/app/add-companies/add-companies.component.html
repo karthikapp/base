@@ -1,4 +1,4 @@
-<div class="container" align="center">
+<div class="container" class="form-group" align="center">
   <br>
   <br>
 	<div class="ui main container" style="width: 100%;height: 100%;">
@@ -8,10 +8,10 @@
           			<div class="ui segment">
             
                   <!--Company Name-->
-            			<form class="ui form">
+            			<form class="ui form" >
               				<div class="field">
                 			<label style="font-weight: bold;">Company Name</label>
-                			<input type="text"  name="company_name" placeholder="Company Name" [(ngModel)]="company_name" required>
+                			<input type="text"  class="form-control" name="company_name" placeholder="Company Name" [(ngModel)]="company_name" required>
               				</div>
             			</form>
             			<br>
@@ -23,7 +23,7 @@
                 			<input type="text"  name="company_address_line1" placeholder="Company Address Line 1" [(ngModel)]="company_address_line1" required>
                 			<br>
                 			<br>
-                			<input type="text"  name="company_address_line2" placeholder="Company Address Line 2" [(ngModel)]="company_address_line2" required>
+                			<input type="text"  class="form-control" name="company_address_line2" placeholder="Company Address Line 2" [(ngModel)]="company_address_line2" required>
               				</div>
             			</form>	
          
@@ -32,13 +32,16 @@
             					<div class = "row">
 
                         <!--Industry Type-->
-              					<div class="form-group column">
-                					<label for="exampleFormControlSelect1">Industry Type</label>
+              					<div class="form-group column" >
+                					<label for="exampleFormControlSelect1">Industry Type:</label>
                 					&nbsp;
-                					<select class="form-control" id="exampleFormControlSelect1" name="industry_type" [(ngModel)]="industry_type">
+                          {{industry_type}}
+                					<!--select class="form-control" id="exampleFormControlSelect1" name="industry_type" [(ngModel)]="industry_type">
                   					<option>SMB</option>
-                  					<option>Enterprise</option>
-                					</select>
+                  					<option>MB</option>
+                            <option>Mid Enterprise</option>
+                            <option>Enterprise</option>
+                					</select-->
               					</div>
           
               			    <!--Company Type-->
@@ -60,7 +63,7 @@
             		<form class="ui form">
           				<div class="field">
               			<label>No. of Employees</label>
-                		<input type="text"  name="employee_count" placeholder="Employee Count" [(ngModel)]="employee_count" required>
+                		<input type="text"  class="form-control" name="employee_count" placeholder="Employee Count" [(ngModel)]="employee_count" required (keyup)=onKey($event)>
               		</div>
             		</form>
 
@@ -71,14 +74,17 @@
                 <!--Contact Person Details -->
             		<label style="font-weight: bold;">Contact Person Details</label>
 
-            		<table class="ui table" style="background-color: #757575;">
+            		<table class="ui responsive table" style="background-color: #757575;">
             			<thead>
               			<tr>
-                			<th>NAME</th>
-                			<th>TITLE</th>
-                			<th>DECISION MAKER</th>
-                			<th>PRIMARY CONTACT</th>
-                      <th>CATEGORY</th>
+                        <th>NAME</th>
+                        <th>TITLE</th>
+                        <th>PRIMARY CONTACT</th>
+                        <th>DECISION MAKER</th>
+                        <th>CATEGORY</th>
+                        <th>MOBILE</th>
+                        <th>PHONE</th>
+                        <th>EMAIL</th> 
               			</tr>
             			</thead>
                     
@@ -86,13 +92,13 @@
             			 <tr>
             					<td class="field">
                          <form class="ui form">
-            						    <input type="text"  name="contact_person_name" placeholder= "Name" [(ngModel)]="contact_person_name" required>
+            						    <input type="text" class="form-control" name="contact_person_name" placeholder= "Name" [(ngModel)]="contact_person_name" required>
                          </form>
             					 </td>
        
             					<td class="field">
                         <form class ="ui form">
-            						  <input type="text"  name="contact_person_title" placeholder="Title" [(ngModel)]="contact_person_title" required>
+            						  <input type="text" class="form-control" name="contact_person_title" placeholder="Title" [(ngModel)]="contact_person_title" required>
                         </form>
             				 	</td>
 
@@ -112,10 +118,33 @@
               				
                       <td class="form-group column">
                         <select class="form-control" id="exampleFormControlSelect1" name="contact_person_category" [(ngModel)]="contact_person_category">
-                          <option>Executive</option>
                           <option>Finance</option>
+                          <option>Purchase</option>
+                          <option>Executive Member</option>
+                          <option>Sales/BD</option>
+                          <option>Senior Member</option>
+                          <option>Others</option>
                         </select>
-                      </td> 
+                      </td>
+
+                      <td class="field">
+                        <form class="ui form">
+                          <input type="text"  name="contact_person_mobile" placeholder= "Mobile Phone" [(ngModel)]="contact_person_mobile" required>
+                        </form>
+                      </td>
+
+
+                      <td class="field">
+                        <form class="ui form">
+                          <input type="text"  name="contact_person_phone" placeholder= "Landline" [(ngModel)]="contact_person_phone" required>
+                        </form>
+                      </td>
+                
+                      <td class="field">
+                        <form class="ui form">
+                          <input type="email"  name="contact_person_email" placeholder= "Email" [(ngModel)]="contact_person_email" required>
+                        </form>
+                      </td>
                 		</tr>
             			</tbody>
           			</table>

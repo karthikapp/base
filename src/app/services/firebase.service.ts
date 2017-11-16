@@ -20,14 +20,19 @@ export class FirebaseService {
   constructor(private af: AngularFireDatabase) {
   	this.created_at = firebase.database.ServerValue.TIMESTAMP;
   	this.fireAuth = firebase.auth();
-   }
+   }	
 
 //START ACCOUNTS
    	//Fetch list of Accounts information
 	getAccounts()
 	{
-		this.accounts = this.af.list('/accounts',{query:
-			{orderByChild: 'created_at'}});
+		this.accounts = this.af.list('/accounts',
+			{query:
+				{
+				orderByChild: 'created_at',
+				limitToLast: 4
+				}
+			});
 		return this.accounts;
 	}
 
@@ -45,27 +50,45 @@ export class FirebaseService {
           industrytype: string,
           company_address_line1: string,
           company_address_line2: string,
-          employee_count: number
-          },contactpersonObject
+          employee_count: number,
+          created_at: Date
+          },contactspersonObject,
+          contactpersonObject
           )
 	{
 		var key = 0;
+		var key1 = 0;
 		var companyURL = '/accounts/' + company_id
 		 
 		var companyData = this.af.object(companyURL).update(companyObject);
 		//console.log(Object.keys(contactpersonObject).length, Object.values(contactpersonObject))
 		
-		let contactpersonCount = Object.keys(contactpersonObject).length
-		let contactpersonlist = Object.values(contactpersonObject)
+		let contactpersonsCount = Object.keys(contactspersonObject).length
+		let contactpersonslist = Object.values(contactspersonObject)
 
 		//console.log(contactpersonlist[0].contact_person_id, contactpersonCount)
 
-		for(key=0; key < contactpersonCount; key++) {
-			var contactpersonURL = '/accounts/' + company_id + '/contact_persons/' + contactpersonlist[0].contact_person_id
-			//console.log(contactpersonURL)
-			var contactpersonData = this.af.object(contactpersonURL).update(contactpersonlist[key])
+		for(key=0; key < contactpersonsCount; key++) {
+			var contactpersonURL = '/accounts/' + company_id + '/contact_persons/' + contactpersonslist[key].contact_person_id
+			//console.log(contactpersonURL, contactpersonslist[key])
+			var contactpersonData = this.af.object(contactpersonURL).update(contactpersonslist[key])
 		}
-		return contactpersonData;
+
+		//Pushing contact person data and setting contact person id with the generated key
+		let contactpersonCount = Object.keys(contactpersonObject).length
+		let contactpersonlist = Object.values(contactpersonObject)
+
+		for(key1=0; key1 < contactpersonCount; key1++ )
+		{
+			var addcontactpersonURL = '/accounts/' + company_id + '/contact_persons';
+			//console.log ("firebase add cp",contactpersonlist[key1] )
+			var addcontactpersonObject = this.af.list(addcontactpersonURL).push(contactpersonlist[key1]);
+			var addcontactpersonid = addcontactpersonObject.key;
+			var addcontactpersonid_URL1 = '/accounts/' + company_id + '/contact_persons/' + addcontactpersonid;
+			var addcontactpersonData1 = this.af.object(addcontactpersonid_URL1).update({'contact_person_id': addcontactpersonid});
+		}
+
+		return addcontactpersonData1;
 	}
 
 	//Add company and contact information from AddCompaniesComponent
@@ -85,6 +108,9 @@ export class FirebaseService {
           	Decision_maker: string,
           	Primary_contact: string,
           	contact_person_category: string,
+          	contact_person_mobile: string,
+  			contact_person_phone: string,
+  			contact_person_email: string,
           	created_at: Date
           })
 	{
@@ -117,7 +143,8 @@ export class FirebaseService {
 	//Fetch list of OEMS
 	getOEMs(){
 		this.oems = this.af.list('/oems',{query:
-			{orderByChild: 'created_at'}});
+			{orderByChild: 'created_at',
+				limitToLast: 6}});
 		return this.oems;
 	}
 
@@ -162,7 +189,8 @@ export class FirebaseService {
 	//Fetch list of Events
 	getEvents(){
 		this.events = this.af.list('/events',{query:
-			{orderByChild: 'created_at'}});
+			{orderByChild: 'created_at',
+				limitToLast: 6}});
 		return this.events;
 	}
 
@@ -207,7 +235,8 @@ export class FirebaseService {
 	//Fetch list of Distributors
 	getDistributors(){
 		this.distributors = this.af.list('/distributors',{query:
-			{orderByChild: 'created_at'}});
+			{orderByChild: 'created_at',
+				limitToLast: 6}});
 		return this.distributors ;
 	}
 
@@ -253,7 +282,8 @@ export class FirebaseService {
 	//Fetch list of Products
 	getProducts(){
 		this.products = this.af.list('/products',{query:
-			{orderByChild: 'created_at'}});
+			{orderByChild: 'created_at',
+				limitToLast: 6}});
 		return this.products ;
 	}
 
@@ -301,6 +331,7 @@ export class FirebaseService {
 	//sign in using email and password
 	loginUser(email: string, password: string)
 	{
+		//console.log(email,password);
 		return this.fireAuth.signInWithEmailAndPassword(email, password);
 	}
 

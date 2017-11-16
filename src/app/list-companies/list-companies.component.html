@@ -1,81 +1,96 @@
+<!--Search button with expandable holder-->
+<!--div style="float:right; color: white;">
+  <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+    <label class="mdl-button mdl-js-button mdl-button--icon" for="site-search">
+      <i class="material-icons">search</i>
+    </label>
+    <div class="mdl-textfield__expandable-holder">
+      <input class="mdl-textfield__input" type="search" id="site-search" name="site-search" [(ngModel)] ="companyname" />
+      <label class="mdl-textfield__label" for="site-search">Search</label>
+    </div>
+  </div>
+</div-->
 
-
+<!--Add Account on top right corner-->
 <div style="float:right;padding: 10px;font-family: 'Marvel', sans-serif;">
   <button class="ui inverted button" (click)="on_add_account()">Add Account</button>
 </div>
 <br>
 <br>
 
-
-<!-- Wide card with share menu button -->
+<!-- Wide card with Edit and Delete button -->
 <div class ="main">
-
   <div id="" style="overflow-y: scroll; height:400px;">
     <div class="ui stackable two column grid">
       <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand " 
-      *ngFor="let acct of accounts">
+      *ngFor="let acct of accounts | sortorder">
 
-      <!--Company Name-->
-      <div class="mdl-card__title">
-        <h1 style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7">
-          {{acct.companyname}}  
-        </h1>
-      </div>
+        <!--Company Name-->
+        <div class="mdl-card__title">
+          <h1 style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7">
+            {{acct.companyname}}  
+          </h1>
+        </div>
 
-      <!--Company Address-->
-      <p style="font-size: 12px;">  
-        {{acct.company_address_line1}}
+        <!--Company Address-->
+        <p style="font-size: 12px;">  
+          {{acct.company_address_line1}}
+          <br>
+          {{acct.company_address_line2}}
+        </p>
+
+        <!--Company type, Industry type, Employee Count, Contact Person Count -->
+        <div class = "ui  four column grid">
+
+          <!-- Blue
+          Violet</a>
+          <a class="ui purple label">Purple</a>
+          <a class="ui pink label">Pink</a> -->
+
+          <div class = "column">
+            <a class="ui blue label">{{acct.companytype}}</a><br>
+            <span style="color: black; font-size: 10px;">COMPANY TYPE</span>
+          </div>
+
+          <div class = "column">
+            <a class="ui black label">{{acct.industrytype}} </a><br>
+            <span style="color: black; font-size: 10px;">INDUSTRY TYPE</span>
+          </div>
+
+          <div class = "column">
+            <p>
+              <span style="font-size: 20px; font-weight: bold;text-align: center;">
+                {{acct.employee_count}}
+              </span>
+              <br>
+              <span style="color: black; font-size: 10px;">EMPLOYEES</span>
+            </p>
+          </div>
+
+          <div class = "column">
+            <p>
+              <span style="font-size: 20px; font-weight: bold;text-align: center;">
+                {{countContactPerson(acct.contact_persons)}}
+              </span>
+              <br>
+              <span style="color: black; font-size: 10px;">CONTACTS</span>
+            </p>
+          </div>
+        </div>
         <br>
-        {{acct.company_address_line2}}
-      </p>
+        <br>
 
-      <!--Company type, Industry type, Employee Count, Contact Person Count -->
-      <div class = "ui  four column grid">
-
-
-<!-- Blue
-Violet</a>
-<a class="ui purple label">Purple</a>
-<a class="ui pink label">Pink</a> -->
-
-<div class = "column">
-  <a class="ui blue label">{{acct.companytype}}</a><br>
-  <span style="color: black; font-size: 10px;">COMPANY TYPE</span>
-</div>
-
-<div class = "column">
-  <a class="ui black label">{{acct.industrytype}} </a><br>
-  <span style="color: black; font-size: 10px;">INDUSTRY TYPE</span>
-</div>
-
-
-
-
-<div class = "column">
-  <p><span style="font-size: 20px; font-weight: bold;text-align: center;">{{acct.employee_count}}</span><br>
-    <span style="color: black; font-size: 10px;">EMPLOYEES</span></p>
-  </div>
-
-  <div class = "column">
-    <p><span style="font-size: 20px; font-weight: bold;text-align: center;">{{countContactPerson(acct.contact_persons)}}</span><br>
-      <span style="color: black; font-size: 10px;">CONTACTS</span></p>
+        <div class="mdl-card__menu">
+          <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+            <i class="material-icons" (click)="on_edit_account(acct.companyid)">edit</i>
+          </button>
+          &nbsp;
+          <button class="ui circular google plus icon button">
+            <i class="material-icons" (click)="on_delete_account(acct.companyid)" style="font-size: 10pt;">delete</i>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
-  <br>
-  <br>
-
-  <div class="mdl-card__menu">
-    <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-      <i class="material-icons" (click)="on_edit_account(acct.companyid)">edit</i>
-    </button>
-    &nbsp;
-    <button class="ui circular google plus icon button">
-      <i class="material-icons" (click)="on_delete_account(acct.companyid)" style="font-size: 10pt;">delete</i>
-    </button>
-
-  </div>
-</div>
-</div>
-</div>
 </div>
 <br>

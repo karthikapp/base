@@ -53,7 +53,7 @@
 		  	</thead>
 
 		  	<tbody>
-		  		<tr *ngFor="let product of products">
+		  		<tr *ngFor="let product of products | sortorder">
 		    		<td class="mdl-data-table__cell--non-numeric">{{product.Product_name}}</td>
 		    		<td class="mdl-data-table__cell--non-numeric">{{product.Brand}}</td>
 		    		<td>

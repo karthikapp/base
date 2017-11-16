@@ -46,7 +46,7 @@
       </thead>
 
       <tbody>
-        <tr *ngFor="let oem of oems">
+        <tr *ngFor="let oem of oems | sortorder">
           <td class="mdl-data-table__cell--non-numeric">{{oem.oem_name}}</td>
           <td>
           	<a (click)="editOEMModal(oem.oem_id)">

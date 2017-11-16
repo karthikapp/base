@@ -16,13 +16,16 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { AddCompaniesComponent } from './add-companies/add-companies.component';
 import { ListCompaniesComponent } from './list-companies/list-companies.component';
-import { ContactpersonsPipe } from './pipes/contactpersons.pipe';
 import { LeadComponent } from './lead/lead.component';
 import { EditcompaniesComponent } from './editcompanies/editcompanies.component';
 import { ListOemsComponent } from './list-oems/list-oems.component';
 import { DistributorsComponent } from './distributors/distributors.component';
 import { EventsComponent } from './events/events.component';
 import { ProductsComponent } from './products/products.component';
+
+import { SortorderPipe } from './pipes/sortorder.pipe';
+import { ContactpersonsPipe } from './pipes/contactpersons.pipe';
+import { FilterrecordsPipe } from './pipes/filterrecords.pipe';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -57,13 +60,16 @@ const appRoutes: Routes = [
     ListOemsComponent,
     DistributorsComponent,
     EventsComponent,
-    ProductsComponent
+    ProductsComponent,
+    SortorderPipe,
+    FilterrecordsPipe
   ],
   imports: [
     BrowserModule ,
     FormsModule,
-    RouterModule.forRoot(appRoutes,
-      { enableTracing: true } // <-- debugging purposes only
+    RouterModule.forRoot(appRoutes
+      //,
+      //{ enableTracing: true } // <-- debugging purposes only
       ),
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
