@@ -4,7 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule , RouterLink, RouterLinkActive } from '@angular/router';
 import { ModuleWithProviders }  from '@angular/core';
 
-import { L_SEMANTIC_UI_MODULE} from 'angular2-semantic-ui';
+import { L_SEMANTIC_UI_MODULE } from 'angular2-semantic-ui';
+import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
+
 
 import { FirebaseService} from "./services/firebase.service";
 import { firebaseConfig } from './../environments/firebase.config';
@@ -76,7 +78,8 @@ const appRoutes: Routes = [
       ),
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
-    L_SEMANTIC_UI_MODULE
+    L_SEMANTIC_UI_MODULE,
+    NgxPaginationModule
   ],
   providers: [FirebaseService],
   bootstrap: [AppComponent]

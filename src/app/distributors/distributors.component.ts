@@ -23,7 +23,10 @@ export class DistributorsComponent implements OnInit {
   addDistributorModal_flag: boolean;
   editDistributorModal_flag: boolean;
 
-   querystring: string;
+  querystring: string;
+
+  //initializing p to one for pagination pipe
+  p: number = 1;
   
   constructor(private firebaseservice : FirebaseService, 
     private router: Router) 

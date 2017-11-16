@@ -45,7 +45,7 @@
 
   </lsu-modal>
 
-  <div id="" style="overflow-y: scroll;height: auto;">
+  <div id="" style="overflow-y: scroll;height: 500px;">
   <br>
   <br>
 
@@ -59,7 +59,7 @@
       </thead>
 
       <tbody>
-        <tr *ngFor="let oem of oems | filterrecords: querystring : 'oems' | sortorder">
+        <tr *ngFor="let oem of oems | filterrecords: querystring : 'oems' | sortorder | paginate: { itemsPerPage: 7, currentPage: p }">
           <td class="mdl-data-table__cell--non-numeric">{{oem.oem_name}}</td>
           <td>
           	<a (click)="editOEMModal(oem.oem_id)">
@@ -74,6 +74,10 @@
       </tbody>
     </table>
   </div>
+
+  <!--Pagination-->
+  <pagination-controls style="color: white; background-color: #eee; position: fixed;
+     bottom: 30px; right: 20px;" (pageChange)="p = $event"></pagination-controls>
 
   <!--Modal for Editing an OEM -->
   <lsu-modal [(ngModel)]="editOEMModal_flag" [options]="modalOptions">

@@ -24,7 +24,10 @@ export class ProductsComponent implements OnInit {
   addProductModal_flag: boolean;
   editProductModal_flag: boolean;
 
-   querystring: string;
+  querystring: string;
+
+  //initializing p to one for pagination pipe
+  p: number = 1;
   
   constructor(private firebaseservice : FirebaseService, 
     private router: Router) 

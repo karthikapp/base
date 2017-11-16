@@ -23,7 +23,10 @@ export class ListOemsComponent implements OnInit {
   addOEMModal_flag: boolean;
   editOEMModal_flag: boolean;
 
-   querystring: string;
+  querystring: string;
+
+  //initializing p to one for pagination pipe
+  p: number = 1;
 
   constructor(private firebaseservice : FirebaseService, 
     private router: Router) 

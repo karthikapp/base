@@ -10,8 +10,12 @@ import { Router } from '@angular/router';
 export class ListCompaniesComponent implements OnInit {
 
   accounts: any;
-
   querystring: string;
+
+  totalCounts: number;
+
+   //initializing p to one for pagination pipe
+   p: number = 1;
 
   constructor(private firebaseservice : FirebaseService, private router: Router) { 
   }
@@ -22,11 +26,10 @@ export class ListCompaniesComponent implements OnInit {
   	this.firebaseservice.getAccounts().subscribe(
       accounts => {	
   		      this.accounts = accounts;
-            //console.log(accounts);
+            this.totalCounts = Object.keys(this.accounts).length
+            console.log(this.totalCounts);
                   })
-
   }
-
 
   //Display the count of Contact Persons 
   countContactPerson(contct){
@@ -35,12 +38,12 @@ export class ListCompaniesComponent implements OnInit {
       return "None";
     } else {
       return Object.keys(contct).length;
-    }
-    
+    }   
   }
 
   //To add an Account, navigate to AddCompanies Page
   on_add_account(){
+    console.log(this.accounts);
     this.router.navigate(['/dashboard/AddCompanies']);
   }
 

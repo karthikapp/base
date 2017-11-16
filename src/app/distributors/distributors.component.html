@@ -44,7 +44,7 @@
   		</div>
 	</lsu-modal>
 
-	<div id="" style="overflow-y: scroll;height: auto;">
+	<div id="" style="overflow-y: scroll;height: 500px;">
   	<br>
 	<br>
 
@@ -58,7 +58,7 @@
   	</thead>
 
   	<tbody>
-  		<tr *ngFor="let distributor of distributors | filterrecords: querystring : 'distributors' | sortorder">
+  		<tr *ngFor="let distributor of distributors | filterrecords: querystring : 'distributors' | sortorder | paginate: { itemsPerPage: 7, currentPage: p }">
     		<td class="mdl-data-table__cell--non-numeric">{{distributor.distributor_name}}</td>
     		<td>
     			<a (click)="editDistributorModal(distributor.distributor_id)">
@@ -73,6 +73,10 @@
   	</tbody>
 	</table>
 	</div>
+
+  <!--Pagination-->
+  <pagination-controls style="color: white; background-color: #eee; position: fixed;
+     bottom: 30px; right: 20px;" (pageChange)="p = $event"></pagination-controls>
 
 	<!--Modal for Editing an Distributor -->
 	<lsu-modal [(ngModel)]="editDistributorModal_flag" [options]="modalOptions">

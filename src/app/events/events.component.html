@@ -58,7 +58,7 @@
   	</thead>
 
   	<tbody>
-  		<tr *ngFor="let event of events | filterrecords: querystring : 'events' | sortorder">
+  		<tr *ngFor="let event of events | filterrecords: querystring : 'events' | sortorder | paginate: { itemsPerPage: 7, currentPage: p }">
     		<td class="mdl-data-table__cell--non-numeric">{{event.event_name}}</td>
     		<td>
     			<a (click)="editEventModal(event.event_id)">
@@ -74,6 +74,10 @@
 	</table>
 	</div>
 
+  <!--Pagination-->
+  <pagination-controls style="color: white; background-color: #eee; position: fixed;
+     bottom: 30px; right: 20px;" (pageChange)="p = $event"></pagination-controls>
+  
 	<!--Modal for Editing an Event -->
 	<lsu-modal [(ngModel)]="editEventModal_flag" [options]="modalOptions">
   
