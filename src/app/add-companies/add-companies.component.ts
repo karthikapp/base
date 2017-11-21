@@ -35,10 +35,6 @@ export class AddCompaniesComponent implements OnInit {
   
 
   constructor(private firebaseservice : FirebaseService, private route: Router) { 
-
-
-
-
   }
 
   ngOnInit() {
@@ -66,6 +62,7 @@ export class AddCompaniesComponent implements OnInit {
   //Add customer and contact person. If success, navigate to List Companies
   add_contact_persons()
   {
+
     let addcustomer = {
           companyid: this.company_id,
           companyname: this.company_name,
@@ -77,7 +74,8 @@ export class AddCompaniesComponent implements OnInit {
           created_at: this.created_at
         };
 
-    let contact_persons = {
+
+    let contact_persons  = {
        contact_person_id: this.contact_person_id,
        contact_person_name: this.contact_person_name,
        contact_person_title: this.contact_person_title,
@@ -92,10 +90,22 @@ export class AddCompaniesComponent implements OnInit {
 
     //console.log(addcustomer, contact_persons)
 
-    return this.firebaseservice.addAccounts(addcustomer,contact_persons).then(success => 
+    if (addcustomer.companyname == '')
     {
+      console.log("Fields are empty and customer is not added", addcustomer);
       this.route.navigate(['/dashboard/ListCompanies']);
-    })	
+    }
+    else if((contact_persons.contact_person_name == '' && addcustomer.companyname != '') || 
+            (contact_persons.contact_person_name != null && addcustomer.companyname != ''))
+    {
+      //console.log("contact_persons", contact_persons, addcustomer)
+      contact_persons = null;
+      return this.firebaseservice.addAccounts(addcustomer,contact_persons).then(success => 
+      {
+        this.route.navigate(['/dashboard/ListCompanies']);
+        //console.log("added")
+      })
+    }
   }
 
   //Set industry type based on employee count

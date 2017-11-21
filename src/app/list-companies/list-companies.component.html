@@ -27,9 +27,10 @@
 
         <!--Company Name-->
         <div class="mdl-card__title">
-          <h1 style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7">
+          <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:2.1vw;font-weight: bold;" [routerLink]="['/dashboard/Leads', acct.companyid, acct.companyname]"
+             >
             {{acct.companyname}}  
-          </h1>
+          </a>
         </div>
 
         <!--Company Address-->

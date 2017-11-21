@@ -4,9 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule , RouterLink, RouterLinkActive } from '@angular/router';
 import { ModuleWithProviders }  from '@angular/core';
 
-import { L_SEMANTIC_UI_MODULE } from 'angular2-semantic-ui';
-import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
-
+import { L_SEMANTIC_UI_MODULE, TAB_DIRECTIVES } from 'angular2-semantic-ui'; // <-- Semantic Module
+import { NgxPaginationModule } from 'ngx-pagination'; // <-- pagination module
 
 import { FirebaseService} from "./services/firebase.service";
 import { firebaseConfig } from './../environments/firebase.config';
@@ -40,7 +39,8 @@ const appRoutes: Routes = [
                {path:'OEM', component: ListOemsComponent},
                {path:'Events',component: EventsComponent},
                {path:'Distributors',component: DistributorsComponent},
-               {path:'Products',component: ProductsComponent}
+               {path:'Products',component: ProductsComponent},
+               {path:'Leads/:companyid/:companyname', component: LeadComponent}
               ]
   },
   {

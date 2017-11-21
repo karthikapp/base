@@ -66,7 +66,6 @@ export class EditcompaniesComponent implements OnInit {
       this.company_address_line2 = account[0].company_address_line2;
       this.employee_count = account[0].employee_count;
       this.company_id = account[0].companyid;
-      this.account = account;
 
       this.contact_persons = account[0].contact_persons;
   });
@@ -113,7 +112,7 @@ export class EditcompaniesComponent implements OnInit {
       this.employee_count = null;
      }
 
-     if (this.contact_person == undefined ) {
+     if (this.contact_person == undefined) {
        this.contact_person = null;
      } 
 
@@ -136,10 +135,11 @@ export class EditcompaniesComponent implements OnInit {
 
      let contact_person = this.contact_person;
 
+
+     console.log('keys',Object.keys(contact_person),Object.values(contact_person))
      //console.log('editcompanies',this.company_id,account,contact_persons,contact_person)
 
      this.firebaseservice.saveAccount(this.company_id,account,contact_persons,contact_person)
-
      this.route.navigate(['/dashboard/ListCompanies'])
     }
 
@@ -153,7 +153,8 @@ export class EditcompaniesComponent implements OnInit {
     //console.log("add");
     this.contact_person.push({ contact_person_id:'', contact_person_name: '', contact_person_title:'', 
       Decision_maker:'', Primary_contact:'', contact_person_category:'',   contact_person_mobile: '',
-      contact_person_phone: '', contact_person_email: '',created_at:null });
+      contact_person_phone: '', contact_person_email: '',created_at:null
+       });
   }
 
 }
