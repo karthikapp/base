@@ -1,3 +1,5 @@
+//Pipe is used to declare values for each child of the Object. List of object within objects.
+
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
@@ -9,13 +11,13 @@ export class ContactpersonsPipe implements PipeTransform {
 
   	//When value is undefined or null or empty, set to empty as NULL or UNDEFINED is unacceptable in *ngFor
   	if (value == '' || value == null || value == undefined){ 
-  		//console.log("PP", value);
+  		console.log('cpplist',value);
   		return value='';
   	};
     
     //When value is present
     let list = Object.values(value);
-    //console.log('cppipe',list);
+    console.log('cplist',list,value);
     return list;
 }
 

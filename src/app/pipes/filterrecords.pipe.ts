@@ -1,3 +1,5 @@
+//Pipe is used to filter for values for all tabs
+
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({

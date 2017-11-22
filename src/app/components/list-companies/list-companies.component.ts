@@ -1,23 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import { FirebaseService } from "../services/firebase.service";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { FirebaseService } from "../../services/firebase.service";
 import { Router } from '@angular/router';
+//import { Accounts } from "../../classes/accounts";
+//import { DataServiceService } from "../../services/data-service.service";
 
 @Component({
   selector: 'app-list-companies',
   templateUrl: './list-companies.component.html',
   styleUrls: ['./list-companies.component.css']
 })
-export class ListCompaniesComponent implements OnInit {
+export class ListCompaniesComponent implements OnInit, OnDestroy {
 
-  accounts: any;
+  accounts: any[];
+  //account : Accounts[];
   querystring: string;
 
   totalCounts: number;
 
-   //initializing p to one for pagination pipe
-   p: number = 1;
+  //initializing p to one for pagination pipe
+  p: number = 1;
 
-  constructor(private firebaseservice : FirebaseService, private router: Router) { 
+  constructor(private firebaseservice : FirebaseService, private router: Router 
+    //,public dataservice: DataServiceService
+    ) { 
   }
 
   ngOnInit() 
@@ -26,9 +31,18 @@ export class ListCompaniesComponent implements OnInit {
   	this.firebaseservice.getAccounts().subscribe(
       accounts => {	
   		      this.accounts = accounts;
-            this.totalCounts = Object.keys(this.accounts).length
-            console.log(this.totalCounts);
-                  })
+            this.totalCounts = Object.keys(this.accounts).length;
+            //this.callAccounts();
+      }) 
+  }
+
+  /*callAccounts(){
+      this.account = this.accounts;
+      console.log("Accounts",this.account);
+  }*/
+
+  ngOnDestroy() {
+    //this.dataservice.account = this.account; 
   }
 
   //Display the count of Contact Persons 
@@ -43,7 +57,6 @@ export class ListCompaniesComponent implements OnInit {
 
   //To add an Account, navigate to AddCompanies Page
   on_add_account(){
-    console.log(this.accounts);
     this.router.navigate(['/dashboard/AddCompanies']);
   }
 
@@ -57,4 +70,7 @@ export class ListCompaniesComponent implements OnInit {
   on_delete_account(companyid){
     this.firebaseservice.deleteAccount(companyid);
   }
+
+
 }
+

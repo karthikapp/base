@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { FirebaseService } from "../services/firebase.service";
+import { FirebaseService } from "../../services/firebase.service";
 
 @Component({
   selector: 'app-add-companies',

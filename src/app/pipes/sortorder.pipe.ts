@@ -1,3 +1,5 @@
+//Pipe is used to Sort the records in descending order 
+
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
@@ -6,7 +8,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class SortorderPipe implements PipeTransform {
 
   transform(value: any, ...args): any {
-    //return null;
     if (!value)
     	{ return }
     else {
