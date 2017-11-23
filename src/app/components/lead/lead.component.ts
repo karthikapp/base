@@ -1,8 +1,6 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FirebaseService } from "../../services/firebase.service";
 import { Router, ActivatedRoute } from '@angular/router';
-//import { DataServiceService } from "../../services/data-service.service";
-//import { Accounts } from "../../classes/accounts";
 
 @Component({
   selector: 'app-lead',
@@ -11,52 +9,50 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class LeadComponent implements OnInit, OnDestroy {
   leads: any;
+  oppo: any;
   activities:any;
   company_id: string;
   company_name: string;
   acct: any[];
   cp: any[];
 
-  //account: Accounts[];
-
   isOpen : boolean = false;
+  oppoOpen : boolean = false;
 
   constructor(private firebaseservice : FirebaseService, private router: ActivatedRoute, 
-    private route: Router
-    //,public dataservice: DataServiceService
-    ) { }
+    private route: Router) { }
 
   ngOnInit() {
   	//Router parameters
   	this.company_id = this.router.snapshot.params['companyid'];
   	this.company_name = this.router.snapshot.params['companyname'];
   	this.leads = ''; 
+    this.oppo = '';
 
-    //this.account = this.dataservice.account;
     this.firebaseservice.getAccount(this.company_id).subscribe(acct => {
       this.acct = acct;
       this.cp = acct[0].contact_persons;
-      console.log(this.acct,this.cp);
+      //console.log(this.acct,this.cp);
     })
     
   	this.showLeadActivities();
+    this.showOppoActivities();
   }
 
   ngOnDestroy(){
 
   }
 
+  //Leads list
   showLeadActivities(){
   	 //List of Leads
   	 this.firebaseservice.getLeads(this.company_id).subscribe(leads => {
   	 		this.leads = leads;
-        //console.log(leads);
+        //console.log(this.leads);
         })
   }
 
-  showOppoActivities(){
-  }
-
+  //Accordion - show and hide for leads
   closeAllLeads(): void {
     this.leads.forEach((lead) => {
       lead.isOpen = false;
@@ -68,6 +64,29 @@ export class LeadComponent implements OnInit, OnDestroy {
       this.closeAllLeads();
     }
     lead.isOpen = !lead.isOpen;
+  }
+
+  //Opportunities List
+  showOppoActivities(){
+         //List of Opportunities
+     this.firebaseservice.getOpportunities(this.company_id).subscribe(oppo => {
+         this.oppo = oppo;
+        //console.log(this.oppo);
+        })
+  }
+
+  //Accordion - show and hide for opportunities
+  closeAlloppo(): void {
+    this.oppo.forEach((oppo) => {
+      oppo.oppoOpen = false;
+    });
+  }
+
+  showContentOppo(oppo) {
+    if (!oppo.oppoOpen) {
+      this.closeAlloppo();
+    }
+    oppo.oppoOpen = !oppo.oppoOpen;
   }
 
 }

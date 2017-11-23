@@ -14,6 +14,8 @@ export class FirebaseService {
   distributors: FirebaseListObservable<any[]>;
   products: FirebaseListObservable<any[]>;
 
+  users:any;
+
   created_at: any;
   fireAuth: any;
 
@@ -346,10 +348,12 @@ export class FirebaseService {
 	}
 
 	//OPPORTUNITIES
-	getOpportunities(){
-
+	getOpportunities(company_id: string){
+		return this.af.list('/opportunities',{ query: {
+			orderByChild : 'company_id',
+			equalTo: company_id
+		} })
 	}
-
 //END Leads and Opportunities
 
 //START LOGIN & LOGOUT
@@ -357,7 +361,26 @@ export class FirebaseService {
 	loginUser(email: string, password: string)
 	{
 		//console.log(email,password);
-		return this.fireAuth.signInWithEmailAndPassword(email, password);
+
+
+		
+			return this.fireAuth.signInWithEmailAndPassword(email, password);	
+
+	
+	}
+
+	//get User Profile Info
+	getUser(email: string){
+		this.users = this.af.list('/user',{ query: {
+			orderByChild : 'email',
+			equalTo: email
+		}}).subscribe(user => {this.users = user;
+		console.log('getUser', this.users);
+		}); 
+
+		return this.users;
+		//console.log(Object.values(this.users));
+		//this.user = Object.values(this.users);
 	}
 
 	//Sign out from the app

@@ -2,10 +2,11 @@
   <br>
 	<div class="ui main container" style="width: 100%;height: 100%;">
 		<!-- Company name at the top center-->
-		<a class="ui grey massive label" *ngFor="let a of acct">{{a.companyname}}</a>	
+		<a class="ui massive label" style="background-color: white; color: #673AB7;" *ngFor="let a of acct">{{a.companyname}}</a>	
 		<br>
 		<br>
 
+		<div class="card" style="width: 95%; background-color: #e8eaf6; border-radius: 5px;">
 		<!--Tabs of Leads and Opportunities-->
 		<lsu-tabset type="'tabular'">
 			<!--LEADS-->
@@ -31,16 +32,6 @@
 
 									<!--Looping through leads to get contact person name and their activities for the company(Used Nested *ngFor Loop)-->
 								  	<tbody>
-								  		<!--ng-template #cpname>
-								  			<div class="ui teal large label"> 
-								  			Contact Person Name: {{lead.company_contact_person_name}} 
-								  			</div>
-								  		</ng-template>
-
-								  		<div class="ui teal large label" *ngIf="lead.company_contact_person_name==''; else cpname;">
-								  			 Contact Person Name: None
-								  		</div-->
-
 								  		<ng-container *ngFor="let cntct of cp| contactpersons">
 									  		<div class="ui teal large label" *ngIf="lead.company_contact_person_id==cntct.contact_person_id;">
 									  			 Contact Person Name: {{cntct.contact_person_name}}
@@ -80,35 +71,62 @@
 
 		    <!--Opportunities-->
 		    <lsu-tab [headerText]="'Opportunities'">
-		     	<table class="ui tablet stackable table">
-					<thead>
-						<tr>
-					      <th>Name</th>
-					      <th>Status</th>
-					      <th class="right aligned">Notes</th>
-					    </tr>
-					</thead>
-				  	<tbody>
-					    <tr>
-					      <td>John</td>
-					      <td>Approved</td>
-					      <td class="right aligned">None</td>
-					    </tr>
-					    <tr>
-					      <td>Jamie</td>
-					      <td>Approved</td>
-					      <td class="right aligned">Requires call</td>
-					    </tr>
-					    <tr>
-					      <td>Jill</td>
-					      <td>Denied</td>
-					      <td class="right aligned">None</td>
-					    </tr>
-				  	</tbody>
-				</table>
+		     	<div class="ui inverted segment">
+  					<div class="ui inverted accordion">	
+ 					    <div class ="title" [ngClass]="{'title--active' : o.oppoOpen}" (click)="showContentOppo(o)" *ngFor="let o of oppo">
+      						<i class="dropdown icon"></i>
+      						{{o.lead_title}}
+      											
+      						<div class="content" *ngIf="o.oppoOpen">	
+								<table class="ui stackable table" >
+									<thead>
+										<tr>
+										  <th>Opportunity Stage</th>		
+									      <th>Activity Type</th>
+									      <th>Date</th>
+									      <th>Remarks</th>
+									      <th>Start Time</th>
+									      <th>End Time</th>
+									      <th>Type</th>
+									    </tr>
+									</thead>
+
+									<!--Looping through opportunities to get contact person name and their activities for the company(Used Nested *ngFor Loop)-->
+								  	<tbody>
+								  		<div style ="color: black;" *ngIf="o.activities==undefined">
+								  			 &nbsp; Activities: None
+								  		</div>
+								  		<br>
+
+										<ng-container *ngFor="let actv of o.activities | contactpersons">
+										    <tr *ngIf="actv.activity_type == 'phonecall'">
+										      <td>{{actv.opportunity_stage}}</td>
+										      <td>{{actv.activity_type}}</td>
+										      <td>{{actv.phonecallDate}}</td>
+										      <td>{{actv.phonecallremarks}}</td>
+										      <td>{{actv.phonecalltimefrom}}</td>
+										      <td>{{actv.phonecalltimeto}}</td>
+										      <td>{{actv.phone_call_type}}</td>
+										  	</tr>
+										  	<tr *ngIf="actv.activity_type == 'onsitevisit'">
+										  	  <td>{{actv.opportunity_stage}}</td>		
+										      <td>{{actv.activity_type}}</td>
+										      <td>{{actv.visitDate}}</td>
+										      <td>{{actv.visitremarks}}</td>
+										      <td>{{actv.visittimefrom}}</td>
+										      <td>{{actv.visittimeto}}</td>
+										      <td></td>
+										  	</tr>
+									   	</ng-container>
+								  	</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
 		    </lsu-tab>
 		</lsu-tabset>
-
+		</div>
 	</div>
 </div>
 

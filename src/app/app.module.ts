@@ -7,7 +7,6 @@ import { ModuleWithProviders }  from '@angular/core';
 import { L_SEMANTIC_UI_MODULE, TAB_DIRECTIVES } from 'angular2-semantic-ui'; // <-- Semantic Module
 import { NgxPaginationModule } from 'ngx-pagination'; // <-- pagination module
 
-import { DataServiceService } from "./services/data-service.service";
 import { FirebaseService} from "./services/firebase.service";
 import { firebaseConfig } from './../environments/firebase.config';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
@@ -74,15 +73,14 @@ const appRoutes: Routes = [
     BrowserModule ,
     FormsModule,
     RouterModule.forRoot(appRoutes
-     // ,
-     // { enableTracing: true } // <-- debugging purposes only
+     // ,{ enableTracing: true } // <-- debugging purposes only 
       ),
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
     L_SEMANTIC_UI_MODULE,
     NgxPaginationModule
   ],
-  providers: [FirebaseService, DataServiceService],
+  providers: [FirebaseService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

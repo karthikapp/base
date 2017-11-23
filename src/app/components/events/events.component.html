@@ -1,24 +1,5 @@
 <div align="center">
-  <!--Search button with expandable holder-->
-  <div appMzterialDesignLite style="float:right; color: white;">
-    <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
-      <label class="mdl-button mdl-js-button mdl-button--icon" for="site-search">
-        <i class="material-icons">search</i>
-      </label>
-      <div class="mdl-textfield__expandable-holder">
-        <input class="mdl-textfield__input" type="search" id="site-search" name="site-search" placeholder="Event Name" [(ngModel)] ="querystring" />
-        <label class="mdl-textfield__label" for="site-search">Search</label>
-      </div>
-    </div>
-  </div>
 
-	<!--Add Event Button on top right corner-->
-	<div style="float:right;padding: 10px;font-family: 'Marvel', sans-serif;">
-  		<button class="ui inverted button" (click)="addEventModal()">Add Event</button>
-	</div>
-	<br>
-	<br>
- 
 	<!--Modal for adding a new Event-->
 	<lsu-modal [(ngModel)]="addEventModal_flag" [options]="modalOptions" align="center">
   
@@ -44,9 +25,29 @@
   		</div>
 	</lsu-modal>
 
-	<div id="" style="overflow-y: scroll;height: 500px;">
+	<div id="" style="overflow-y: scroll;height: 100%; width: 95%;">
   <br>
-	<br>
+
+  <!--Search button with expandable holder-->
+  <div appMzterialDesignLite style="float:right; color: white;">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+      <label class="mdl-button mdl-js-button mdl-button--icon" for="site-search">
+        <i class="material-icons">search</i>
+      </label>
+      <div class="mdl-textfield__expandable-holder">
+        <input class="mdl-textfield__input" type="search" id="site-search" name="site-search" placeholder="Event Name" [(ngModel)] ="querystring" />
+        <label class="mdl-textfield__label" for="site-search">Search</label>
+      </div>
+    </div>
+  </div>
+
+  <!--Add Event Button on top right corner-->
+  <div style="float:right;padding: 10px;font-family: 'Marvel', sans-serif;">
+      <button class="ui inverted button" (click)="addEventModal()">Add Event</button>
+  </div>
+  <br>
+  <br>
+  <br>
 
 	<!--List Event in a table with fields event name and actions (Edit/ Delete)-->
 	<table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp" style="width: 95%;background-color: white;">
@@ -72,11 +73,15 @@
   		</tr>
   	</tbody>
 	</table>
-	</div>
+  <br>
+  <br>
 
   <!--Pagination-->
-  <pagination-controls style="color: white; background-color: #eee; position: fixed;
-     bottom: 30px; right: 20px;" (pageChange)="p = $event"></pagination-controls>
+  <div class="ui item" style="color: white; background-color: #eee; float:right; border-radius: 5px;">
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  </div>
+
+</div>
   
 	<!--Modal for Editing an Event -->
 	<lsu-modal [(ngModel)]="editEventModal_flag" [options]="modalOptions">

@@ -1,8 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FirebaseService } from "../../services/firebase.service";
 import { Router } from '@angular/router';
-//import { Accounts } from "../../classes/accounts";
-//import { DataServiceService } from "../../services/data-service.service";
 
 @Component({
   selector: 'app-list-companies',
@@ -12,7 +10,6 @@ import { Router } from '@angular/router';
 export class ListCompaniesComponent implements OnInit, OnDestroy {
 
   accounts: any[];
-  //account : Accounts[];
   querystring: string;
 
   totalCounts: number;
@@ -20,9 +17,7 @@ export class ListCompaniesComponent implements OnInit, OnDestroy {
   //initializing p to one for pagination pipe
   p: number = 1;
 
-  constructor(private firebaseservice : FirebaseService, private router: Router 
-    //,public dataservice: DataServiceService
-    ) { 
+  constructor(private firebaseservice : FirebaseService, private router: Router) { 
   }
 
   ngOnInit() 
@@ -32,17 +27,11 @@ export class ListCompaniesComponent implements OnInit, OnDestroy {
       accounts => {	
   		      this.accounts = accounts;
             this.totalCounts = Object.keys(this.accounts).length;
-            //this.callAccounts();
       }) 
   }
 
-  /*callAccounts(){
-      this.account = this.accounts;
-      console.log("Accounts",this.account);
-  }*/
-
   ngOnDestroy() {
-    //this.dataservice.account = this.account; 
+
   }
 
   //Display the count of Contact Persons 
