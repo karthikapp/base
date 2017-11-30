@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
 import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
+import { Router } from '@angular/router';
+import { AngularFireModule } from 'angularfire2';
 
 @Injectable()
 export class FirebaseService {
@@ -13,13 +15,17 @@ export class FirebaseService {
   events: FirebaseListObservable<any[]>;
   distributors: FirebaseListObservable<any[]>;
   products: FirebaseListObservable<any[]>;
+  needlist: FirebaseListObservable<any[]>;
 
-  users:any;
+  users: FirebaseListObservable<any[]>;
+  user: any;
 
   created_at: any;
   fireAuth: any;
 
-  constructor(private af: AngularFireDatabase) {
+  loggedIn: boolean = false;
+
+  constructor(private af: AngularFireDatabase, private router: Router) {
   	this.created_at = firebase.database.ServerValue.TIMESTAMP;
   	this.fireAuth = firebase.auth();
    }	
@@ -253,8 +259,8 @@ export class FirebaseService {
 	//Fetch single Distributor information
 	getDistributor(distributor_id){
 		//console.log(distributor_id);
-		var eventURLs = '/distributors/' + distributor_id
-		return this.af.object(eventURLs);
+		var distributorURLs = '/distributors/' + distributor_id
+		return this.af.object(distributorURLs);
 	}
 
 	//Update Distributor information
@@ -278,7 +284,6 @@ export class FirebaseService {
 		var distributors1 = this.af.object(distributors_URL).update({'distributor_id': distributorsid});
 
 		return distributors1;
-
 	}
 
 	//Delete an Distributor
@@ -336,6 +341,52 @@ export class FirebaseService {
 	}
 //END PRODUCTS
 
+//START NEED_LIST
+	//Fetch list of needs which is going to be offered by the company itself like services 
+	//when we move from lead to opportunity 
+	getNeedLists(){
+		this.needlist = this.af.list('/needlist',{query:
+			{orderByChild: 'created_at'}});
+		return this.needlist ;
+	}
+
+	//Fetch single Need_List information
+	getNeedList(need_id){
+		//console.log(need_id);
+		var needURLs = '/needlist/' + need_id
+		return this.af.object(needURLs);
+	}
+
+	//Update Need_List information
+	saveNeedList(need_id, needlistObject: {need_name: string,
+		created_at: Date}){
+		var needURL = '/needlist/' + need_id
+		var needlistData = this.af.object(needURL).update(needlistObject);
+
+		return needlistData;
+	}
+
+	//Add a new Need_List information 
+	addNeedList(needlistsObject: {need_name: string,
+		need_id: string,
+		created_at: Date}){
+
+		//Pushing Need_List data and setting needlist id with the generated key
+		var needlistsData = this.af.list('/needlist').push(needlistsObject);
+		var needlistsid = needlistsData.key;
+		var needlists_URL = '/needlist/' + needlistsid; 
+		var needlists1 = this.af.object(needlists_URL).update({'need_id': needlistsid});
+
+		return needlists1;
+	}
+
+	//Delete an Need_List
+	deleteNeedList(needlistid: string){
+		var needlist_URL = "/needlist/" + needlistid
+		this.af.list(needlist_URL).remove();
+	}
+//END NEED_LIST
+
 //START Leads and Opportunities
 	//LEADS
 	getLeads(company_id: string){
@@ -343,8 +394,6 @@ export class FirebaseService {
 			orderByChild : 'company_id',
 			equalTo: company_id
 		} })
-
-
 	}
 
 	//OPPORTUNITIES
@@ -361,26 +410,7 @@ export class FirebaseService {
 	loginUser(email: string, password: string)
 	{
 		//console.log(email,password);
-
-
-		
-			return this.fireAuth.signInWithEmailAndPassword(email, password);	
-
-	
-	}
-
-	//get User Profile Info
-	getUser(email: string){
-		this.users = this.af.list('/user',{ query: {
-			orderByChild : 'email',
-			equalTo: email
-		}}).subscribe(user => {this.users = user;
-		console.log('getUser', this.users);
-		}); 
-
-		return this.users;
-		//console.log(Object.values(this.users));
-		//this.user = Object.values(this.users);
+		return this.fireAuth.signInWithEmailAndPassword(email, password);	
 	}
 
 	//Sign out from the app
@@ -388,7 +418,76 @@ export class FirebaseService {
 	{
 		return this.fireAuth.signOut();
 	}
+
+	//Create a new user
+	createUser(usersObject:{ name: string,
+    			 role: string,
+    			 title: string,
+    			 report: any,
+    			 reports_to: string,
+    			 email: string,
+    			 userid: string,
+                 created_at: Date
+	}, default_pwd: string ){
+		 this.fireAuth.createUserWithEmailAndPassword(usersObject.email, default_pwd)
+			.then((data) => {
+				//Pushing User data and setting user id with the uid
+				usersObject.userid = data.uid;
+				var userData = this.af.object('/user/' + data.uid).set(usersObject);
+				})
+      		.catch((error) => {
+        		console.log(error);
+      		});	
+
+      		let userres = firebase.auth().currentUser;
+			console.log("KB1",userres);
+     }
+
+    //get single User Profile Info 
+	getUser(uid: string){
+		var userURLs = '/user/' + uid;
+		console.log('fb',userURLs);
+		return this.af.object(userURLs);
+
+		/*this.user = this.af.list('/user',{ query: {
+			orderByChild : 'email',
+			equalTo: email
+		}})
+		return this.user;*/
+	}
+
+	//get list of User Profile Info
+	getUsers(){
+		this.users = this.af.list('/user');
+		return this.users;
+	}
+
+	//Update a User
+	saveUser(userid, userObject:{
+		name: string,
+        role: string,
+        title: string,
+        report: string,
+        reports_to: string,
+        email: string,
+        created_at: Date
+	}){
+		var userURL = '/user/' + userid
+		var userlistData = this.af.object(userURL).update(userObject);
+
+		return userlistData;
+	}
+
+	//Delete a User
+	deleteUser(uid: string){
+		console.log("fb11",uid);
+		var userlist_URL = "/user/" + uid;
+		this.af.list(userlist_URL).remove();
+	}
+
+  }
+
 //END LOGIN AND LOGOUT
-}
+
 
 

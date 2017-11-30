@@ -1,0 +1,225 @@
+<!--div align="center"-->
+	<!--Modal for adding a new User-->
+	<lsu-modal [(ngModel)]="addUserModal_flag" [options]="modalOptions" align="center">
+  
+  		<div class="header">Create New User</div>
+  
+  		<div class="description">
+    	<br>
+    	<!--User Name-->
+    		<form class="ui mini form">
+      			<div class="field" style="padding: 20px;">
+        			<label style="font-weight: bold; font-size: 15px;">User Name</label>
+        			<br>
+        			<input type="text"  name="name" placeholder="name" [(ngModel)]="name" required> 
+      			</div>
+    		</form>
+    	<!--Email-->
+    	    <form class="ui mini form">
+            <div class ="ui stackable two column grid">
+        			<div class="field" class="column" style="padding: 30px;">
+          			<label style="font-weight: bold; font-size: 15px;">&nbsp; email id</label>
+          			<br>
+          			<input type="text"  name="email" placeholder="email" [(ngModel)]="email" required> 
+        			</div>
+
+              <div class="field" class="column" style="padding: 30px;">
+                <label style="font-weight: bold; font-size: 15px;">password</label>
+                <br>
+                <input type="password"  name="default_pwd" placeholder="default password" [(ngModel)]="default_pwd" required> 
+              </div>
+
+            </div>
+    		</form>
+      <!--Role & Title-->
+        <form class="ui mini form">
+          <div class ="ui stackable two column grid">
+            <div class="field" class="column" style="padding: 30px;">
+              <label style="font-weight: bold; font-size: 15px;">&nbsp; Role</label>
+              <br>
+              <br>
+              <input type="text"  name="role" placeholder="role" [(ngModel)]="role" required> 
+            </div>
+
+            <div class="field" class="column" style="padding: 30px;">
+              <label style="font-weight: bold; font-size: 15px;">Title</label>
+              <br>
+              <br>
+              <input type="text"  name="title" placeholder="title" [(ngModel)]="title" required> 
+            </div>
+          </div>
+        </form>
+
+      <!--Report & Reports To-->
+        <form class="ui mini form">
+          <div class ="ui stackable two column grid">
+            <div class="field" class="column" style="padding: 30px;">
+              <label style="font-weight: bold; font-size: 15px;">&nbsp; Report</label>
+              <br>
+              <br>
+              <input type="text"  name="report" placeholder="report" [(ngModel)]="report" required> 
+            </div>
+       
+            <div class="field" class="column" style="padding: 30px;">
+              <label style="font-weight: bold; font-size: 15px;">Reports To</label>
+              <br>
+              <br>
+              <input type="text"  name="reports_to" placeholder="reports to" [(ngModel)]="reports_to" required> 
+            </div>
+          </div>  
+        </form>
+
+  		</div>
+
+  		<div class="actions">
+    		<div class="ui black deny button" (click)="cancelUserModal()">Cancel</div>
+    		<div class="ui positive right labeled icon button" (click)="on_add_user()">Add
+      			<i class="checkmark icon"></i>
+    		</div>
+  		</div>
+	</lsu-modal>
+
+	<div id="" style="overflow-y: scroll;height: 100%;width:95%;">
+  	<br>
+  <!--Search button with expandable holder-->
+  <div appMzterialDesignLite style="float:right; color: white;">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+      <label class="mdl-button mdl-js-button mdl-button--icon" for="site-search">
+        <i class="material-icons">search</i>
+      </label>
+      <div class="mdl-textfield__expandable-holder">
+        <input class="mdl-textfield__input" type="search" id="site-search" name="site-search" placeholder ="User Name" [(ngModel)] ="querystring" />
+        <label class="mdl-textfield__label" for="site-search">Search</label>
+      </div>
+    </div>
+  </div>
+
+  <!--Add User Button on top right corner-->
+  <div style="float:right;padding: 10px;font-family: 'Marvel', sans-serif;">
+      <button class="ui inverted button" (click)="addUserModal()">Add User</button>
+  </div>
+  <br>
+  <br>
+		<!--List Users in a table with fields name and its related fields. Actions are (Edit/ Delete)-->
+		<table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp" style="width: 95%;background-color: white;">
+		  	<thead>
+		  		<tr>
+		    		<th>Name</th>
+		    		<th>Email</th>
+            <th>Role</th>
+            <th>Title</th>
+            <th>Report</th>
+            <th>Reports To</th>
+		    		<th>Actions</th>
+		  		</tr>
+		  	</thead>
+
+		  	<tbody>
+		  		<tr *ngFor="let user of users | filterrecords: querystring : 'users' | sortorder | paginate: { itemsPerPage: 7, currentPage: p }">
+		    		<td class="mdl-data-table__cell--non-numeric">{{user.name}}</td>
+		    		<td class="mdl-data-table__cell--non-numeric">{{user.email}}</td>
+            <td class="mdl-data-table__cell--non-numeric">{{user.role}}</td>
+            <td class="mdl-data-table__cell--non-numeric">{{user.title}}</td>
+            <td class="mdl-data-table__cell--non-numeric">{{user.report}}</td>
+            <td class="mdl-data-table__cell--non-numeric">{{user.reports_to}}</td>
+		    		<td>
+		    			<a (click)="editUserModal(user.userid)">
+		    				<i class="material-icons">edit</i>
+		    			</a>
+		    			
+		    			<!--a (click)="on_delete_user(user.userid)">
+		    				<i class="material-icons">delete</i>
+		    			</a-->
+		    		</td>
+		  		</tr>
+		  	</tbody>
+		</table>
+
+  <br>
+  <br>
+
+  <!--Pagination-->
+  <div class="ui item" style="color: white; background-color: #eee; float:right; border-radius: 5px;">
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  </div>
+	</div>
+
+	<!--Modal for Editing an User -->
+	<lsu-modal [(ngModel)]="editUserModal_flag" [options]="modalOptions">
+  
+  		<div class="header">Edit User Details</div>
+  
+  		<div class="description">
+    	<br>
+    	<!--User Name-->
+    		<form class="ui mini form">
+      			<div class="field" style="padding: 20px;">
+        			<label style="font-weight: bold; font-size: 15px;">Name</label>
+        			<br>
+        			<input type="text"  name="uname" placeholder="name" [(ngModel)]="uname" required> 
+      			</div>
+   			</form>
+    	<!--Email-->
+    		<form class="ui mini form">
+      			<div class="field" style="padding: 20px;">
+        			<label style="font-weight: bold; font-size: 15px;">Email</label>
+        			<br>
+        			<input type="text"  name="uemail" placeholder="email" [(ngModel)]="uemail" required> 
+      			</div>
+   			</form>
+      <!--Role & Title-->
+        <form class="ui mini form">
+          <div class ="ui stackable two column grid">
+            <div class="field" class="column" style="padding: 30px;">
+              <label style="font-weight: bold; font-size: 15px;">&nbsp; Role</label>
+              <br>
+              <br>
+              <input type="text"  name="urole" placeholder="role" [(ngModel)]="urole" required> 
+            </div>
+
+            <div class="field" class="column" style="padding: 30px;">
+              <label style="font-weight: bold; font-size: 15px;">Title</label>
+              <br>
+              <br>
+              <input type="text"  name="utitle" placeholder="title" [(ngModel)]="utitle" required> 
+            </div>
+          </div>
+        </form>
+
+      <!--Report & Reports To-->
+        <form class="ui mini form">
+          <div class ="ui stackable two column grid">
+            <div class="field" class="column" style="padding: 30px;">
+              <label style="font-weight: bold; font-size: 15px;">&nbsp; Report</label>
+              <br>
+              <br>
+              <input type="text"  name="ureport" placeholder="report" [(ngModel)]="ureport" required> 
+            </div>
+       
+            <div class="field" class="column" style="padding: 30px;">
+              <label style="font-weight: bold; font-size: 15px;">Reports To</label>
+              <br>
+              <br>
+              <input type="text"  name="ureports_to" placeholder="Reports to" [(ngModel)]="ureports_to" required> 
+            </div>
+          </div>  
+        </form>
+
+
+  		</div>
+
+  		<div class="actions">
+    		<div class="ui black deny button" (click)="cancelUserModal()">Cancel</div>
+    		<div class="ui positive right labeled icon button" (click)="on_edit_user()">Save changes
+      			<i class="checkmark icon"></i>
+    		</div>
+  		</div>
+	</lsu-modal>
+	
+<!--/div-->
+
+
+
+
+
+

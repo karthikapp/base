@@ -1,5 +1,5 @@
 export const firebaseConfig = {
-    apiKey: "AIzaSyAQYKTQBbaHhAG8Enp-M-0aGQv6S5l_fho",
+apiKey: "AIzaSyAQYKTQBbaHhAG8Enp-M-0aGQv6S5l_fho",
     authDomain: "raksha-db-75d58.firebaseapp.com",
     databaseURL: "https://raksha-db-75d58.firebaseio.com",
     projectId: "raksha-db-75d58",

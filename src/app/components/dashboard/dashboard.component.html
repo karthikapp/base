@@ -4,23 +4,13 @@
   mdl-layout--fixed-header mdl-layout--fixed-tabs">
   <header class="mdl-layout__header">
     <div class="mdl-layout__header-row" >
-      <div class="mdl-layout-spacer"></div>
-      <div appMzterialDesignLite class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
-      mdl-textfield--floating-label mdl-textfield--align-right">
+      <div appMzterialDesignLite class="mdl-layout-spacer"></div>
+        <!--LogOut-->
 
-        <!--Search button with expandable holder-->
-        <label class="mdl-button mdl-js-button mdl-button--icon"
-        for="fixed-header-drawer-exp">
-          <i class="material-icons">search</i>
-        </label>
-
-        <div class="mdl-textfield__expandable-holder">
-          <input class="mdl-textfield__input" type="text" name="sample"
-        id="fixed-header-drawer-exp">
-        </div>
-      </div>
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" (click)="doLogout()">
+          LogOut
+        </button>
     </div>
-
   </header>
 
   <!--Side Menu bar Fixed -->
@@ -29,13 +19,13 @@
       <img src="https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-simple-512.png" style="width: 90px;padding-top: 12px;padding-left: 0px;"/>
     </span>
     <nav class="mdl-navigation" style="">
-      <a class="mdl-navigation__link" routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+      <a class="mdl-navigation__link" routerLink="/dashboard/Users" routerLinkActive="active">Users</a>
       <a class="mdl-navigation__link" routerLink="/dashboard/ListCompanies" routerLinkActive="active">Accounts</a>
       <a class="mdl-navigation__link" routerLink="/dashboard/OEM" routerLinkActive="active">OEMS</a>
       <a class="mdl-navigation__link" routerLink="/dashboard/Events" routerLinkActive="active">Events</a>
       <a class="mdl-navigation__link" routerLink="/dashboard/Distributors" routerLinkActive="active">Distributors</a>
       <a class="mdl-navigation__link" routerLink="/dashboard/Products" routerLinkActive="active">Products</a>
-      <a class="mdl-navigation__link" href="">Logout</a>
+      <a class="mdl-navigation__link" routerLink="/dashboard/Needlists" routerLinkActive="active">Need Lists</a>
     </nav>
   </div>
 

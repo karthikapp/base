@@ -1,6 +1,5 @@
 <!-- Wide card with share menu button -->
 
-
 <div style="  background: url(https://cdn.smartrecruiters.com/blog/wp-content/uploads/2015/11/People-city.jpg) no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -23,27 +22,29 @@
                         <h2 class="mdl-card__title-text" style="font-family: 'Marvel', sans-serif;">Login</h2>
                     </div>
 
-                    <div class="mdl-card__supporting-text">
+                <form [formGroup]="form" (ngSubmit)="doLogin()">
+                    <div appMzterialDesignLite class="mdl-card__supporting-text">
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input style="font-family: 'Marvel', sans-serif;" [(ngModel)]="email" class="mdl-textfield__input" id="login"/>
+                            <input style="font-family: 'Marvel', sans-serif;" formControlName="email" class="mdl-textfield__input" id="login"/>
                             <label class="mdl-textfield__label" for="login">Login</label>
                         </div>
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input [(ngModel)]="password" class="mdl-textfield__input" type="password" id="password"/>
+                            <input formControlName="password" class="mdl-textfield__input" type="password" id="password"/>
                             <label class="mdl-textfield__label" for="password">Password</label>
                         </div>
                     </div>
+                
 
                     <div class="mdl-card__actions mdl-card--border">
                         <div class="mdl-grid">
-                            <button class="mdl-cell mdl-cell--12-col mdl-button mdl-button--raised mdl-button--colored mdl-js-button mdl-js-ripple-effect mdl-color-text--white" (click) = "doLogin(email,password)" style="font-family: 'Marvel', sans-serif;">
+                            <button class="mdl-cell mdl-cell--12-col mdl-button mdl-button--raised mdl-button--colored mdl-js-button mdl-js-ripple-effect mdl-color-text--white" type="submit" [disabled]="!form.valid" style="font-family: 'Marvel', sans-serif;">
                                 Login
                             </button>
 
                         </div>
-
-
                     </div>
+                </form>
+
                 </div>
             </figure>
    

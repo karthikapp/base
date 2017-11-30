@@ -1,0 +1,111 @@
+<div align="center">
+
+	<!--Modal for adding a new Need-->
+	<lsu-modal [(ngModel)]="addNeedlistModal_flag" [options]="modalOptions" align="center">
+  
+  		<div class="header">Create Need List</div>
+  
+  		<div class="description">
+    	<br>
+    	<!--Need Name-->
+    		<form class="ui mini form">
+      			<div class="field" style="padding: 20px;">
+        			<label style="font-weight: bold; font-size: 15px;">Need List Name</label>
+        			<br>
+        			<input type="text"  name="need_name" placeholder="Need List Name" [(ngModel)]="need_name" required> 
+      			</div>
+    		</form>
+  		</div>
+
+  		<div class="actions">
+    		<div class="ui black deny button" (click)="cancelneedlistModal()">Cancel</div>
+    		<div class="ui positive right labeled icon button" (click)="on_add_Needlist()">Add
+      			<i class="checkmark icon"></i>
+    		</div>
+  		</div>
+	</lsu-modal>
+
+	<div id="" style="overflow-y: scroll;height: 100%; width: 95%;">
+  <br>
+
+  <!--Search button with expandable holder-->
+  <div appMzterialDesignLite style="float:right; color: white;">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+      <label class="mdl-button mdl-js-button mdl-button--icon" for="site-search">
+        <i class="material-icons">search</i>
+      </label>
+      <div class="mdl-textfield__expandable-holder">
+        <input class="mdl-textfield__input" type="search" id="site-search" name="site-search" placeholder="Need List Name" [(ngModel)] ="querystring" />
+        <label class="mdl-textfield__label" for="site-search">Search</label>
+      </div>
+    </div>
+  </div>
+
+  <!--Add Need Button on top right corner-->
+  <div style="float:right;padding: 10px;font-family: 'Marvel', sans-serif;">
+      <button class="ui inverted button" (click)="addNeedlistModal()">Add Need List</button>
+  </div>
+  <br>
+  <br>
+  <br>
+
+	<!--List Needs in a table with fields need name and actions (Edit/ Delete)-->
+	<table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp" style="width: 95%;background-color: white;">
+  	<thead>
+  		<tr>
+    		<th>Need List Name</th>
+    		<th>Actions</th>
+  		</tr>
+  	</thead>
+
+  	<tbody>
+  		<tr *ngFor="let need of needlists | filterrecords: querystring : 'needs' | sortorder | paginate: { itemsPerPage: 7, currentPage: p }">
+    		<td class="mdl-data-table__cell--non-numeric">{{need.need_name}}</td>
+    		<td>
+    			<a (click)="editNeedListModal(need.need_id)">
+    				<i class="material-icons">edit</i>
+    			</a>
+    			&nbsp;
+    			<a (click)="on_delete_Needlist(need.need_id)">
+    				<i class="material-icons">delete</i>
+    			</a>
+    		</td>
+  		</tr>
+  	</tbody>
+	</table>
+  <br>
+  <br>
+
+  <!--Pagination-->
+  <div class="ui item" style="color: white; background-color: #eee; float:right; border-radius: 5px;">
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  </div>
+
+</div>
+  
+	<!--Modal for Editing an Need -->
+	<lsu-modal [(ngModel)]="editNeedlistModal_flag" [options]="modalOptions">
+  
+  		<div class="header">Edit Need List</div>
+  
+  		<div class="description">
+    	<br>
+    	<!--Need Name-->
+    		<form class="ui mini form">
+      			<div class="field" style="padding: 20px;">
+        			<label style="font-weight: bold; font-size: 15px;">Need List Name</label>
+        			<br>
+        			<input type="text"  name="needname" placeholder="Need List Name" [(ngModel)]="needname" required> 
+      			</div>
+   			</form>
+  		</div>
+
+  		<div class="actions">
+    		<div class="ui black deny button" (click)="cancelneedlistModal()">Cancel</div>
+    		<div class="ui positive right labeled icon button" (click)="on_edit_Needlist()">Save changes
+      			<i class="checkmark icon"></i>
+    		</div>
+  		</div>
+	</lsu-modal>
+	
+</div>

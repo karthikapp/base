@@ -40,6 +40,8 @@ export class ListOemsComponent implements OnInit {
       this.oem_name = '';
       this.oem_id = '';
       this.created_at = firebaseservice.created_at;
+
+
     }
 
   ngOnInit() 

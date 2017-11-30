@@ -52,6 +52,7 @@ export class EditcompaniesComponent implements OnInit {
   }
 
   ngOnInit() {
+
     //Current server date and timestamp
     this.created_at = this.firebaseservice.created_at;
 

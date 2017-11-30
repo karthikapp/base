@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-
 import { FirebaseService } from "../../services/firebase.service";
 
 @Component({
@@ -38,6 +37,7 @@ export class AddCompaniesComponent implements OnInit {
   }
 
   ngOnInit() {
+    
     this.company_id = '';
     this.company_name = '';
     this.company_type = '';

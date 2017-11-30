@@ -42,6 +42,14 @@ export class FilterrecordsPipe implements PipeTransform {
       return value.filter( values => {
        return values.distributor_name.toLowerCase().indexOf(input.toLowerCase()) > -1;
       })
+    } else if ((value != null || value != undefined) && ip1 == 'needs'){
+      return value.filter( values => {
+       return values.need_name.toLowerCase().indexOf(input.toLowerCase()) > -1;
+      })
+    } else if ((value != null || value != undefined) && ip1 == 'users'){
+      return value.filter( values => {
+       return values.name.toLowerCase().indexOf(input.toLowerCase()) > -1;
+      })
     }
   } 
 }
