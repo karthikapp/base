@@ -17,6 +17,9 @@ export class AddCompaniesComponent implements OnInit {
   industry_type: string;
   company_address_line1: string;
   company_address_line2: string;
+  company_address_area: string;
+  company_address_state: string;
+  company_address_pincode: string;
   employee_count: number;
 
   //Contact Person details
@@ -44,6 +47,9 @@ export class AddCompaniesComponent implements OnInit {
     this.industry_type = '';
     this.company_address_line1 = '';
     this.company_address_line2 = '';
+    this.company_address_state = '';
+    this.company_address_area = '';
+    this.company_address_pincode = '';
     this.employee_count = null;
 
     this.contact_person_id = '';
@@ -70,6 +76,9 @@ export class AddCompaniesComponent implements OnInit {
           industrytype: this.industry_type,
           company_address_line1: this.company_address_line1,
           company_address_line2:this.company_address_line2,
+          company_address_area: this.company_address_area,
+          company_address_state: this.company_address_state,
+          company_address_pincode: this.company_address_pincode,
           employee_count: this.employee_count,
           created_at: this.created_at
         };
@@ -88,24 +97,13 @@ export class AddCompaniesComponent implements OnInit {
        created_at: this.created_at
      };
 
-    //console.log(addcustomer, contact_persons)
+     //console.log("contact_persons", contact_persons, addcustomer)
 
-    if (addcustomer.companyname == '')
-    {
-      console.log("Fields are empty and customer is not added", addcustomer);
-      this.route.navigate(['/dashboard/ListCompanies']);
-    }
-    else if((contact_persons.contact_person_name == '' && addcustomer.companyname != '') || 
-            (contact_persons.contact_person_name != null && addcustomer.companyname != ''))
-    {
-      //console.log("contact_persons", contact_persons, addcustomer)
-      contact_persons = null;
-      return this.firebaseservice.addAccounts(addcustomer,contact_persons).then(success => 
+    return this.firebaseservice.addAccounts(addcustomer,contact_persons).then(success => 
       {
         this.route.navigate(['/dashboard/ListCompanies']);
         //console.log("added")
       })
-    }
   }
 
   //Set industry type based on employee count

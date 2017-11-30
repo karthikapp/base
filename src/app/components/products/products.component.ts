@@ -56,6 +56,7 @@ export class ProductsComponent implements OnInit {
   //Add a new Product
   on_add_product(){
   	//console.log("add");
+
     let product = { Product_name: this.Product_name,
                 	Brand: this.Brand,
                 	productkey: this.product_key,

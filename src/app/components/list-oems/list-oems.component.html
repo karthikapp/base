@@ -18,10 +18,10 @@
     </div>
 
     <div class="actions">
-      <div class="ui black deny button" (click)="cancelOEMModal()">Cancel</div>
-      <div class="ui positive right labeled icon button" (click)="on_add_oem()">Add
+      <button class="ui black deny button" (click)="cancelOEMModal()">Cancel</button>
+      <button class="ui positive right labeled icon button" [disabled]="oem_name==''" (click)="on_add_oem()">Add
         <i class="checkmark icon"></i>
-      </div>
+      </button>
     </div>
 
   </lsu-modal>
@@ -101,10 +101,10 @@
     </div>
 
     <div class="actions">
-      <div class="ui black deny button" (click)="cancelOEMModal()">Cancel</div>
-      <div class="ui positive right labeled icon button" (click)="on_edit_oem()">Save changes
+      <button class="ui black deny button" (click)="cancelOEMModal()">Cancel</button>
+      <button class="ui positive right labeled icon button" [disabled]="oemname==''" (click)="on_edit_oem()">Save changes
         <i class="checkmark icon"></i>
-      </div>
+      </button>
     </div>
 
   </lsu-modal>

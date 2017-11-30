@@ -18,10 +18,10 @@
   		</div>
 
   		<div class="actions">
-    		<div class="ui black deny button" (click)="cancelDistributorModal()">Cancel</div>
-    		<div class="ui positive right labeled icon button" (click)="on_add_distributor()">Add
+    		<button class="ui black deny button" (click)="cancelDistributorModal()">Cancel</button>
+    		<button class="ui positive right labeled icon button" [disabled]="distributor_name==''" (click)="on_add_distributor()">Add
       			<i class="checkmark icon"></i>
-    		</div>
+    		</button>
   		</div>
 	</lsu-modal>
 
@@ -99,10 +99,10 @@
   		</div>
 
   		<div class="actions">
-    		<div class="ui black deny button" (click)="cancelDistributorModal()">Cancel</div>
-    		<div class="ui positive right labeled icon button" (click)="on_edit_distributor()">Save changes
+    		<button class="ui black deny button" (click)="cancelDistributorModal()">Cancel</button>
+    		<button class="ui positive right labeled icon button" [disabled]="distributorname==''" (click)="on_edit_distributor()">Save changes
       			<i class="checkmark icon"></i>
-    		</div>
+    		</button>
   		</div>
 	</lsu-modal>
 	

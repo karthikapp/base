@@ -7,6 +7,7 @@ import { ModuleWithProviders }  from '@angular/core';
 import { L_SEMANTIC_UI_MODULE, TAB_DIRECTIVES } from 'angular2-semantic-ui'; // <-- Semantic Module
 import { NgxPaginationModule } from 'ngx-pagination'; // <-- pagination module
 
+import { LoginguardService } from "./services/loginguard.service";
 import { AuthGuardService } from "./services/auth-guard.service";
 import { FirebaseService} from "./services/firebase.service";
 import { firebaseConfig } from './../environments/firebase.config';
@@ -37,7 +38,7 @@ import { MzterialDesignLiteDirective } from './directives/mzterial-design-lite.d
 
 const appRoutes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
+  { path: 'login', component: LoginComponent, canActivate: [LoginguardService] },
 
   { path: 'dashboard', component: DashboardComponent, canActivate:[AuthGuardService],
     children: [ 
@@ -90,7 +91,7 @@ const appRoutes: Routes = [
     L_SEMANTIC_UI_MODULE,
     NgxPaginationModule
   ],
-  providers: [FirebaseService, AuthGuardService],
+  providers: [FirebaseService, AuthGuardService, LoginguardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

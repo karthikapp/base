@@ -18,10 +18,10 @@
   		</div>
 
   		<div class="actions">
-    		<div class="ui black deny button" (click)="cancelEventModal()">Cancel</div>
-    		<div class="ui positive right labeled icon button" (click)="on_add_event()">Add
+    		<button class="ui black deny button" (click)="cancelEventModal()">Cancel</button>
+    		<button class="ui positive right labeled icon button" [disabled]="event_name==''" (click)="on_add_event()">Add
       			<i class="checkmark icon"></i>
-    		</div>
+    		</button>
   		</div>
 	</lsu-modal>
 
@@ -101,10 +101,10 @@
   		</div>
 
   		<div class="actions">
-    		<div class="ui black deny button" (click)="cancelEventModal()">Cancel</div>
-    		<div class="ui positive right labeled icon button" (click)="on_edit_event()">Save changes
+    		<button class="ui black deny button" (click)="cancelEventModal()">Cancel</button>
+    		<button class="ui positive right labeled icon button" [disabled]="eventname==''" (click)="on_edit_event()">Save changes
       			<i class="checkmark icon"></i>
-    		</div>
+    		</button>
   		</div>
 	</lsu-modal>
 	

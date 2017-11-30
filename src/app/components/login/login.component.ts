@@ -50,7 +50,7 @@ form: FormGroup;
                     {
                       if (this.users.role.toUpperCase() == 'ADMIN') 
                       {
-                        this.router.navigate(['/dashboard/ListCompanies']);
+                        this.router.navigateByUrl('/dashboard/ListCompanies');
                       }
                       else 
                       {

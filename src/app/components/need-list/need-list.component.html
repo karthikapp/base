@@ -18,10 +18,10 @@
   		</div>
 
   		<div class="actions">
-    		<div class="ui black deny button" (click)="cancelneedlistModal()">Cancel</div>
-    		<div class="ui positive right labeled icon button" (click)="on_add_Needlist()">Add
+    		<button class="ui black deny button" (click)="cancelneedlistModal()">Cancel</button>
+    		<button class="ui positive right labeled icon button" [disabled]="need_name==''" (click)="on_add_Needlist()">Add
       			<i class="checkmark icon"></i>
-    		</div>
+    		</button>
   		</div>
 	</lsu-modal>
 
@@ -101,10 +101,10 @@
   		</div>
 
   		<div class="actions">
-    		<div class="ui black deny button" (click)="cancelneedlistModal()">Cancel</div>
-    		<div class="ui positive right labeled icon button" (click)="on_edit_Needlist()">Save changes
+    		<button class="ui black deny button" (click)="cancelneedlistModal()">Cancel</button>
+    		<button class="ui positive right labeled icon button" [disabled]="needname==''"(click)="on_edit_Needlist()">Save changes
       			<i class="checkmark icon"></i>
-    		</div>
+    		</button>
   		</div>
 	</lsu-modal>
 	

@@ -57,6 +57,9 @@ export class FirebaseService {
           industrytype: string,
           company_address_line1: string,
           company_address_line2: string,
+          company_address_area: string,
+          company_address_state: string,
+          company_address_pincode: string,
           employee_count: number,
           created_at: Date
           },contactspersonObject,
@@ -72,8 +75,8 @@ export class FirebaseService {
 		
 		if (contactspersonObject != null)
 		{
-			console.log('CP Object',contactpersonObject);
-			console.log('CPS Object', contactspersonObject);
+			//console.log('CP Object',contactpersonObject);
+			//console.log('CPS Object', contactspersonObject);
 
 			let contactpersonsCount = Object.keys(contactspersonObject).length
 			let contactpersonslist = Object.values(contactspersonObject)
@@ -81,29 +84,32 @@ export class FirebaseService {
 			//console.log(contactpersonlist[0].contact_person_id, contactpersonCount)
 
 			for(key=0; key < contactpersonsCount; key++) {
-				var contactpersonURL = '/accounts/' + company_id + '/contact_persons/' + contactpersonslist[key].contact_person_id
-				//console.log(contactpersonURL, contactpersonslist[key])
-				var contactpersonData = this.af.object(contactpersonURL).update(contactpersonslist[key])
+				if(contactpersonslist[key].contact_person_name != '') {
+					var contactpersonURL = '/accounts/' + company_id + '/contact_persons/' + contactpersonslist[key].contact_person_id
+					//console.log(contactpersonURL, contactpersonslist[key])
+					var contactpersonData = this.af.object(contactpersonURL).update(contactpersonslist[key])
+				}
 			}
 		}
 
 		//Pushing contact person data and setting contact person id with the generated key
-		
-			console.log('CP Object',contactpersonObject, contactpersonObject.contact_person_name);
+		if (contactpersonObject != null) {
+			//console.log('CP Object',contactpersonObject, contactpersonObject.contact_person_name);
 			let contactpersonCount = Object.keys(contactpersonObject).length
 			let contactpersonlist = Object.values(contactpersonObject)
 
 			for(key1=0; key1 < contactpersonCount; key1++ )
 			{
-				var addcontactpersonURL = '/accounts/' + company_id + '/contact_persons';
-				//console.log ("firebase add cp",contactpersonlist[key1] )
-				var addcontactpersonObject = this.af.list(addcontactpersonURL).push(contactpersonlist[key1]);
-				var addcontactpersonid = addcontactpersonObject.key;
-				var addcontactpersonid_URL1 = '/accounts/' + company_id + '/contact_persons/' + addcontactpersonid;
-				var addcontactpersonData1 = this.af.object(addcontactpersonid_URL1).update({'contact_person_id': addcontactpersonid});
+				if(contactpersonlist[key].contact_person_name != ''){
+					var addcontactpersonURL = '/accounts/' + company_id + '/contact_persons';
+					//console.log ("firebase add cp",contactpersonlist[key1] )
+					var addcontactpersonObject = this.af.list(addcontactpersonURL).push(contactpersonlist[key1]);
+					var addcontactpersonid = addcontactpersonObject.key;
+					var addcontactpersonid_URL1 = '/accounts/' + company_id + '/contact_persons/' + addcontactpersonid;
+					var addcontactpersonData1 = this.af.object(addcontactpersonid_URL1).update({'contact_person_id': addcontactpersonid});
+				}
 			}
-		
-	
+		}
 		return contactpersonData;
 	}
 
@@ -114,6 +120,9 @@ export class FirebaseService {
           industrytype: string,
           company_address_line1: string,
           company_address_line2: string,
+          company_address_area: string,
+          company_address_state: string,
+          company_address_pincode: string,
           employee_count: number,
           created_at: Date
           },
@@ -139,15 +148,14 @@ export class FirebaseService {
 		var companies1 = this.af.object(companies_URL).update({'companyid': companiesid});
 
 		//Pushing contact person data and setting contact person id with the generated key
-		if(contactpersonsObject != null)
-		{
-			console.log('Add accounts', contactpersonsObject);
-			var contactpersonsid_URL = '/accounts/' + companiesid + '/contact_persons'; 
-			var contactpersonsData = this.af.list(contactpersonsid_URL).push(contactpersonsObject);
-			var contactpersonsid = contactpersonsData.key;
-			var contactpersonsid_URL1 = '/accounts/' + companiesid + '/contact_persons/' + contactpersonsid;
-			var contactpersonsData1 = this.af.object(contactpersonsid_URL1).update({'contact_person_id': contactpersonsid});
-		}
+
+		console.log('Add accounts', contactpersonsObject);
+		var contactpersonsid_URL = '/accounts/' + companiesid + '/contact_persons'; 
+		var contactpersonsData = this.af.list(contactpersonsid_URL).push(contactpersonsObject);
+		var contactpersonsid = contactpersonsData.key;
+		var contactpersonsid_URL1 = '/accounts/' + companiesid + '/contact_persons/' + contactpersonsid;
+		var contactpersonsData1 = this.af.object(contactpersonsid_URL1).update({'contact_person_id': contactpersonsid});
+
 		return companies1;
 	}
 
@@ -458,7 +466,10 @@ export class FirebaseService {
 
 	//get list of User Profile Info
 	getUsers(){
-		this.users = this.af.list('/user');
+		this.users = this.af.list('/user', {query: {
+			orderByChild: 'created_at'
+			}});
+
 		return this.users;
 	}
 

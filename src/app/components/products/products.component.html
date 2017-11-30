@@ -1,6 +1,5 @@
 <div align="center">
 
- 
 	<!--Modal for adding a new Product-->
 	<lsu-modal [(ngModel)]="addProductModal_flag" [options]="modalOptions" align="center">
   
@@ -13,7 +12,7 @@
       			<div class="field" style="padding: 20px;">
         			<label style="font-weight: bold; font-size: 15px;">Product Name</label>
         			<br>
-        			<input type="text"  name="Product_name" placeholder="Product Name" [(ngModel)]="Product_name" required> 
+        			<input type="text"  name="Product_name" placeholder="Product Name" [(ngModel)]="Product_name"> 
       			</div>
     		</form>
     	<!--Brand-->
@@ -21,16 +20,17 @@
       			<div class="field" style="padding: 20px;">
         			<label style="font-weight: bold; font-size: 15px;">Brand</label>
         			<br>
-        			<input type="text"  name="Brand" placeholder="Brand" [(ngModel)]="Brand" required> 
+        			<input type="text"  name="Brand" placeholder="Brand" [(ngModel)]="Brand"> 
       			</div>
     		</form>
   		</div>
 
+
   		<div class="actions">
-    		<div class="ui black deny button" (click)="cancelProductModal()">Cancel</div>
-    		<div class="ui positive right labeled icon button" (click)="on_add_product()">Add
+    		<button class="ui black deny button" (click)="cancelProductModal()">Cancel</button>
+    		<button class="ui positive right labeled icon button" [disabled]="Product_name==''" (click)="on_add_product()">Add
       			<i class="checkmark icon"></i>
-    		</div>
+    		</button>
   		</div>
 	</lsu-modal>
 
@@ -119,10 +119,10 @@
   		</div>
 
   		<div class="actions">
-    		<div class="ui black deny button" (click)="cancelProductModal()">Cancel</div>
-    		<div class="ui positive right labeled icon button" (click)="on_edit_product()">Save changes
+    		<button class="ui black deny button" (click)="cancelProductModal()">Cancel</button>
+    		<button class="ui positive right labeled icon button" [disabled]="productname==''" (click)="on_edit_product()">Save changes
       			<i class="checkmark icon"></i>
-    		</div>
+    		</button>
   		</div>
 	</lsu-modal>
 	

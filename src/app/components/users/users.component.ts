@@ -56,6 +56,7 @@ export class UsersComponent implements OnInit {
   	this.reports_to = '';
   	this.email = '';
   	this.userid = '';
+    this.default_pwd = '';
 
     this.created_at = firebaseservice.created_at;
   }
@@ -114,6 +115,7 @@ export class UsersComponent implements OnInit {
   	this.report = '';
   	this.reports_to = '';
   	this.email = '';
+    this.default_pwd = '';
   	
     this.addUserModal_flag = true;
   }

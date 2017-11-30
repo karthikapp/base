@@ -16,6 +16,9 @@ export class EditcompaniesComponent implements OnInit {
   industry_type: string;
   company_address_line1: string;
   company_address_line2: string;
+  company_address_area: string;
+  company_address_state: string;
+  company_address_pincode: string;
   employee_count: number;
   company_id: string;
   created_at: Date;
@@ -65,6 +68,9 @@ export class EditcompaniesComponent implements OnInit {
       this.industry_type = account[0].industrytype;
       this.company_address_line1 = account[0].company_address_line1;
       this.company_address_line2 = account[0].company_address_line2;
+      this.company_address_area = account[0].company_address_area;
+      this.company_address_state = account[0].company_address_state;
+      this.company_address_pincode = account[0].company_address_pincode;
       this.employee_count = account[0].employee_count;
       this.company_id = account[0].companyid;
 
@@ -89,6 +95,17 @@ export class EditcompaniesComponent implements OnInit {
     }
   }
 
+  editcompanybuttonshow(){
+
+     if (this.companyname == '')
+     {
+        return true
+     }
+     else {
+       return false
+     }
+   }
+
   //Update the changes for the respective company and if the update is complete redirect to List companies page
   save_contact_persons(){
      //console.log (this.companyname,this.company_type,this.industry_type,this.contact_persons);
@@ -109,11 +126,22 @@ export class EditcompaniesComponent implements OnInit {
        this.company_address_line2 = '';
      }
 
+     if (this.company_address_area ==undefined){
+       this.company_address_area = '';
+     } 
+     if (this.company_address_state == undefined){
+       this.company_address_state = '';
+     }
+
+    if (this.company_address_pincode ==undefined){
+       this.company_address_pincode = '';
+     } 
+
      if(this.employee_count == undefined){
       this.employee_count = null;
      }
 
-     if (this.contact_person == undefined) {
+     if (this.contact_person == undefined ) {
        this.contact_person = null;
      } 
 
@@ -121,13 +149,15 @@ export class EditcompaniesComponent implements OnInit {
        this.contact_persons = null;
      } 
 
-
      let account = {
           companyname: this.companyname,
           companytype:this.company_type,
           industrytype: this.industry_type,
           company_address_line1: this.company_address_line1,
           company_address_line2:this.company_address_line2,
+          company_address_area: this.company_address_area,
+          company_address_state: this.company_address_state,
+          company_address_pincode: this.company_address_pincode,
           employee_count: this.employee_count,
           created_at: this.created_at
         };
@@ -136,9 +166,8 @@ export class EditcompaniesComponent implements OnInit {
 
      let contact_person = this.contact_person;
 
-
-     console.log('keys',Object.keys(contact_person),Object.values(contact_person))
-     //console.log('editcompanies',this.company_id,account,contact_persons,contact_person)
+    //console.log('keys',Object.keys(contact_persons).length,Object.values(contact_person).length)
+    //console.log('editcompanies',this.company_id,account,contact_persons,contact_person)
 
      this.firebaseservice.saveAccount(this.company_id,account,contact_persons,contact_person)
      this.route.navigate(['/dashboard/ListCompanies'])

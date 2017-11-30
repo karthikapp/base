@@ -8,9 +8,11 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class SortorderPipe implements PipeTransform {
 
   transform(value: any, ...args): any {
+
     if (!value)
     	{ return }
     else {
+    	//console.log("sort",value);
     	return value.slice().reverse();
     }
   }

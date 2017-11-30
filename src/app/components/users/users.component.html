@@ -1,4 +1,4 @@
-<!--div align="center"-->
+<div align="center">
 	<!--Modal for adding a new User-->
 	<lsu-modal [(ngModel)]="addUserModal_flag" [options]="modalOptions" align="center">
   
@@ -72,10 +72,10 @@
   		</div>
 
   		<div class="actions">
-    		<div class="ui black deny button" (click)="cancelUserModal()">Cancel</div>
-    		<div class="ui positive right labeled icon button" (click)="on_add_user()">Add
+    		<button class="ui black deny button" (click)="cancelUserModal()">Cancel</button>
+    		<button class="ui positive right labeled icon button" [disabled]="name == '' || email== '' || default_pwd == ''" (click)="on_add_user()">Add
       			<i class="checkmark icon"></i>
-    		</div>
+    		</button>
   		</div>
 	</lsu-modal>
 
@@ -102,7 +102,7 @@
   <br>
 		<!--List Users in a table with fields name and its related fields. Actions are (Edit/ Delete)-->
 		<table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp" style="width: 95%;background-color: white;">
-		  	<thead>
+		  	<thead >
 		  		<tr>
 		    		<th>Name</th>
 		    		<th>Email</th>
@@ -209,14 +209,14 @@
   		</div>
 
   		<div class="actions">
-    		<div class="ui black deny button" (click)="cancelUserModal()">Cancel</div>
-    		<div class="ui positive right labeled icon button" (click)="on_edit_user()">Save changes
+    		<button class="ui black deny button" (click)="cancelUserModal()">Cancel</button>
+    		<button class="ui positive right labeled icon button" [disabled]="uname == '' || uemail== ''" (click)="on_edit_user()">Save changes
       			<i class="checkmark icon"></i>
-    		</div>
+    		</button>
   		</div>
 	</lsu-modal>
 	
-<!--/div-->
+</div>
 
 
 
