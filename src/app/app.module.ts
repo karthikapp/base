@@ -34,6 +34,7 @@ import { ContactpersonsPipe } from './pipes/contactpersons.pipe';
 import { FilterrecordsPipe } from './pipes/filterrecords.pipe';
 
 import { MzterialDesignLiteDirective } from './directives/mzterial-design-lite.directive';
+import { AppointmentsComponent } from './components/appointments/appointments.component';
 
 
 const appRoutes: Routes = [
@@ -76,7 +77,8 @@ const appRoutes: Routes = [
     FilterrecordsPipe,
     MzterialDesignLiteDirective,
     NeedListComponent,
-    UsersComponent
+    UsersComponent,
+    AppointmentsComponent
   ],
   imports: [
     BrowserModule ,

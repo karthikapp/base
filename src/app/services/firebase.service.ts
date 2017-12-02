@@ -413,21 +413,9 @@ export class FirebaseService {
 	}
 //END Leads and Opportunities
 
-//START LOGIN & LOGOUT
-	//sign in using email and password
-	loginUser(email: string, password: string)
-	{
-		//console.log(email,password);
-		return this.fireAuth.signInWithEmailAndPassword(email, password);	
-	}
+//START USER
 
-	//Sign out from the app
-	logoutUser()
-	{
-		return this.fireAuth.signOut();
-	}
-
-	//Create a new user
+//Create a new user
 	createUser(usersObject:{ name: string,
     			 role: string,
     			 title: string,
@@ -448,7 +436,7 @@ export class FirebaseService {
       		});	
 
       		let userres = firebase.auth().currentUser;
-			console.log("KB1",userres);
+			//console.log("KB1",userres);
      }
 
     //get single User Profile Info 
@@ -496,6 +484,24 @@ export class FirebaseService {
 		this.af.list(userlist_URL).remove();
 	}
 
+
+//END USER
+
+//START LOGIN & LOGOUT
+	//sign in using email and password
+	loginUser(email: string, password: string)
+	{
+		//console.log(email,password);
+		return this.fireAuth.signInWithEmailAndPassword(email, password);	
+	}
+
+	//Sign out from the app
+	logoutUser()
+	{
+		return this.fireAuth.signOut();
+	}
+
+	
   }
 
 //END LOGIN AND LOGOUT

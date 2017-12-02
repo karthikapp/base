@@ -36,11 +36,11 @@ form: FormGroup;
 
     this.firebaseservice.loginUser(this.form.value.email,this.form.value.password)
             .then(user =>{
-              console.log(user.uid);
+              //console.log(user.uid);
               //Use the uid in the login and get the userProfile info from '/user'
               this.firebaseservice.getUser(user.uid).subscribe(
                   users => { this.users = users;
-                  console.log(users, this.users, this.users.role, this.users.email);
+                  //console.log(users, this.users, this.users.role, this.users.email);
                  
                   //Check if the role is ADMIN, then navigate to dashbord
                   //Else, error
