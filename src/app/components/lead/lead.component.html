@@ -1,134 +1,125 @@
-<div class="container" align="center">
-  <br>
-	<div class="ui main container" style="width: 100%;height: 100%;">
-		<!-- Company name at the top center-->
-		<a class="ui massive label" style="background-color: white; color: #673AB7;" *ngFor="let a of acct">{{a.companyname}}</a>	
-		<br>
-		<br>
+<div class ="main">
+  <div id="" style="overflow-y: scroll;height: 100%; width:100%;">
 
-		<div class="card" style="width: 95%; background-color: #e8eaf6; border-radius: 5px;">
-		<!--Tabs of Leads and Opportunities-->
-		<lsu-tabset type="'tabular'">
-			<!--LEADS-->
-			<lsu-tab  [headerText]="'Leads'" [active]="'true'">
-				<div class="ui inverted segment">
-  					<div class="ui inverted accordion">	
- 					    <div class ="title" [ngClass]="{'title--active' : lead.isOpen}" (click)="showContent(lead)" *ngFor="let lead of leads">
-      						<i class="dropdown icon"></i>
-      						{{lead.lead_title}}
-      											
-      						<div class="content" *ngIf="lead.isOpen">	
-								<table class="ui stackable table" >
-									<thead>
-										<tr>
-									      <th>Activity Type</th>
-									      <th>Date</th>
-									      <th>Remarks</th>
-									      <th>Start Time</th>
-									      <th>End Time</th>
-									      <th>Type</th>
-									    </tr>
-									</thead>
+    <div *ngIf="ev">
+    
+      <!--Search button with expandable holder-->
+      <div appMzterialDesignLite style="float:right; color: white;">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+          <label class="mdl-button mdl-js-button mdl-button--icon" for="site-search">
+            <i class="material-icons">search</i>
+          </label>
+          <div class="mdl-textfield__expandable-holder">
+            <input class="mdl-textfield__input" type="search" id="site-search" name="site-search" placeholder="Company Name" [(ngModel)] ="querystring" />
+            <label class="mdl-textfield__label" for="site-search">Search</label>
+          </div>
+        </div>
+      </div>
 
-									<!--Looping through leads to get contact person name and their activities for the company(Used Nested *ngFor Loop)-->
-								  	<tbody>
-								  		<ng-container *ngFor="let cntct of cp| contactpersons">
-									  		<div class="ui teal large label" *ngIf="lead.company_contact_person_id==cntct.contact_person_id;">
-									  			 Contact Person Name: {{cntct.contact_person_name}}
-									  		</div>
-								  		</ng-container>
+      <br> 
+      <br>
+      <br>
+      <br>
 
-								  		<div style ="color: black;" *ngIf="lead.activities==undefined">
-								  			 &nbsp; Activities: None
-								  		</div>
-								  		<br>
+      <!-- Wide card with Edit and Delete button -->
+      <div class="ui stackable two column grid">
+        <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand" 
+        *ngFor="let lead of leads | filterrecords: querystring : 'leads' | sortorder | paginate: { itemsPerPage: 4, currentPage: p }">
 
-										<ng-container *ngFor="let activ of lead.activities | contactpersons">
-										    <tr *ngIf="activ.activity_type == 'phonecall'">
-										      <td>{{activ.activity_type}}</td>
-										      <td>{{activ.phonecallDate}}</td>
-										      <td>{{activ.phonecallremarks}}</td>
-										      <td>{{activ.phonecalltimefrom}}</td>
-										      <td>{{activ.phonecalltimeto}}</td>
-										      <td>{{activ.phone_call_type}}</td>
-										  	</tr>
-										  	<tr *ngIf="activ.activity_type == 'onsitevisit'">
-										      <td>{{activ.activity_type}}</td>
-										      <td>{{activ.visitDate}}</td>
-										      <td>{{activ.visitremarks}}</td>
-										      <td>{{activ.visittimefrom}}</td>
-										      <td>{{activ.visittimeto}}</td>
-										      <td></td>
-										  	</tr>
-									   	</ng-container>
-								  	</tbody>
-								</table>
-							</div>
-						</div>
-					</div>
-				</div>
-		    </lsu-tab>
+          <!--Lead Title-->
+          <div class="mdl-card__title">
+            <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.8vw;font-weight: bold;" [routerLink]="['/dashboard/LeadDetail', lead.$key]"
+               >
+              {{lead.lead_title}}  
+            </a>
+          </div>
 
-		    <!--Opportunities-->
-		    <lsu-tab [headerText]="'Opportunities'">
-		     	<div class="ui inverted segment">
-  					<div class="ui inverted accordion">	
- 					    <div class ="title" [ngClass]="{'title--active' : o.oppoOpen}" (click)="showContentOppo(o)" *ngFor="let o of oppo">
-      						<i class="dropdown icon"></i>
-      						{{o.lead_title}}
-      											
-      						<div class="content" *ngIf="o.oppoOpen">	
-								<table class="ui stackable table" >
-									<thead>
-										<tr>
-										  <th>Opportunity Stage</th>		
-									      <th>Activity Type</th>
-									      <th>Date</th>
-									      <th>Remarks</th>
-									      <th>Start Time</th>
-									      <th>End Time</th>
-									      <th>Type</th>
-									    </tr>
-									</thead>
+          <div class="ui stackable two column grid">
+            <!--Company Name & Created Date -->
+            <div class= "column">
+              <p style="font-size: 12px;"> 
+                {{lead.company_name}}
+                <br>
+                {{lead.created_at| date: 'medium' }}
+              </p>
+            </div>
 
-									<!--Looping through opportunities to get contact person name and their activities for the company(Used Nested *ngFor Loop)-->
-								  	<tbody>
-								  		<div style ="color: black;" *ngIf="o.activities==undefined">
-								  			 &nbsp; Activities: None
-								  		</div>
-								  		<br>
+            <div class ="column">
+              <div class="ui mini grey statistic">
+                <div class="value" style="text-transform: uppercase;">
+                  {{getleadapprovalstatus(lead.leadstatus)}}
+                </div>
 
-										<ng-container *ngFor="let actv of o.activities | contactpersons">
-										    <tr *ngIf="actv.activity_type == 'phonecall'">
-										      <td>{{actv.opportunity_stage}}</td>
-										      <td>{{actv.activity_type}}</td>
-										      <td>{{actv.phonecallDate}}</td>
-										      <td>{{actv.phonecallremarks}}</td>
-										      <td>{{actv.phonecalltimefrom}}</td>
-										      <td>{{actv.phonecalltimeto}}</td>
-										      <td>{{actv.phone_call_type}}</td>
-										  	</tr>
-										  	<tr *ngIf="actv.activity_type == 'onsitevisit'">
-										  	  <td>{{actv.opportunity_stage}}</td>		
-										      <td>{{actv.activity_type}}</td>
-										      <td>{{actv.visitDate}}</td>
-										      <td>{{actv.visitremarks}}</td>
-										      <td>{{actv.visittimefrom}}</td>
-										      <td>{{actv.visittimeto}}</td>
-										      <td></td>
-										  	</tr>
-									   	</ng-container>
-								  	</tbody>
-								</table>
-							</div>
-						</div>
-					</div>
-				</div>
-		    </lsu-tab>
-		</lsu-tabset>
-		</div>
-	</div>
+                <div class="label" style="color: black; font-size: 15px;text-align: center;">
+                  Status
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Lead Source, Activities, Contacts and  Product value-->
+          <div class="ui divider"></div>
+            <div class="ui stackable four column grid">
+              <div class="column">
+              
+                <span style="color: black; font-size: 10px;text-align: center;">LEAD SOURCE</span>
+                <br>
+                <a class="ui black label" align="center">
+                  {{leadsourcelabel(lead.leadsource)}}
+                </a>
+            
+                <p *ngIf="lead.leadsource == 'oem'" style="font-size: 12px; padding: 5px">
+                  {{lead.oem_name}}
+                </p>
+                <p *ngIf="lead.leadsource == 'distributor'" style="font-size: 12px; padding: 5px">
+                  {{lead.distributor_name}}
+                </p>
+                <p *ngIf="lead.leadsource == 'event'" style="font-size: 12px; padding: 5px">
+                  {{lead.event_name}}
+                </p>
+              </div>
+             
+              <div class="column" >
+                <div class="ui tiny blue statistic">
+                <br>
+                  <app-getproductssum class="value" style="font-size: 5px; font-weight: bold;" [products]="lead.products_list" ></app-getproductssum>
+                  <div class="label" style="color: black; font-size: 10px;text-align: center;">VALUE</div>
+                </div>
+              </div>
+
+              <div class="column" >
+                <div class="ui tiny black statistic">
+                <br>
+                  <div class="value" style="font-size: 5px; font-weight: bold;">
+                      {{getnooffollowups(lead.activities)}}
+                  </div>
+                 
+                  <div class="label" style="color: black; font-size: 10px;text-align: center;">ACTIVITIES</div>
+                </div>
+              </div>
+     
+              <div class="column">
+                <div class="ui tiny black statistic">
+                <br>
+                  <app-getcompanycontacts class="value" style="font-size: 5px; font-weight: bold;" [companyid]="lead.company_id"></app-getcompanycontacts>
+                  <div class="label" style="color: black; font-size: 10px;text-align: center;">CONTACTS</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      <!--Pagination-->
+      <br>
+             
+      <div class="ui item" style="color: white; background-color: #eee; float:right; border-radius: 5px;">
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </div>
+      <br>
+      <br>
+
+      
+    </div>
+  </div>
 </div>
-
-
-

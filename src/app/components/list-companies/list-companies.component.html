@@ -1,5 +1,6 @@
 <div class ="main">
   <div id="" style="overflow-y: scroll;height: 100%; width:100%;">
+    <div *ngIf="ev">
     
     <!--Search button with expandable holder-->
     <div appMzterialDesignLite style="float:right; color: white;">
@@ -30,7 +31,7 @@
 
         <!--Company Name-->
         <div class="mdl-card__title">
-          <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:2.1vw;font-weight: bold;" [routerLink]="['/dashboard/Leads', acct.companyid]"
+          <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.8vw;font-weight: bold;" [routerLink]="['/dashboard/Leadoppo', acct.companyid]"
              >
             {{acct.companyname}}  
           </a>
@@ -38,7 +39,7 @@
 
         <!--Company Address-->
         <p style="font-size: 12px;" pattern="[a-zA-Z0-9]+$">  
-          {{acct.company_address_line1}}
+            {{acct.company_address_line1}}
           <br>
             {{acct.company_address_line2}},
             {{acct.company_address_area}},   
@@ -52,37 +53,33 @@
 
           <div class = "column">
             <a class="ui blue label">{{acct.companytype}}</a><br>
-            <span style="color: black; font-size: 10px;">COMPANY TYPE</span>
+            <span class="labelspec" style="color: black; font-size: 10px;font-weight: bold">COMPANY TYPE</span>
           </div>
 
           <div class = "column">
             <a class="ui black label">{{acct.industrytype}} </a><br>
-            <span style="color: black; font-size: 10px;">INDUSTRY TYPE</span>
+            <span class="labelspec" style="color: black; font-size: 10px;">INDUSTRY TYPE</span>
           </div>
 
           <div class = "column">
-            <p>
-              <span style="font-size: 20px; font-weight: bold;text-align: center;">
+            <div class="ui mini blue statistic">
+              <div class="value" style=" font-weight: bold;">
                 {{acct.employee_count}}
-              </span>
-              <br>
-              <span style="color: black; font-size: 10px;">EMPLOYEES</span>
-            </p>
+              </div>
+              <div class="labelspec" style="color: black; font-size: 10px;">EMPLOYEES</div>
+            </div>
           </div>
 
           <div class = "column">
-            <p>
-              <span style="font-size: 20px; font-weight: bold;text-align: center;">
+            <div class="ui mini blue statistic">
+              <div class="value" style="font-weight: bold;">
                 {{countContactPerson(acct.contact_persons)}}
-              </span>
-              <br>
-              <span style="color: black; font-size: 10px;">CONTACTS</span>
-            </p>
+              </div>
+              <div class="labelspec" style="color: black; font-size: 10px;">CONTACTS</div>
+            </div>
           </div>
         </div>
-        <br>
-        <br>
-
+       
         <div class="mdl-card__menu">
           <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
             <i class="material-icons" (click)="on_edit_account(acct.companyid)">edit</i>
@@ -102,8 +99,7 @@
     <div class="ui item" style="color: white; background-color: #eee; float:right; border-radius: 5px;">
       <pagination-controls (pageChange)="p = $event"></pagination-controls>
     </div>
-    <br>
-    <br>
+   </div>
 
   </div>
 </div>

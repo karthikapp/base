@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FirebaseService } from "../../services/firebase.service";
 import { Router } from '@angular/router';
+import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
+import "rxjs/add/operator/takeWhile";
 
 @Component({
   selector: 'app-distributors',
   templateUrl: './distributors.component.html',
   styleUrls: ['./distributors.component.css']
 })
-export class DistributorsComponent implements OnInit {
+export class DistributorsComponent implements OnInit, OnDestroy {
 
   distributors: any;
   distributor_name: string;
@@ -25,11 +27,17 @@ export class DistributorsComponent implements OnInit {
 
   querystring: string;
 
+  uid: string;
+  ev: boolean = false;
+
+  alive: boolean = true;
+  alivepage: boolean = true;
+
   //initializing p to one for pagination pipe
   p: number = 1;
   
   constructor(private firebaseservice : FirebaseService, 
-    private router: Router) 
+    private router: Router, private afAuth: AngularFireAuth) 
   { 
     this.modalOptions = 
     {
@@ -45,12 +53,57 @@ export class DistributorsComponent implements OnInit {
   ngOnInit() 
   {
   	//List of Distributors
-  	return this.firebaseservice.getDistributors().subscribe(distributors => {	
-  		      this.distributors = distributors;
-            //console.log(distributors);
-    })
+
+      this.afAuth.authState
+      .takeWhile(() => this.alive)
+      .subscribe(data => {
+       if (data) {
+         this.uid = data.uid
+         //console.log("email",this.uid)
+         
+         this.firebaseservice.getUser(this.uid)
+         .takeWhile(() => this.alive)
+         .subscribe((v) => {
+            if (v.report == undefined)
+            {
+                v.report = '';
+            }
+
+            if (v.role == undefined)
+            {
+              v.role = '';
+            }
+
+            if (v.role.toUpperCase() == 'ADMIN')
+            {
+               this.firebaseservice.getDistributors()
+               .takeWhile(() => this.alive)
+               .subscribe(distributors => {  
+                      this.distributors = distributors;
+                      return this.ev=true;
+              })       
+            }
+            else
+            {
+              console.log('No access to this page');
+              alert('No access to this page');
+              return this.ev=false;
+            }
+         })
+       }
+       else{
+            console.log('No access to this page');
+            this.router.navigate(['login']);
+            return this.ev=false;
+       }
+     });
   }
 
+  ngOnDestroy() {
+    this.alive = false;
+    this.alivepage = false;
+  }
+  
   //Add a new Distributor
   on_add_distributor(){
   	//console.log("add");
@@ -91,7 +144,9 @@ export class DistributorsComponent implements OnInit {
 
   editDistributorModal(distributorid: string){
     //console.log(distributorid);
-    this.firebaseservice.getDistributor(distributorid).subscribe(distributor => {
+    this.firebaseservice.getDistributor(distributorid)
+    .takeWhile(() => this.alivepage)
+    .subscribe(distributor => {
     this.distributorname = distributor.distributor_name;
     this.distributorid = distributor.distributor_id})
 

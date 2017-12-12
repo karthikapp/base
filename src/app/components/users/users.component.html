@@ -1,4 +1,5 @@
 <div align="center">
+  <div *ngIf="ev">
 	<!--Modal for adding a new User-->
 	<lsu-modal [(ngModel)]="addUserModal_flag" [options]="modalOptions" align="center">
   
@@ -48,7 +49,7 @@
               <label style="font-weight: bold; font-size: 15px;">Title</label>
               <br>
               <br>
-              <input type="text"  name="title" placeholder="title" [(ngModel)]="title" required (keyup)=onKey($event)> 
+              <input type="text"  name="title" placeholder="title" [(ngModel)]="title" required> 
             </div>
           </div>
         </form>
@@ -62,18 +63,18 @@
               <br>
               <br>
               <select class="form-control" id="exampleFormControlSelect1" name="report" [(ngModel)]="report" (change)="onSelect($event.target.value)">
-                <option [hidden]="showReporterFlag">reporter</option>
-                <option [hidden]="showRecipientFlag">recipient</option>
-                <option [hidden]="showOtherFlag">other</option>
+                <option>reporter</option>
+                <option>recipient</option>
+                <option>other</option>
               </select>
             </div>
 
-            <div class="form-group column" style="padding: 30px;">
+            <div class="form-group column" style="padding: 30px;" [hidden]="selectShowFlag">
               <label style="font-weight: bold; font-size: 15px;" for="exampleFormControlSelect1">Reports To</label>
               <br>
               <br>
               
-              <select class="form-control" id="exampleFormControlSelect1" name="reports_to" [(ngModel)]="reports_to" [disabled]="selectShowFlag">
+              <select class="form-control" id="exampleFormControlSelect1" name="reports_to" [(ngModel)]="reports_to">
 
                   <option>Select</option>
                   <option *ngFor="let v of user_recipient_list" value= {{v.userid}}>{{ v.name }}</option>
@@ -195,7 +196,7 @@
               <label style="font-weight: bold; font-size: 15px;">Title</label>
               <br>
               <br>
-              <input type="text"  name="utitle" placeholder="title" [(ngModel)]="utitle" required (keyup)=onKeyEdit($event)> 
+              <input type="text"  name="utitle" placeholder="title" [(ngModel)]="utitle" required> 
             </div>
           </div>
         </form>
@@ -209,18 +210,18 @@
               <br>
               <br>
               <select class="form-control" id="exampleFormControlSelect1" name="ureport" [(ngModel)]="ureport" (change)="onSelectEdit($event.target.value)">
-                <option [hidden]="ushowReporterFlag">reporter</option>
-                <option [hidden]="ushowRecipientFlag">recipient</option>
-                <option [hidden]="ushowOtherFlag">other</option>
+                <option>reporter</option>
+                <option>recipient</option>
+                <option>other</option>
               </select>
             </div>
 
-            <div class="form-group column" style="padding: 30px;">
+            <div class="form-group column" style="padding: 30px;" [hidden]="selectShowFlag">
               <label style="font-weight: bold; font-size: 15px;" for="exampleFormControlSelect1">Reports To</label>
               <br>
               <br>
               
-              <select class="form-control" id="exampleFormControlSelect1" name="ureports_to" [(ngModel)]="ureports_to" [disabled]="selectShowFlag">
+              <select class="form-control" id="exampleFormControlSelect1" name="ureports_to" [(ngModel)]="ureports_to">
                   <option *ngFor="let p of user_recipient_list" [ngValue]= "p.userid">{{ p.name }}</option>
             
               </select>
@@ -238,7 +239,8 @@
     		</button>
   		</div>
 	</lsu-modal>
-	
+	        
+  </div>
 </div>
 
 

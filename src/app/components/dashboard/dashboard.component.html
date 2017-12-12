@@ -18,7 +18,9 @@
     <span class="mdl-layout-title" align="center">
       <img src="https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-simple-512.png" style="width: 90px;padding-top: 12px;padding-left: 0px;"/>
     </span>
-    <nav class="mdl-navigation" style="">
+
+    <!--Routing for Admin-->
+    <nav class="mdl-navigation" style="" [hidden]="!showAdminFlag">
       <a class="mdl-navigation__link" routerLink="/dashboard/Users" routerLinkActive="active">Users</a>
       <a class="mdl-navigation__link" routerLink="/dashboard/ListCompanies" routerLinkActive="active">Accounts</a>
       <a class="mdl-navigation__link" routerLink="/dashboard/OEM" routerLinkActive="active">OEMS</a>
@@ -26,6 +28,14 @@
       <a class="mdl-navigation__link" routerLink="/dashboard/Distributors" routerLinkActive="active">Distributors</a>
       <a class="mdl-navigation__link" routerLink="/dashboard/Products" routerLinkActive="active">Products</a>
       <a class="mdl-navigation__link" routerLink="/dashboard/Needlists" routerLinkActive="active">Need Lists</a>
+    </nav>
+
+    <!--Routing for Users-->
+    <nav class="mdl-navigation" style="" [hidden]="!showReportsFlag">
+      <a class="mdl-navigation__link" routerLink="/dashboard/MyLeads" routerLinkActive="active">My Leads</a>
+      <a class="mdl-navigation__link" routerLink="/dashboard/TeamLeads" routerLinkActive="active" *ngIf="report == 'recipient'">Team Leads</a>
+      <a class="mdl-navigation__link" routerLink="/dashboard/MyOpportunities" routerLinkActive="active">My Opportunities</a>
+      <a class="mdl-navigation__link" routerLink="/dashboard/TeamOpportunities" routerLinkActive="active" *ngIf="report == 'recipient'">Team Opportunities</a>
     </nav>
   </div>
 
@@ -35,6 +45,7 @@
   ">
     <div class="page-content" style="font-family: 'Marvel', sans-serif;">
       <!-- Your content goes here -->
+      <h1 [hidden]="!showOthersFlag">Check your access rights!!! No pages to show</h1>
       <router-outlet></router-outlet>
     </div>
   </main>

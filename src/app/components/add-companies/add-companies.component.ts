@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FirebaseService } from "../../services/firebase.service";
+import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
+import "rxjs/add/operator/takeWhile";
 
 @Component({
   selector: 'app-add-companies',
@@ -35,8 +37,13 @@ export class AddCompaniesComponent implements OnInit {
 
   created_at: Date;
   
+  uid: string;
+  ev: boolean = false;
 
-  constructor(private firebaseservice : FirebaseService, private route: Router) { 
+  alive: boolean = true;
+
+  constructor(private firebaseservice : FirebaseService, private route: Router,
+    private afAuth: AngularFireAuth) { 
   }
 
   ngOnInit() {
@@ -63,12 +70,52 @@ export class AddCompaniesComponent implements OnInit {
     this.contact_person_email = '';
 
     this.created_at = this.firebaseservice.created_at;
+
+    this.afAuth.authState
+    .takeWhile(() => this.alive)
+    .subscribe(data => {
+      if (data) {
+        this.uid = data.uid
+        this.firebaseservice.getUser(this.uid)
+        .takeWhile(() => this.alive)
+        .subscribe((v) => {
+          if (v.report == undefined)
+          {
+            v.report = '';
+          }
+
+          if (v.role == undefined)
+          {
+            v.role = '';
+          }
+
+          if (v.role.toUpperCase() == 'ADMIN')
+          {
+            return this.ev=true;
+          }
+          else
+          {
+            console.log('No access to this page');
+            alert('No access to this page');
+            return this.ev=false;
+          }
+        })
+      }
+      else {
+        console.log('No access to this page');
+        this.route.navigate(['login']);
+        return this.ev=false;
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.alive = false;
   }
 
   //Add customer and contact person. If success, navigate to List Companies
   add_contact_persons()
   {
-
     let addcustomer = {
           companyid: this.company_id,
           companyname: this.company_name,
@@ -83,7 +130,6 @@ export class AddCompaniesComponent implements OnInit {
           created_at: this.created_at
         };
 
-
     let contact_persons  = {
        contact_person_id: this.contact_person_id,
        contact_person_name: this.contact_person_name,
@@ -97,12 +143,10 @@ export class AddCompaniesComponent implements OnInit {
        created_at: this.created_at
      };
 
-     //console.log("contact_persons", contact_persons, addcustomer)
-
     return this.firebaseservice.addAccounts(addcustomer,contact_persons).then(success => 
       {
+        alert("Added successfully");
         this.route.navigate(['/dashboard/ListCompanies']);
-        //console.log("added")
       })
   }
 
@@ -121,9 +165,6 @@ export class AddCompaniesComponent implements OnInit {
     {
       this.industry_type = "";
     }
-  }
-
-  remove_contact_persons(){
   }
 
   //if there is no update and Cancel button is pressed, redirect to List companies page

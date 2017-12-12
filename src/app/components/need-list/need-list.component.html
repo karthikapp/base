@@ -1,4 +1,5 @@
 <div align="center">
+  <div *ngIf="ev">
 
 	<!--Modal for adding a new Need-->
 	<lsu-modal [(ngModel)]="addNeedlistModal_flag" [options]="modalOptions" align="center">
@@ -106,6 +107,6 @@
       			<i class="checkmark icon"></i>
     		</button>
   		</div>
-	</lsu-modal>
-	
+	 </lsu-modal>
+  </div>
 </div>

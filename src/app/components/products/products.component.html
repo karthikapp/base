@@ -1,4 +1,5 @@
 <div align="center">
+  <div *ngIf="ev">
 
 	<!--Modal for adding a new Product-->
 	<lsu-modal [(ngModel)]="addProductModal_flag" [options]="modalOptions" align="center">
@@ -125,6 +126,7 @@
     		</button>
   		</div>
 	</lsu-modal>
+ </div>
 	
 </div>
 

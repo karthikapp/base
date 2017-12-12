@@ -1,7 +1,7 @@
 <div class="container" align="center">
   <br>
-
 	<div class="ui main container" style="width: 100%;height: 100%;">
+    <div *ngIf="ev">
     	<div class="ui card" style="width: 90%;height: 100%;">
       		<div class="content">
         		<div class="ui container">
@@ -55,10 +55,6 @@
                 					<label for="exampleFormControlSelect1">Industry Type: </label>
                 					&nbsp;
                           {{industry_type}}
-                					<!--select class="form-control" id="exampleFormControlSelect1" name="industry_type" [(ngModel)]="industry_type" required>
-                  					<option>SMB</option>
-                  					<option>Enterprise</option>
-                					</select-->
               					</div>
           
               				  <!--Company Type-->
@@ -71,19 +67,9 @@
                   						<option>Ltd</option>
                 					</select>
               					</div>
-
               				</div>
               			</div>
               		</div>
-
-              		<!--Number of Employee-->
-            			<!--form class="ui form">
-              				<div class="field">
-                			<label>No. of Employees</label>
-                			<input type="text"  name="employee_count" placeholder="Employee Count" [(ngModel)]="employee_count" (keyup)=onKey($event)>
-              				</div>
-            			</form-->
-
 
             			<div class="ui fitted divider"></div>
                   <br>
@@ -228,17 +214,16 @@
                   <!-- Add contact persons-->
                   <i class="large material-icons icon-green" (click)="add_contact_persons()">add_box</i>
           			</table>
-            
                
                 <button class="ui teal button" [disabled]="editcompanybuttonshow()" (click)="save_contact_persons()">Save Company</button>
            
-              &nbsp;
-              <button class="ui red button" (click)="cancel_contact_persons()">Cancel</button>          
-  					
-            </div>
-				</div>
-			</div>
-		</div>
+                &nbsp;
+                <button class="ui red button" (click)="cancel_contact_persons()">Cancel</button>     		
+              </div>
+				    </div>
+			   </div>
+		  </div>
+    </div>
 	</div>
 </div>
 

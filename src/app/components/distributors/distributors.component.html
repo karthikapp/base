@@ -1,5 +1,6 @@
+
 <div align="center">
- 
+  <div *ngIf="ev">
 	<!--Modal for adding a new Distributor-->
 	<lsu-modal [(ngModel)]="addDistributorModal_flag" [options]="modalOptions" align="center">
   
@@ -105,6 +106,7 @@
     		</button>
   		</div>
 	</lsu-modal>
-	
+
+  </div>
 </div>
 

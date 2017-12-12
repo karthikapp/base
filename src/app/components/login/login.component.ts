@@ -1,28 +1,76 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FirebaseService } from "../../services/firebase.service";
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder,FormControl, Validators } from '@angular/forms';
+import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
+import "rxjs/add/operator/takeWhile";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
-email:string;
-password: string;
-users: user;
-//userCount: number;
+  email:string;
+  password: string;
+  users: user;
 
-form: FormGroup;
+  form: FormGroup;
+
+  uid: any;
+  ev: boolean = false;
+
+  alive: boolean = true;
+  alivepage: boolean = true;
 
   constructor(private firebaseservice : FirebaseService, private router: Router, 
-    private formBuilder: FormBuilder) { }
+    private formBuilder: FormBuilder,
+    private afAuth: AngularFireAuth) { }
 
   ngOnInit() 
   {
-    //this.userCount = null;
+    this.afAuth.authState
+    .takeWhile(() => this.alive)
+    .subscribe(data => {
+      if (data) {
+        this.uid = data.uid
+         
+        this.firebaseservice.getUser(this.uid)
+        .takeWhile(() => this.alive)
+        .subscribe((v) => {
+          if (v.report == undefined)
+          {
+            v.report = '';
+          }
+
+          if (v.role == undefined)
+          {
+            v.role = '';
+          }
+
+          if (v.role.toUpperCase() == 'ADMIN')
+          {      
+            this.router.navigate(['/dashboard/ListCompanies']);
+            return this.ev = true;
+          } else if (v.report.toUpperCase() == "REPORTER" 
+            || v.report.toUpperCase() == "RECIPIENT" 
+            || v.report.toUpperCase() == "OTHER") {
+            this.router.navigate(['/dashboard/MyLeads']);
+            return this.ev = true;
+          } else {
+            this.router.navigate(['login']);
+            return this.ev=false;
+          }
+        }) 
+      }
+      else
+      {
+        this.router.navigate(['login']);
+        return this.ev=false;
+      } 
+    })
+
     this.email = '';
     this.password = '';
 
@@ -33,85 +81,67 @@ form: FormGroup;
   }
 
   doLogin(){
-
-    this.firebaseservice.loginUser(this.form.value.email,this.form.value.password)
-            .then(user =>{
-              //console.log(user.uid);
-              //Use the uid in the login and get the userProfile info from '/user'
-              this.firebaseservice.getUser(user.uid).subscribe(
-                  users => { this.users = users;
-                  //console.log(users, this.users, this.users.role, this.users.email);
+   this.firebaseservice.loginUser(this.form.value.email,this.form.value.password)
+      .then(user =>{
+        //Use the uid in the login and get the userProfile info from '/user'
+        this.firebaseservice.getUser(user.uid)
+        .takeWhile(() => this.alivepage)
+        .subscribe(
+          users => {this.users = users;
                  
-                  //Check if the role is ADMIN, then navigate to dashbord
-                  //Else, error
-                  if(this.users.email != undefined) 
-                  {
-                    if(this.users.role != undefined) 
-                    {
-                      if (this.users.role.toUpperCase() == 'ADMIN') 
-                      {
-                        this.router.navigateByUrl('/dashboard/ListCompanies');
-                      }
-                      else 
-                      {
-                        alert ("Check your access rights!!!!");
-                      }
-                    }
-                    else{
-                      alert ("Check your access rights!!!!");
-                    }
-                  }
-                  else {
-                    alert ("UserProfile doesn't exist :-(");
-                  }
-                });
-              })
-            .catch( error => {
-              alert("Incorrect username/ password");
-            });
+          //Check if 
+          //1.role is ADMIN, then navigate to dashboard/ListCompanies
+          //2.report is reporter/recipient/others, then navigate to leads page
+          //Else, error
+          if(this.users.role == undefined)
+          {
+            this.users.role = '';
+          }
+          if (this.users.report == undefined)
+          {
+            this.users.report = '';
+          }
 
-    /*
-    //Get userProfile Information
-    this.firebaseservice.getUser(this.form.value.email).subscribe(
-      user => {
-      this.user = user;
-      this.userCount = Object.keys(this.user).length;
-      //console.log("C1", this.user, this.userCount);
+          if(this.users.email != undefined) 
+          {
+            if(this.users.role != '' || this.users.report != '') 
+            {
+              if (this.users.role.toUpperCase() == 'ADMIN') 
+              {
+                this.router.navigate(['/dashboard/ListCompanies']);
+              }
+              else if (this.users.report.toUpperCase() == "REPORTER" 
+                      || this.users.report.toUpperCase() == "RECIPIENT" 
+                      || this.users.report.toUpperCase() == "OTHER")
+              {
+                this.router.navigate(['/dashboard/MyLeads']);
+              }
+              else 
+              {
+                alert ("Check your access rights!!!!");
+              }
+            }
+            else{
+              alert ("Check your access rights!!!!");
+            }
+          }
+          else {
+            alert ("UserProfile doesn't exist :-(");
+          }
+        });
+      })
+      .catch( error => {
+        alert("Incorrect username/ password");
+    });
+  }
 
-    //Based on user's role, login happens only if he/she is an "ADMIN"
-    //1. User Profile doesn't exist in '/user'
-    //2. User Email has more than one user Profile in '/user'
-    //3. If user role is admin, it will login only when email and password is correct
-    //4. Else, set the role as adminstrator.
 
-      if (this.userCount == 0){
-        alert("No existing userProfile for this email id");
-        return '';
-      }
-      else if(this.userCount > 1){
-        alert("More users with same email id");
-        return '';
-      } 
-      else if(this.user[0].role != undefined) {
-        if (this.user[0].role.toUpperCase() == 'ADMIN') 
-        {
-          this.firebaseservice.loginUser(this.form.value.email,this.form.value.password)
-            .then(success =>{
-              this.router.navigate(['/dashboard/ListCompanies']);
-            })
-            .catch( error => {
-              alert("Incorrect username/ password");
-              //console.log(error);
-            });
-        }
-        else {
-          alert("Login as adminstrator");
-          return '';
-        }  
-      } 
-    });*/
+  ngOnDestroy() {
+    this.alive = false;
+    this.alivepage = false;
   }
 }
+
 
 export interface user {
   role?: string;

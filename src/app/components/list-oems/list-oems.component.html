@@ -1,5 +1,5 @@
 <div align="center">
-
+ <div *ngIf="ev">
   <!--Modal for adding a new OEM-->
   <lsu-modal [(ngModel)]="addOEMModal_flag" [options]="modalOptions" align="center">
   
@@ -108,6 +108,8 @@
     </div>
 
   </lsu-modal>
+
+ </div>
   
 </div>
 

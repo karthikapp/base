@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FirebaseService } from "../../services/firebase.service";
 import { Router } from '@angular/router'; 
+import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
+import "rxjs/add/operator/takeWhile";
 
 @Component({
   selector: 'app-list-companies',
@@ -13,25 +15,72 @@ export class ListCompaniesComponent implements OnInit, OnDestroy {
   querystring: string;
 
   totalCounts: number;
+  val: any;
+
+  uid: string;
+  ev: boolean = false;
 
   //initializing p to one for pagination pipe
   p: number = 1;
 
-  constructor(private firebaseservice : FirebaseService, private router: Router) { 
+  alive: boolean = true;
+
+  constructor(private firebaseservice : FirebaseService, private router: Router, private afAuth: AngularFireAuth) { 
   }
 
   ngOnInit() 
   {
-    //List of companies/accounts
-  	this.firebaseservice.getAccounts().subscribe(
-      accounts => {	
-  		      this.accounts = accounts;
-            this.totalCounts = Object.keys(this.accounts).length;
-      }) 
+    //Get current user details
+    this.afAuth.authState
+    .takeWhile(() => this.alive)
+    .subscribe(data => {
+       if (data) {
+         this.uid = data.uid
+         console.log("email",this.uid)
+         
+         this.firebaseservice.getUser(this.uid)
+         .takeWhile(() => this.alive)
+         .subscribe((v) => {
+            if (v.report == undefined)
+            {
+                v.report = '';
+            }
+
+            if (v.role == undefined)
+            {
+              v.role = '';
+            }
+
+            if (v.role.toUpperCase() == 'ADMIN')
+            {
+              //List of companies/accounts
+              this.firebaseservice.getAccounts()
+              .takeWhile(() => this.alive)
+              .subscribe(
+                accounts => {  
+                  this.accounts = accounts;
+                  this.totalCounts = Object.keys(this.accounts).length;
+                  return this.ev=true;
+              }) 
+            }
+            else
+            {
+              console.log('No access to this page');
+              alert('No access to this page');
+              return this.ev=false;
+            }
+         })
+       }
+       else{
+            console.log('No access to this page');
+            this.router.navigate(['login']);
+            return this.ev=false;
+       }
+     });
   }
 
   ngOnDestroy() {
-
+    this.alive = false;
   }
 
   //Display the count of Contact Persons 
@@ -52,7 +101,7 @@ export class ListCompaniesComponent implements OnInit, OnDestroy {
   //To edit an Account, navigate to EditCompanies Page with companyid
   on_edit_account(companyid){
     //console.log('companyid',companyid);
-    this.router.navigate(['/dashboard/EditCompanies/:companyid',{'companyid': companyid}]);
+    this.router.navigate(['/dashboard/EditCompanies/:companyid',{'companyid': companyid, skipLocationChange: true}]);
   }
 
   //Delete a particular account by sending companyid

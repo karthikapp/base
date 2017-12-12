@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy} from '@angular/core';
 import { FirebaseService } from "../../services/firebase.service";
 import { Router } from '@angular/router';
+import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
+import "rxjs/add/operator/takeWhile";
 
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.css']
 })
-export class ProductsComponent implements OnInit {
+export class ProductsComponent implements OnInit, OnDestroy {
   products: any;
   Product_name: string;
   Brand: string;
@@ -26,11 +28,16 @@ export class ProductsComponent implements OnInit {
 
   querystring: string;
 
+  uid: string;
+  ev: boolean = false;
+  alive: boolean = true;
+  alivepage: boolean = true;
+
   //initializing p to one for pagination pipe
   p: number = 1;
   
   constructor(private firebaseservice : FirebaseService, 
-    private router: Router) 
+    private router: Router, private afAuth: AngularFireAuth) 
   { 
     this.modalOptions = 
     {
@@ -47,12 +54,59 @@ export class ProductsComponent implements OnInit {
   ngOnInit() 
   {
   	//List of Products
-  	return this.firebaseservice.getProducts().subscribe(products => {	
-  		      this.products = products;
-            //console.log(products);
-    })
+  	
+
+    this.afAuth.authState
+    .takeWhile(() => this.alive)
+    .subscribe(data => {
+       if (data) {
+         this.uid = data.uid
+         console.log("email",this.uid)
+         
+         this.firebaseservice.getUser(this.uid)
+         .takeWhile(() => this.alive)
+         .subscribe((v) => {
+            if (v.report == undefined)
+            {
+                v.report = '';
+            }
+
+            if (v.role == undefined)
+            {
+              v.role = '';
+            }
+
+            if (v.role.toUpperCase() == 'ADMIN')
+            {
+              this.firebaseservice.getProducts()
+              .takeWhile(() => this.alive)
+              .subscribe(products => {  
+              this.products = products;
+              //console.log(products);
+              return this.ev = true;
+            })
+
+            }
+            else
+            {
+              console.log('No access to this page');
+              alert('No access to this page');
+              return this.ev=false;
+            }
+         })
+       }
+       else{
+            console.log('No access to this page');
+            this.router.navigate(['login']);
+            return this.ev=false;
+       }
+     });
   }
 
+  ngOnDestroy() {
+    this.alive = false;
+    this.alivepage = false;
+  }
   //Add a new Product
   on_add_product(){
   	//console.log("add");
@@ -97,7 +151,9 @@ export class ProductsComponent implements OnInit {
 
   editProductModal(productkey: string){
     //console.log(productkey);
-    this.firebaseservice.getProduct(productkey).subscribe(product => {
+    this.firebaseservice.getProduct(productkey)
+    .takeWhile(() => this.alivepage)
+    .subscribe(product => {
     this.productname = product.Product_name;
     this.brands = product.Brand;
     this.productkey = product.productkey})
@@ -124,4 +180,6 @@ export class ProductsComponent implements OnInit {
     this.editProductsModal();
   }
 //END MODALS
+
+
 }

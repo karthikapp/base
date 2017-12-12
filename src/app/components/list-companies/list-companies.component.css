@@ -37,3 +37,11 @@
 font-family: 'Marvel', sans-serif; text-transform: capitalize;
 }
 
+.labelspec {
+    color: inherit;
+    display: block;
+    font-size: 1em;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
+}

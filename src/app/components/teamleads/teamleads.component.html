@@ -1,0 +1,124 @@
+<div class ="main">
+  <div id="" style="overflow-y: scroll;height: 100%; width:100%;">
+
+    <div *ngIf="ev">
+    
+      <!--Search button with expandable holder-->
+      <div appMzterialDesignLite style="float:right; color: white;">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+          <label class="mdl-button mdl-js-button mdl-button--icon" for="site-search">
+            <i class="material-icons">search</i>
+          </label>
+          <div class="mdl-textfield__expandable-holder">
+            <input class="mdl-textfield__input" type="search" id="site-search" name="site-search" placeholder="Company Name" [(ngModel)] ="querystring" />
+            <label class="mdl-textfield__label" for="site-search">Search</label>
+          </div>
+        </div>
+      </div>
+
+      <br> 
+      <br>
+      <br>
+      <br>
+
+      <!-- Wide card with Edit and Delete button -->
+      <div class="ui stackable two column grid">
+        <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand" 
+        *ngFor="let lead of leads | filterrecords: querystring : 'teamleads' | sortorder | paginate: { itemsPerPage: 4, currentPage: p }">
+
+          <!--Lead Title-->
+          <div class="mdl-card__title">
+            <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.8vw;font-weight: bold;" [routerLink]="['/dashboard/LeadDetail', lead.$key]"
+               >
+              {{lead.lead_title}}  
+            </a>
+          </div>
+
+          <div class="ui stackable two column grid">
+            <!--Company Name & Created Date -->
+            <div class= "column">
+              <p style="font-size: 12px;"> 
+                {{lead.company_name}}
+                <br>
+                {{lead.created_at| date: 'medium' }}
+              </p>
+            </div>
+
+            <div class ="column">
+              <div class="ui mini grey statistic">
+                <div class="value" style="text-transform: uppercase;">
+                  {{getleadapprovalstatus(lead.leadstatus)}}
+                </div>
+
+                <div class="label" style="color: black; font-size: 15px;text-align: center;">
+                  Status
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Lead Source, Activities, Contacts and  Product value-->
+          <div class="ui divider"></div>
+            <div class="ui stackable four column grid">
+              <div class="column">
+              
+                <span style="color: black; font-size: 10px;text-align: center;">LEAD SOURCE</span>
+                <br>
+                <a class="ui black label" align="center">
+                  {{leadsourcelabel(lead.leadsource)}}
+                </a>
+            
+                <p *ngIf="lead.leadsource == 'oem'" style="font-size: 12px; padding: 5px">
+                  {{lead.oem_name}}
+                </p>
+                <p *ngIf="lead.leadsource == 'distributor'" style="font-size: 12px; padding: 5px">
+                  {{lead.distributor_name}}
+                </p>
+                <p *ngIf="lead.leadsource == 'event'" style="font-size: 12px; padding: 5px">
+                  {{lead.event_name}}
+                </p>
+              </div>
+             
+              <div class="column" >
+                <div class="ui tiny blue statistic">
+                <br>
+                  <app-getproductssum class="value" style="font-size: 5px; font-weight: bold;" [products]="lead.products_list" ></app-getproductssum>
+                  <div class="label" style="color: black; font-size: 10px;text-align: center;">VALUE</div>
+                </div>
+              </div>
+
+              <div class="column" >
+                <div class="ui tiny black statistic">
+                <br>
+                  <div class="value" style="font-size: 5px; font-weight: bold;">
+                      {{getnooffollowups(lead.activities)}}
+                  </div>
+                 
+                  <div class="label" style="color: black; font-size: 10px;text-align: center;">ACTIVITIES</div>
+                </div>
+              </div>
+     
+              <div class="column">
+                <div class="ui tiny black statistic">
+                <br>
+                  <app-getcompanycontacts class="value" style="font-size: 5px; font-weight: bold;" [companyid]="lead.company_id"></app-getcompanycontacts>
+                  <div class="label" style="color: black; font-size: 10px;text-align: center;">CONTACTS</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      <!--Pagination-->
+      <br>
+             
+      <div class="ui item" style="color: white; background-color: #eee; float:right; border-radius: 5px;">
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </div>
+      <br>
+      <br>
+
+    </div>
+  </div>
+</div>

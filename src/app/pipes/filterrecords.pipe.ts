@@ -50,6 +50,14 @@ export class FilterrecordsPipe implements PipeTransform {
       return value.filter( values => {
        return values.name.toLowerCase().indexOf(input.toLowerCase()) > -1;
       })
+    } else if ((value != null || value != undefined) && ip1 == 'leads'){
+      return value.filter( values => {
+       return values.lead_title.toLowerCase().indexOf(input.toLowerCase()) > -1;
+      })
+    } else if ((value != null || value != undefined) && ip1 == 'teamleads'){
+      return value.filter( values => {
+       return values.lead_title.toLowerCase().indexOf(input.toLowerCase()) > -1;
+      })
     }
   } 
 }

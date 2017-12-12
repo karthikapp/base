@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FirebaseService } from "../../services/firebase.service";
 import { Router, ActivatedRoute } from '@angular/router';
 import { Users } from "../../models/users";
+import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
+import "rxjs/add/operator/takeWhile";
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.css']
 })
-export class UsersComponent implements OnInit {
+export class UsersComponent implements OnInit, OnDestroy {
 
   users: Users[];
   name: string;
@@ -42,19 +44,19 @@ export class UsersComponent implements OnInit {
   querystring: string;
 
   selectShowFlag: boolean = false;
-  showReporterFlag: boolean = false;
-  showRecipientFlag: boolean = false;
-  showOtherFlag: boolean = false;
+  usernameReport: string;
+  
+  alive: boolean = true;
+  alivepage: boolean = true;
 
-  ushowReporterFlag: boolean = false;
-  ushowRecipientFlag: boolean = false;
-  ushowOtherFlag: boolean = false;
+  uid: string;
+  ev: boolean = false;
 
   //initializing p to one for pagination pipe
   p: number = 1;
   
   constructor(private firebaseservice : FirebaseService, 
-    private router: Router) 
+    private router: Router, private afAuth: AngularFireAuth) 
   { 
     this.modalOptions = 
     {
@@ -78,10 +80,55 @@ export class UsersComponent implements OnInit {
   ngOnInit() 
   {
   	//List of Users
-  	return this.firebaseservice.getUsers().subscribe(users => {	
-  		this.users = users;
-        //console.log(users);
-    })
+    this.afAuth.authState
+    .takeWhile(() => this.alive)
+    .subscribe(data => {
+       if (data) {
+         this.uid = data.uid
+         console.log("email",this.uid)
+         
+         this.firebaseservice.getUser(this.uid)
+         .takeWhile(() => this.alive)
+         .subscribe((v) => {
+            if (v.report == undefined)
+            {
+                v.report = '';
+            }
+
+            if (v.role == undefined)
+            {
+              v.role = '';
+            }
+
+            if (v.role.toUpperCase() == 'ADMIN')
+            {
+              this.firebaseservice.getUsers()
+              .takeWhile(() => this.alive)
+              .subscribe(users => {  
+              this.users = users;
+              //console.log(users);
+              return this.ev=true;
+            }) 
+          }
+            else
+            {
+              console.log('No access to this page');
+              alert('No access to this page');
+              return this.ev=false;
+            }
+         })
+       }
+       else{
+            console.log('No access to this page');
+            this.router.navigate(['login']);
+            return this.ev=false;
+       }
+     });
+  }
+
+  ngOnDestroy() {
+    this.alive = false;
+    this.alivepage = false;
   }
 
   //List Reports_To as name
@@ -93,7 +140,8 @@ export class UsersComponent implements OnInit {
       
       })
       .map(user => {
-        return user.name});    
+        this.usernameReport = user.name + ' - ' + user.email;
+        return this.usernameReport});    
      }
      else{
        return '';
@@ -155,30 +203,6 @@ export class UsersComponent implements OnInit {
     this.addUserModal_flag = true;
   }
 
-  //Set report based on Title on Add User Modal
-  //1. Sales Executive == Reporter
-  //2. Sales Manager == Recipient
-  //3. All == Others
-  onKey(event: KeyboardEvent): void{
-    console.log("onkey",this.title, this.report);
-    if (this.title =="sales executive"){
-      this.report = "reporter"
-      this.showRecipientFlag = true;
-      this.showReporterFlag = false;
-      this.showOtherFlag = false;
-    } else if (this.title =="sales manager"){
-      this.report = "recipient";
-      this.showReporterFlag = true;
-      this.showRecipientFlag = false;
-      this.showOtherFlag = false;
-    } else {
-      this.report = "other"
-      this.showReporterFlag = false;
-      this.showRecipientFlag = false;
-      this.showOtherFlag = false;
-    }
-  }
-
   //Set reports To based on report on Add User Modal
   //1. Reporter == Show reports To of all the recipients available
   //2. Else no show off reports To
@@ -205,7 +229,9 @@ export class UsersComponent implements OnInit {
   }
 
   editUserModal(userid: string){
-    this.firebaseservice.getUser(userid).subscribe(user => {
+    this.firebaseservice.getUser(userid)
+    .takeWhile(() => this.alivepage)
+    .subscribe(user => {
     this.uname = user.name;
     this.utitle = user.title;
     this.urole = user.role;
@@ -237,28 +263,6 @@ export class UsersComponent implements OnInit {
     }
   }
 
-  //Set report based on Title on Edit User Modal
-  //1. Sales Executive == Reporter
-  //2. Sales Manager == Recipient
-  //3. All == Others
-  onKeyEdit(event: KeyboardEvent): void{
-    if (this.utitle =="sales executive"){
-      this.ureport = "reporter"
-      this.ushowRecipientFlag = true;
-      this.ushowReporterFlag = false;
-      this.ushowOtherFlag = false;
-    } else if (this.utitle =="sales manager"){
-      this.ureport = "recipient";
-      this.ushowReporterFlag = true;
-      this.ushowRecipientFlag = false;
-      this.ushowOtherFlag = false;
-    } else {
-      this.ureport = "other"
-      this.ushowReporterFlag = false;
-      this.ushowRecipientFlag = false;
-      this.ushowOtherFlag = false;
-    }
-  }
 
   //Set report based on Title on Edit User Modal
   //1. Sales Executive == Reporter

@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FirebaseService } from "../../services/firebase.service";
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
+import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
+import "rxjs/add/operator/takeWhile";
 
 @Component({
   selector: 'app-editcompanies',
   templateUrl: './editcompanies.component.html',
   styleUrls: ['./editcompanies.component.css']
 })
-export class EditcompaniesComponent implements OnInit {
+export class EditcompaniesComponent implements OnInit, OnDestroy {
 
 	account: any;
 	companyname: string;
@@ -51,7 +53,13 @@ export class EditcompaniesComponent implements OnInit {
   created_at: Date
   }[] = [];  
 
-  constructor(private firebaseservice : FirebaseService, private router: ActivatedRoute, private route: Router) { 
+  uid: string;
+  ev: boolean = false;
+
+  alive: boolean = true;
+
+  constructor(private firebaseservice : FirebaseService, private router: ActivatedRoute, 
+    private route: Router, private afAuth: AngularFireAuth) { 
   }
 
   ngOnInit() {
@@ -61,21 +69,66 @@ export class EditcompaniesComponent implements OnInit {
 
     //Display the company detail based on company id on respective fields
   	this.company_id = this.router.snapshot.params['companyid'];
-    
-  	this.firebaseservice.getAccount(this.company_id).subscribe(account => {    
-      this.companyname = account[0].companyname;
-      this.company_type = account[0].companytype;
-      this.industry_type = account[0].industrytype;
-      this.company_address_line1 = account[0].company_address_line1;
-      this.company_address_line2 = account[0].company_address_line2;
-      this.company_address_area = account[0].company_address_area;
-      this.company_address_state = account[0].company_address_state;
-      this.company_address_pincode = account[0].company_address_pincode;
-      this.employee_count = account[0].employee_count;
-      this.company_id = account[0].companyid;
 
-      this.contact_persons = account[0].contact_persons;
-  });
+    this.afAuth.authState
+    .takeWhile(() => this.alive)
+    .subscribe(data => {
+       if (data) {
+        this.uid = data.uid
+
+        this.firebaseservice.getUser(this.uid)
+        .takeWhile(() => this.alive)
+        .subscribe((v) => {
+            if (v.report == undefined)
+            {
+                v.report = '';
+            }
+
+            if (v.role == undefined)
+            {
+              v.role = '';
+            }
+
+            if (v.role.toUpperCase() == 'ADMIN')
+            {
+              this.firebaseservice.getAccount(this.company_id)
+              .takeWhile(() => this.alive)
+              .subscribe(account => {    
+                this.companyname = account[0].companyname;
+                this.company_type = account[0].companytype;
+                this.industry_type = account[0].industrytype;
+                this.company_address_line1 = account[0].company_address_line1;
+                this.company_address_line2 = account[0].company_address_line2;
+                this.company_address_area = account[0].company_address_area;
+                this.company_address_state = account[0].company_address_state;
+                this.company_address_pincode = account[0].company_address_pincode;
+                this.employee_count = account[0].employee_count;
+                this.company_id = account[0].companyid;
+
+                this.contact_persons = account[0].contact_persons;
+
+                return this.ev=true;
+            });
+              
+            }
+            else
+            {
+              console.log('No access to this page');
+              alert('No access to this page');
+              return this.ev=false;
+            }
+          })
+        }
+        else {
+              console.log('No access to this page');
+              this.route.navigate(['login']);
+              return this.ev=false;
+            }
+        });
+  }
+
+  ngOnDestroy() {
+    this.alive = false;
   }
   
   //Set industry type based on employee count

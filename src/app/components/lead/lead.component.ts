@@ -1,6 +1,8 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit,  OnDestroy } from '@angular/core';
 import { FirebaseService } from "../../services/firebase.service";
 import { Router, ActivatedRoute } from '@angular/router';
+import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
+import "rxjs/add/operator/takeWhile";
 
 @Component({
   selector: 'app-lead',
@@ -9,84 +11,133 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class LeadComponent implements OnInit, OnDestroy {
   leads: any;
-  oppo: any;
-  activities:any;
-  company_id: string;
-  company_name: string;
-  acct: any[];
-  cp: any[];
+  
+  uid: string;
+  ev: boolean = false;
 
-  isOpen : boolean = false;
-  oppoOpen : boolean = false;
+  alive: boolean = true;
 
-  constructor(private firebaseservice : FirebaseService, private router: ActivatedRoute, 
-    private route: Router) { }
+  leadlabel: string;
+  followupno: any;
 
-  ngOnInit() {
-  	//Router parameters
-  	this.company_id = this.router.snapshot.params['companyid'];
-  	this.company_name = this.router.snapshot.params['companyname'];
+
+  constructor(private firebaseservice : FirebaseService, 
+    private router: Router, private afAuth: AngularFireAuth) { }
+
+  ngOnInit() {  	
   	this.leads = ''; 
-    this.oppo = '';
-
-    this.firebaseservice.getAccount(this.company_id).subscribe(acct => {
-      this.acct = acct;
-      this.cp = acct[0].contact_persons;
-      //console.log(this.acct,this.cp);
-    })
-    
-  	this.showLeadActivities();
-    this.showOppoActivities();
-  }
-
-  ngOnDestroy(){
-
-  }
 
   //Leads list
-  showLeadActivities(){
-  	 //List of Leads
-  	 this.firebaseservice.getLeads(this.company_id).subscribe(leads => {
-  	 		this.leads = leads;
-        //console.log(this.leads);
-        })
+    this.afAuth.authState
+    .takeWhile(() => this.alive)
+    .subscribe(data => {
+       if (data) {
+         this.uid = data.uid
+         
+         this.firebaseservice.getUser(this.uid)
+          .takeWhile(() => this.alive)
+          .subscribe((v) => {
+            if (v.report == undefined)
+            {
+                v.report = '';
+            }
+
+            if (v.role == undefined)
+            {
+              v.role = '';
+            }
+
+            if (v.report.toUpperCase() == 'REPORTER'
+              || v.report.toUpperCase() == 'RECIPIENT')
+            {
+              this.firebaseservice.getLeadsByID(this.uid)
+              .takeWhile(() => this.alive)
+              .subscribe(lead => {
+              this.leads = lead.filter(v => {
+              return v.leadstatus != 'Qualified'})
+              console.log(this.leads);
+            }) 
+              return this.ev = true;
+            }
+            else
+            {
+              console.log('No access to this page choco');
+              alert('No access to this page');
+              return this.ev=false;
+            }
+         })
+       }
+       else{
+            console.log('No access to this page m&m');
+            this.router.navigate(['login']);
+            return this.ev=false;
+       }
+     });
   }
 
-  //Accordion - show and hide for leads
-  closeAllLeads(): void {
-    this.leads.forEach((lead) => {
-      lead.isOpen = false;
-    });
-  }
-
-  showContent(lead) {
-    if (!lead.isOpen) {
-      this.closeAllLeads();
+  // lead source label 
+  leadsourcelabel(leadsource: String){
+    if (String(leadsource) == "inbound-landline"){
+        this.leadlabel = "INBOUND LANDLINE"
     }
-    lead.isOpen = !lead.isOpen;
-  }
 
-  //Opportunities List
-  showOppoActivities(){
-         //List of Opportunities
-     this.firebaseservice.getOpportunities(this.company_id).subscribe(oppo => {
-         this.oppo = oppo;
-        //console.log(this.oppo);
-        })
-  }
-
-  //Accordion - show and hide for opportunities
-  closeAlloppo(): void {
-    this.oppo.forEach((oppo) => {
-      oppo.oppoOpen = false;
-    });
-  }
-
-  showContentOppo(oppo) {
-    if (!oppo.oppoOpen) {
-      this.closeAlloppo();
+    else if (String(leadsource) == "event"){
+      this.leadlabel = "EVENT"
     }
-    oppo.oppoOpen = !oppo.oppoOpen;
+    else if (String(leadsource) == "distributor"){
+      this.leadlabel = "DISTRIBUTOR"
+    }
+
+    else if (String(leadsource) == "oem")
+    {
+      this.leadlabel = "OEM"
+    }
+
+     else if (String(leadsource) == "outboundcall")
+    {
+      this.leadlabel = "OUTBOUND CALL"
+    }
+
+     else if (String(leadsource) == "onsite")
+    {
+      this.leadlabel = "ON SITE VISIT"
+    }
+
+    return this.leadlabel
+
+  }
+
+  getnooffollowups(leadactivities) {
+     if (leadactivities == undefined){
+       this.followupno = "None"
+       return this.followupno
+     }
+     else {
+       this.followupno = Object.keys(leadactivities).length
+       // console.log(this.followupno)
+      return  this.followupno
+     }
+   }
+
+  getleadapprovalstatus(state) {
+
+     if (state == "Qualified-awaiting-presales")
+     {
+       return "AWAITING PRESALES"
+     }
+     else if (state == "Qualified-awaiting-manager")
+      {
+        return "AWAITING MANAGER APPROVAL"
+      }
+      else if (state == "Rejected")
+      {
+        return "Rejected"
+      }
+
+   }
+
+  ngOnDestroy() {
+    this.alive = false;
   }
 
 }

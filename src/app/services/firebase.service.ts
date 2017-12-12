@@ -396,12 +396,31 @@ export class FirebaseService {
 //END NEED_LIST
 
 //START Leads and Opportunities
-	//LEADS
+	//LEADS based on company id
 	getLeads(company_id: string){
 		return this.af.list('/leads',{ query: {
 			orderByChild : 'company_id',
 			equalTo: company_id
 		} })
+	}
+
+
+	//Get Leads based on user id
+	getLeadsByID(userid: string){
+		return this.af.list('/leads', { query: {
+			orderByChild: 'assigned_to',
+			equalTo: String(userid)
+		} 
+	});
+	}
+
+	//Get Leads based on REPORTS TO person information
+	getLeadsByreporttoID(userid: string){
+		return this.af.list('/leads', { query: {
+			orderByChild: 'reports_to',
+			equalTo: String(userid)
+		} 
+	});
 	}
 
 	//OPPORTUNITIES
@@ -410,6 +429,15 @@ export class FirebaseService {
 			orderByChild : 'company_id',
 			equalTo: company_id
 		} })
+	}
+
+	//Get Opportunities based on user id
+	getOpportunitiesByID(userid: string){
+		return this.af.list('/opportunities', { query: {
+			orderByChild: 'opportunity_assignedto',
+			equalTo: String(userid)
+		} 
+	});
 	}
 //END Leads and Opportunities
 
@@ -442,14 +470,8 @@ export class FirebaseService {
     //get single User Profile Info 
 	getUser(uid: string){
 		var userURLs = '/user/' + uid;
-		console.log('fb',userURLs);
+		//console.log('fb',userURLs);
 		return this.af.object(userURLs);
-
-		/*this.user = this.af.list('/user',{ query: {
-			orderByChild : 'email',
-			equalTo: email
-		}})
-		return this.user;*/
 	}
 
 	//get list of User Profile Info
@@ -479,7 +501,7 @@ export class FirebaseService {
 
 	//Delete a User
 	deleteUser(uid: string){
-		console.log("fb11",uid);
+		//console.log("fb11",uid);
 		var userlist_URL = "/user/" + uid;
 		this.af.list(userlist_URL).remove();
 	}
