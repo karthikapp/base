@@ -6,6 +6,8 @@ import { ModuleWithProviders }  from '@angular/core';
 
 import { L_SEMANTIC_UI_MODULE, TAB_DIRECTIVES } from 'angular2-semantic-ui'; // <-- Semantic Module
 import { NgxPaginationModule } from 'ngx-pagination'; // <-- pagination module
+import { MomentModule } from 'angular2-moment'; // <-- Date & time Format
+import { HttpModule } from '@angular/http';
 
 //Firebase Modules
 import { FirebaseService} from "./services/firebase.service";
@@ -43,11 +45,24 @@ import { OppodetailComponent } from './components/oppodetail/oppodetail.componen
 import { SortorderPipe } from './pipes/sortorder.pipe';
 import { ContactpersonsPipe } from './pipes/contactpersons.pipe';
 import { FilterrecordsPipe } from './pipes/filterrecords.pipe';
+import { NeedlistnamesPipe } from './pipes/needlistnames.pipe';
+import { CompetitornamesPipe } from './pipes/competitornames.pipe';
 
 //Directive for MDL
 import { MzterialDesignLiteDirective } from './directives/mzterial-design-lite.directive';
 import { GetproductssumComponent } from './components/getproductssum/getproductssum.component';
 import { GetcompanycontactsComponent } from './components/getcompanycontacts/getcompanycontacts.component';
+import { ViewqualifiedleadsComponent } from './components/viewqualifiedleads/viewqualifiedleads.component';
+import { ViewpresalesComponent } from './components/viewpresales/viewpresales.component';
+import { BudgetarypriceComponent } from './components/budgetaryprice/budgetaryprice.component';
+import { ViewbomComponent } from './components/viewbom/viewbom.component';
+import { ViewpocComponent } from './components/viewpoc/viewpoc.component';
+import { ViewproposalComponent } from './components/viewproposal/viewproposal.component';
+import { ViewnegoComponent } from './components/viewnego/viewnego.component';
+import { CasewonComponent } from './components/casewon/casewon.component';
+import { CaselostComponent } from './components/caselost/caselost.component';
+import { ReversegeocoderComponent } from './components/reversegeocoder/reversegeocoder.component';
+
 
 
 const appRoutes: Routes = [
@@ -100,9 +115,21 @@ const appRoutes: Routes = [
     SortorderPipe,
     FilterrecordsPipe,
     ContactpersonsPipe,
+    NeedlistnamesPipe,
+    CompetitornamesPipe,
     MzterialDesignLiteDirective,
     GetproductssumComponent,
-    GetcompanycontactsComponent
+    GetcompanycontactsComponent,
+    ViewqualifiedleadsComponent,
+    ViewpresalesComponent,
+    BudgetarypriceComponent,
+    ViewbomComponent,
+    ViewpocComponent,
+    ViewproposalComponent,
+    ViewnegoComponent,
+    CasewonComponent,
+    CaselostComponent,
+    ReversegeocoderComponent
   ],
   imports: [
     BrowserModule ,
@@ -115,7 +142,9 @@ const appRoutes: Routes = [
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     L_SEMANTIC_UI_MODULE,
-    NgxPaginationModule
+    NgxPaginationModule,
+    MomentModule,
+    HttpModule
   ],
   providers: [FirebaseService],
   bootstrap: [AppComponent]

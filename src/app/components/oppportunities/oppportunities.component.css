@@ -2,9 +2,12 @@
 	padding:20px 30px 10px 30px;
 }
 
+.mdl-card{
+  min-height: 170px;
+}
+
 .wide-card.mdl-card {
   width: 230px;
-  height: 75px;
 }
 .demo-card-wide > .mdl-card__title {
   color: #fff;

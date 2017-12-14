@@ -136,7 +136,7 @@
             <td class="mdl-data-table__cell--non-numeric">{{user.role}}</td>
             <td class="mdl-data-table__cell--non-numeric">{{user.title}}</td>
             <td class="mdl-data-table__cell--non-numeric">{{user.report}}</td>
-            <td class="mdl-data-table__cell--non-numeric">{{onListReportsTo(user.reports_to)}}</td>
+            <td class="mdl-data-table__cell--non-numeric">{{onListReportsTo(user.reports_to, user.report)}}</td>
 		    		<td>
 		    			<a (click)="editUserModal(user.userid)">
 		    				<i class="material-icons">edit</i>

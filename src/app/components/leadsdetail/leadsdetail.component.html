@@ -1,3 +1,192 @@
-<p>
-  leadsdetail works!
-</p>
+<div class ="main">
+  <div id="" style="overflow-y: scroll;height: 100%; width:100%;">
+
+    <div *ngIf="ev">
+
+      <!-- Lead Title at the top center-->
+      <div align="center">
+    <a class="ui massive label" style="font-weight: bolder; background-color: white; color: #673AB7;
+    " > {{lead_title}} </a> 
+  </div>
+    <br>
+    
+      <!-- Wide card with Edit and Delete button -->
+      <div class="ui stackable two column grid">
+
+        <!--Card 1-->
+        <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand" >
+
+        <!--Company Name & Created Date -->
+
+          <div class="ui stackable two column grid">
+            <div class = "column">
+              <br>
+              <p style="font-size: 12px;"> 
+                {{company_name}}
+                <br>
+                {{created_at| date: 'medium' }}
+              </p>
+            </div>
+
+            <div class ="column">
+              <div class="ui mini grey statistic">
+                <br>
+                <div class="value" style="text-transform: uppercase;">
+                  {{getleadapprovalstatus(leadstatus)}}
+                </div>
+
+                <div class="label" style="color: black; font-size: 15px;text-align: center;">
+                  Status
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Lead Source, Activities, Contacts and  Product value-->
+          <div class="ui divider"></div>
+            <div class="ui stackable four column grid">
+              <div class="column">
+              
+                <span style="color: black; font-size: 10px;text-align: center;">LEAD SOURCE</span>
+                <br>
+                <a class="ui black label" align="center">
+                  {{leadsourcelabel(leadsource)}}
+                </a>
+            
+                <p *ngIf="leadsource == 'oem'" style="font-size: 12px; padding: 5px">
+                  {{oem_name}}
+                </p>
+                <p *ngIf="leadsource == 'distributor'" style="font-size: 12px; padding: 5px">
+                  {{distributor_name}}
+                </p>
+                <p *ngIf="leadsource == 'event'" style="font-size: 12px; padding: 5px">
+                  {{event_name}}
+                </p>
+              </div>
+             
+              <div class="column" >
+                <div class="ui tiny blue statistic">
+                <br>
+                  <app-getproductssum class="value" style="font-size: 5px; font-weight: bold;" [products]="products_list" ></app-getproductssum>
+                  <div class="label" style="color: black; font-size: 10px;text-align: center;">VALUE</div>
+                </div>
+              </div>
+
+              <div class="column" >
+                <div class="ui tiny black statistic">
+                <br>
+                  <div class="value" style="font-size: 5px; font-weight: bold;">
+                      {{getnooffollowups(activities)}}
+                  </div>
+                 
+                  <div class="label" style="color: black; font-size: 10px;text-align: center;">ACTIVITIES</div>
+                </div>
+              </div>
+     
+              <div class="column">
+                <div class="ui tiny black statistic">
+                <br>
+                  <app-getcompanycontacts class="value" style="font-size: 5px; font-weight: bold;" [companyid]="company_id"></app-getcompanycontacts>
+                  <div class="label" style="color: black; font-size: 10px;text-align: center;">CONTACTS</div>
+                </div>
+              </div>
+
+            </div>
+
+
+            <div class="ui divider"></div>
+
+            <div class="ui stackable two column grid">
+              <div class="column">
+                <div class="labelspec" style="color: black; font-size: 10px;">PRODUCTS</div>
+            
+                <div class="ui blue tag label" style="font-size: 12px; margin-top: 2px;margin-bottom: 2px" *ngFor = "let prod of products_list | contactpersons"> 
+                {{ prod.product_name }},
+                {{ prod.productqty}}
+                </div>
+              </div>
+              <div class="column">
+
+                <div class="labelspec" style="color: black; font-size: 10px;">NEED LIST</div>
+                <div class="ui red tag label" style="font-size: 12px; margin-top: 2px;margin-bottom: 2px" *ngFor = "let nd of needlist | needlistnames "> 
+                  {{nd.need_name }} &nbsp;
+                </div>
+              </div>
+            </div> 
+
+            <div align="center">
+            <div class="ui divider"></div>
+              <div class="labelspec" style="color: black; font-size: 10px;">COMPETITORS LIST</div>
+            
+              <div class="ui black label" style="font-size: 12px; margin-top: 2px;margin-bottom: 2px; " *ngFor = "let cp of competitorslist | competitornames"> 
+                {{cp.competitor_name}}
+
+              </div>
+            </div>
+              <br>
+          </div>
+
+   
+
+ <!--Card 2-->
+       <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand" >
+        <br>
+        <div class="labelspec" style="color: purple; font-size: 13px;">ACTIVITIES:</div>
+            
+            <div class="item" *ngFor = "let actv of activities | contactpersons">
+              <div class="ui tag labels" style="font-size: 12px; margin-top: 2px;margin-bottom: 2px; " > 
+                  <a class="ui grey label" style="color: black; font-size: 12px; font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;">{{ actv.activity_type }}</a>
+                  <a class="ui teal label" style="color: black; font-size: 12px; font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;">{{actv.created_at | amTimeAgo }} </a>
+                </div>
+
+                <app-reversegeocoder lat="{{actv.latitude}}" long="{{actv.longitude}}"></app-reversegeocoder> 
+
+            <div *ngIf="actv.activity_type == 'onsitevisit'">
+              <span class= "labelspec" style="font-size: 11px;font-weight: bold;"> Visit Remarks : </span>
+              <p>{{actv.visitremarks}}</p>
+            </div>
+            <div *ngIf="actv.activity_type == 'phonecall'">
+              <span class= "labelspec" style="font-size: 11px;font-weight: bold;"> Call Remarks :</span>
+              <p>{{actv.phonecallremarks}}</p>
+            </div>
+
+            <div class="ui divider"></div>
+              </div>
+
+               <div class="labelspec" style="color: purple; font-size: 13px;">UPCOMING:</div>
+            
+              <div class="item" style="font-size: 12px;" *ngFor = "let up of upcoming | contactpersons"> 
+                <div class="ui tag labels" style="font-size: 12px; margin-top: 2px;margin-bottom: 2px; "> 
+                  <a class="ui grey label" style="color: black; font-size: 12px; font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;">
+                {{ up.next_meeting_type }} </a>
+                 <a class="ui red label" style="color: black; font-size: 12px; font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;">{{ up.next_meeting_date | date: 'medium' }}
+                </a>
+              </div>
+              <div class="ui divider"></div>           
+              </div>
+
+                <div class="labelspec" style="color: purple; font-size: 13px;">REMARKS: {{meetingremark}}</div>
+         
+          </div>
+
+<!--Card 3-->
+       <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand" >
+
+             
+       
+          </div>
+
+<!--Card 4-->
+       <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand">
+
+          
+
+
+
+        </div>
+
+      
+      
+    </div>
+  </div>
+</div>

@@ -112,14 +112,14 @@ export class UsersComponent implements OnInit, OnDestroy {
           }
             else
             {
-              console.log('No access to this page');
+              console.log('No access to this page choc');
               alert('No access to this page');
               return this.ev=false;
             }
          })
        }
        else{
-            console.log('No access to this page');
+            console.log('No access to this page m&m');
             this.router.navigate(['login']);
             return this.ev=false;
        }
@@ -132,18 +132,19 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   //List Reports_To as name
-  onListReportsTo(reportsTo: string){
-    if (reportsTo != undefined){
+  onListReportsTo(reportsTo: string, report: string){
+    if (reportsTo != undefined && report == 'reporter'){
       return this.users.filter(user => {
         return user.userid == reportsTo;
-      //user.report == 'recipient';
-      
       })
       .map(user => {
         this.usernameReport = user.name + ' - ' + user.email;
         return this.usernameReport});    
      }
-     else{
+     else if (report == 'recipient' || report == 'other'){
+       return 'Self';
+     }
+     else {
        return '';
      }
   }
@@ -151,6 +152,10 @@ export class UsersComponent implements OnInit, OnDestroy {
   //Add a new User
   on_add_user(){
   	//console.log("add");
+    if(this.report == 'recipient' || this.report == 'other'){
+      this.reports_to = this.userid;
+    }
+
     let user = { name: this.name,
           			 role: this.role,
           			 title: this.title,
@@ -166,9 +171,9 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   //Update an User
   on_edit_user(){  
-    //Tweak to make reports_to as Empty when report type is either recipient or other
+    //Tweak to make reports_to as self when report type is either recipient or other
     if(this.ureport == 'recipient' || this.ureport == 'other'){
-      this.ureports_to = '';
+      this.ureports_to = this.uuserid;
     }
 
     let userData = { name: this.uname,

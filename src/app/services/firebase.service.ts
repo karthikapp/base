@@ -3,6 +3,7 @@ import * as firebase from 'firebase';
 import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 import { Router } from '@angular/router';
 import { AngularFireModule } from 'angularfire2';
+import { secondaryApp } from '../../environments/firebase.config';
 
 @Injectable()
 export class FirebaseService {
@@ -395,6 +396,14 @@ export class FirebaseService {
 	}
 //END NEED_LIST
 
+//START COMPETITORS
+	getCompetitorList(competitorid){
+		let competitorURL = '/competitors/' + competitorid;
+		return this.af.object(competitorURL);
+		}
+
+//END COMPETITORS
+
 //START Leads and Opportunities
 	//LEADS based on company id
 	getLeads(company_id: string){
@@ -421,6 +430,12 @@ export class FirebaseService {
 			equalTo: String(userid)
 		} 
 	});
+	}
+
+	//Get Leads by Lead Key
+	getLeadsByKey(leadid: string){
+		let leadURL = '/leads/' + leadid
+		return this.af.object(leadURL);
 	}
 
 	//OPPORTUNITIES
@@ -453,18 +468,21 @@ export class FirebaseService {
     			 userid: string,
                  created_at: Date
 	}, default_pwd: string ){
-		 this.fireAuth.createUserWithEmailAndPassword(usersObject.email, default_pwd)
+		 secondaryApp.auth().createUserWithEmailAndPassword(usersObject.email, default_pwd)
 			.then((data) => {
 				//Pushing User data and setting user id with the uid
 				usersObject.userid = data.uid;
 				var userData = this.af.object('/user/' + data.uid).set(usersObject);
+
+				secondaryApp.auth().signOut();
+				secondaryApp.delete();
 				})
       		.catch((error) => {
         		console.log(error);
       		});	
 
       		let userres = firebase.auth().currentUser;
-			//console.log("KB1",userres);
+			console.log("KB1",userres);
      }
 
     //get single User Profile Info 

@@ -1,4 +1,5 @@
-//Pipe is used to declare values for each child of the Object. List of object within objects.
+//Pipe is used to declare values for each child of the Object.
+// List of object within objects.
 
 import { Pipe, PipeTransform } from '@angular/core';
 
