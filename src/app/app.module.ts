@@ -63,7 +63,12 @@ import { CasewonComponent } from './components/casewon/casewon.component';
 import { CaselostComponent } from './components/caselost/caselost.component';
 import { ReversegeocoderComponent } from './components/reversegeocoder/reversegeocoder.component';
 
+//Charts
+import { ChartModule } from 'angular2-highcharts';
+import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
 
+import * as funnel from 'highcharts/modules/funnel';
+import { FunnelchartsComponent } from './components/funnelcharts/funnelcharts.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -86,10 +91,22 @@ const appRoutes: Routes = [
                {path:'TeamLeads', component: TeamleadsComponent},
                {path:'TeamOpportunities', component: TeamopportunitiesComponent},
                {path:'LeadDetail/:leadid', component: LeadsdetailComponent},
-               {path:'OppoDetail', component: OppodetailComponent}
+               {path:'OppoDetail', component: OppodetailComponent},
+               {path:'FunnelCharts',component: FunnelchartsComponent},
+               {path:'ViewQLeads', component:ViewqualifiedleadsComponent}
               ]}
 ];
 
+
+declare var require: any;
+export function highchartsFactory() {
+  var hc = require('highcharts');
+  var hcm = require('highcharts/modules/funnel');
+
+  hcm(hc);
+  return hc;
+
+}
 
 @NgModule({
   declarations: [
@@ -129,7 +146,8 @@ const appRoutes: Routes = [
     ViewnegoComponent,
     CasewonComponent,
     CaselostComponent,
-    ReversegeocoderComponent
+    ReversegeocoderComponent,
+    FunnelchartsComponent
   ],
   imports: [
     BrowserModule ,
@@ -144,9 +162,13 @@ const appRoutes: Routes = [
     L_SEMANTIC_UI_MODULE,
     NgxPaginationModule,
     MomentModule,
-    HttpModule
+    HttpModule,
+    ChartModule
   ],
-  providers: [FirebaseService],
+  providers: [FirebaseService,
+  {provide: HighchartsStatic,
+      useFactory: highchartsFactory
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

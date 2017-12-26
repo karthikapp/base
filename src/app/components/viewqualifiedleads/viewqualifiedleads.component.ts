@@ -54,7 +54,7 @@ export class ViewqualifiedleadsComponent implements OnInit {
               || v.report.toUpperCase() == 'RECIPIENT')
             {
             
-            this.firebaseservice.getLeadsByID(this.uid)
+            this.firebaseservice.getOpportunitiesByID(this.uid)
               .takeWhile(() => this.alive)
               .subscribe(qlead => {
               this.qleads = qlead.filter(v => {

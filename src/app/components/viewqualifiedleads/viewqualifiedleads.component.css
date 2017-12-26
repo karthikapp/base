@@ -1,0 +1,46 @@
+.main{
+	padding:20px 30px 10px 30px;
+}
+
+.wide-card.mdl-card {
+  width: 350px;
+}
+.demo-card-wide > .mdl-card__title {
+  color: #fff;
+  height: 100px;
+}
+.demo-card-wide > .mdl-card__menu {
+  color: #fff;
+}
+
+.item-wr
+{
+	margin: 15px;
+}
+
+.fixedbutton {
+ position:absolute;
+   top:5px;
+   right:5px;
+}
+
+.navbar {
+    overflow: hidden;
+    background-color: #333;
+    position: fixed; /* Set the navbar to fixed position */
+    top: 0; /* Position the navbar at the top of the page */
+    width: 100%; /* Full width */
+}
+
+.mdl-card__title
+{
+font-family: 'Marvel', sans-serif; text-transform: capitalize;
+}
+
+.ui.red.statistic>.value, .ui.statistics .statistic>.value {
+    font-size: 1.0rem!important;
+}
+
+
+
+
