@@ -475,7 +475,7 @@ export class FirebaseService {
 				var userData = this.af.object('/user/' + data.uid).set(usersObject);
 
 				secondaryApp.auth().signOut();
-				secondaryApp.delete();
+				//secondaryApp.delete();
 				})
       		.catch((error) => {
         		console.log(error);

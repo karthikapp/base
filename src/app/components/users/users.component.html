@@ -59,10 +59,10 @@
           <div class ="ui stackable two column grid">
 
             <div class="form-group column" style="padding: 30px;">
-              <label style="font-weight: bold; font-size: 15px;" for="exampleFormControlSelect1">Report</label>
+              <label style="font-weight: bold; font-size: 15px;" for="exampleFormControlSelect12">Report</label>
               <br>
               <br>
-              <select class="form-control" id="exampleFormControlSelect1" name="report" [(ngModel)]="report" (change)="onSelect($event.target.value)">
+              <select class="form-control" id="exampleFormControlSelect12" name="report" [(ngModel)]="report" (change)="onSelect($event.target.value)">
                 <option>reporter</option>
                 <option>recipient</option>
                 <option>other</option>
@@ -70,11 +70,11 @@
             </div>
 
             <div class="form-group column" style="padding: 30px;" [hidden]="selectShowFlag">
-              <label style="font-weight: bold; font-size: 15px;" for="exampleFormControlSelect1">Reports To</label>
+              <label style="font-weight: bold; font-size: 15px;" for="exampleFormControlSelect13">Reports To</label>
               <br>
               <br>
               
-              <select class="form-control" id="exampleFormControlSelect1" name="reports_to" [(ngModel)]="reports_to">
+              <select class="form-control" id="exampleFormControlSelect13" name="reports_to" [(ngModel)]="reports_to">
 
                   <option>Select</option>
                   <option *ngFor="let v of user_recipient_list" value= {{v.userid}}>{{ v.name }}</option>
@@ -206,10 +206,10 @@
           <div class ="ui stackable two column grid">
 
             <div class="form-group column" style="padding: 30px;">
-              <label style="font-weight: bold; font-size: 15px;" for="exampleFormControlSelect1">Report</label>
+              <label style="font-weight: bold; font-size: 15px;" for="exampleFormControlSelect14">Report</label>
               <br>
               <br>
-              <select class="form-control" id="exampleFormControlSelect1" name="ureport" [(ngModel)]="ureport" (change)="onSelectEdit($event.target.value)">
+              <select class="form-control" id="exampleFormControlSelect14" name="ureport" [(ngModel)]="ureport" (change)="onSelectEdit($event.target.value)">
                 <option>reporter</option>
                 <option>recipient</option>
                 <option>other</option>
@@ -217,11 +217,11 @@
             </div>
 
             <div class="form-group column" style="padding: 30px;" [hidden]="selectShowFlag">
-              <label style="font-weight: bold; font-size: 15px;" for="exampleFormControlSelect1">Reports To</label>
+              <label style="font-weight: bold; font-size: 15px;" for="exampleFormControlSelect15">Reports To</label>
               <br>
               <br>
               
-              <select class="form-control" id="exampleFormControlSelect1" name="ureports_to" [(ngModel)]="ureports_to">
+              <select class="form-control" id="exampleFormControlSelect15" name="ureports_to" [(ngModel)]="ureports_to">
                   <option *ngFor="let p of user_recipient_list" [ngValue]= "p.userid">{{ p.name }}</option>
             
               </select>

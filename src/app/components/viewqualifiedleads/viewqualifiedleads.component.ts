@@ -23,6 +23,8 @@ export class ViewqualifiedleadsComponent implements OnInit {
 
   leadid: string;
 
+  products_list: object[];
+
   constructor(private firebaseservice : FirebaseService, 
     private route: Router, private afAuth: AngularFireAuth, private router: ActivatedRoute) { }
 
