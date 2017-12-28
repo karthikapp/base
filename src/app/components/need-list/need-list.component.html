@@ -30,10 +30,10 @@
   <br>
 
   <!--Search button with expandable holder-->
-  <div appMzterialDesignLite style="float:right; color: white;">
+  <div appMzterialDesignLite style="float:right; color: white;height:50px">
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
       <label class="mdl-button mdl-js-button mdl-button--icon" for="site-search">
-        <i class="material-icons">search</i>
+        <i class="material-icons" style="top: 10px">search</i>
       </label>
       <div class="mdl-textfield__expandable-holder">
         <input class="mdl-textfield__input" type="search" id="site-search" name="site-search" placeholder="Need List Name" [(ngModel)] ="querystring" />
@@ -43,7 +43,7 @@
   </div>
 
   <!--Add Need Button on top right corner-->
-  <div style="float:right;padding: 10px;font-family: 'Marvel', sans-serif;">
+  <div style="float:right;padding: 5px;font-family: 'Marvel', sans-serif;">
       <button class="ui inverted button" (click)="addNeedlistModal()">Add Need List</button>
   </div>
   <br>
@@ -51,7 +51,7 @@
   <br>
 
 	<!--List Needs in a table with fields need name and actions (Edit/ Delete)-->
-	<table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp" style="width: 95%;background-color: white;">
+	<table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp" style="width: 95%;background-color: white;height:50vh">
   	<thead>
   		<tr>
     		<th>Need List Name</th>
@@ -75,7 +75,7 @@
   	</tbody>
 	</table>
   <br>
-  <br>
+
 
   <!--Pagination-->
   <div class="ui item" style="color: white; background-color: #eee; float:right; border-radius: 5px;">

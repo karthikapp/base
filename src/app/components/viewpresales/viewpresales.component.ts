@@ -55,7 +55,9 @@ export class ViewpresalesComponent implements OnInit, OnDestroy {
             }
 
             if (v.report.toUpperCase() == 'REPORTER'
-              || v.report.toUpperCase() == 'RECIPIENT')
+              || v.report.toUpperCase() == 'RECIPIENT'
+              || v.role.toUpperCase() == "MASTER"
+              || v.role.toUpperCase() == "PRESALES")
             {
             if(this.rflag == 'me'){
             this.firebaseservice.getOpportunitiesByID(this.uid)
@@ -89,6 +91,16 @@ export class ViewpresalesComponent implements OnInit, OnDestroy {
              console.log("nego",this.presaleslist) 
            })
           }
+                      else if(this.rflag == 'teampre'){
+            this.firebaseservice.getopportunitiesbypresalesid(this.uid)
+              .takeWhile(() => this.alive)
+              .subscribe(presales => {
+              this.presaleslist = presales.filter(v => {
+              return v.opportunity_state == 'Presales_Presentation'
+            })
+             console.log("nego",this.presaleslist) 
+           })
+            }
               return this.ev = true;
             }
             else

@@ -82,8 +82,16 @@ export class OppportunitiesComponent implements OnInit, OnDestroy {
               v.role = '';
             }
 
+            if (v.title == undefined)
+            {
+              v.title = '';
+            }
+
             if (v.report.toUpperCase() == 'REPORTER'
-              || v.report.toUpperCase() == 'RECIPIENT')
+              || v.report.toUpperCase() == 'RECIPIENT'
+              || v.title.toUpperCase() == "PRE-SALES HEAD"
+              || v.role.toUpperCase() == "PRESALES"
+              || v.role.toUpperCase() == "MASTER")
             {
               this.firebaseservice.getOpportunitiesByID(this.uid)
               .takeWhile(() => this.alive)

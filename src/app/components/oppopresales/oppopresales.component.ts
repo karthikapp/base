@@ -4,15 +4,14 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
 import "rxjs/add/operator/takeWhile";
 
-
 @Component({
-  selector: 'app-teamopportunities',
-  templateUrl: './teamopportunities.component.html',
-  styleUrls: ['./teamopportunities.component.css']
+  selector: 'app-oppopresales',
+  templateUrl: './oppopresales.component.html',
+  styleUrls: ['./oppopresales.component.css']
 })
-export class TeamopportunitiesComponent implements OnInit , OnDestroy{
+export class OppopresalesComponent implements OnInit , OnDestroy {
 
- uid: string;
+  uid: string;
    ev: boolean = false;
 
    alive: boolean = true;
@@ -56,7 +55,7 @@ export class TeamopportunitiesComponent implements OnInit , OnDestroy{
    casewonarrayvalue: any;
    caselostarrayvalue: any;
 
-   rflag: string = 'team';
+   rflag: string = 'teampre';
 
   constructor(private firebaseservice : FirebaseService, 
     private router: Router, private afAuth: AngularFireAuth) { }
@@ -84,9 +83,9 @@ export class TeamopportunitiesComponent implements OnInit , OnDestroy{
               v.role = '';
             }
 
-            if (v.report.toUpperCase() == 'RECIPIENT')
+            if (v.role.toUpperCase() == 'PRESALES')
             {
-              this.firebaseservice.getopportunitiesbyreporttoid(this.uid)
+              this.firebaseservice.getopportunitiesbypresalesid(this.uid)
               .takeWhile(() => this.alive)
               .subscribe(v => {
               this.opportunities = v;
@@ -271,6 +270,5 @@ export class TeamopportunitiesComponent implements OnInit , OnDestroy{
     ngOnDestroy() {
     this.alive = false;
   }
-
 
 }

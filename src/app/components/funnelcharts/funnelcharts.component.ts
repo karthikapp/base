@@ -9,7 +9,7 @@ import "rxjs/add/operator/takeWhile";
   templateUrl: './funnelcharts.component.html',
   styleUrls: ['./funnelcharts.component.css']
 })
-export class FunnelchartsComponent implements OnDestroy, OnInit{
+export class FunnelchartsComponent implements  OnInit, OnDestroy{
 
   options: Object;
 
@@ -61,42 +61,8 @@ export class FunnelchartsComponent implements OnDestroy, OnInit{
     private router: Router, private afAuth: AngularFireAuth) { 
 
 
-this.options = {
-  chart: { type: 'funnel' },
-  title: { text: 'Sales funnel' },
-  plotOptions: {
-        series: {
-            dataLabels: {
-                enabled: true,
-                format: '<b>{point.name}</b> ({point.y:,.0f})',
-                //color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
-                softConnector: true
-            },
-            center: ['40%', '50%'],
-            neckWidth: '30%',
-            neckHeight: '25%',
-            width: '80%'
-        }
-    },
-    legend: {
-        enabled: false
-    },
-    series: [{
-        name: 'Saleforce Dashboard',
-        data: [
-            ['Leads', 15654],
-            ['Qualified Leads', this.qualifiedleadsum],
-            ['Presales', this.presalesopportunitysum],
-            ['Budgeting', this.budgetaryopportunitysum],
-            ['BOM', this.bomopportunitysum],
-            ['POC/DEMO',this.pocopportunitysum ],
-            ['Proposal', this.finalproposalopportunitysum ],
-            ['Negotiation', this.finalnegoopportunitysum ],
-            ['Case Won',  this.casewonopportunitysum ],
-            ['Case Lost',  this.caselostopportunitysum ]
-        ]
-    }]
-}
+
+
 }
 
 ngOnInit() {
@@ -123,7 +89,8 @@ ngOnInit() {
             }
 
             if (v.report.toUpperCase() == 'REPORTER'
-              || v.report.toUpperCase() == 'RECIPIENT')
+              || v.report.toUpperCase() == 'RECIPIENT'
+              || v.report.toUpperCase() == "PRE-SALES HEAD")
             {
               this.firebaseservice.getOpportunitiesByID(this.uid)
               .takeWhile(() => this.alive)
@@ -280,7 +247,17 @@ ngOnInit() {
              this.caselostarraylist = this.caselostarrayvalue
              this.caselostopportunitysum = this.caselostarraylist.reduce((a, b) => a + b, 0).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
+
+             console.log("sd", this.qualifiedleadsum)
+
+            
             }) 
+this.dofunnelcharts();
+
+
+
+
+
               return this.ev = true;
             }
             else
@@ -299,6 +276,48 @@ ngOnInit() {
      });
   }
 
+dofunnelcharts(){
+console.log("sales dashboard function", this.qualifiedleadsum, this.presalesopportunitysum,
+  this.budgetaryopportunitysum, this.finalnegoopportunitysum, this.casewonopportunitysum)
+
+  this.options = {
+  chart: { type: 'funnel' },
+  title: { text: 'Sales funnel' },
+  plotOptions: {
+        series: {
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b> ({point.y:,.0f})',
+                //color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
+                softConnector: true
+            },
+            center: ['40%', '50%'],
+            neckWidth: '30%',
+            neckHeight: '25%',
+            width: '80%'
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    series: [{
+        name: 'Saleforce Dashboard',
+        data: [
+            ['Leads', 15654],
+            ['Qualified Leads', this.qualifiedleadsum],
+            ['Presales', this.presalesopportunitysum],
+            ['Budgeting', this.budgetaryopportunitysum],
+            ['BOM', this.bomopportunitysum],
+            ['POC/DEMO',this.pocopportunitysum ],
+            ['Proposal', this.finalproposalopportunitysum ],
+            ['Negotiation', this.finalnegoopportunitysum ],
+            ['Case Won',  this.casewonopportunitysum ],
+            ['Case Lost',  this.caselostopportunitysum ]
+        ]
+    }]
+}
+
+}
   ngOnDestroy() {
     this.alive = false;
   }

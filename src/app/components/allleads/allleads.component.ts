@@ -46,8 +46,11 @@ leads: any;
               v.role = '';
             }
 
-            if (v.report.toUpperCase() == 'REPORTER'
-              || v.report.toUpperCase() == 'RECIPIENT')
+            if (v.title == undefined){
+              v.title = '';
+            }
+
+            if (v.role.toUpperCase() == "MASTER")
             {
               this.firebaseservice.getAllLeads()
               .takeWhile(() => this.alive)
@@ -57,6 +60,16 @@ leads: any;
               console.log(this.leads);
             }) 
               return this.ev = true;
+            } else if(v.title.toUpperCase() == "PRE-SALES HEAD" 
+              ){
+              this.firebaseservice.getAllLeads()
+              .takeWhile(() => this.alive)
+              .subscribe(lead => {
+              this.leads = lead.filter(v => {
+              return v.leadstatus == 'Qualified-awaiting-presales'})
+              console.log(this.leads);   
+              }) 
+              return this.ev = true;           
             }
             else
             {
@@ -99,7 +112,7 @@ leads: any;
 
      else if (String(leadsource) == "onsite")
     {
-      this.leadlabel = "ON SITE VISIT"
+      this.leadlabel = "ONSITE VISIT"
     }
 
     return this.leadlabel

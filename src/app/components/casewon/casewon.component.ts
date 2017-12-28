@@ -55,7 +55,8 @@ casewon: any;
             }
 
             if (v.report.toUpperCase() == 'REPORTER'
-              || v.report.toUpperCase() == 'RECIPIENT')
+              || v.report.toUpperCase() == 'RECIPIENT'
+              || v.role.toUpperCase() == "MASTER" )
             {
           if(this.rflag == 'me'){  
             this.firebaseservice.getOpportunitiesByID(this.uid)

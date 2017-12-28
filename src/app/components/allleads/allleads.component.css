@@ -1,13 +1,14 @@
 .main{
-	padding:20px 30px 10px 30px;
+  padding:5px 30px 10px 30px;
+  
 }
 
 .wide-card.mdl-card {
-  width: 350px;
+  width: 285px;
 }
 .demo-card-wide > .mdl-card__title {
   color: #fff;
-  height: 100px;
+  height: 75px;
 }
 .demo-card-wide > .mdl-card__menu {
   color: #fff;
@@ -15,7 +16,7 @@
 
 .item-wr
 {
-	margin: 15px;
+  margin: 15px;
 }
 
 .fixedbutton {
@@ -36,4 +37,17 @@
 {
 font-family: 'Marvel', sans-serif; text-transform: capitalize;
 }
+
+.ui.tiny.statistic>.value, .ui.tiny.statistics .statistic>.value {
+    font-size: 1rem!important;
+}
+
+.ui.mini.statistic>.value, .ui.mini.statistics .statistic>.value {
+    font-size: 1rem!important;
+}
+
+.ui.black.label>.value {
+  font-size: 1rem!important;
+}
+
 

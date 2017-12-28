@@ -18,6 +18,7 @@ export class DashboardComponent  {
   showOthersFlag: boolean = false;
   report: string;
   role: string;
+  title: string;
 
 
   constructor(private firebaseservice : FirebaseService,
@@ -39,8 +40,14 @@ export class DashboardComponent  {
             val.role = '';
           }
 
+          if (val.title == undefined)
+          {
+            val.title = '';
+          }
+
           this.report = val.report;
           this.role =val.role;
+          this.title = val.title;
 
           //Flags to set the component based on the USERS
           if (val.role.toUpperCase() == "ADMIN"){
@@ -49,7 +56,10 @@ export class DashboardComponent  {
             this.showOthersFlag = false;
            } else if(val.report.toUpperCase() == "REPORTER" 
              || val.report.toUpperCase() == "RECIPIENT" 
-             || val.report.toUpperCase() == "OTHER"){
+             || val.report.toUpperCase() == "OTHER"
+             || val.title.toUpperCase() == "PRE-SALES HEAD"
+             || val.role.toUpperCase() == "PRESALES" 
+             || val.role.toUpperCase() == "MASTER"){
             this.showReportsFlag = true;
             this.showAdminFlag = false;
             this.showOthersFlag = false;

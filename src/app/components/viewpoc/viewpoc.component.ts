@@ -53,8 +53,15 @@ this.rflag = this.router.snapshot.params['rflag'];
               v.role = '';
             }
 
+            if (v.title == undefined)
+            {
+              v.title = '';
+            }
+
             if (v.report.toUpperCase() == 'REPORTER'
-              || v.report.toUpperCase() == 'RECIPIENT')
+              || v.report.toUpperCase() == 'RECIPIENT'
+              || v.role.toUpperCase() == "MASTER" 
+              || v.role.toUpperCase() == "PRESALES" )
             {
              if(this.rflag == 'me'){
             this.firebaseservice.getOpportunitiesByID(this.uid)
@@ -80,6 +87,17 @@ this.rflag = this.router.snapshot.params['rflag'];
            
            else if(this.rflag == 'all'){
             this.firebaseservice.getopportunities()
+              .takeWhile(() => this.alive)
+              .subscribe(poc => {
+              this.poclist = poc.filter(v => {
+              return v.opportunity_state == 'POC/Demo'
+            })
+             console.log("nego",this.poclist) 
+           })
+          }
+
+            else if(this.rflag == 'teampre'){
+            this.firebaseservice.getopportunitiesbypresalesid(this.uid)
               .takeWhile(() => this.alive)
               .subscribe(poc => {
               this.poclist = poc.filter(v => {

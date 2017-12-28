@@ -113,7 +113,9 @@ export class LeadsdetailComponent implements OnInit {
             }
 
             if (v.report.toUpperCase() == 'REPORTER'
-              || v.report.toUpperCase() == 'RECIPIENT')
+              || v.report.toUpperCase() == 'RECIPIENT'
+              || v.title.toUpperCase() == "PRE-SALES HEAD"
+              || v.role.toUpperCase() == "MASTER")
             {
               this.firebaseservice.getLeadsByKey(this.leadid)
               .takeWhile(() => this.alive)

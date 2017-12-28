@@ -46,8 +46,17 @@ leads: any;
               v.role = '';
             }
 
-            if (v.report.toUpperCase() == 'REPORTER'
-              || v.report.toUpperCase() == 'RECIPIENT')
+            if (v.title == undefined)
+            {
+              v.title = '';
+            }
+
+            if (v.report.toUpperCase() == 'RECIPIENT')
+            /*(v.report.toUpperCase() == 'REPORTER'
+              || v.report.toUpperCase() == 'RECIPIENT'
+              || v.title.toUpperCase() == "PRE-SALES HEAD" 
+              || v.role.toUpperCase() == "PRESALES"
+              || v.role.toUpperCase() == "MASTER")*/
             {
               this.firebaseservice.getLeadsByreporttoID(this.uid)
               .takeWhile(() => this.alive)
@@ -58,6 +67,8 @@ leads: any;
             }) 
               return this.ev = true;
             }
+
+            
             else
             {
               console.log('No access to this page choco');
@@ -99,7 +110,7 @@ leads: any;
 
      else if (String(leadsource) == "onsite")
     {
-      this.leadlabel = "ON SITE VISIT"
+      this.leadlabel = "ONSITE VISIT"
     }
 
     return this.leadlabel

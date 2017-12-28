@@ -55,7 +55,8 @@ export class BudgetarypriceComponent implements OnInit , OnDestroy{
             }
 
             if (v.report.toUpperCase() == 'REPORTER'
-              || v.report.toUpperCase() == 'RECIPIENT')
+              || v.report.toUpperCase() == 'RECIPIENT'
+              || v.role.toUpperCase() == "MASTER" )
             {
             if(this.rflag == 'me'){
             this.firebaseservice.getOpportunitiesByID(this.uid)
@@ -66,7 +67,7 @@ export class BudgetarypriceComponent implements OnInit , OnDestroy{
           	})
               
     		})
-                      }
+        }
            else if(this.rflag == 'team') {
 
             this.firebaseservice.getopportunitiesbyreporttoid(this.uid)
@@ -89,6 +90,7 @@ export class BudgetarypriceComponent implements OnInit , OnDestroy{
              console.log("nego",this.bplist) 
            })
           }
+
               return this.ev = true;
             }
             else

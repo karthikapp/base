@@ -72,6 +72,7 @@ import { FunnelchartsComponent } from './components/funnelcharts/funnelcharts.co
 import { AssignedtonamegetComponent } from './components/assignedtonameget/assignedtonameget.component';
 import { AllleadsComponent } from './components/allleads/allleads.component';
 import { AllopportunitiesComponent } from './components/allopportunities/allopportunities.component';
+import { OppopresalesComponent } from './components/oppopresales/oppopresales.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -106,8 +107,8 @@ const appRoutes: Routes = [
                {path:'ViewCaseWon/:rflag', component:CasewonComponent},
                {path:'ViewCaseLost/:rflag', component:CaselostComponent},
                {path:'AllLeads', component: AllleadsComponent},
-               {path:'AllOpportunities', component: AllopportunitiesComponent}
-
+               {path:'AllOpportunities', component: AllopportunitiesComponent},
+               {path: 'TeampreOpportunities', component: OppopresalesComponent}
               ]}
 ];
 
@@ -164,7 +165,8 @@ export function highchartsFactory() {
     FunnelchartsComponent,
     AssignedtonamegetComponent,
     AllleadsComponent,
-    AllopportunitiesComponent
+    AllopportunitiesComponent,
+    OppopresalesComponent
   ],
   imports: [
     BrowserModule ,

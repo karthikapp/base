@@ -83,8 +83,7 @@ export class AllopportunitiesComponent implements OnInit, OnDestroy {
               v.role = '';
             }
 
-            if (v.report.toUpperCase() == 'REPORTER'
-              || v.report.toUpperCase() == 'RECIPIENT')
+            if (v.role.toUpperCase() == 'MASTER')
             {
               this.firebaseservice.getopportunities()
               .takeWhile(() => this.alive)
