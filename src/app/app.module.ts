@@ -69,6 +69,9 @@ import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
 
 import * as funnel from 'highcharts/modules/funnel';
 import { FunnelchartsComponent } from './components/funnelcharts/funnelcharts.component';
+import { AssignedtonamegetComponent } from './components/assignedtonameget/assignedtonameget.component';
+import { AllleadsComponent } from './components/allleads/allleads.component';
+import { AllopportunitiesComponent } from './components/allopportunities/allopportunities.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -93,7 +96,18 @@ const appRoutes: Routes = [
                {path:'LeadDetail/:leadid', component: LeadsdetailComponent},
                {path:'OppoDetail', component: OppodetailComponent},
                {path:'FunnelCharts',component: FunnelchartsComponent},
-               {path:'ViewQLeads', component:ViewqualifiedleadsComponent}
+               {path:'ViewQLeads/:rflag', component:ViewqualifiedleadsComponent},
+               {path:'ViewPreSales/:rflag', component:ViewpresalesComponent},
+               {path:'ViewBudgetary/:rflag', component:BudgetarypriceComponent},
+               {path:'ViewFinalBOM/:rflag', component:ViewbomComponent},
+               {path:'ViewPOCDemo/:rflag', component:ViewpocComponent},
+               {path:'ViewFinalProposal/:rflag', component:ViewproposalComponent},
+               {path:'ViewFinalnego/:rflag', component:ViewnegoComponent},
+               {path:'ViewCaseWon/:rflag', component:CasewonComponent},
+               {path:'ViewCaseLost/:rflag', component:CaselostComponent},
+               {path:'AllLeads', component: AllleadsComponent},
+               {path:'AllOpportunities', component: AllopportunitiesComponent}
+
               ]}
 ];
 
@@ -147,7 +161,10 @@ export function highchartsFactory() {
     CasewonComponent,
     CaselostComponent,
     ReversegeocoderComponent,
-    FunnelchartsComponent
+    FunnelchartsComponent,
+    AssignedtonamegetComponent,
+    AllleadsComponent,
+    AllopportunitiesComponent
   ],
   imports: [
     BrowserModule ,

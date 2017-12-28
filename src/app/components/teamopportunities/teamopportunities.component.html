@@ -1,1 +1,386 @@
-<p>Team Opportunities Works</p>
+<div class ="main">
+  <div id="" style="overflow-y: scroll;height: 100%; width:100%;">
+
+    <div *ngIf="ev">
+
+      <!-- Wide card with Edit and Delete button -->
+      <div class="ui stackable three column grid">
+        
+        <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand">
+
+        <!--Qualified Leads-->
+          <div class="mdl-card__title">
+            <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.8vw;font-weight: bold;" 
+               >
+              Qualified Leads 
+            </a>
+          </div>
+
+          <div class="ui stackable two column grid">
+            <div class= "column">
+              <div class="ui mini statistic">
+                <div class="value">
+                  {{qualifiedleadlist?.length}}
+                </div>
+
+                <div class="label" style="color: grey; font-size: 10px;text-align: center;">
+                  Nos.
+                </div>
+              </div>
+            </div>
+
+            <div class ="column">
+              <div class="ui mini statistic">
+                <div class="value">
+                  &#8377; {{qualifiedleadsum}}
+                </div>
+
+                <div class="label" style="color: grey; font-size: 10px;text-align: center;">
+                  Value
+                </div>
+              </div>
+            </div>
+          </div>
+          <br>
+          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewQLeads', rflag]">
+        	<i class="unhide icon"></i>
+        	View All
+  		</div>
+  	</div>
+          
+ <!--Presales presentation-->
+ 		<div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand">
+          <div class="mdl-card__title">
+            <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.8vw;font-weight: bold;" 
+               >
+              Presales Presentation
+            </a>
+          </div>
+
+          <div class="ui stackable two column grid">
+            <div class= "column">
+              <div class="ui mini statistic">
+                <div class="value">
+                  {{presalesopportunitylist?.length}}
+                </div>
+
+                <div class="label" style="color: grey; font-size: 10px;text-align: center;">
+                  Nos.
+                </div>
+              </div>
+            </div>
+
+            <div class ="column">
+              <div class="ui mini statistic">
+                <div class="value">
+                   &#8377;  {{presalesopportunitysum}}
+                </div>
+
+                <div class="label" style="color: grey; font-size: 10px;text-align: center;">
+                  Value
+                </div>
+              </div>
+            </div>
+          </div>
+<br>
+          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewPreSales', rflag]">
+        	<i class="unhide icon"></i>
+        	View All
+  		</div>
+  	</div>
+
+<!--Budgetary Price Shared-->
+        <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand">
+          <div class="mdl-card__title">
+            <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.8vw;font-weight: bold;" 
+               >
+              Budgetary Price Shared
+            </a>
+          </div>
+
+          <div class="ui stackable two column grid">
+            <div class= "column">
+              <div class="ui mini statistic">
+                <div class="value">
+                  {{budgetaryarraylist?.length}}
+                </div>
+
+                <div class="label" style="color: grey; font-size: 10px;text-align: center;">
+                  Nos.
+                </div>
+              </div>
+            </div>
+
+            <div class ="column">
+              <div class="ui mini statistic">
+                <div class="value">
+                   &#8377;  {{budgetaryopportunitysum}}
+                </div>
+
+                <div class="label" style="color: grey; font-size: 10px;text-align: center;">
+                  Value
+                </div>
+              </div>
+            </div>
+          </div>
+<br>
+          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewBudgetary' , rflag]">
+        	<i class="unhide icon"></i>
+        	View All
+  		</div>
+  	</div>
+      
+<!--Finalising BOM-->
+        <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand">
+          <div class="mdl-card__title">
+            <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.8vw;font-weight: bold;" 
+               >
+              Finalising BOM
+            </a>
+          </div>
+
+          <div class="ui stackable two column grid">
+            <div class= "column">
+              <div class="ui mini statistic">
+                <div class="value">
+                  {{bomarraylist?.length}}
+                </div>
+
+                <div class="label" style="color: grey; font-size: 10px;text-align: center;">
+                  Nos.
+                </div>
+              </div>
+            </div>
+
+            <div class ="column">
+              <div class="ui mini statistic">
+                <div class="value">
+                   &#8377;  {{bomopportunitysum}}
+                </div>
+
+                <div class="label" style="color: grey; font-size: 10px;text-align: center;">
+                  Value
+                </div>
+              </div>
+            </div>
+          </div>
+<br>
+          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewFinalBOM', rflag]">
+        	<i class="unhide icon"></i>
+        	View All
+  		</div>
+  	</div>
+
+<!-- POC / DEMO-->
+        <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand">
+          <div class="mdl-card__title">
+            <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.8vw;font-weight: bold;" 
+               >
+               POC / DEMO
+            </a>
+          </div>
+
+          <div class="ui stackable two column grid">
+            <div class= "column">
+              <div class="ui mini statistic">
+                <div class="value">
+                 {{pocarraylist?.length}}
+                </div>
+
+                <div class="label" style="color: grey; font-size: 10px;text-align: center;">
+                  Nos.
+                </div>
+              </div>
+            </div>
+
+            <div class ="column">
+              <div class="ui mini statistic">
+                <div class="value">
+                   &#8377;  {{pocopportunitysum}}
+                </div>
+
+                <div class="label" style="color: grey; font-size: 10px;text-align: center;">
+                  Value
+                </div>
+              </div>
+            </div>
+          </div>
+<br>
+          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewPOCDemo', rflag]">
+        	<i class="unhide icon"></i>
+        	View All
+  		</div>
+  	</div>
+
+<!-- Final Proposal-->
+        <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand">
+          <div class="mdl-card__title">
+            <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.8vw;font-weight: bold;" 
+               >
+               Final Proposal
+            </a>
+          </div>
+
+          <div class="ui stackable two column grid">
+            <div class= "column">
+              <div class="ui mini statistic">
+                <div class="value">
+                 {{finalproposalarraylist?.length}}
+                </div>
+
+                <div class="label" style="color: grey; font-size: 10px;text-align: center;">
+                  Nos.
+                </div>
+              </div>
+            </div>
+
+            <div class ="column">
+              <div class="ui mini statistic">
+                <div class="value">
+                   &#8377;  {{finalproposalopportunitysum}}
+                </div>
+
+                <div class="label" style="color: grey; font-size: 10px;text-align: center;">
+                  Value
+                </div>
+              </div>
+            </div>
+          </div>
+<br>
+          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewFinalProposal', rflag]">
+        	<i class="unhide icon"></i>
+        	View All
+  		</div>
+  	</div>
+
+<!-- Final Negotiation-->
+        <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand">
+          <div class="mdl-card__title">
+            <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.8vw;font-weight: bold;" 
+               >
+              Final Negotiation
+            </a>
+          </div>
+
+          <div class="ui stackable two column grid">
+            <div class= "column">
+              <div class="ui mini statistic">
+                <div class="value">
+                 {{finalnegoarraylist?.length}}
+                </div>
+
+                <div class="label" style="color: grey; font-size: 10px;text-align: center;">
+                  Nos.
+                </div>
+              </div>
+            </div>
+
+            <div class ="column">
+              <div class="ui mini statistic">
+                <div class="value">
+                   &#8377;  {{finalnegoopportunitysum}}
+                </div>
+
+                <div class="label" style="color: grey; font-size: 10px;text-align: center;">
+                  Value
+                </div>
+              </div>
+            </div>
+          </div>
+<br>
+          <div class="ui bottom attached teal medium button"[routerLink]="['/dashboard/ViewFinalnego', rflag]">
+        	<i class="unhide icon"></i>
+        	View All
+  		</div>
+  	</div>
+
+<!-- Case Won-->
+        <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand">
+          <div class="mdl-card__title">
+            <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.8vw;font-weight: bold;" 
+               >
+              Case Won
+            </a>
+          </div>
+
+          <div class="ui stackable two column grid">
+            <div class= "column">
+              <div class="ui mini statistic">
+                <div class="value">
+                 {{casewonarraylist?.length}}
+                </div>
+
+                <div class="label" style="color: grey; font-size: 10px;text-align: center;">
+                  Nos.
+                </div>
+              </div>
+            </div>
+
+            <div class ="column">
+              <div class="ui mini statistic">
+                <div class="value">
+                   &#8377; {{casewonopportunitysum}}
+                </div>
+
+                <div class="label" style="color: grey; font-size: 10px;text-align: center;">
+                  Value
+                </div>
+              </div>
+            </div>
+          </div>
+<br>
+          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewCaseWon', rflag]">
+        	<i class="unhide icon"></i>
+        	View All
+  		</div>
+  	</div>
+
+<!-- Case Lost-->
+        <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand">
+          <div class="mdl-card__title">
+            <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.8vw;font-weight: bold;" 
+               >
+              Case Lost
+            </a>
+          </div>
+
+          <div class="ui stackable two column grid">
+            <div class= "column">
+              <div class="ui mini statistic">
+                <div class="value">
+                 {{caselostarraylist?.length}}
+                </div>
+
+                <div class="label" style="color: grey; font-size: 10px;text-align: center;">
+                  Nos.
+                </div>
+              </div>
+            </div>
+
+            <div class ="column">
+              <div class="ui mini statistic">
+                <div class="value">
+                   &#8377; {{caselostopportunitysum}}
+                </div>
+
+                <div class="label" style="color: grey; font-size: 10px;text-align: center;">
+                  Value
+                </div>
+              </div>
+            </div>
+          </div>
+<br>
+          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewCaseLost', rflag]">
+        	<i class="unhide icon"></i>
+        	View All
+  		</div>
+  	</div>
+
+
+
+   		</div>
+	</div>
+
+  </div>
+</div>
+

@@ -1,3 +1,259 @@
-<p>
-  budgetaryprice works!
-</p>
+<div class ="main">
+  <div id="" style="overflow-y: scroll;height: 100%; width:100%;">
+
+    <div *ngIf="ev">
+    
+      <!--Search button with expandable holder-->
+      <div appMzterialDesignLite style="float:right; color: white;">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+          <label class="mdl-button mdl-js-button mdl-button--icon" for="site-search">
+            <i class="material-icons">search</i>
+          </label>
+          <div class="mdl-textfield__expandable-holder">
+            <input class="mdl-textfield__input" type="search" id="site-search" name="site-search" placeholder="Company Name" [(ngModel)] ="querystring" />
+            <label class="mdl-textfield__label" for="site-search">Search</label>
+          </div>
+        </div>
+      </div>
+
+      <br> 
+      <br>
+      <br>
+      <br>
+
+      <!-- Wide card with Edit and Delete button -->
+      <div class="ui stackable three column grid" >
+        <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand" 
+        *ngFor="let bp of bplist | filterrecords: querystring : 'leads' | sortorder | paginate: { itemsPerPage: 3, currentPage: p }">
+
+          <!--Lead Title-->
+          <div class="mdl-card__title">
+            <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.8vw;font-weight: bold;" 
+               >
+              {{bp.lead_title}}  
+            </a>
+          </div>
+
+          <div class="ui stackable two column grid">
+            <!--Company Name & Created Date -->
+            <div class= "column">
+              <p style="font-size: 12px;"> 
+                {{bp.company_name}}
+                <br>
+                {{bp.opportunity_created_at| date: 'medium' }}
+              </p>
+            </div>
+
+            <div class="column">
+              <div class="ui red statistic">
+                <div class="value" style="text-transform: uppercase;">
+                  {{bp.edc | amTimeAgo}}
+               <br>
+               <span style="font-size: 0.7rem; color: grey;">
+                  {{bp.edc | date: 'longDate'}} </span>
+                </div>
+
+                <div class="label" style="color: black; font-size: 10px;text-align: center;">EDC</div>
+              </div>
+            </div>
+
+          </div>
+          
+          <!-- Lead Source, Activities, Contacts and  Product value-->
+          <div class="ui divider"></div>
+            <div class="ui stackable two column grid">
+              <div class="column">
+              
+                <span style="color: black; font-size: 10px;text-align: center;">LEAD SOURCE</span>
+                <br>
+                <a class="ui black label" align="center">
+                  {{leadsourcelabel(bp.leadsource)}}
+                </a>
+            
+                <p *ngIf="bp.leadsource == 'oem'" style="font-size: 12px; padding: 5px">
+                  {{bp.oem_name}}
+                </p>
+                <p *ngIf="bp.leadsource == 'distributor'" style="font-size: 12px; padding: 5px">
+                  {{bp.distributor_name}}
+                </p>
+                <p *ngIf="bp.leadsource == 'event'" style="font-size: 12px; padding: 5px">
+                  {{bom.event_name}}
+                </p>
+              </div>
+             
+              <div class="column" >
+                <div class="ui tiny blue statistic">
+                <br>
+                  <div class="value" style="font-size: 5px; font-weight: bold;">
+                      {{returnruppeamount(bp.value)}}
+                  </div>
+                  <div class="label" style="color: black; font-size: 10px;text-align: center;">VALUE</div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="ui divider"></div>
+
+      <div class="ui blue labels" align="center">
+        <span style="color: black; font-size: 10px;text-align: center;">PRODUCT:</span>
+        <br>
+        <a class="ui label">
+          {{bp.product_name}}
+          <div class="detail">{{bp.quantity}}</div>
+        </a>
+
+      </div>  
+
+      <div class="ui divider"></div>
+
+      <div class="ui teal labels" align="center">
+        <span style="color: black; font-size: 10px;text-align: center;">PRE SALES:</span>
+        <br>
+        <a class="ui  label">
+          <app-assignedtonameget name="{{bp.lead_approved_by_presales}}"> </app-assignedtonameget>
+        </a>
+          </div>
+
+		         <div class="ui divider"></div>
+
+          <!--Activities, Upcoming and Remarks -->
+          <div class="title"  style="color: purple; font-size: 15px; font-weight: bold" (click)="showContentActivOppo()"> 
+            <i class="dropdown icon"></i>
+            ACTIVITIES/ UPCOMING/ REMARKS:    
+          </div>
+   
+          <div class="segment" *ngIf="isActivOpen" >
+              <div class="title"  style="color: purple; font-size: 12px; font-weight: bold"> OPPORTUNITIES ACTIVITIES </div>
+    
+              <div class="segment" *ngFor = "let actv of bp.opportunity_activities | contactpersons">
+                <div class="ui tag labels" style="font-size: 12px; margin-top: 2px;margin-bottom: 2px; " > 
+                  <a class="ui grey label" style="color: black; font-size: 12px; font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;">{{getactivitytypetext(actv.activity_type)}}</a>
+                  <a class="ui teal label" align="center">
+                  <app-assignedtonameget name="{{actv.activity_created_by}}"> </app-assignedtonameget>
+                  </a>
+                  <a class="ui teal label" style="color: black; font-size: 12px; font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;">Created At: {{actv.created_at | amTimeAgo }} </a>
+                </div> 
+
+                <p style="font-size: 10px;"> <span style="font-weight: bold;"> Stage: </span>{{returnopportunitystate(actv.opportunity_stage)}}</p>
+
+                <app-reversegeocoder lat="{{actv.latitude}}" long="{{actv.longitude}}"></app-reversegeocoder> 
+            
+                <div *ngIf="actv.activity_type == 'phonecall'">
+                  <p style="font-size: 10px;"> <span style="font-weight: bold;"> Call Date : </span>{{actv.phonecallDate | date: 'longDate'}}</p>
+                </div>
+                <div *ngIf="actv.activity_type == 'onsitevisit'">
+                  <p style="font-size: 10px;"> <span style="font-weight: bold;"> Visit Date : </span>{{actv.visitDate | date: 'longDate' }}</p>
+                </div>
+                <div *ngIf="actv.activity_type == 'presentation'">
+                  <p style="font-size: 10px;"> <span style="font-weight: bold;"> Presentation Date : </span>{{actv.presentationDate | date: 'longDate' }}</p>
+                </div>
+                <div *ngIf="actv.activity_type == 'solutiondocumenting'">
+                  <p style="font-size: 10px;"> <span style="font-weight: bold;"> Documenting Date : </span>{{actv.solutiondocumentingDate | date: 'longDate' }}</p>
+                </div>
+
+                <div *ngIf="actv.activity_type == 'poc'">
+                  <p style="font-size: 10px;"> <span style="font-weight: bold;"> POC Start Date : </span>{{actv.pocstartDate | date: 'longDate' }}</p>
+                </div>
+                <div *ngIf="actv.activity_type == 'poc'">
+                  <p style="font-size: 10px;"> <span style="font-weight: bold;"> POC End Date : </span>{{actv.pocendDate | date: 'longDate' }}</p>
+                </div>
+                <div *ngIf="actv.activity_type == 'poc'">
+                  <p style="font-size: 10px;"> <span style="font-weight: bold;"> POC Sign Off : </span>{{actv.poc_signoff }}</p>
+                </div>
+
+                <div *ngIf="actv.activity_type == 'demo'">
+                  <p style="font-size: 10px;"> <span style="font-weight: bold;"> POC Start Date : </span>{{actv.demostartDate | date: 'longDate' }}</p>
+                </div>
+                <div *ngIf="actv.activity_type == 'demo'">
+                  <p style="font-size: 10px;"> <span style="font-weight: bold;"> POC End Date : </span>{{actv.demoendDate| date: 'longDate' }}</p>
+                </div>
+                <div *ngIf="actv.activity_type == 'demo'">
+                  <p style="font-size: 10px;"> <span style="font-weight: bold;"> POC Sign Off : </span>{{actv.demo_signoff }}</p>
+                </div>
+
+                <div *ngIf="actv.activity_type == 'onsitevisit'">
+                  <span style="font-size: 10px;font-weight: bold;"> Visit Remarks : </span>
+                  <p>{{actv.visitremarks}}</p>
+                </div>
+                <div *ngIf="actv.activity_type == 'phonecall'">
+                  <span style="font-size: 10px;font-weight: bold;"> Call Remarks :</span>
+                  <p>{{actv.phonecallremarks}}</p>
+                </div>
+
+                <div *ngIf="actv.activity_type == 'presentation'">
+                  <span style="font-size: 10px;font-weight: bold;"> Presentation Remarks :</span>
+                  <p>{{actv.presentationremarks}}</p>
+                </div>
+
+                <div *ngIf="actv.activity_type == 'solutiondocumenting'">
+                  <span style="font-size: 10px;font-weight: bold;"> Solution Documenting Remarks :</span>
+                  <p>{{actv.solutiondocumentingremarks}}</p>
+                </div>
+                <div *ngIf="actv.activity_type == 'poc'">
+                  <span style="font-size: 10px;font-weight: bold;"> POC Remarks :</span>
+                  <p>{{actv.pocremarks}}</p>
+                </div>
+                <div *ngIf="actv.activity_type == 'demo'">
+                  <span style="font-size: 10px;font-weight: bold;"> Demo Remarks :</span>
+                  <p>{{actv.demoremarks}}</p>
+                </div>
+              </div>
+              <br>
+             
+              <div class="title"  style="color: purple; font-size: 12px; font-weight: bold"> LEAD ACTIVITIES </div>
+              <div *ngFor="let activity of bp.lead_activities| contactpersons ">
+                <div class="ui tag labels" style="font-size: 12px; margin-top: 2px;margin-bottom: 2px; " > 
+                  <a class="ui grey label" style="color: black; font-size: 12px; font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;">{{getactivitytypetext(activity.activity_type)}}</a>
+                </div>
+                
+                <p style="font-size: 10px;"> <span style="font-weight: bold;"> Created At: </span>{{activity.created_at  | date: 'medium'}}</p>
+
+                <app-reversegeocoder lat="{{activity.latitude}}" long="{{activity.longitude}}"></app-reversegeocoder> 
+                  
+                  <div *ngIf="activity.activity_type == 'phonecall'">
+                    <p style="font-size: 10px;"> <span style="font-weight: bold;"> Call Date : </span>{{activity.phonecallDate | date: 'longDate'}}</p>
+                  </div>
+                  <div *ngIf="activity.activity_type == 'onsitevisit'">
+                    <p style="font-size: 10px;"> <span style="font-weight: bold;"> Visit Date : </span>{{activity.visitDate | date: 'longDate' }}</p>
+                  </div>
+                  <div *ngIf="activity.activity_type == 'onsitevisit'">
+                    <span style="font-size: 10px;font-weight: bold;"> Visit Remarks : </span>
+                    <p>{{activity.visitremarks}}</p>
+                  </div>
+                  <div *ngIf="activity.activity_type == 'phonecall'">
+                    <span style="font-size: 10px;font-weight: bold;"> Call Remarks :</span>
+                    <p>{{activity.phonecallremarks}}</p>
+                  </div>
+              </div>   
+
+              <div class="title"  style="color: purple; font-size: 12px; font-weight: bold"> UPCOMING </div>
+  
+              <div class="item" *ngFor = "let upactv of bp.upcoming | contactpersons">
+                <div class="ui tag labels" style="font-size: 12px; margin-top: 2px;margin-bottom: 2px; " > 
+                  <a class="ui grey label" style="color: black; font-size: 12px; font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;">{{getupcomingtext(upactv.next_meeting_type)}}</a>
+                  {{upactv.created_at  | date: 'medium'}} , 
+                  {{upactv.next_meeting_date | date: 'longDate' }}
+                </div>  
+              </div>  
+
+              <div class="title"  style="color: purple; font-size: 12px; font-weight: bold"> REMARKS </div>
+    
+              {{bp.lead_meeting_remark}}
+             
+          </div>
+        </div>
+      </div>
+<br>
+      <!--Pagination-->
+             
+      <div class="ui item" style="color: white; background-color: #eee; float:right; border-radius: 3px; position: relative; z-index: 1">
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </div>
+      <br>
+      <br>
+
+      
+    </div>
+  </div>
+</div>

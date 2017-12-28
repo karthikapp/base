@@ -3,7 +3,7 @@
 }
 
 .wide-card.mdl-card {
-  width: 350px;
+  width: 285px;
 }
 .demo-card-wide > .mdl-card__title {
   color: #fff;
@@ -39,6 +39,10 @@ font-family: 'Marvel', sans-serif; text-transform: capitalize;
 
 .ui.red.statistic>.value, .ui.statistics .statistic>.value {
     font-size: 1.0rem!important;
+}
+
+.ui.tiny.statistic>.value, .ui.tiny.statistics .statistic>.value {
+    font-size: 1.2rem!important;
 }
 
 

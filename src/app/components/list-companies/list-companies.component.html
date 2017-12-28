@@ -25,7 +25,8 @@
     <br>
 
     <!-- Wide card with Edit and Delete button -->
-    <div class="ui stackable two column grid" style="height:65vh">
+    
+    <div class="ui stackable two column grid" style="height:70vh">
       <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand" 
       *ngFor="let acct of accounts | filterrecords: querystring : 'accounts' | sortorder | paginate: { itemsPerPage: 4, currentPage: p }">
 
@@ -93,12 +94,14 @@
       </div>
     </div>
 
+
     <!--Pagination-->
     <br>
          
-    <div class="ui item" style="color: white; background-color: #eee; float:right; border-radius: 5px;">
+    <div class="ui item" style="color: white; background-color: #eee; float:right; border-radius: 3px; position: relative; z-index: 1;">
       <pagination-controls (pageChange)="p = $event"></pagination-controls>
     </div>
+
    </div>
 
   </div>

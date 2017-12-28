@@ -1,16 +1,16 @@
-import { Component, OnInit,  OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FirebaseService } from "../../services/firebase.service";
 import { Router, ActivatedRoute } from '@angular/router';
 import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
 import "rxjs/add/operator/takeWhile";
 
 @Component({
-  selector: 'app-lead',
-  templateUrl: './lead.component.html',
-  styleUrls: ['./lead.component.css']
+  selector: 'app-allleads',
+  templateUrl: './allleads.component.html',
+  styleUrls: ['./allleads.component.css']
 })
-export class LeadComponent implements OnInit, OnDestroy {
-  leads: any;
+export class AllleadsComponent implements OnInit, OnDestroy {
+leads: any;
   
   uid: string;
   ev: boolean = false;
@@ -19,7 +19,6 @@ export class LeadComponent implements OnInit, OnDestroy {
 
   leadlabel: string;
   followupno: any;
-
 
   constructor(private firebaseservice : FirebaseService, 
     private router: Router, private afAuth: AngularFireAuth) { }
@@ -50,7 +49,7 @@ export class LeadComponent implements OnInit, OnDestroy {
             if (v.report.toUpperCase() == 'REPORTER'
               || v.report.toUpperCase() == 'RECIPIENT')
             {
-              this.firebaseservice.getLeadsByID(this.uid)
+              this.firebaseservice.getAllLeads()
               .takeWhile(() => this.alive)
               .subscribe(lead => {
               this.leads = lead.filter(v => {
@@ -100,7 +99,7 @@ export class LeadComponent implements OnInit, OnDestroy {
 
      else if (String(leadsource) == "onsite")
     {
-      this.leadlabel = "ONSITE VISIT"
+      this.leadlabel = "ON SITE VISIT"
     }
 
     return this.leadlabel
@@ -140,5 +139,5 @@ export class LeadComponent implements OnInit, OnDestroy {
     this.alive = false;
   }
 
-}
 
+}

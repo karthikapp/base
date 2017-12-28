@@ -413,6 +413,10 @@ export class FirebaseService {
 		} })
 	}
 
+	getAllLeads(){
+		return this.af.list('/leads')
+	}
+
 
 	//Get Leads based on user id
 	getLeadsByID(userid: string){
@@ -448,12 +452,32 @@ export class FirebaseService {
 
 	//Get Opportunities based on user id
 	getOpportunitiesByID(userid: string){
-		return this.af.list('/opportunities', { query: {
+		return this.af.list('/opportunities', 
+			{ query: {
 			orderByChild: 'opportunity_assignedto',
 			equalTo: String(userid)
 		} 
 	});
 	}
+
+
+	getopportunitiesbyreporttoid(userid: String)
+    {
+      // console.log(userid)
+      return this.af.list('/opportunities', 
+      	{ query: {
+      		orderByChild: 'reports_to',
+      		equalTo: String(userid)
+    	}
+	});
+	}
+
+      //Get opportunities by id information
+    getopportunities()
+    {
+      // console.log(userid)
+      return this.af.list('/opportunities');
+    }
 //END Leads and Opportunities
 
 //START USER
@@ -487,7 +511,7 @@ export class FirebaseService {
 
     //get single User Profile Info 
 	getUser(uid: string){
-		var userURLs = '/user/' + uid;
+		var userURLs = '/user/' + String(uid);
 		//console.log('fb',userURLs);
 		return this.af.object(userURLs);
 	}

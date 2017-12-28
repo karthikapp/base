@@ -5,12 +5,13 @@ import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
 import "rxjs/add/operator/takeWhile";
 
 @Component({
-  selector: 'app-oppportunities',
-  templateUrl: './oppportunities.component.html',
-  styleUrls: ['./oppportunities.component.css']
+  selector: 'app-allopportunities',
+  templateUrl: './allopportunities.component.html',
+  styleUrls: ['./allopportunities.component.css']
 })
-export class OppportunitiesComponent implements OnInit, OnDestroy {
-   uid: string;
+export class AllopportunitiesComponent implements OnInit, OnDestroy {
+
+ uid: string;
    ev: boolean = false;
 
    alive: boolean = true;
@@ -54,7 +55,7 @@ export class OppportunitiesComponent implements OnInit, OnDestroy {
    casewonarrayvalue: any;
    caselostarrayvalue: any;
 
-   rflag: string = 'me';
+   rflag: string = 'all';
 
   constructor(private firebaseservice : FirebaseService, 
     private router: Router, private afAuth: AngularFireAuth) { }
@@ -85,7 +86,7 @@ export class OppportunitiesComponent implements OnInit, OnDestroy {
             if (v.report.toUpperCase() == 'REPORTER'
               || v.report.toUpperCase() == 'RECIPIENT')
             {
-              this.firebaseservice.getOpportunitiesByID(this.uid)
+              this.firebaseservice.getopportunities()
               .takeWhile(() => this.alive)
               .subscribe(v => {
               this.opportunities = v;
@@ -270,6 +271,4 @@ export class OppportunitiesComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
     this.alive = false;
   }
-
-
 }
