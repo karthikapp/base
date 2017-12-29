@@ -60,7 +60,7 @@ export class FunnelchartsComponent implements  OnInit, OnDestroy{
   constructor(private firebaseservice : FirebaseService, 
     private router: Router, private afAuth: AngularFireAuth) { 
 
-
+this.dofunnelcharts();
 
 
 }
@@ -252,11 +252,6 @@ ngOnInit() {
 
             
             }) 
-this.dofunnelcharts();
-
-
-
-
 
               return this.ev = true;
             }

@@ -132,7 +132,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   //List Reports_To as name
-  onListReportsTo(reportsTo: string, report: string){
+  onListReportsTo(reportsTo: string, report: string, role: string){
     if (reportsTo != undefined && report == 'reporter'){
       return this.users.filter(user => {
         return user.userid == reportsTo;
@@ -141,7 +141,7 @@ export class UsersComponent implements OnInit, OnDestroy {
         this.usernameReport = user.name + ' - ' + user.email;
         return this.usernameReport});    
      }
-     else if (report == 'recipient' || report == 'other'){
+     else if (report == 'recipient' || report == 'other' || role == 'master'){
        return 'Self';
      }
      else {
@@ -152,7 +152,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   //Add a new User
   on_add_user(){
   	//console.log("add");
-    if(this.report == 'recipient' || this.report == 'other'){
+    if(this.report == 'recipient' || this.report == 'other' || this.role == 'master'){
       this.reports_to = this.userid;
     }
 
@@ -172,7 +172,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   //Update an User
   on_edit_user(){  
     //Tweak to make reports_to as self when report type is either recipient or other
-    if(this.ureport == 'recipient' || this.ureport == 'other'){
+    if(this.ureport == 'recipient' || this.ureport == 'other' || this.urole == 'master'){
       this.ureports_to = this.uuserid;
     }
 
