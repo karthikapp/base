@@ -19,6 +19,10 @@ export class FunnelchartsComponent implements  OnInit, OnDestroy{
    alive: boolean = true;
    opportunities: any[];
 
+   items: any;
+   leadsarray: any;
+   leadsum: any;
+
    arraylist: any;
    sumlist: any;
    qualifiedleadsum: any;
@@ -57,16 +61,36 @@ export class FunnelchartsComponent implements  OnInit, OnDestroy{
    casewonarrayvalue: any;
    caselostarrayvalue: any;
 
+   valuesofsum: {
+     qualifiedleadsum : number,
+     presalesopportunitysum: number,
+             budgetaryopportunitysum: number,
+             bomopportunitysum: number,
+             pocopportunitysum: number,
+             finalproposalopportunitysum: number,
+             finalnegoopportunitysum: number,
+             casewonopportunitysum: number,
+             caselostopportunitysum: number
+   };
+
+
   constructor(private firebaseservice : FirebaseService, 
     private router: Router, private afAuth: AngularFireAuth) { 
-
-this.dofunnelcharts();
-
 
 }
 
 ngOnInit() {
     this.opportunities = [];
+
+    this.bomopportunitysum = 0;
+    this.casewonopportunitysum = 0;
+    this.caselostopportunitysum = 0;
+    this.presalesopportunitysum = 0;
+    this.budgetaryopportunitysum = 0;
+    this.qualifiedleadsum = 0;
+    this.pocopportunitysum = 0;
+    this.finalnegoopportunitysum = 0;
+    this.finalproposalopportunitysum = 0;
 
     //Opportunities list
     this.afAuth.authState
@@ -88,12 +112,53 @@ ngOnInit() {
               v.role = '';
             }
 
+            if(v.title == undefined)
+            {
+              v.title = '';
+            }
+
             if (v.report.toUpperCase() == 'REPORTER'
               || v.report.toUpperCase() == 'RECIPIENT'
-              || v.report.toUpperCase() == "PRE-SALES HEAD")
+              || v.title.toUpperCase() == "PRE-SALES HEAD"
+              || v.role.toUpperCase() == "PRESALES"
+              || v.role.toUpperCase() == "MASTER")
             {
-              this.firebaseservice.getOpportunitiesByID(this.uid)
-              .takeWhile(() => this.alive)
+              
+
+/*console.log("sales dashboard inside function", this.qualifiedleadsum, this.presalesopportunitysum,
+  this.budgetaryopportunitysum, this.finalnegoopportunitysum, 
+  this.casewonopportunitysum, this.caselostopportunitysum, 
+  this.bomopportunitysum, this.finalproposalopportunitysum, this.pocopportunitysum)
+*/
+
+  this.firebaseservice.getLeadsByID(this.uid).subscribe(v => {
+
+             let qualifiedleads = v.filter(item => {
+               return (item.leadstatus != 'Qualified' && item.leadstatus != 'Rejected')
+             })
+
+             qualifiedleads.forEach(element => {
+               if (element.products_list == undefined)
+               {
+                 this.items = [];
+               }
+               else 
+               {
+                 let somelist = element.products_list
+                 somelist.forEach(value =>
+                 {
+                   this.items.push(value.value)
+                 })
+               }
+             })
+ 
+            this.leadsarray = this.items
+            this.leadsum = this.leadsarray.reduce((a, b) => a + b, 0).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")
+
+           this.leadsum = Number(this.leadsum);
+           })
+
+          this.firebaseservice.getOpportunitiesByID(this.uid)       
               .subscribe(v => {
               this.opportunities = v;
              this.arrayvalue = []
@@ -246,12 +311,29 @@ ngOnInit() {
              // poc stage opportunities
              this.caselostarraylist = this.caselostarrayvalue
              this.caselostopportunitysum = this.caselostarraylist.reduce((a, b) => a + b, 0).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-
-
-             console.log("sd", this.qualifiedleadsum)
-
             
-            }) 
+
+
+        this.valuesofsum = {
+             qualifiedleadsum : Number(this.qualifiedleadsum),
+             presalesopportunitysum: Number(this.presalesopportunitysum),
+             budgetaryopportunitysum: Number(this.budgetaryopportunitysum),
+             bomopportunitysum: Number(this.bomopportunitysum),
+             pocopportunitysum: Number(this.pocopportunitysum),
+             finalproposalopportunitysum: Number(this.finalproposalopportunitysum),
+             finalnegoopportunitysum: Number(this.finalnegoopportunitysum),
+             casewonopportunitysum: Number(this.casewonopportunitysum),
+             caselostopportunitysum: Number(this.caselostopportunitysum)
+        }
+
+        //console.log(this.valuesofsum);
+
+      
+this.dofunnelcharts();
+       
+
+  }) 
+   
 
               return this.ev = true;
             }
@@ -272,8 +354,11 @@ ngOnInit() {
   }
 
 dofunnelcharts(){
-console.log("sales dashboard function", this.qualifiedleadsum, this.presalesopportunitysum,
-  this.budgetaryopportunitysum, this.finalnegoopportunitysum, this.casewonopportunitysum)
+/*console.log("sales dashboard function", this.qualifiedleadsum, this.presalesopportunitysum,
+  this.budgetaryopportunitysum, this.finalnegoopportunitysum, 
+  this.casewonopportunitysum, this.caselostopportunitysum, 
+  this.bomopportunitysum, this.finalproposalopportunitysum, this.pocopportunitysum)
+console.log("valuesofsum", this.valuesofsum, this.leadsum)*/
 
   this.options = {
   chart: { type: 'funnel' },
@@ -298,21 +383,23 @@ console.log("sales dashboard function", this.qualifiedleadsum, this.presalesoppo
     series: [{
         name: 'Saleforce Dashboard',
         data: [
-            ['Leads', 15654],
-            ['Qualified Leads', this.qualifiedleadsum],
-            ['Presales', this.presalesopportunitysum],
-            ['Budgeting', this.budgetaryopportunitysum],
-            ['BOM', this.bomopportunitysum],
-            ['POC/DEMO',this.pocopportunitysum ],
-            ['Proposal', this.finalproposalopportunitysum ],
-            ['Negotiation', this.finalnegoopportunitysum ],
-            ['Case Won',  this.casewonopportunitysum ],
-            ['Case Lost',  this.caselostopportunitysum ]
+            ['Leads', this.leadsum],
+            ['Q Leads', this.valuesofsum.qualifiedleadsum],
+            ['Presales', this.valuesofsum.presalesopportunitysum],
+            ['Budgeting', this.valuesofsum.budgetaryopportunitysum],
+            ['BOM', this.valuesofsum.bomopportunitysum],
+            ['POC/DEMO',this.valuesofsum.pocopportunitysum ],
+            ['Proposal', this.valuesofsum.finalproposalopportunitysum ],
+            ['Negotiation', this.valuesofsum.finalnegoopportunitysum ],
+            ['Case Won',  this.valuesofsum.casewonopportunitysum ],
+            ['Case Lost',  this.valuesofsum.caselostopportunitysum ]
         ]
     }]
 }
 
 }
+
+
   ngOnDestroy() {
     this.alive = false;
   }
