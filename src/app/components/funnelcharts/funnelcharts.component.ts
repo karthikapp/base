@@ -20,7 +20,9 @@ export class FunnelchartsComponent implements  OnInit, OnDestroy{
    opportunities: any[];
 
    items: any;
-   leadsarray: any;
+   products:any;
+   leadsarrayvalue: any;
+   leadsarraylist: any;
    leadsum: any;
 
    arraylist: any;
@@ -91,6 +93,7 @@ ngOnInit() {
     this.pocopportunitysum = 0;
     this.finalnegoopportunitysum = 0;
     this.finalproposalopportunitysum = 0;
+    this.leadsum = 0;
 
     //Opportunities list
     this.afAuth.authState
@@ -133,6 +136,10 @@ ngOnInit() {
 
   this.firebaseservice.getLeadsByID(this.uid).subscribe(v => {
 
+               this.items = v;
+               this.leadsarrayvalue = [];
+               this.leadsarraylist = [];
+
              let qualifiedleads = v.filter(item => {
                return (item.leadstatus != 'Qualified' && item.leadstatus != 'Rejected')
              })
@@ -140,25 +147,28 @@ ngOnInit() {
              qualifiedleads.forEach(element => {
                if (element.products_list == undefined)
                {
-                 this.items = [];
+                   this.leadsarrayvalue.push(0);
+                   this.leadsarraylist.push(element);
                }
                else 
                {
                  let somelist = element.products_list
                  somelist.forEach(value =>
                  {
-                   this.items.push(value.value)
+                   this.leadsarrayvalue.push(value.value);
+                   this.leadsarraylist.push(value);
                  })
                }
              })
- 
-            this.leadsarray = this.items
-            this.leadsum = this.leadsarray.reduce((a, b) => a + b, 0).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")
+             
 
-           this.leadsum = Number(this.leadsum);
+            this.leadsarraylist = this.leadsarrayvalue
+            this.leadsum = this.leadsarraylist.reduce((a, b) => a + b, 0);
+
+             this.leadsum = parseFloat(this.leadsum);
            })
 
-          this.firebaseservice.getOpportunitiesByID(this.uid)       
+ this.firebaseservice.getOpportunitiesByID(this.uid)       
               .subscribe(v => {
               this.opportunities = v;
              this.arrayvalue = []
@@ -186,9 +196,11 @@ ngOnInit() {
                // qualified lead sum code
                if (item.opportunity_state == 'Qualified_lead')
                {
+                 //console.log("kri2",item.value, item)
                  this.arrayvalue.push(item.value)
                  this.qualifiedleadlist.push(item)
-                 console.log("found qualified lead")
+                 //console.log("found qualified lead")
+                 //console.log("kri",this.arraylist, this.arrayvalue)
                }
 
                else 
@@ -286,49 +298,49 @@ ngOnInit() {
                })
 
              this.arraylist = this.arrayvalue
-             this.qualifiedleadsum = this.arraylist.reduce((a, b) => a + b, 0).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+             this.qualifiedleadsum = this.arraylist.reduce((a, b) => a + b, 0);
+             //console.log("this", this.arraylist, this.arrayvalue, this.qualifiedleadsum)
              // presales sum code
              this.presalesarraylist = this.presalsesarrayvalue
-             this.presalesopportunitysum = this.presalesarraylist.reduce((a, b) => a + b, 0).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+             this.presalesopportunitysum = this.presalesarraylist.reduce((a, b) => a + b, 0);
              // budgetary sum code
              this.budgetaryarraylist = this.budgetaryarrayvalue
-             this.budgetaryopportunitysum = this.budgetaryarraylist.reduce((a, b) => a + b, 0).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+             this.budgetaryopportunitysum = this.budgetaryarraylist.reduce((a, b) => a + b, 0);
              // bom stage opportunities
              this.bomarraylist = this.bomarrayvalue
-             this.bomopportunitysum = this.bomarraylist.reduce((a, b) => a + b, 0).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+             this.bomopportunitysum = this.bomarraylist.reduce((a, b) => a + b, 0);
              // poc stage opportunities
              this.pocarraylist = this.pocarrayvalue
-             this.pocopportunitysum = this.pocarraylist.reduce((a, b) => a + b, 0).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+             this.pocopportunitysum = this.pocarraylist.reduce((a, b) => a + b, 0);
              // poc stage opportunities
              this.finalproposalarraylist = this.finalproposalarrayvalue
-             this.finalproposalopportunitysum = this.finalproposalarraylist.reduce((a, b) => a + b, 0).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+             this.finalproposalopportunitysum = this.finalproposalarraylist.reduce((a, b) => a + b, 0);
              // poc stage opportunities
              this.finalnegoarraylist = this.finalnegoarrayvalue
-             this.finalnegoopportunitysum = this.finalnegoarraylist.reduce((a, b) => a + b, 0).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+             this.finalnegoopportunitysum = this.finalnegoarraylist.reduce((a, b) => a + b, 0);
              // poc stage opportunities
              this.casewonarraylist = this.casewonarrayvalue
-             this.casewonopportunitysum = this.casewonarraylist.reduce((a, b) => a + b, 0).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+             this.casewonopportunitysum = this.casewonarraylist.reduce((a, b) => a + b, 0);
              // poc stage opportunities
              this.caselostarraylist = this.caselostarrayvalue
-             this.caselostopportunitysum = this.caselostarraylist.reduce((a, b) => a + b, 0).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+             this.caselostopportunitysum = this.caselostarraylist.reduce((a, b) => a + b, 0);
             
 
 
         this.valuesofsum = {
-             qualifiedleadsum : Number(this.qualifiedleadsum),
-             presalesopportunitysum: Number(this.presalesopportunitysum),
-             budgetaryopportunitysum: Number(this.budgetaryopportunitysum),
-             bomopportunitysum: Number(this.bomopportunitysum),
-             pocopportunitysum: Number(this.pocopportunitysum),
-             finalproposalopportunitysum: Number(this.finalproposalopportunitysum),
-             finalnegoopportunitysum: Number(this.finalnegoopportunitysum),
-             casewonopportunitysum: Number(this.casewonopportunitysum),
-             caselostopportunitysum: Number(this.caselostopportunitysum)
+             qualifiedleadsum : parseFloat(this.qualifiedleadsum),
+             presalesopportunitysum: parseFloat(this.presalesopportunitysum),
+             budgetaryopportunitysum: parseFloat(this.budgetaryopportunitysum),
+             bomopportunitysum: parseFloat(this.bomopportunitysum),
+             pocopportunitysum: parseFloat(this.pocopportunitysum),
+             finalproposalopportunitysum: parseFloat(this.finalproposalopportunitysum),
+             finalnegoopportunitysum: parseFloat(this.finalnegoopportunitysum),
+             casewonopportunitysum: parseFloat(this.casewonopportunitysum),
+             caselostopportunitysum: parseFloat(this.caselostopportunitysum)
         }
 
-        //console.log(this.valuesofsum);
+       // console.log("valuesinside",this.valuesofsum, this.qualifiedleadsum)
 
-      
 this.dofunnelcharts();
        
 
@@ -337,6 +349,7 @@ this.dofunnelcharts();
 
               return this.ev = true;
             }
+            
             else
             {
               console.log('No access to this page choco');
