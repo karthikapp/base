@@ -150,12 +150,19 @@ ngOnDestroy() {
     this.alive = false;
   }
 
-showContentActivOppo() {
-
-      this.isActivOpen = !this.isActivOpen;
-      console.log (this.isActivOpen)
-
+showContentActivOppo(bp) {
+  if (!bp.isActivOpen) {
+      this.closeallActivOppo();
     }
+    bp.isActivOpen = !bp.isActivOpen;
+    console.log("bpshow", bp, bp.isActivOpen);
+ }
+
+closeallActivOppo(): void {
+  this.bplist.forEach((bp) => {
+      bp.isActivOpen = false;
+    });
+}
 
 
    getactivitytypetext(activitytype){

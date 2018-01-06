@@ -160,13 +160,21 @@ ngOnDestroy() {
     this.alive = false;
   }
 
-showContentActivOppo() {
+showContentActivOppo(presale) {
 
-      this.isActivOpen = !this.isActivOpen;
-      console.log (this.isActivOpen)
+      if (!presale.isActivOpen) {
+      this.closeallActivOppo();
+    }
+    presale.isActivOpen = !presale.isActivOpen;
+    console.log("presaleshow", presale, presale.isActivOpen);
 
     }
 
+closeallActivOppo(): void {
+  this.presaleslist.forEach((presale) => {
+      presale.isActivOpen = false;
+    });
+}
 
    getactivitytypetext(activitytype){
      if (activitytype == 'phonecall')

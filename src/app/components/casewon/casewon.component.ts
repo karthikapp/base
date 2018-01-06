@@ -74,7 +74,7 @@ casewon: any;
               .takeWhile(() => this.alive)
               .subscribe(cw => {
               this.casewon = cw.filter(v => {
-              return v.opportunity_state == 'Finalising_BOM'
+              return v.opportunity_state == 'Case_won'
             })
              console.log("nego",this.casewon) 
            })
@@ -85,7 +85,7 @@ casewon: any;
               .takeWhile(() => this.alive)
               .subscribe(cw => {
               this.casewon = cw.filter(v => {
-              return v.opportunity_state == 'Finalising_BOM'
+              return v.opportunity_state == 'Case_won'
             })
              console.log("nego",this.casewon) 
            })
@@ -149,12 +149,19 @@ ngOnDestroy() {
     this.alive = false;
   }
 
-showContentActivOppo() {
-
-      this.isActivOpen = !this.isActivOpen;
-      console.log (this.isActivOpen)
-
+showContentActivOppo(cw) {
+  if (!cw.isActivOpen) {
+      this.closeallActivOppo();
     }
+    cw.isActivOpen = !cw.isActivOpen;
+    console.log("cwshow", cw, cw.isActivOpen);
+ }
+
+closeallActivOppo(): void {
+  this.casewon.forEach((cw) => {
+      cw.isActivOpen = false;
+    });
+}
 
 
    getactivitytypetext(activitytype){

@@ -153,12 +153,19 @@ leadsourcelabel(leadsource: String){
     this.alive = false;
   }
 
-  showContentActivOppo() {
-
-      this.isActivOpen = !this.isActivOpen;
-      console.log (this.isActivOpen)
-
+  showContentActivOppo(nego) {
+  if (!nego.isActivOpen) {
+      this.closeallActivOppo();
     }
+    nego.isActivOpen = !nego.isActivOpen;
+    console.log("negoshow", nego, nego.isActivOpen);
+ }
+
+closeallActivOppo(): void {
+  this.negolist.forEach((nego) => {
+      nego.isActivOpen = false;
+    });
+}
 
 
    getactivitytypetext(activitytype){

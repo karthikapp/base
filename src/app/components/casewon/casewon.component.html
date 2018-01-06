@@ -118,12 +118,12 @@
 		         <div class="ui divider"></div>
 
           <!--Activities, Upcoming and Remarks -->
-          <div class="title"  style="color: purple; font-size: 15px; font-weight: bold" (click)="showContentActivOppo()"> 
+          <div class="title"  style="color: purple; font-size: 15px; font-weight: bold" (click)="showContentActivOppo(cw)"> 
             <i class="dropdown icon"></i>
             ACTIVITIES/ UPCOMING/ REMARKS:    
           </div>
    
-          <div class="segment" *ngIf="isActivOpen" >
+          <div class="content" *ngIf="cw.isActivOpen" >
               <div class="title"  style="color: purple; font-size: 12px; font-weight: bold"> OPPORTUNITIES ACTIVITIES </div>
     
               <div class="segment" *ngFor = "let actv of cw.opportunity_activities | contactpersons">
