@@ -471,6 +471,16 @@ export class FirebaseService {
  		});
     }
 
+    getopportunitiesforpresales(userid: String){
+    	      // console.log(userid)
+      return this.af.list('/opportunities', 
+      	{ query: { 
+      		orderByChild: 'lead_approved_by_presales',
+      		equalTo: String(userid)
+      	}
+ 		});
+    }
+
 
 	getopportunitiesbyreporttoid(userid: String)
     {

@@ -52,11 +52,6 @@ leads: any;
             }
 
             if (v.report.toUpperCase() == 'RECIPIENT')
-            /*(v.report.toUpperCase() == 'REPORTER'
-              || v.report.toUpperCase() == 'RECIPIENT'
-              || v.title.toUpperCase() == "PRE-SALES HEAD" 
-              || v.role.toUpperCase() == "PRESALES"
-              || v.role.toUpperCase() == "MASTER")*/
             {
               this.firebaseservice.getLeadsByreporttoID(this.uid)
               .takeWhile(() => this.alive)

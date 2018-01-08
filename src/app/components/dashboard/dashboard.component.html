@@ -32,7 +32,7 @@
 
     <!--Routing for Users-->
     <nav class="mdl-navigation" style="" [hidden]="!showReportsFlag">
-      <a class="mdl-navigation__link" routerLink="/dashboard/FunnelCharts" routerLinkActive="active">Dashboard</a>
+      <a class="mdl-navigation__link" routerLink="/dashboard/Charts" routerLinkActive="active">Dashboard</a>
       <a class="mdl-navigation__link" routerLink="/dashboard/MyLeads" routerLinkActive="active">My Leads</a>
             <a class="mdl-navigation__link" routerLink="/dashboard/MyOpportunities" routerLinkActive="active">My Opportunities</a>
       <a class="mdl-navigation__link" routerLink="/dashboard/TeamLeads" routerLinkActive="active" *ngIf="report == 'recipient'">Team Leads</a>
@@ -40,7 +40,8 @@
             <a class="mdl-navigation__link" routerLink="/dashboard/TeampreOpportunities" routerLinkActive="active" *ngIf="role == 'presales'">Team Opportunities</a>
       <a class="mdl-navigation__link" routerLink="/dashboard/AllLeads" routerLinkActive="active" *ngIf="role== 'master'">All Leads</a>
           <a class="mdl-navigation__link" routerLink="/dashboard/AllLeads" routerLinkActive="active" *ngIf="title == 'Pre-Sales Head'">All Leads</a>
-          <a class="mdl-navigation__link" routerLink="/dashboard/AllOpportunities" routerLinkActive="active" *ngIf="role== 'master'">All Opportunities</a>     
+          <a class="mdl-navigation__link" routerLink="/dashboard/AllOpportunities" routerLinkActive="active" *ngIf="role== 'master'">All Opportunities</a>    
+          <a class="mdl-navigation__link" routerLink="/dashboard/AllOpportunities" routerLinkActive="active" *ngIf="title == 'Pre-Sales Head'">All Opportunities</a>   
     </nav>
   </div>
 

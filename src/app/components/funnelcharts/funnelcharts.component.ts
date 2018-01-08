@@ -128,12 +128,6 @@ ngOnInit() {
             {
               
 
-/*console.log("sales dashboard inside function", this.qualifiedleadsum, this.presalesopportunitysum,
-  this.budgetaryopportunitysum, this.finalnegoopportunitysum, 
-  this.casewonopportunitysum, this.caselostopportunitysum, 
-  this.bomopportunitysum, this.finalproposalopportunitysum, this.pocopportunitysum)
-*/
-
   this.firebaseservice.getLeadsByID(this.uid).subscribe(v => {
 
                this.items = v;
@@ -367,11 +361,6 @@ this.dofunnelcharts();
   }
 
 dofunnelcharts(){
-/*console.log("sales dashboard function", this.qualifiedleadsum, this.presalesopportunitysum,
-  this.budgetaryopportunitysum, this.finalnegoopportunitysum, 
-  this.casewonopportunitysum, this.caselostopportunitysum, 
-  this.bomopportunitysum, this.finalproposalopportunitysum, this.pocopportunitysum)
-console.log("valuesofsum", this.valuesofsum, this.leadsum)*/
 
   this.options = {
   chart: { type: 'funnel' },

@@ -5,17 +5,25 @@ import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
 import "rxjs/add/operator/takeWhile";
 
 @Component({
-  selector: 'app-allopportunities',
-  templateUrl: './allopportunities.component.html',
-  styleUrls: ['./allopportunities.component.css']
+  selector: 'app-funnelteamcharts',
+  templateUrl: './funnelteamcharts.component.html',
+  styleUrls: ['./funnelteamcharts.component.css']
 })
-export class AllopportunitiesComponent implements OnInit, OnDestroy {
+export class FunnelteamchartsComponent implements  OnInit, OnDestroy{
 
- uid: string;
+options: Object;
+
+  uid: string;
    ev: boolean = false;
 
    alive: boolean = true;
    opportunities: any[];
+
+   items: any;
+   products:any;
+   leadsarrayvalue: any;
+   leadsarraylist: any;
+   leadsum: any;
 
    arraylist: any;
    sumlist: any;
@@ -55,15 +63,36 @@ export class AllopportunitiesComponent implements OnInit, OnDestroy {
    casewonarrayvalue: any;
    caselostarrayvalue: any;
 
-   rflag: string = 'all';
+   valuesofsum: {
+     qualifiedleadsum : number,
+     presalesopportunitysum: number,
+             budgetaryopportunitysum: number,
+             bomopportunitysum: number,
+             pocopportunitysum: number,
+             finalproposalopportunitysum: number,
+             finalnegoopportunitysum: number,
+             casewonopportunitysum: number,
+             caselostopportunitysum: number
+   };
 
   constructor(private firebaseservice : FirebaseService, 
     private router: Router, private afAuth: AngularFireAuth) { }
 
   ngOnInit() {
-  	this.opportunities = [];
+    this.opportunities = [];
 
-  	//Opportunities list
+    this.bomopportunitysum = 0;
+    this.casewonopportunitysum = 0;
+    this.caselostopportunitysum = 0;
+    this.presalesopportunitysum = 0;
+    this.budgetaryopportunitysum = 0;
+    this.qualifiedleadsum = 0;
+    this.pocopportunitysum = 0;
+    this.finalnegoopportunitysum = 0;
+    this.finalproposalopportunitysum = 0;
+    this.leadsum = 0;
+
+    //Opportunities list
     this.afAuth.authState
     .takeWhile(() => this.alive)
     .subscribe(data => {
@@ -83,10 +112,50 @@ export class AllopportunitiesComponent implements OnInit, OnDestroy {
               v.role = '';
             }
 
-            if (v.role.toUpperCase() == 'MASTER')
+            if(v.title == undefined)
             {
-              this.firebaseservice.getopportunities()
-              .takeWhile(() => this.alive)
+              v.title = '';
+            }
+
+            if (v.report.toUpperCase() == 'RECIPIENT')
+            {
+              
+
+  		this.firebaseservice.getLeadsByreporttoID(this.uid).subscribe(v => {
+
+               this.items = v;
+               this.leadsarrayvalue = [];
+               this.leadsarraylist = [];
+
+             let qualifiedleads = v.filter(item => {
+               return (item.leadstatus == 'Qualified-awaiting-manager')
+             })
+
+             qualifiedleads.forEach(element => {
+               if (element.products_list == undefined)
+               {
+                   this.leadsarrayvalue.push(0);
+                   this.leadsarraylist.push(element);
+               }
+               else 
+               {
+                 let somelist = element.products_list
+                 somelist.forEach(value =>
+                 {
+                   this.leadsarrayvalue.push(value.value);
+                   this.leadsarraylist.push(value);
+                 })
+               }
+             })
+             
+
+            this.leadsarraylist = this.leadsarrayvalue
+            this.leadsum = this.leadsarraylist.reduce((a, b) => a + b, 0);
+
+             this.leadsum = parseFloat(this.leadsum);
+           })
+
+ 		this.firebaseservice.getopportunitiesbyreporttoid(this.uid)       
               .subscribe(v => {
               this.opportunities = v;
              this.arrayvalue = []
@@ -114,9 +183,11 @@ export class AllopportunitiesComponent implements OnInit, OnDestroy {
                // qualified lead sum code
                if (item.opportunity_state == 'Qualified_lead')
                {
+                 //console.log("kri2",item.value, item)
                  this.arrayvalue.push(item.value)
                  this.qualifiedleadlist.push(item)
-                 console.log("found qualified lead")
+                 //console.log("found qualified lead")
+                 //console.log("kri",this.arraylist, this.arrayvalue)
                }
 
                else 
@@ -211,42 +282,63 @@ export class AllopportunitiesComponent implements OnInit, OnDestroy {
                  console.log("not found case lost")
                }
 
-           	  })
+               })
 
              this.arraylist = this.arrayvalue
-             this.qualifiedleadsum = this.arraylist.reduce((a, b) => a + b, 0).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+             this.qualifiedleadsum = this.arraylist.reduce((a, b) => a + b, 0);
+             //console.log("this", this.arraylist, this.arrayvalue, this.qualifiedleadsum)
              // presales sum code
              this.presalesarraylist = this.presalsesarrayvalue
-             this.presalesopportunitysum = this.presalesarraylist.reduce((a, b) => a + b, 0).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+             this.presalesopportunitysum = this.presalesarraylist.reduce((a, b) => a + b, 0);
              // budgetary sum code
              this.budgetaryarraylist = this.budgetaryarrayvalue
-             this.budgetaryopportunitysum = this.budgetaryarraylist.reduce((a, b) => a + b, 0).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+             this.budgetaryopportunitysum = this.budgetaryarraylist.reduce((a, b) => a + b, 0);
              // bom stage opportunities
              this.bomarraylist = this.bomarrayvalue
-             this.bomopportunitysum = this.bomarraylist.reduce((a, b) => a + b, 0).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+             this.bomopportunitysum = this.bomarraylist.reduce((a, b) => a + b, 0);
              // poc stage opportunities
              this.pocarraylist = this.pocarrayvalue
-             this.pocopportunitysum = this.pocarraylist.reduce((a, b) => a + b, 0).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+             this.pocopportunitysum = this.pocarraylist.reduce((a, b) => a + b, 0);
              // poc stage opportunities
              this.finalproposalarraylist = this.finalproposalarrayvalue
-             this.finalproposalopportunitysum = this.finalproposalarraylist.reduce((a, b) => a + b, 0).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+             this.finalproposalopportunitysum = this.finalproposalarraylist.reduce((a, b) => a + b, 0);
              // poc stage opportunities
              this.finalnegoarraylist = this.finalnegoarrayvalue
-             this.finalnegoopportunitysum = this.finalnegoarraylist.reduce((a, b) => a + b, 0).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+             this.finalnegoopportunitysum = this.finalnegoarraylist.reduce((a, b) => a + b, 0);
              // poc stage opportunities
              this.casewonarraylist = this.casewonarrayvalue
-             this.casewonopportunitysum = this.casewonarraylist.reduce((a, b) => a + b, 0).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+             this.casewonopportunitysum = this.casewonarraylist.reduce((a, b) => a + b, 0);
              // poc stage opportunities
              this.caselostarraylist = this.caselostarrayvalue
-             this.caselostopportunitysum = this.caselostarraylist.reduce((a, b) => a + b, 0).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+             this.caselostopportunitysum = this.caselostarraylist.reduce((a, b) => a + b, 0);
+            
 
-            }) 
-            
+
+        	this.valuesofsum = {
+             qualifiedleadsum : parseFloat(this.qualifiedleadsum),
+             presalesopportunitysum: parseFloat(this.presalesopportunitysum),
+             budgetaryopportunitysum: parseFloat(this.budgetaryopportunitysum),
+             bomopportunitysum: parseFloat(this.bomopportunitysum),
+             pocopportunitysum: parseFloat(this.pocopportunitysum),
+             finalproposalopportunitysum: parseFloat(this.finalproposalopportunitysum),
+             finalnegoopportunitysum: parseFloat(this.finalnegoopportunitysum),
+             casewonopportunitysum: parseFloat(this.casewonopportunitysum),
+             caselostopportunitysum: parseFloat(this.caselostopportunitysum)
+        	}
+
+       // console.log("valuesinside",this.valuesofsum, this.qualifiedleadsum)
+
+this.dofunnelcharts();
+       
+
+  }) 
+   
+
               return this.ev = true;
-            
             }
-            else if(v.title.toUpperCase() == "PRE-SALES HEAD") {
-              this.firebaseservice.getopportunitiesforpresales(this.uid)
+
+            else if (v.role.toUpperCase() == 'PRESALES'){
+              this.firebaseservice.getopportunitiesbypresalesid(this.uid)
               .takeWhile(() => this.alive)
               .subscribe(v => {
               this.opportunities = v;
@@ -401,19 +493,36 @@ export class AllopportunitiesComponent implements OnInit, OnDestroy {
              this.caselostarraylist = this.caselostarrayvalue
              this.caselostopportunitysum = this.caselostarraylist.reduce((a, b) => a + b, 0).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
+this.valuesofsum = {
+             qualifiedleadsum : parseFloat(this.qualifiedleadsum),
+             presalesopportunitysum: parseFloat(this.presalesopportunitysum),
+             budgetaryopportunitysum: parseFloat(this.budgetaryopportunitysum),
+             bomopportunitysum: parseFloat(this.bomopportunitysum),
+             pocopportunitysum: parseFloat(this.pocopportunitysum),
+             finalproposalopportunitysum: parseFloat(this.finalproposalopportunitysum),
+             finalnegoopportunitysum: parseFloat(this.finalnegoopportunitysum),
+             casewonopportunitysum: parseFloat(this.casewonopportunitysum),
+             caselostopportunitysum: parseFloat(this.caselostopportunitysum)
+          }
+
+          this.dofunnelprecharts();
+
+
             }) 
-            return this.ev = true; 
+
+
+              return this.ev = true;
             }
+            
             else
             {
               console.log('No access to this page choco');
-              alert('No access to this page');
+              //alert('No access to this page');
               return this.ev=false;
             }
          })
        }
-       else
-       {
+       else{
             console.log('No access to this page m&m');
             this.router.navigate(['login']);
             return this.ev=false;
@@ -421,15 +530,89 @@ export class AllopportunitiesComponent implements OnInit, OnDestroy {
      });
   }
 
-   getsum(opitems){
-     console.log(opitems)
-     this.sumlist = []
-     for (let opitem of opitems){
-       this.sumlist.push(opitem)
-     }
-   }
+dofunnelcharts(){
 
-    ngOnDestroy() {
+  this.options = {
+  chart: { type: 'funnel' },
+  title: { text: 'Sales Team funnel' },
+  plotOptions: {
+        series: {
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b> ({point.y:,.0f})',
+                //color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
+                softConnector: true
+            },
+            center: ['40%', '50%'],
+            neckWidth: '30%',
+            neckHeight: '25%',
+            width: '80%'
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    series: [{
+        name: 'Saleforce Team Dashboard',
+        data: [
+            ['Leads', this.leadsum],
+            ['Q Leads', this.valuesofsum.qualifiedleadsum],
+            ['Presales', this.valuesofsum.presalesopportunitysum],
+            ['Budgeting', this.valuesofsum.budgetaryopportunitysum],
+            ['BOM', this.valuesofsum.bomopportunitysum],
+            ['POC/DEMO',this.valuesofsum.pocopportunitysum ],
+            ['Proposal', this.valuesofsum.finalproposalopportunitysum ],
+            ['Negotiation', this.valuesofsum.finalnegoopportunitysum ],
+            ['Case Won',  this.valuesofsum.casewonopportunitysum ],
+            ['Case Lost',  this.valuesofsum.caselostopportunitysum ]
+        ]
+    }]
+}
+
+}
+
+dofunnelprecharts(){
+  this.options = {
+  chart: { type: 'funnel' },
+  title: { text: 'Sales Team funnel' },
+  plotOptions: {
+        series: {
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b> ({point.y:,.0f})',
+                //color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
+                softConnector: true
+            },
+            center: ['40%', '50%'],
+            neckWidth: '30%',
+            neckHeight: '25%',
+            width: '80%'
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    series: [{
+        name: 'Saleforce Team Dashboard',
+        data: [
+            //['Leads', this.leadsum],
+            //['Q Leads', this.valuesofsum.qualifiedleadsum],
+            ['Presales', this.valuesofsum.presalesopportunitysum],
+            //['Budgeting', this.valuesofsum.budgetaryopportunitysum],
+            //['BOM', this.valuesofsum.bomopportunitysum],
+            ['POC/DEMO',this.valuesofsum.pocopportunitysum ],
+            //['Proposal', this.valuesofsum.finalproposalopportunitysum ],
+            //['Negotiation', this.valuesofsum.finalnegoopportunitysum ],
+            //['Case Won',  this.valuesofsum.casewonopportunitysum ],
+            //['Case Lost',  this.valuesofsum.caselostopportunitysum ]
+        ]
+    }]
+}
+}
+
+
+  ngOnDestroy() {
     this.alive = false;
   }
+
 }

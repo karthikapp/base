@@ -73,6 +73,8 @@ import { AssignedtonamegetComponent } from './components/assignedtonameget/assig
 import { AllleadsComponent } from './components/allleads/allleads.component';
 import { AllopportunitiesComponent } from './components/allopportunities/allopportunities.component';
 import { OppopresalesComponent } from './components/oppopresales/oppopresales.component';
+import { FunnelteamchartsComponent } from './components/funnelteamcharts/funnelteamcharts.component';
+import { ChartsComponent } from './components/charts/charts.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -96,7 +98,7 @@ const appRoutes: Routes = [
                {path:'TeamOpportunities', component: TeamopportunitiesComponent},
                {path:'LeadDetail/:leadid', component: LeadsdetailComponent},
                {path:'OppoDetail', component: OppodetailComponent},
-               {path:'FunnelCharts',component: FunnelchartsComponent},
+               {path:'Charts',component: ChartsComponent},
                {path:'ViewQLeads/:rflag', component:ViewqualifiedleadsComponent},
                {path:'ViewPreSales/:rflag', component:ViewpresalesComponent},
                {path:'ViewBudgetary/:rflag', component:BudgetarypriceComponent},
@@ -166,7 +168,9 @@ export function highchartsFactory() {
     AssignedtonamegetComponent,
     AllleadsComponent,
     AllopportunitiesComponent,
-    OppopresalesComponent
+    OppopresalesComponent,
+    FunnelteamchartsComponent,
+    ChartsComponent
   ],
   imports: [
     BrowserModule ,
