@@ -83,7 +83,7 @@ export class AllopportunitiesComponent implements OnInit, OnDestroy {
               v.role = '';
             }
 
-            if (v.role.toUpperCase() == 'MASTER')
+            if (v.role.toUpperCase() == 'MASTER' || v.title.toUpperCase() == "PRE-SALES HEAD")
             {
               this.firebaseservice.getopportunities()
               .takeWhile(() => this.alive)
@@ -245,7 +245,7 @@ export class AllopportunitiesComponent implements OnInit, OnDestroy {
               return this.ev = true;
             
             }
-            else if(v.title.toUpperCase() == "PRE-SALES HEAD") {
+            /*else if(v.title.toUpperCase() == "PRE-SALES HEAD") {
               this.firebaseservice.getopportunitiesforpresales(this.uid)
               .takeWhile(() => this.alive)
               .subscribe(v => {
@@ -403,7 +403,7 @@ export class AllopportunitiesComponent implements OnInit, OnDestroy {
 
             }) 
             return this.ev = true; 
-            }
+            }*/
             else
             {
               console.log('No access to this page choco');

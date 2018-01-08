@@ -75,10 +75,20 @@ options: Object;
              caselostopportunitysum: number
    };
 
-  constructor(private firebaseservice : FirebaseService, 
-    private router: Router, private afAuth: AngularFireAuth) { }
+   person_list: Object[];
+   region_list: Object[];
+   report: any;
+   role: any;
+   title: any;
 
-  ngOnInit() {
+   region: any;
+   user: any;
+
+   
+
+  constructor(private firebaseservice : FirebaseService, 
+    private router: Router, private afAuth: AngularFireAuth) { 
+
     this.opportunities = [];
 
     this.bomopportunitysum = 0;
@@ -91,6 +101,8 @@ options: Object;
     this.finalnegoopportunitysum = 0;
     this.finalproposalopportunitysum = 0;
     this.leadsum = 0;
+    this.region = 'All';
+    this.user = 'All';
 
     //Opportunities list
     this.afAuth.authState
@@ -117,47 +129,130 @@ options: Object;
               v.title = '';
             }
 
+            this.report = v.report.toUpperCase();
+            this.role = v.role.toUpperCase();
+            this.title = v.title.toUpperCase();
+
             if (v.report.toUpperCase() == 'RECIPIENT')
             {
-              
+              this.report = v.report.toUpperCase();
+              this.onChangeofBoth(); 
+            }
 
-  		this.firebaseservice.getLeadsByreporttoID(this.uid).subscribe(v => {
+            else if (v.role.toUpperCase() == 'PRESALES'){
+              this.onChangeofBoth(); 
+            
+            }
+            
+            else
+            {
+              console.log('No access to this page choco');
+              //alert('No access to this page');
+              return this.ev=false;
+            }
+         })
+       }
+       else{
+            console.log('No access to this page m&m');
+            this.router.navigate(['login']);
+            return this.ev=false;
+       }
+     });
+}
 
-               this.items = v;
-               this.leadsarrayvalue = [];
-               this.leadsarraylist = [];
+onChangeofBoth() {
 
-             let qualifiedleads = v.filter(item => {
-               return (item.leadstatus == 'Qualified-awaiting-manager')
-             })
+  this.firebaseservice.getUsersByReportsTo(this.uid).subscribe(u => {
+    console.log(u);
+    this.person_list = u;
+  }) 
 
-             qualifiedleads.forEach(element => {
-               if (element.products_list == undefined)
-               {
-                   this.leadsarrayvalue.push(0);
-                   this.leadsarraylist.push(element);
-               }
-               else 
-               {
-                 let somelist = element.products_list
-                 somelist.forEach(value =>
-                 {
-                   this.leadsarrayvalue.push(value.value);
-                   this.leadsarraylist.push(value);
-                 })
-               }
-             })
-             
+  console.log("ppi", this.user,this.region, this.report, this.role)
+  if (this.report == 'RECIPIENT') 
+  {
+    this.firebaseservice.getLeadsByreporttoID(this.uid).subscribe(v => {
 
-            this.leadsarraylist = this.leadsarrayvalue
-            this.leadsum = this.leadsarraylist.reduce((a, b) => a + b, 0);
+      this.items = v;
+      this.leadsarrayvalue = [];
+      this.leadsarraylist = [];
 
-             this.leadsum = parseFloat(this.leadsum);
-           })
+      let qualifiedleads = v.filter(item => {
+      if (this.user == 'All' && this.region == 'All') 
+      {
+        //console.log("pp234", this.user, this.region)
+        return (item.leadstatus == 'Qualified-awaiting-manager')
+      } else if (this.user != '' && this.user != undefined && this.region == 'All') {
+        //console.log("pp234", this.user, this.region)
+        return (item.leadstatus == 'Qualified-awaiting-manager'
+          && item.assigned_to == this.user
+          )
+      }
+        else if (this.user == 'All' && this.user != undefined && this.region != '' && this.region != undefined) {
+        //console.log("pp234", this.user, this.region)
+        return (item.leadstatus == 'Qualified-awaiting-manager'
+          && item.region == this.region
+          )
+      }
+      else if (this.user != '' && this.user != undefined && this.region != '' && this.region != undefined) {
+        //console.log("pp234", this.user, this.region)
+        return (item.leadstatus == 'Qualified-awaiting-manager'
+          && item.assigned_to == this.user
+          && item.region == this.region)
+      }
+    })
 
- 		this.firebaseservice.getopportunitiesbyreporttoid(this.uid)       
-              .subscribe(v => {
-              this.opportunities = v;
+    qualifiedleads.forEach(element => {
+      if (element.products_list == undefined)
+      {
+        this.leadsarrayvalue.push(0);
+        this.leadsarraylist.push(element);
+      }
+      else 
+      {
+        let somelist = element.products_list
+        somelist.forEach(value =>
+        {
+          this.leadsarrayvalue.push(value.value);
+          this.leadsarraylist.push(value);
+        })
+      }
+    })
+
+    this.leadsarraylist = this.leadsarrayvalue
+    this.leadsum = this.leadsarraylist.reduce((a, b) => a + b, 0);
+
+    this.leadsum = parseFloat(this.leadsum);
+
+    //console.log("pp234", this.leadsum, this.leadsarraylist, this.leadsarrayvalue)
+  })
+
+  this.firebaseservice.getopportunitiesbyreporttoid(this.uid)       
+  .subscribe(v => {
+      if (this.user == 'All' && this.region == 'All'){
+        console.log("pp234oppo", this.user, this.region)
+        this.opportunities = v;
+      } 
+      else if (this.user == 'All' && this.region != '' && this.region != undefined) {
+        console.log("pp234oppo", this.user)
+        this.opportunities = v.filter (u =>  {
+          return u.region == this.region
+      })
+  }
+      else if (this.user != '' && this.user != undefined && this.region == 'All') {
+        console.log("pp234oppo", this.user)
+        this.opportunities = v.filter (u =>  {
+          return u.opportunity_assignedto == this.user 
+      })
+  }
+
+      else if (this.user != '' && this.user != undefined && this.region != '' && this.region != undefined) {
+        console.log("pp234oppo", this.user)
+        this.opportunities = v.filter (u =>  {
+          return (u.opportunity_assignedto == this.user 
+            && u.region == this.region)
+      })
+  }
+            
              this.arrayvalue = []
              this.qualifiedleadlist = []
              this.presalsesarrayvalue = []
@@ -178,7 +273,7 @@ options: Object;
              this.caselostopportunitylist = []
 
              // qualified lead sum code
-             v.forEach(item => {
+             this.opportunities.forEach(item => {
 
                // qualified lead sum code
                if (item.opportunity_state == 'Qualified_lead')
@@ -314,7 +409,7 @@ options: Object;
             
 
 
-        	this.valuesofsum = {
+          this.valuesofsum = {
              qualifiedleadsum : parseFloat(this.qualifiedleadsum),
              presalesopportunitysum: parseFloat(this.presalesopportunitysum),
              budgetaryopportunitysum: parseFloat(this.budgetaryopportunitysum),
@@ -324,24 +419,47 @@ options: Object;
              finalnegoopportunitysum: parseFloat(this.finalnegoopportunitysum),
              casewonopportunitysum: parseFloat(this.casewonopportunitysum),
              caselostopportunitysum: parseFloat(this.caselostopportunitysum)
-        	}
+          }
 
-       // console.log("valuesinside",this.valuesofsum, this.qualifiedleadsum)
+        //console.log("pp234oppo",this.valuesofsum, this.qualifiedleadsum)
 
-this.dofunnelcharts();
+      this.dofunnelcharts();
        
-
   }) 
-   
-
               return this.ev = true;
-            }
-
-            else if (v.role.toUpperCase() == 'PRESALES'){
-              this.firebaseservice.getopportunitiesbypresalesid(this.uid)
+}
+else if (this.role == 'PRESALES') {
+              
+    this.firebaseservice.getopportunitiesbypresalesid(this.uid)
               .takeWhile(() => this.alive)
               .subscribe(v => {
-              this.opportunities = v;
+              
+             if (this.user == 'All' && this.region == 'All'){
+        console.log("pp234oppo", this.user, this.region)
+        this.opportunities = v;
+      } 
+      else if (this.user == 'All' && this.region != '' && this.region != undefined) {
+        console.log("pp234oppo", this.user)
+        this.opportunities = v.filter (u =>  {
+          return u.region == this.region
+      })
+  }
+      else if (this.user != '' && this.user != undefined && this.region == 'All') {
+        console.log("pp234oppo", this.user)
+        this.opportunities = v.filter (u =>  {
+          return u.opportunity_assignedto == this.user 
+      })
+  }
+
+      else if (this.user != '' && this.user != undefined && this.region != '' && this.region != undefined) {
+        console.log("pp234oppo", this.user)
+        this.opportunities = v.filter (u =>  {
+          return (u.opportunity_assignedto == this.user 
+            && u.region == this.region)
+      })
+  }
+
+
              this.arrayvalue = []
              this.qualifiedleadlist = []
              this.presalsesarrayvalue = []
@@ -362,7 +480,7 @@ this.dofunnelcharts();
              this.caselostopportunitylist = []
 
              // qualified lead sum code
-             v.forEach(item => {
+             this.opportunities.forEach(item => {
 
                // qualified lead sum code
                if (item.opportunity_state == 'Qualified_lead')
@@ -493,7 +611,7 @@ this.dofunnelcharts();
              this.caselostarraylist = this.caselostarrayvalue
              this.caselostopportunitysum = this.caselostarraylist.reduce((a, b) => a + b, 0).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
-this.valuesofsum = {
+        this.valuesofsum = {
              qualifiedleadsum : parseFloat(this.qualifiedleadsum),
              presalesopportunitysum: parseFloat(this.presalesopportunitysum),
              budgetaryopportunitysum: parseFloat(this.budgetaryopportunitysum),
@@ -510,31 +628,53 @@ this.valuesofsum = {
 
             }) 
 
-
               return this.ev = true;
-            }
-            
-            else
-            {
-              console.log('No access to this page choco');
-              //alert('No access to this page');
-              return this.ev=false;
-            }
-         })
-       }
-       else{
-            console.log('No access to this page m&m');
-            this.router.navigate(['login']);
-            return this.ev=false;
-       }
-     });
+    }          
+
+
+}
+
+onRegionChange(region: string){
+  console.log("ppi", region);
+  this.region = region;
+  this.onChangeofBoth();
+
+}
+
+onItemChange(value: string){
+  
+  console.log("ppi",value);
+  this.user = value;
+
+this.onChangeofBoth();
+
+  
+}
+
+  ngOnInit() {
+    this.opportunities = [];
+
+    this.bomopportunitysum = 0;
+    this.casewonopportunitysum = 0;
+    this.caselostopportunitysum = 0;
+    this.presalesopportunitysum = 0;
+    this.budgetaryopportunitysum = 0;
+    this.qualifiedleadsum = 0;
+    this.pocopportunitysum = 0;
+    this.finalnegoopportunitysum = 0;
+    this.finalproposalopportunitysum = 0;
+    this.leadsum = 0;
+
+    this.region= 'All';
+    this.user = 'All';
   }
+
 
 dofunnelcharts(){
 
   this.options = {
   chart: { type: 'funnel' },
-  title: { text: 'Sales Team funnel' },
+  title: { text: '' },
   plotOptions: {
         series: {
             dataLabels: {
@@ -553,7 +693,7 @@ dofunnelcharts(){
         enabled: false
     },
     series: [{
-        name: 'Saleforce Team Dashboard',
+        name: 'Amount (in Rs.)',
         data: [
             ['Leads', this.leadsum],
             ['Q Leads', this.valuesofsum.qualifiedleadsum],
@@ -574,7 +714,7 @@ dofunnelcharts(){
 dofunnelprecharts(){
   this.options = {
   chart: { type: 'funnel' },
-  title: { text: 'Sales Team funnel' },
+  title: { text: '' },
   plotOptions: {
         series: {
             dataLabels: {
@@ -593,7 +733,7 @@ dofunnelprecharts(){
         enabled: false
     },
     series: [{
-        name: 'Saleforce Team Dashboard',
+        name: 'Amount(in .Rs)',
         data: [
             //['Leads', this.leadsum],
             //['Q Leads', this.valuesofsum.qualifiedleadsum],

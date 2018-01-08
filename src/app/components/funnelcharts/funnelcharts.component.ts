@@ -340,7 +340,6 @@ this.dofunnelcharts();
 
   }) 
    
-
               return this.ev = true;
             }
             
@@ -383,7 +382,7 @@ dofunnelcharts(){
         enabled: false
     },
     series: [{
-        name: 'Saleforce Dashboard',
+        name: 'Amount (in Rs.)',
         data: [
             ['Leads', this.leadsum],
             ['Q Leads', this.valuesofsum.qualifiedleadsum],

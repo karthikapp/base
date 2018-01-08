@@ -50,7 +50,7 @@ leads: any;
               v.title = '';
             }
 
-            if (v.role.toUpperCase() == "MASTER")
+            if (v.role.toUpperCase() == "MASTER" || v.title.toUpperCase() == "PRE-SALES HEAD" )
             {
               this.firebaseservice.getAllLeads()
               .takeWhile(() => this.alive)
@@ -60,7 +60,7 @@ leads: any;
               console.log(this.leads);
             }) 
               return this.ev = true;
-            } else if(v.title.toUpperCase() == "PRE-SALES HEAD" 
+            } /*else if(v.title.toUpperCase() == "PRE-SALES HEAD" 
               ){
               this.firebaseservice.getAllLeads()
               .takeWhile(() => this.alive)
@@ -70,7 +70,7 @@ leads: any;
               console.log(this.leads);   
               }) 
               return this.ev = true;           
-            }
+            }*/
             else
             {
               console.log('No access to this page choco');

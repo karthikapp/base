@@ -100,8 +100,9 @@ export class ListCompaniesComponent implements OnInit, OnDestroy {
 
   //To edit an Account, navigate to EditCompanies Page with companyid
   on_edit_account(companyid){
-    //console.log('companyid',companyid);
-    this.router.navigate(['/dashboard/EditCompanies/:companyid',{'companyid': companyid, skipLocationChange: true}]);
+
+    console.log('companyid',companyid);
+    this.router.navigate(['/dashboard/EditCompanies/:companyid',{'companyid': companyid}]);
   }
 
   //Delete a particular account by sending companyid

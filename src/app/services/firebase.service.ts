@@ -546,6 +546,15 @@ export class FirebaseService {
 		return this.users;
 	}
 
+	getUsersByReportsTo(userid: string){
+		return this.af.list('/user', {query: {
+			orderByChild: 'reports_to',
+			equalTo: String(userid)
+			}});
+
+		
+	}
+
 	//Update a User
 	saveUser(userid, userObject:{
 		name: string,

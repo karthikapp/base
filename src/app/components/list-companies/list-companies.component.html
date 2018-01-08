@@ -36,7 +36,7 @@
         <div class="mdl-card__title">
           <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.8vw;font-weight: bold;" [routerLink]="['/dashboard/Leadoppo', acct.companyid]"
              >
-            {{acct.companyname}}  
+            {{acct.companyname}}
           </a>
         </div>
 
@@ -83,13 +83,14 @@
           </div>
         </div>
        
-        <div class="mdl-card__menu">
-          <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-            <i class="material-icons" (click)="on_edit_account(acct.companyid)">edit</i>
+        <div  class="mdl-card__menu">
+          <button class = "ui circular info icon button" (click)="on_edit_account(acct.companyid)">
+          <!--button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"-->
+            <i class="material-icons" style="font-size: 12pt;">edit</i>
           </button>
-          &nbsp;
-          <button class="ui circular google plus icon button">
-            <i class="material-icons" (click)="on_delete_account(acct.companyid)" style="font-size: 10pt;">delete</i>
+         
+          <button class="ui circular google plus icon button" (click)="on_delete_account(acct.companyid)">
+            <i class="material-icons"  style="font-size: 12xpt;">delete</i>
           </button>
         </div>
 
