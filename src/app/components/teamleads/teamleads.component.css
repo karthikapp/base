@@ -1,10 +1,17 @@
 .main{
-	padding:5px 30px 10px 30px;
+  padding:5px 5px 5px 10px; 
 }
 
 .wide-card.mdl-card {
-  width: 350px;
+  width: 300px;
+     padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
 }
+
 .demo-card-wide > .mdl-card__title {
   color: #fff;
   height: 100px;
@@ -35,5 +42,17 @@
 .mdl-card__title
 {
 font-family: 'Marvel', sans-serif; text-transform: capitalize;
+}
+
+.ui.tiny.statistic>.value, .ui.tiny.statistics .statistic>.value {
+    font-size: 1rem!important;
+}
+
+.ui.mini.horizontal.statistic>.value, .ui.mini.horizontal.statistics .statistic>.value, .ui.mini.statistic>.value, .ui.mini.statistics .statistic>.value{
+    font-size: 1rem!important;
+}
+
+.ui.black.label>.value {
+  font-size: 1rem!important;
 }
 

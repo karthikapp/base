@@ -51,3 +51,15 @@ text-transform: capitalize;
     font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
 }
 
+.ui.tiny.statistic>.value, .ui.tiny.statistics .statistic>.value {
+    font-size: 1rem!important;
+}
+
+.ui.mini.statistic>.value, .ui.mini.statistics .statistic>.value {
+    font-size: 1rem!important;
+}
+
+.ui.black.label>.value {
+  font-size: 1rem!important;
+}
+

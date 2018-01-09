@@ -15,7 +15,11 @@ export class GetcompanycontactsComponent implements OnInit {
   contactslength: any;
 
   constructor(public afDB: FirebaseService ) {
-   console.log('Hello from getcompany component ', this.companyid) ; 
+   
+  }
+
+  ngOnInit() {
+    console.log('Hello from getcompany component ', this.companyid) ; 
     this.text = this.companyid;
     console.log(this.text)
     let contactslist = []
@@ -30,9 +34,6 @@ export class GetcompanycontactsComponent implements OnInit {
           this.contactslength = Object.keys(v).length
         }
     })
-  }
-
-  ngOnInit() {
   }
 
 }

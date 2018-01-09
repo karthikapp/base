@@ -19,6 +19,7 @@
       <br> 
       <br>
       <br>
+
    
 
       <!-- Wide card with Edit and Delete button -->
@@ -50,7 +51,7 @@
                   {{getleadapprovalstatus(lead.leadstatus)}}
                 </div>
 
-                <div class="label" style="color: black; font-size: 15px;text-align: center;">
+                <div class="label" style="color: black; font-size: 10px;text-align: center;">
                   Status
                 </div>
               </div>
@@ -68,13 +69,13 @@
                   {{leadsourcelabel(lead.leadsource)}}
                 </a>
             
-                <p *ngIf="lead.leadsource == 'oem'" style="font-size: 12px; padding: 5px">
+                <p *ngIf="lead.leadsource == 'oem'" style="font-size: 0.8rem; padding: 2px">
                   {{lead.oem_name}}
                 </p>
-                <p *ngIf="lead.leadsource == 'distributor'" style="font-size: 12px; padding: 5px">
+                <p *ngIf="lead.leadsource == 'distributor'" style="font-size: 0.8rem; padding: 2px">
                   {{lead.distributor_name}}
                 </p>
-                <p *ngIf="lead.leadsource == 'event'" style="font-size: 12px; padding: 5px">
+                <p *ngIf="lead.leadsource == 'event'" style="font-size: 0.8rem; padding: 2px">
                   {{lead.event_name}}
                 </p>
               </div>

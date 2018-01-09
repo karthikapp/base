@@ -1,4 +1,5 @@
 import { Component, OnInit, Input  } from '@angular/core';
+import { Productlists } from '../../models/productlists';
 
 @Component({
   selector: 'app-getproductssum',
@@ -6,19 +7,23 @@ import { Component, OnInit, Input  } from '@angular/core';
   styleUrls: ['./getproductssum.component.css']
 })
 export class GetproductssumComponent implements OnInit {
-  @Input() products: any[];
+  @Input() products: Productlists[];
 
   text: string;
-  productspricelist: any;
+  productspricelist: any[];
   leadsum: any;
 
   constructor() {     
-  	console.log('Hello GetproductvaluesumComponent Component');
+  	
+  }
+
+  ngOnInit() {
+    console.log('Hello GetproductvaluesumComponent Component',this.products);
     this.text = 'Hello World';
 
     this.leadsum = 0;
     this.productspricelist = []
-    let productslist = this.products
+    let productslist = this.products;
     if (productslist == undefined) {
       this.leadsum = 0
     }
@@ -31,10 +36,7 @@ export class GetproductssumComponent implements OnInit {
       this.leadsum = this.productspricelist.reduce((a, b) => a + b, 0)
       this.leadsum = this.leadsum.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
     }
-    
-  }
-
-  ngOnInit() {
+    //console.log("ppi",this.leadsum, this.productspricelist, productslist, this.products)
   }
 
 }

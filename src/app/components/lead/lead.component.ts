@@ -62,7 +62,7 @@ export class LeadComponent implements OnInit, OnDestroy {
               .takeWhile(() => this.alive)
               .subscribe(lead => {
               this.leads = lead.filter(v => {
-              return v.leadstatus != 'Qualified'})
+              return v.leadstatus != 'Qualified' && v.leadstatus != 'Rejected'})
               console.log(this.leads);
             }) 
               return this.ev = true;

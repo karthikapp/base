@@ -75,6 +75,9 @@ import { AllopportunitiesComponent } from './components/allopportunities/alloppo
 import { OppopresalesComponent } from './components/oppopresales/oppopresales.component';
 import { FunnelteamchartsComponent } from './components/funnelteamcharts/funnelteamcharts.component';
 import { ChartsComponent } from './components/charts/charts.component';
+import { FunnelteamregionchartsComponent } from './components/funnelteamregioncharts/funnelteamregioncharts.component';
+import { FunnelallchartsComponent } from './components/funnelallcharts/funnelallcharts.component';
+import { FunnelallregionchartsComponent } from './components/funnelallregioncharts/funnelallregioncharts.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -170,7 +173,10 @@ export function highchartsFactory() {
     AllopportunitiesComponent,
     OppopresalesComponent,
     FunnelteamchartsComponent,
-    ChartsComponent
+    ChartsComponent,
+    FunnelteamregionchartsComponent,
+    FunnelallchartsComponent,
+    FunnelallregionchartsComponent
   ],
   imports: [
     BrowserModule ,

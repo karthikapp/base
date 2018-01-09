@@ -4,13 +4,12 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
 import "rxjs/add/operator/takeWhile";
 
-
 @Component({
-  selector: 'app-funnelteamcharts',
-  templateUrl: './funnelteamcharts.component.html',
-  styleUrls: ['./funnelteamcharts.component.css']
+  selector: 'app-funnelteamregioncharts',
+  templateUrl: './funnelteamregioncharts.component.html',
+  styleUrls: ['./funnelteamregioncharts.component.css']
 })
-export class FunnelteamchartsComponent implements  OnInit, OnDestroy{
+export class FunnelteamregionchartsComponent implements OnInit, OnDestroy {
 
 options: Object;
 
@@ -82,8 +81,8 @@ options: Object;
    role: any;
    title: any;
 
+   region: any;
    
-   user: any;
 
    
 
@@ -102,8 +101,8 @@ options: Object;
     this.finalnegoopportunitysum = 0;
     this.finalproposalopportunitysum = 0;
     this.leadsum = 0;
+    this.region = 'All';
     
-    this.user = 'All';
 
     //Opportunities list
     this.afAuth.authState
@@ -136,7 +135,6 @@ options: Object;
 
             if (v.report.toUpperCase() == 'RECIPIENT')
             {
-              
               this.onChangeofBoth(); 
             }
 
@@ -163,16 +161,9 @@ options: Object;
 
 onChangeofBoth() {
 
-
-
-  console.log("ppi", this.user, this.report, this.role)
+  console.log("ppi", this.region, this.report, this.role)
   if (this.report == 'RECIPIENT') 
   {
-      this.firebaseservice.getUsersByReportsTo(this.uid).subscribe(u => {
-    console.log(u);
-    this.person_list = u;
-  }) 
-
     this.firebaseservice.getLeadsByreporttoID(this.uid).subscribe(v => {
 
       this.items = v;
@@ -180,16 +171,15 @@ onChangeofBoth() {
       this.leadsarraylist = [];
 
       let qualifiedleads = v.filter(item => {
-      if (this.user == 'All') 
+      if ( this.region == 'All') 
       {
-        //console.log("pp234", this.user)
+        //console.log("pp234",  this.region)
         return (item.leadstatus == 'Qualified-awaiting-manager')
-      }
-      else if (this.user != '' && this.user != undefined) {
-        //console.log("pp234", this.user)
+      } 
+      else if ( this.region != '' && this.region != undefined) {
+        //console.log("pp234", this.region)
         return (item.leadstatus == 'Qualified-awaiting-manager'
-          && item.assigned_to == this.user
-        )
+          && item.region == this.region)
       }
     })
 
@@ -220,17 +210,16 @@ onChangeofBoth() {
 
   this.firebaseservice.getopportunitiesbyreporttoid(this.uid)       
   .subscribe(v => {
-      if (this.user == 'All' ){
-        console.log("pp234oppo", this.user)
+      if ( this.region == 'All'){
+        console.log("pp234oppo",  this.region)
         this.opportunities = v;
       } 
 
 
-      else if (this.user != '' && this.user != undefined) {
-        console.log("pp234oppo", this.user)
+      else if ( this.region != '' && this.region != undefined) {
+        console.log("pp234oppo", this.region)
         this.opportunities = v.filter (u =>  {
-          return (u.opportunity_assignedto == this.user 
-           )
+          return (u.region == this.region)
       })
   }
             
@@ -410,18 +399,17 @@ onChangeofBoth() {
               return this.ev = true;
 }
 
+
+}
+
+onRegionChange(region: string){
+  console.log("ppi", region);
+  this.region = region;
+  this.onChangeofBoth();
+
 }
 
 
-onItemChange(value: string){
-  
-  console.log("ppi",value);
-  this.user = value;
-
-this.onChangeofBoth();
-
-  
-}
 
   ngOnInit() {
     this.opportunities = [];
@@ -437,8 +425,8 @@ this.onChangeofBoth();
     this.finalproposalopportunitysum = 0;
     this.leadsum = 0;
 
+    this.region= 'All';
     
-    this.user = 'All';
   }
 
 
@@ -482,7 +470,6 @@ dofunnelcharts(){
 }
 
 }
-
 
 
 

@@ -4,15 +4,14 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
 import "rxjs/add/operator/takeWhile";
 
-
 @Component({
-  selector: 'app-funnelteamcharts',
-  templateUrl: './funnelteamcharts.component.html',
-  styleUrls: ['./funnelteamcharts.component.css']
+  selector: 'app-funnelallcharts',
+  templateUrl: './funnelallcharts.component.html',
+  styleUrls: ['./funnelallcharts.component.css']
 })
-export class FunnelteamchartsComponent implements  OnInit, OnDestroy{
+export class FunnelallchartsComponent implements  OnInit, OnDestroy {
 
-options: Object;
+  options: Object;
 
   uid: string;
    ev: boolean = false;
@@ -134,17 +133,12 @@ options: Object;
             this.role = v.role.toUpperCase();
             this.title = v.title.toUpperCase();
 
-            if (v.report.toUpperCase() == 'RECIPIENT')
+            if (v.role.toUpperCase() == "MASTER" || v.title.toUpperCase() == "PRE-SALES HEAD")
             {
               
               this.onChangeofBoth(); 
             }
 
-            else if (v.role.toUpperCase() == 'PRESALES'){
-              this.onChangeofBoth(); 
-            
-            }
-            
             else
             {
               console.log('No access to this page choco');
@@ -166,14 +160,16 @@ onChangeofBoth() {
 
 
   console.log("ppi", this.user, this.report, this.role)
-  if (this.report == 'RECIPIENT') 
+  if (this.role == "MASTER" || this.title == "PRE-SALES HEAD") 
   {
-      this.firebaseservice.getUsersByReportsTo(this.uid).subscribe(u => {
+      this.firebaseservice.getUsers().subscribe(u => {
     console.log(u);
-    this.person_list = u;
+    this.person_list = u.filter(i=>{
+    	return i.role != 'admin'
+    })
   }) 
 
-    this.firebaseservice.getLeadsByreporttoID(this.uid).subscribe(v => {
+    this.firebaseservice.getAllLeads().subscribe(v => {
 
       this.items = v;
       this.leadsarrayvalue = [];
@@ -183,11 +179,11 @@ onChangeofBoth() {
       if (this.user == 'All') 
       {
         //console.log("pp234", this.user)
-        return (item.leadstatus == 'Qualified-awaiting-manager')
+        return (item.leadstatus != 'Qualified')
       }
       else if (this.user != '' && this.user != undefined) {
         //console.log("pp234", this.user)
-        return (item.leadstatus == 'Qualified-awaiting-manager'
+        return (item.leadstatus != 'Qualified'
           && item.assigned_to == this.user
         )
       }
@@ -218,7 +214,7 @@ onChangeofBoth() {
     //console.log("pp234", this.leadsum, this.leadsarraylist, this.leadsarrayvalue)
   })
 
-  this.firebaseservice.getopportunitiesbyreporttoid(this.uid)       
+  this.firebaseservice.getopportunities()       
   .subscribe(v => {
       if (this.user == 'All' ){
         console.log("pp234oppo", this.user)

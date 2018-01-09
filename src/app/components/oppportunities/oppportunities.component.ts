@@ -97,6 +97,9 @@ export class OppportunitiesComponent implements OnInit, OnDestroy {
               .takeWhile(() => this.alive)
               .subscribe(v => {
               this.opportunities = v;
+
+              console.log("oppo", this.opportunities)
+
              this.arrayvalue = []
              this.qualifiedleadlist = []
              this.presalsesarrayvalue = []
