@@ -1,15 +1,9 @@
 .main{
-  padding:5px 5px 5px 10px; 
+  padding:5px 30px 10px 30px;
 }
 
 .wide-card.mdl-card {
-  width: 300px;
-     padding-left: 10px;
-    padding-right: 10px;
-    padding-bottom: 10px;
-    padding-top: 10px;
-    margin-left: 5px;
-    margin-right: 5px;
+  width: 350px;
 }
 
 .demo-card-wide > .mdl-card__title {

@@ -22,9 +22,9 @@
       <br>
 
       <!-- Wide card with Edit and Delete button -->
-      <div class="ui stackable three column grid" style="height:65vh">
+      <div class="ui stackable three column grid" style="height:70vh">
         <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand" 
-        *ngFor="let proposal of proposallist | filterrecords: querystring : 'leads' | sortorder | paginate: { itemsPerPage: 3, currentPage: p }">
+        *ngFor="let proposal of proposallist | filterrecords: querystring : 'opportunities' | sortorder | paginate: { itemsPerPage: 3, currentPage: p }">
 
           <!--Lead Title-->
           <div class="mdl-card__title">

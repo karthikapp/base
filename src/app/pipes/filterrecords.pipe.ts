@@ -52,12 +52,13 @@ export class FilterrecordsPipe implements PipeTransform {
       })
     } else if ((value != null || value != undefined) && ip1 == 'leads'){
       return value.filter( values => {
-       return values.lead_title.toLowerCase().indexOf(input.toLowerCase()) > -1;
+       return values.company_name.toLowerCase().indexOf(input.toLowerCase()) > -1;
       })
-    } else if ((value != null || value != undefined) && ip1 == 'teamleads'){
+    } else if ((value != null || value != undefined) && ip1 == 'opportunities'){
       return value.filter( values => {
-       return values.lead_title.toLowerCase().indexOf(input.toLowerCase()) > -1;
+       return values.company_name.toLowerCase().indexOf(input.toLowerCase()) > -1;
       })
+    
     }
   } 
 }
