@@ -3,6 +3,61 @@
 
     <div *ngIf="ev">
 
+ <div class = "ui stackable four column grid" style="height:70px;">
+        <div class="column">
+        <form class="ui mini form">
+          
+            <div class="form-group column" style="padding: 5px;">
+              <label style="font-weight: bold; font-size: 15px;color: white" for="exampleFormControlSelect1">Team List: </label>
+              <select class="form-control" id="exampleFormControlSelect1" name="user" [(ngModel)]="user" (change)="onItemChange($event.target.value)">
+              <option [value]="'All'">All</option>
+              <option *ngFor="let p of person_list" [value]="p.userid">{{ p.name }}</option>
+              </select>
+            </div>
+        
+        </form>
+      </div>
+      <div class = "column">
+        <form class="ui mini form">
+          
+            <div class="form-group column" style="padding: 5px;">
+              <label style="font-weight: bold; font-size: 15px; color: white" for="exampleFormControlSelect11">Region: </label>
+              <select class="form-control" id="exampleFormControlSelect11" name="region" [(ngModel)]="region" (change)="onRegionChange($event.target.value)">
+                <option>All</option>
+                <option>chennai</option>
+                <option>hyderabad</option>
+                <option>mumbai</option>
+                <option>coimbatore</option>
+                <option>bangalore</option>
+              </select>
+            </div>
+        
+        </form>
+      </div>
+      <div class ="column">
+<form class="ui mini form">
+          
+            <div class="field" style="padding: 5px;">
+              <label style="font-weight: bold; font-size: 15px;color: white">Total Count: </label>
+              <input type="text"  name="totalCount" placeholder="totalCount" [(ngModel)]="totalCount" style="padding-top:2px; padding-bottom: 2px" readonly>
+            </div>
+        
+        </form>
+      </div>
+
+      <div class="column">
+<form class="ui mini form">
+          
+            <div class="field" style="padding: 5px;">
+              <label style="font-weight: bold; font-size: 15px;color: white" >Total Value: </label>
+              <input type="text"  name="totalValue" placeholder="totalValue" [(ngModel)]="totalValue" style="padding-top:2px; padding-bottom: 2px" readonly>
+            </div>
+        
+        </form>
+      </div>
+
+
+      </div>
       <!-- Wide card with Edit and Delete button -->
       <div class="ui stackable three column grid">
         

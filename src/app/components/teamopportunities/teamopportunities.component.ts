@@ -18,34 +18,49 @@ export class TeamopportunitiesComponent implements OnInit , OnDestroy{
    alive: boolean = true;
    opportunities: any[];
 
+   totalValue: any;
+
+   totalCount: any;
+
+
    arraylist: any;
    sumlist: any;
    qualifiedleadsum: any;
+   qualifiedleadsum1: any;
    qualifiedleadlist: any;
    presalesopportunitylist: any;
    presalesopportunitysum: any;
+   presalesopportunitysum1: any;
    presalesarraylist: any;
    budgetaryopportunitylist: any;
    budgetaryarraylist: any;
    budgetaryopportunitysum: any;
+   budgetaryopportunitysum1: any;
    bomopportunitylist: any;
    bomarraylist: any;
    bomopportunitysum: any;
+   bomopportunitysum1: any;
    pocopportunitylist: any;
    pocarraylist: any;
    pocopportunitysum: any;
+   pocopportunitysum1: any;
    finalproposalopportunitylist: any;
    finalproposalarraylist: any;
    finalproposalopportunitysum: any;
+   finalproposalopportunitysum1: any;
    finalnegoarraylist: any;
    finalnegoopportunitylist: any;
    finalnegoopportunitysum: any;
+   finalnegoopportunitysum1: any;
    casewonopportunitylist: any;
    casewonarraylist: any;
    casewonopportunitysum: any;
+   casewonopportunitysum1: any;
    caselostarraylist: any;
    caselostopportunitylist: any;
+   caselostopportunitylist1: any;
    caselostopportunitysum: any;
+   caselostopportunitysum1: any;
    arrayvalue: any;
    presalsesarrayvalue: any;
    budgetaryarrayvalue: any;
@@ -58,11 +73,26 @@ export class TeamopportunitiesComponent implements OnInit , OnDestroy{
 
    rflag: string = 'team';
 
+   person_list: Object[];
+
+   user: string = 'All';
+   region: string = 'All';
+
+   itflag: boolean = true;
+   rtflag: boolean = true;
+
+   role: string;
+   report: string;
+
   constructor(private firebaseservice : FirebaseService, 
     private router: Router, private afAuth: AngularFireAuth) { }
 
   ngOnInit() {
   	this.opportunities = [];
+    this.totalCount = '';
+    this.totalValue = '';
+    this.role = '';
+    this.report = '';
 
   	//Opportunities list
     this.afAuth.authState
@@ -84,12 +114,85 @@ export class TeamopportunitiesComponent implements OnInit , OnDestroy{
               v.role = '';
             }
 
+            this.role = v.role.toUpperCase();
+            this.report = v.report.toUpperCase();
+
             if (v.report.toUpperCase() == 'RECIPIENT')
             {
+             this.onChangeofBoth();
+            }
+            else
+            {
+              console.log('No access to this page choco');
+              alert('No access to this page');
+              return this.ev=false;
+            }
+         })
+       }
+       else{
+            console.log('No access to this page m&m');
+            this.router.navigate(['login']);
+            return this.ev=false;
+       }
+     });
+  }
+
+  onItemChange(user: string){
+    this.user = user;
+    this.rtflag = false;
+    this.itflag = true;
+    this.onChangeofBoth();
+  }
+
+  onRegionChange(region: string){
+    this.region = region;
+    this.itflag = false;
+    this.rtflag = true;
+    this.onChangeofBoth();
+  }
+
+  onChangeofBoth(){
+     this.firebaseservice.getUsersByReportsTo(this.uid).subscribe(u => {
+              console.log(u);
+              this.person_list = u;
+            })
+
               this.firebaseservice.getopportunitiesbyreporttoid(this.uid)
               .takeWhile(() => this.alive)
               .subscribe(v => {
-              this.opportunities = v;
+
+                if (this.itflag == true) {
+              if (this.user == 'All'){
+                console.log("pp234oppo", this.user)
+                this.opportunities = v;
+              } 
+
+
+              else if (this.user != '' && this.user != undefined) {
+                console.log("pp234oppo", this.user)
+                this.opportunities = v.filter (u =>  {
+                return (u.opportunity_assignedto == this.user 
+              )
+            })
+          }
+        }
+
+        if(this.rtflag == true) {
+
+           if (this.region == 'All' ){
+                console.log("pp234oppo", this.region)
+                this.opportunities = v;
+              } 
+
+
+              else if (this.region != '' && this.region != undefined) {
+                console.log("pp234oppo", this.region)
+                this.opportunities = v.filter (u =>  {
+                return (u.region == this.region)
+            })
+          }
+           }
+
              this.arrayvalue = []
              this.qualifiedleadlist = []
              this.presalsesarrayvalue = []
@@ -110,7 +213,7 @@ export class TeamopportunitiesComponent implements OnInit , OnDestroy{
              this.caselostopportunitylist = []
 
              // qualified lead sum code
-             v.forEach(item => {
+             this.opportunities.forEach(item => {
 
                // qualified lead sum code
                if (item.opportunity_state == 'Qualified_lead')
@@ -212,52 +315,54 @@ export class TeamopportunitiesComponent implements OnInit , OnDestroy{
                  console.log("not found case lost")
                }
 
-           	  })
+               })
 
              this.arraylist = this.arrayvalue
-             this.qualifiedleadsum = this.arraylist.reduce((a, b) => a + b, 0).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+             this.qualifiedleadsum1 = this.arraylist.reduce((a, b) => a + b, 0)
+             this.qualifiedleadsum = this.qualifiedleadsum1.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
              // presales sum code
              this.presalesarraylist = this.presalsesarrayvalue
-             this.presalesopportunitysum = this.presalesarraylist.reduce((a, b) => a + b, 0).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+             this.presalesopportunitysum1 = this.presalesarraylist.reduce((a, b) => a + b, 0)
+             this.presalesopportunitysum = this.presalesopportunitysum1.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
              // budgetary sum code
              this.budgetaryarraylist = this.budgetaryarrayvalue
-             this.budgetaryopportunitysum = this.budgetaryarraylist.reduce((a, b) => a + b, 0).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+             this.budgetaryopportunitysum1 = this.budgetaryarraylist.reduce((a, b) => a + b, 0)
+             this.budgetaryopportunitysum = this.budgetaryopportunitysum1.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
              // bom stage opportunities
              this.bomarraylist = this.bomarrayvalue
-             this.bomopportunitysum = this.bomarraylist.reduce((a, b) => a + b, 0).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+             this.bomopportunitysum1 = this.bomarraylist.reduce((a, b) => a + b, 0)
+             this.bomopportunitysum = this.bomopportunitysum1.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
              // poc stage opportunities
              this.pocarraylist = this.pocarrayvalue
-             this.pocopportunitysum = this.pocarraylist.reduce((a, b) => a + b, 0).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+             this.pocopportunitysum1 = this.pocarraylist.reduce((a, b) => a + b, 0)
+             this.pocopportunitysum = this.pocopportunitysum1.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
              // poc stage opportunities
              this.finalproposalarraylist = this.finalproposalarrayvalue
-             this.finalproposalopportunitysum = this.finalproposalarraylist.reduce((a, b) => a + b, 0).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+             this.finalproposalopportunitysum1 = this.finalproposalarraylist.reduce((a, b) => a + b, 0)
+             this.finalproposalopportunitysum = this.finalproposalopportunitysum1.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
              // poc stage opportunities
              this.finalnegoarraylist = this.finalnegoarrayvalue
-             this.finalnegoopportunitysum = this.finalnegoarraylist.reduce((a, b) => a + b, 0).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+             this.finalnegoopportunitysum1 = this.finalnegoarraylist.reduce((a, b) => a + b, 0)
+             this.finalnegoopportunitysum = this.finalnegoopportunitysum1.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
              // poc stage opportunities
              this.casewonarraylist = this.casewonarrayvalue
-             this.casewonopportunitysum = this.casewonarraylist.reduce((a, b) => a + b, 0).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+             this.casewonopportunitysum1 = this.casewonarraylist.reduce((a, b) => a + b, 0)
+             this.casewonopportunitysum = this.casewonopportunitysum1.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
              // poc stage opportunities
              this.caselostarraylist = this.caselostarrayvalue
-             this.caselostopportunitysum = this.caselostarraylist.reduce((a, b) => a + b, 0).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+             this.caselostopportunitysum1 = this.caselostarraylist.reduce((a, b) => a + b, 0)
+             this.caselostopportunitysum = this.caselostopportunitysum1.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+
+             this.totalCount = this.qualifiedleadlist.length + this.presalesarraylist.length + this.budgetaryarraylist.length + this.bomarraylist.length 
+                             + this.pocarraylist.length + this.finalproposalarraylist.length + this.finalnegoarraylist.length + this.casewonarraylist.length
+                             + this.caselostarraylist.length;
+
+             var inrstr1 = '₹'
+             this.totalValue =  inrstr1.concat(this.qualifiedleadsum1 + this.presalesopportunitysum1 + this.budgetaryopportunitysum1 + this.bomopportunitysum1
+             + this.pocopportunitysum1 + this.finalnegoopportunitysum1 + this.finalproposalopportunitysum1+ this.caselostopportunitysum1 + this.casewonopportunitysum1).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
             }) 
               return this.ev = true;
-            }
-            else
-            {
-              console.log('No access to this page choco');
-              alert('No access to this page');
-              return this.ev=false;
-            }
-         })
-       }
-       else{
-            console.log('No access to this page m&m');
-            this.router.navigate(['login']);
-            return this.ev=false;
-       }
-     });
   }
 
    getsum(opitems){

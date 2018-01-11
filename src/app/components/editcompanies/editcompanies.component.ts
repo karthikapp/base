@@ -51,12 +51,21 @@ export class EditcompaniesComponent implements OnInit, OnDestroy {
   contact_person_phone: string,
   contact_person_email: string,
   created_at: Date
-  }[] = [];  
+  }[] = [];
+
+ /* delete_contact_person: {
+    contact_person_id: string} [] = []; 
+
+    highlighted: boolean = false; */
+
+delete_contact_person_id: string;
 
   uid: string;
   ev: boolean = false;
 
   alive: boolean = true;
+
+
 
   constructor(private firebaseservice : FirebaseService, private router: ActivatedRoute, 
     private route: Router, private afAuth: AngularFireAuth) { 
@@ -223,12 +232,28 @@ export class EditcompaniesComponent implements OnInit, OnDestroy {
     //console.log('editcompanies',this.company_id,account,contact_persons,contact_person)
 
      this.firebaseservice.saveAccount(this.company_id,account,contact_persons,contact_person)
+
+     
+
      this.route.navigate(['/dashboard/ListCompanies'])
     }
 
   //if there is no update and Cancel button is pressed, redirect to List companies page
   cancel_contact_persons(){
     this.route.navigate(['/dashboard/ListCompanies']);
+  }
+
+  remove_contact_persons(cntct){
+    /*console.log("delete contact person", cntct);
+    this.delete_contact_person.push(cntct);
+    console.log("removecntct", this.delete_contact_person);
+    this.highlighted = true;*/
+
+    this.delete_contact_person_id = cntct;
+     console.log("removecntct", this.delete_contact_person_id)
+     this.firebaseservice.removeCntctPerson(this.company_id, this.delete_contact_person_id)
+
+
   }
 
   //Add contact persons for the existing customer

@@ -3,6 +3,32 @@
 
     <div *ngIf="ev">
 
+      <div class = "ui stackable column grid" style="height:70px;" >
+       
+      <div class ="four wide column">
+      <form class="ui mini form">
+          
+            <div class="field" style="padding: 5px;">
+              <label style="font-weight: bold; font-size: 15px;color: white">Total Count: </label>
+              <input type="text"  name="totalCount" placeholder="totalCount" [(ngModel)]="totalCount" style="padding-top:2px; padding-bottom: 2px" readonly>
+            </div>
+        
+        </form>
+      </div>
+
+      <div class="four wide column">
+      <form class="ui mini form">
+          
+            <div class="field" style="padding: 5px;">
+              <label style="font-weight: bold; font-size: 15px;color: white" >Total Value: </label>
+              <input type="text"  name="totalValue" placeholder="totalValue" [(ngModel)]="totalValue" style="padding-top:2px; padding-bottom: 2px" readonly>
+            </div>
+        
+        </form>
+      </div>
+      </div>
+
+
       <!-- Wide card with Edit and Delete button -->
       <div class="ui stackable three column grid">
         

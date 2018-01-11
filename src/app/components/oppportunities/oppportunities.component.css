@@ -1,17 +1,22 @@
 .main{
-	padding:20px 30px 10px 30px;
+	padding:5px 30px 10px 30px;
 }
 
 .mdl-card{
-  min-height: 170px;
+  min-height: 140px;
+
+    padding-bottom: 5px;
 }
 
 .wide-card.mdl-card {
   width: 230px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 .demo-card-wide > .mdl-card__title {
   color: #fff;
-  height: 40px;
+  height: 30px;
+
 }
 .demo-card-wide > .mdl-card__menu {
   color: #fff;
@@ -40,5 +45,9 @@
 {
 font-family: 'Marvel', sans-serif; 
 text-transform: capitalize;
+padding: 10px;
 }
+
+
+
 

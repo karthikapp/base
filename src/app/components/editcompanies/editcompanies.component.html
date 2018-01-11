@@ -78,6 +78,7 @@
 
                   <!--Contact Person Information-->
             			<table class="ui stackable table" style="background-color: #757575;">
+                  
             				<thead>
               				<tr>
                 				<th>NAME</th>
@@ -88,6 +89,7 @@
                 				<th>MOBILE</th>
                         <th>PHONE</th>
                         <th>EMAIL</th>   
+                        
                       </tr>
             				</thead>
 
@@ -149,6 +151,12 @@
                           <input type="email"  name="contact_person_email" placeholder= "Email" [(ngModel)]="cntct.contact_person_email">
                         </form>
                       </td>
+
+                      <td class ="field">
+                        <i class="tiny material-icons icon-red" (click)="remove_contact_persons(cntct.contact_person_id)">remove_circle
+                        </i>
+                      </td>
+
                     </tr>
             			</tbody>
 
@@ -209,10 +217,16 @@
                           <input type="email"  name="contact_person_email" placeholder= "Email" [(ngModel)]="cntct.contact_person_email">
                         </form>
                       </td> 
+
                     </tr>
                   </tbody>
                   <!-- Add contact persons-->
+
                   <i class="large material-icons icon-green" (click)="add_contact_persons()">add_box</i>
+
+                  <!--i class="large material-icons icon-red" (click)="remove_contact_persons()">remove_circle</i-->
+
+
           			</table>
                
                 <button class="ui teal button" [disabled]="editcompanybuttonshow()" (click)="save_contact_persons()">Save Company</button>

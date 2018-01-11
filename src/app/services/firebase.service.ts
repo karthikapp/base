@@ -165,6 +165,27 @@ export class FirebaseService {
 		var account_URL = "/accounts/" + companyid
 		this.af.list(account_URL).remove();
 	}
+
+	removeCntctPerson(companyid: string, cntct: string){
+
+		var accountremove_URL = "/accounts/" + companyid + "/contact_persons/" + cntct;
+		console.log("remove",accountremove_URL)
+		this.af.list(accountremove_URL).remove();
+
+		/*var key2 = 0;
+
+		if(cntct != undefined) {
+			let contactpersondeleteCount = Object.keys(cntct).length
+
+		for(key2=0; key2 < contactpersondeleteCount; key2++ )
+		{
+
+		var accountremove_URL = "/accounts/" + companyid + "/contact_persons/" + cntct[key2];
+		console.log("remove",accountremove_URL)
+		this.af.list(accountremove_URL).remove();
+		}
+	}*/
+	}
 //END ACCOUNT
 
 //START OEMS
