@@ -55,6 +55,9 @@ export class LeadsdetailComponent implements OnInit {
   competitor_name: string;
 
   meetingremark: string;
+  presales_approved_date: Date;
+  presales_approved_by: string;
+  presales_approved_to: string;
 
   constructor(private firebaseservice : FirebaseService, 
     private route: Router, private afAuth: AngularFireAuth, private router: ActivatedRoute) { }
@@ -77,7 +80,7 @@ export class LeadsdetailComponent implements OnInit {
     this.leadstatus= '';
     this.needlist=[];
     this.products_list=[];
-    this.reports_to= null;
+    this.reports_to= '';
     this.region= '';
     this.oem_id= '';
     this.person_designation= '';
@@ -88,6 +91,9 @@ export class LeadsdetailComponent implements OnInit {
     this.distributor_name = '';
     this.event_name = '';
     this.meetingremark = '';
+    this.presales_approved_date = null;
+    this.presales_approved_by = '';
+    this.presales_approved_to = '';
 
     //Display the leads detail based on lead key on respective fields
   	this.leadid = this.router.snapshot.params['leadid'];
@@ -114,8 +120,8 @@ export class LeadsdetailComponent implements OnInit {
 
             if (v.report.toUpperCase() == 'REPORTER'
               || v.report.toUpperCase() == 'RECIPIENT'
-              || v.title.toUpperCase() == "PRE-SALES HEAD"
-              || v.role.toUpperCase() == "MASTER")
+              || v.title.toUpperCase() == 'PRE-SALES HEAD'
+              || v.role.toUpperCase() == 'MASTER')
             {
               this.firebaseservice.getLeadsByKey(this.leadid)
               .takeWhile(() => this.alive)
@@ -147,11 +153,15 @@ export class LeadsdetailComponent implements OnInit {
               this.region= lead.region;
               this.oem_id= lead.oem_id;
               this.oem_name = lead.oem_name;
-              this.person_designation= lead.person_designation;
+              this.person_designation= lead.person_designation
+
+              this.presales_approved_date = lead.presales_approved_date;
+              this.presales_approved_to = lead.presales_approved_to;
+              this.presales_approved_by = lead.presales_approved_by;
 
               this.leads = lead;
 
-              console.log(this.leads, this.activities);
+              console.log("hello",this.leads, this.activities, this.reports_to,this.assigned_to);
 
             }) 
               return this.ev = true;

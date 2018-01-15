@@ -31,6 +31,7 @@ export class FirebaseService {
   	this.fireAuth = firebase.auth();
    }	
 
+
 //START ACCOUNTS
    	//Fetch list of Accounts information
 	getAccounts()

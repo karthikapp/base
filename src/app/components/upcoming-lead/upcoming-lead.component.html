@@ -1,0 +1,23 @@
+<table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp" style="width: 95%;background-color: white;height:50vh">
+  	<thead>
+  		<tr>
+    		<th>lead_title</th>
+    		<th>region</th>
+    		<th>oppo value</th>
+    		<th>oppo assigned to</th>
+  		</tr>
+  	</thead>
+
+  	<tbody>
+  		<tr *ngFor="let vv of v">
+    		<td class="mdl-data-table__cell--non-numeric">{{vv.lead_title}}</td>
+    		<td class="mdl-data-table__cell--non-numeric">{{vv.region}}</td>
+    		<td class="mdl-data-table__cell--non-numeric">{{vv.value}}</td>
+    		<td class="mdl-data-table__cell--non-numeric">{{vv.opportunity_assignedto}}</td>
+    		<td> {{vv.oppurtunity_state}}</td>
+
+  		</tr>
+  	</tbody>
+	</table>
+  <br>
+

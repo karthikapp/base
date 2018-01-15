@@ -95,6 +95,78 @@
 
 
             <div class="ui divider"></div>
+         <div  align="center">
+                <div class="labelspec" style="color: black; font-size: 10px;">CONTACTS:</div>
+  
+       
+          <app-getcompanycontactname [companyid]="company_id"> </app-getcompanycontactname>
+      
+          </div>
+
+           
+            
+          <div class="ui divider"></div>             
+<div class="ui stackable two column grid">
+  <div class="column">
+          <div class="ui teal labels" align="center">
+                <div class="labelspec" style="color: black; font-size: 10px;">Lead Assigned To:</div>
+  
+        <a class="ui  label">
+          <app-assignedtonameget name="{{assigned_to}}"> </app-assignedtonameget>
+        </a>
+          </div>
+
+        </div>
+
+        <div class="column">
+
+          <div class="ui teal labels" align="center">
+                <div class="labelspec" style="color: black; font-size: 10px;">Reports To:</div>
+
+        <a class="ui  label">
+          <app-assignedtonameget name="{{reports_to}}"> </app-assignedtonameget>
+        </a>
+          </div>
+        </div>
+      </div>
+      
+     <div class="ui divider"></div>
+
+
+<div class="ui stackable two column grid">
+  <div class="column" *ngIf="leadstatus == 'Qualified-awaiting-manager'">
+          <div class="ui teal labels" align="center">
+                <div class="labelspec" style="color: black; font-size: 10px;">Presales Approval:</div>
+  
+        <a class="ui  label">
+          <app-assignedtonameget name="{{presales_approved_by}}"> </app-assignedtonameget>
+        </a>
+
+          </div>
+          <p> {{presales_approved_date | date: 'medium' }} </p>
+
+        </div>
+
+        <div class="column" *ngIf="leadstatus == 'Qualified-awaiting-manager'">
+
+          <div class="ui teal labels" align="center">
+                <div class="labelspec" style="color: black; font-size: 10px;">Presales Assigned To: </div>
+
+        <a class="ui  label">
+          <app-assignedtonameget name="{{presales_approved_to}}"> </app-assignedtonameget>
+        </a>
+          </div>
+            <p> {{presales_approved_date | date: 'medium' }} </p>
+        </div>
+      </div>
+
+        
+      
+
+
+
+
+            <div class="ui divider"></div>
 
             <div class="ui stackable two column grid">
               <div class="column">

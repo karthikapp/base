@@ -137,17 +137,17 @@ export class TeamopportunitiesComponent implements OnInit , OnDestroy{
      });
   }
 
-  onItemChange(user: string){
+  onItemChange(user: string, itflag: boolean){
     this.user = user;
     this.rtflag = false;
-    this.itflag = true;
+    this.itflag = itflag;
     this.onChangeofBoth();
   }
 
-  onRegionChange(region: string){
+  onRegionChange(region: string, rtflag: boolean){
     this.region = region;
     this.itflag = false;
-    this.rtflag = true;
+    this.rtflag = rtflag;
     this.onChangeofBoth();
   }
 
@@ -162,14 +162,15 @@ export class TeamopportunitiesComponent implements OnInit , OnDestroy{
               .subscribe(v => {
 
                 if (this.itflag == true) {
-              if (this.user == 'All'){
-                console.log("pp234oppo", this.user)
+                  console.log("flagu", this.itflag, this.rtflag,this.user, this.region)
+                  if (this.user == 'All'){
+                console.log("flagu", this.user)
                 this.opportunities = v;
               } 
 
-
               else if (this.user != '' && this.user != undefined) {
-                console.log("pp234oppo", this.user)
+
+                console.log("flaguu", this.user)
                 this.opportunities = v.filter (u =>  {
                 return (u.opportunity_assignedto == this.user 
               )
@@ -178,15 +179,14 @@ export class TeamopportunitiesComponent implements OnInit , OnDestroy{
         }
 
         if(this.rtflag == true) {
-
+          console.log("flagr", this.itflag, this.rtflag, this.user, this.region)
            if (this.region == 'All' ){
-                console.log("pp234oppo", this.region)
+                console.log("flagr", this.region)
                 this.opportunities = v;
               } 
 
-
               else if (this.region != '' && this.region != undefined) {
-                console.log("pp234oppo", this.region)
+                console.log("flagrr", this.region)
                 this.opportunities = v.filter (u =>  {
                 return (u.region == this.region)
             })

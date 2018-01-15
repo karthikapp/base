@@ -8,7 +8,7 @@
           
             <div class="form-group column" style="padding: 5px;">
               <label style="font-weight: bold; font-size: 15px;color: white" for="exampleFormControlSelect1">Team List: </label>
-              <select class="form-control" id="exampleFormControlSelect1" name="user" [(ngModel)]="user" (change)="onItemChange($event.target.value)">
+              <select class="form-control" id="exampleFormControlSelect1" name="user" [(ngModel)]="user" (change)="onItemChange($event.target.value, true)">
               <option [value]="'All'">All</option>
               <option *ngFor="let p of person_list" [value]="p.userid">{{ p.name }}</option>
               </select>
@@ -21,7 +21,7 @@
           
             <div class="form-group column" style="padding: 5px;">
               <label style="font-weight: bold; font-size: 15px; color: white" for="exampleFormControlSelect11">Region: </label>
-              <select class="form-control" id="exampleFormControlSelect11" name="region" [(ngModel)]="region" (change)="onRegionChange($event.target.value)">
+              <select class="form-control" id="exampleFormControlSelect11" name="region" [(ngModel)]="region" (change)="onRegionChange($event.target.value, true)">
                 <option>All</option>
                 <option>chennai</option>
                 <option>hyderabad</option>

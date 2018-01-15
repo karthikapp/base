@@ -15,6 +15,10 @@ constructor(public firebaseservice: FirebaseService){}
   transform(value: any, args?: any): any {
   	//console.log(value);
   	//this.anothermethod(value).subscribe();
+
+    if(value == undefined){
+      return [];
+    }
   	
   	let value_count = Object.keys(value).length;
   	let values = Object.values(value);

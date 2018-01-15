@@ -12,12 +12,18 @@ export class CompetitornamesPipe implements PipeTransform {
 constructor(public firebaseservice: FirebaseService){}
 
   transform(value: any, args?: any): any {
-    //console.log(value);
+    console.log("hello",value);
   	//this.anothermethod(value).subscribe();
+
+    if(value == undefined){
+      return [];
+    }
   	
   	let value_count = Object.keys(value).length;
   	let values = Object.values(value);
   	//console.log(value_count, values);
+
+
 
   	let competitorlists = [];
 

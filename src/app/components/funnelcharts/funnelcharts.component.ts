@@ -159,6 +159,10 @@ ngOnInit() {
             this.leadsarraylist = this.leadsarrayvalue
             this.leadsum = this.leadsarraylist.reduce((a, b) => a + b, 0);
 
+             if(this.leadsum == undefined || isNaN(this.leadsum)) {
+              this.leadsum = 0;
+              }
+
              this.leadsum = parseFloat(this.leadsum);
            })
 
@@ -395,6 +399,7 @@ dofunnelcharts(){
             ['Case Won',  this.valuesofsum.casewonopportunitysum ],
             ['Case Lost',  this.valuesofsum.caselostopportunitysum ]
         ]
+
     }],
         responsive: {
         rules: [{

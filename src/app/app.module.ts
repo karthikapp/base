@@ -78,6 +78,9 @@ import { ChartsComponent } from './components/charts/charts.component';
 import { FunnelteamregionchartsComponent } from './components/funnelteamregioncharts/funnelteamregioncharts.component';
 import { FunnelallchartsComponent } from './components/funnelallcharts/funnelallcharts.component';
 import { FunnelallregionchartsComponent } from './components/funnelallregioncharts/funnelallregioncharts.component';
+import { UpcomingLeadComponent } from './components/upcoming-lead/upcoming-lead.component';
+import { UpcomingOpportunityComponent } from './components/upcoming-opportunity/upcoming-opportunity.component';
+import { GetcompanycontactnameComponent } from './components/getcompanycontactname/getcompanycontactname.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -113,7 +116,9 @@ const appRoutes: Routes = [
                {path:'ViewCaseLost/:rflag', component:CaselostComponent},
                {path:'AllLeads', component: AllleadsComponent},
                {path:'AllOpportunities', component: AllopportunitiesComponent},
-               {path: 'TeampreOpportunities', component: OppopresalesComponent}
+               {path: 'TeampreOpportunities', component: OppopresalesComponent},
+               {path: 'UpcomingLead', component: UpcomingLeadComponent},
+               {path:'UpcomingOpportunities',component: UpcomingOpportunityComponent}
               ]}
 ];
 
@@ -176,7 +181,10 @@ export function highchartsFactory() {
     ChartsComponent,
     FunnelteamregionchartsComponent,
     FunnelallchartsComponent,
-    FunnelallregionchartsComponent
+    FunnelallregionchartsComponent,
+    UpcomingLeadComponent,
+    UpcomingOpportunityComponent,
+    GetcompanycontactnameComponent
   ],
   imports: [
     BrowserModule ,

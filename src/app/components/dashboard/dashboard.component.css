@@ -2,3 +2,7 @@
 	background-color: #E0E0E0; 
 }
 
+.mdl-navigation__link{
+	font-weight: bolder;
+	font-size: 1.2rem;
+}
