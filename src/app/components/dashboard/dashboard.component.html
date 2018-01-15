@@ -7,16 +7,21 @@
       <div appMzterialDesignLite class="mdl-layout-spacer"></div>
         <!--LogOut-->
 
-        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" style="background-color: #fff8e1; font-weight: bolder;" (click)="doLogout()">
-          LogOut
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" style="background-color: #fff8e1; font-weight: bolder;font-family: 'Marvel', sans-serif; font-size: 18px; text-transform: capitalize;" (click)="doLogout()">
+          Logout
         </button>
     </div>
   </header>
 
   <!--Side Menu bar Fixed -->
   <div class="mdl-layout__drawer" style="padding-left: 0px;font-family: 'Marvel', sans-serif;" >
+
     <span class="mdl-layout-title" align="center">
-      <img src="https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-simple-512.png" style="width: 90px;padding-top: 12px;padding-left: 0px;"/>
+      <img src="https://www.testive.com/wp-content/uploads/2017/01/goal-1.png" style="width: 90px;padding-top: 12px;padding-left: 0px;" />
+      <!--img src="https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-simple-512.png" /-->
+      <p style="font-size: 16px; font-family: 'Marvel', sans-serif;">
+       Hello {{name}} !
+     </p>
     </span>
 
     <!--Routing for Admin-->

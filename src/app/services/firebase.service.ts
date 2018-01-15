@@ -53,6 +53,11 @@ export class FirebaseService {
 		return this.account;
 	}
 
+	getContactbyAccount(companyid: string){
+		var accountbyCntctURL = '/accounts/' + companyid + '/contact_persons'
+		return this.af.list(accountbyCntctURL);
+	}
+
 	//Update company and contact information from EditCompaniesComponent
 	saveAccount(company_id,companyObject: {companyname: string,
           companytype: string,

@@ -27,7 +27,7 @@ export class GetcompanycontactnameComponent implements OnInit {
     console.log(this.text)
     let contactslist = []
     this.contacts = []
-    this.afDB.getAccount(String(this.companyid)).subscribe(v => {
+    this.afDB.getContactbyAccount(String(this.companyid)).subscribe(v => {
 
        console.log("companyid", this.companyid)
        

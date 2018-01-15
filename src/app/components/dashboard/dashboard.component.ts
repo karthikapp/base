@@ -19,6 +19,7 @@ export class DashboardComponent  {
   report: string;
   role: string;
   title: string;
+  name: string;
 
 
   constructor(private firebaseservice : FirebaseService,
@@ -28,8 +29,10 @@ export class DashboardComponent  {
     this.afAuth.authState.subscribe(data => {
     if (data) {
       this.uid = data.uid;
+      
 
       this.firebaseservice.getUser(this.uid).subscribe(val =>{
+        this.name = val.name;
           if (val.report == undefined)
           {
             val.report = '';

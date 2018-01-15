@@ -25,7 +25,7 @@ export class LeadsdetailComponent implements OnInit {
 
   lead_title: string;
   approval_authority: string;
-  assigned_to: string;
+  assigned_to?: string;
   budget: any;
   company_contact_person_id: string;
   company_contact_person_name: string;
@@ -116,6 +116,10 @@ export class LeadsdetailComponent implements OnInit {
             if (v.role == undefined)
             {
               v.role = '';
+            }
+
+            if (v.title == undefined){
+              v.title = '';
             }
 
             if (v.report.toUpperCase() == 'REPORTER'

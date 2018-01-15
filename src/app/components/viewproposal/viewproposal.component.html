@@ -28,7 +28,7 @@
 
           <!--Lead Title-->
           <div class="mdl-card__title">
-            <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.8vw;font-weight: bold;" 
+            <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.6vw;font-weight: bold;" 
                >
               {{proposal.lead_title}}  
             </a>
@@ -93,11 +93,20 @@
 
             </div>
 
+                        <div class="ui divider"></div>
+
+            <div  align="center">
+                <div class="labelspec" style="color: black; font-size: 10px;">CONTACTS:</div>
+  
+       
+          <app-getcompanycontactname [companyid]="proposal.company_id"> </app-getcompanycontactname>
+      
+          </div>
+
             <div class="ui divider"></div>
 
       <div class="ui blue labels" align="center">
-        <span style="color: black; font-size: 10px;text-align: center;">PRODUCT:</span>
-        <br>
+<div class="labelspec" style="color: black; font-size: 10px;">PRODUCTS:</div>
         <a class="ui label">
           {{proposal.product_name}}
           <div class="detail">{{proposal.quantity}}</div>
@@ -105,15 +114,43 @@
 
       </div>  
 
-      <div class="ui divider"></div>
-
+       <div class="ui divider"></div>
+       
       <div class="ui teal labels" align="center">
-        <span style="color: black; font-size: 10px;text-align: center;">PRE SALES:</span>
-        <br>
-        <a class="ui  label">
+        <div class="labelspec" style="color: black; font-size: 10px;">ASSIGNED TO:</div>
+             <a class="ui  label">
+          <app-assignedtonameget name="{{proposal.opportunity_assignedto}}"> </app-assignedtonameget>
+        </a>
+          </div>
+
+      <div class="ui divider"></div>   
+<div class="ui stackable two column grid">
+
+
+
+  <div class = "column">
+      <div  class="ui teal labels" align="center">
+        <div class="labelspec" style="color: black; font-size: 10px;">PRESALES APPROVED:</div>
+    
+        <a class="ui label">
           <app-assignedtonameget name="{{proposal.lead_approved_by_presales}}"> </app-assignedtonameget>
         </a>
           </div>
+    <p style="font-size: 12px;" align="center"> {{proposal.lead_approved_by_presales_date | date: 'medium' }} </p>
+        </div>
+
+     <div class = "column">
+      <div class="ui teal labels" align="center">
+        <div class="labelspec" style="color: black; font-size: 10px;">PRESALES ASSIGNED:</div>
+    
+       <a class="ui label">
+          <app-assignedtonameget name="{{proposal.lead_presales_approved_to}}"> </app-assignedtonameget>
+        </a>
+          </div>
+    <p style="font-size: 12px;" align="center"> {{proposal.lead_approved_by_presales_date | date: 'medium' }} </p>
+        </div>   
+
+      </div>
 
  <div class="ui divider"></div>
 

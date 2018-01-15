@@ -1,5 +1,5 @@
 .main{
-	padding:20px 30px 10px 30px;
+	padding:5px 30px 10px 30px;
 }
 
 .wide-card.mdl-card {
@@ -8,13 +8,27 @@
     padding-right: 10px;
     padding-bottom: 10px;
     padding-top: 10px;
+        margin-top: 5px;
+    margin-bottom: 5px;
 }
 .demo-card-wide > .mdl-card__title {
   color: #fff;
-  height: 100px;
+  height: 30px;
 }
+
+.mdl-card__title{
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-left: 5px;
+    padding-bottom: 5px;
+}
+
 .demo-card-wide > .mdl-card__menu {
   color: #fff;
+}
+
+.ui.labels, .ui.label{
+  font-size: 0.9rem!important;
 }
 
 .item-wr
@@ -49,6 +63,19 @@ font-family: 'Marvel', sans-serif; text-transform: capitalize;
     font-size: 1.2rem!important;
 }
 
+.ui.divider{
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.labelspec {
+    color: inherit;
+    display: block;
+    font-size: 1em;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
+}
 
 
 
