@@ -8,6 +8,8 @@ import { L_SEMANTIC_UI_MODULE, TAB_DIRECTIVES } from 'angular2-semantic-ui'; // 
 import { NgxPaginationModule } from 'ngx-pagination'; // <-- pagination module
 import { MomentModule } from 'angular2-moment'; // <-- Date & time Format
 import { HttpModule } from '@angular/http';
+import { DatepickerModule } from 'angular2-material-datepicker'
+
 
 //Firebase Modules
 import { FirebaseService} from "./services/firebase.service";
@@ -81,6 +83,9 @@ import { FunnelallregionchartsComponent } from './components/funnelallregionchar
 import { UpcomingLeadComponent } from './components/upcoming-lead/upcoming-lead.component';
 import { UpcomingOpportunityComponent } from './components/upcoming-opportunity/upcoming-opportunity.component';
 import { GetcompanycontactnameComponent } from './components/getcompanycontactname/getcompanycontactname.component';
+import { RegionfilterPipe } from './pipes/regionfilter.pipe';
+import { UsernamefilterPipe } from './pipes/usernamefilter.pipe';
+import { AssignednameduplicatesComponent } from './components/assignednameduplicates/assignednameduplicates.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -184,7 +189,10 @@ export function highchartsFactory() {
     FunnelallregionchartsComponent,
     UpcomingLeadComponent,
     UpcomingOpportunityComponent,
-    GetcompanycontactnameComponent
+    GetcompanycontactnameComponent,
+    RegionfilterPipe,
+    UsernamefilterPipe,
+    AssignednameduplicatesComponent
   ],
   imports: [
     BrowserModule ,
@@ -200,7 +208,8 @@ export function highchartsFactory() {
     NgxPaginationModule,
     MomentModule,
     HttpModule,
-    ChartModule
+    ChartModule,
+    DatepickerModule
   ],
   providers: [FirebaseService,
   {provide: HighchartsStatic,

@@ -204,8 +204,10 @@ onChangeofBoth() {
         let somelist = element.products_list
         somelist.forEach(value =>
         {
+          if(value.value != undefined){
           this.leadsarrayvalue.push(value.value);
           this.leadsarraylist.push(value);
+        }
         })
       }
     })

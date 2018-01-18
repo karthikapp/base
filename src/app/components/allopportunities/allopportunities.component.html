@@ -3,43 +3,72 @@
 
     <div *ngIf="ev">
 
- <div class = "ui stackable four column grid" style="height:70px;">
+ <div class = "ui stackable six column grid" style="height:70px;">
+          <div class = "column">
+        <form class="ui mini form">
+          
+            <div class="form-group column" style="padding: 5px;">
+              <label style="font-weight: bold; font-size: 15px; color: white" for="exampleFormControlSelect11">Region: </label>
+              <select class="form-control" id="exampleFormControlSelect11" name="region" [(ngModel)]="region" (change)="onRegionChange($event.target.value)" style="height: 29px;">
+                <option [value]="'All'">All</option>
+                <option [value]="'chennai'">Chennai</option>
+                <option [value]="'hyderabad'">Hyderabad</option>
+                <option [value]="'mumbai'">Mumbai</option>
+                <option [value]="'coimbatore'">Coimbatore</option>
+                <option [value]="'bangalore'">Bangalore</option>
+              </select>
+            </div>
+        
+        </form>
+      </div>
+
         <div class="column">
         <form class="ui mini form">
           
             <div class="form-group column" style="padding: 5px;">
               <label style="font-weight: bold; font-size: 15px;color: white" for="exampleFormControlSelect1">Team List: </label>
-              <select class="form-control" id="exampleFormControlSelect1" name="user" [(ngModel)]="user" (change)="onItemChange($event.target.value)">
+              <select class="form-control" id="exampleFormControlSelect1" name="user" [(ngModel)]="user" (change)="onItemChange($event.target.value)" style="height: 29px;">
               <option [value]="'All'">All</option>
-              <option *ngFor="let p of person_list" [value]="p.userid">{{ p.name }}</option>
+              <option *ngFor="let o of opportunities | regionfilter: region   " [value]="o.opportunity_assignedto">
+                 <app-assignedtonameget [name]="o.opportunity_assignedto"></app-assignedtonameget>
+              </option>
               </select>
             </div>
         
         </form>
       </div>
+
+
       <div class = "column">
         <form class="ui mini form">
-          
-            <div class="form-group column" style="padding: 5px;">
-              <label style="font-weight: bold; font-size: 15px; color: white" for="exampleFormControlSelect11">Region: </label>
-              <select class="form-control" id="exampleFormControlSelect11" name="region" [(ngModel)]="region" (change)="onRegionChange($event.target.value)">
-                <option>All</option>
-                <option>chennai</option>
-                <option>hyderabad</option>
-                <option>mumbai</option>
-                <option>coimbatore</option>
-                <option>bangalore</option>
-              </select>
-            </div>
-        
-        </form>
+          <div class="form-group column" style="padding: 5px;">
+ 
+          <label style="font-weight: bold; font-size: 15px;color: white">EDC Start Date: </label>
+            <material-datepicker [(date)]="edcStartDate"></material-datepicker>
+    
+
       </div>
+      </form>
+      </div>
+
+          <div class = "column">
+            <form class="ui mini form">
+              <div class="form-group column" style="padding: 5px;">
+   
+              <label style="font-weight: bold; font-size: 15px;color: white">EDC End Date: </label>
+              <material-datepicker [(date)]="edcEndDate"></material-datepicker>
+
+      
+      </div>
+      </form>
+      </div>
+
       <div class ="column">
 <form class="ui mini form">
           
             <div class="field" style="padding: 5px;">
               <label style="font-weight: bold; font-size: 15px;color: white">Total Count: </label>
-              <input type="text"  name="totalCount" placeholder="totalCount" [(ngModel)]="totalCount" style="padding-top:2px; padding-bottom: 2px" readonly>
+              <input type="text"  name="totalCount" placeholder="totalCount" [(ngModel)]="totalCount"  readonly>
             </div>
         
         </form>
@@ -50,7 +79,7 @@
           
             <div class="field" style="padding: 5px;">
               <label style="font-weight: bold; font-size: 15px;color: white" >Total Value: </label>
-              <input type="text"  name="totalValue" placeholder="totalValue" [(ngModel)]="totalValue" style="padding-top:2px; padding-bottom: 2px" readonly>
+              <input type="text"  name="totalValue" placeholder="totalValue" [(ngModel)]="totalValue" readonly>
             </div>
         
         </form>

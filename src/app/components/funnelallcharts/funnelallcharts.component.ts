@@ -188,6 +188,7 @@ onChangeofBoth() {
         )
       }
     })
+      console.log("leads123",qualifiedleads);
 
     qualifiedleads.forEach(element => {
       if (element.products_list == undefined)
@@ -200,14 +201,17 @@ onChangeofBoth() {
         let somelist = element.products_list
         somelist.forEach(value =>
         {
+          if(value.value != undefined){
           this.leadsarrayvalue.push(value.value);
           this.leadsarraylist.push(value);
+        }
         })
       }
     })
 
     this.leadsarraylist = this.leadsarrayvalue
     this.leadsum = this.leadsarraylist.reduce((a, b) => a + b, 0);
+    console.log("leads123", this.leadsarraylist, this.leadsum)
      if(this.leadsum == undefined || isNaN(this.leadsum)) {
         this.leadsum = 0;
       }
