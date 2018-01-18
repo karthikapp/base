@@ -77,15 +77,15 @@ uid: string;
    user: string = 'All';
    region: string = 'All';
 
-   itflag: boolean = true;
-   rtflag: boolean = true;
-
    role: string;
    report: string;
    title: string;
 
    oppo_list: any[];
-   name: any;
+   filteredData: any;
+
+   edcStartDate: any;
+   edcEndDate: any;
 
 
   constructor(private firebaseservice : FirebaseService, 
@@ -93,10 +93,12 @@ uid: string;
 
   ngOnInit() {
   	this.opportunities = [];
-      this.totalCount = '';
+    this.totalCount = '';
     this.totalValue = '';
     this.role = '';
     this.report = '';
+
+   this.edcEndDate = new Date();
 
   	//Opportunities list
     this.afAuth.authState
@@ -133,9 +135,14 @@ uid: string;
               this.firebaseservice.getopportunities()
               .takeWhile(() => this.alive)
               .subscribe(v => {
-                this.opportunities = v}) 
-
+              this.opportunities = v;
+              this.teamList('All');
               this.onChangeofBoth();
+            })  
+
+              
+
+              return this.ev = true;
             
             }
    
@@ -156,102 +163,69 @@ uid: string;
      });
   }
 
+  onRegionChange(region: string){
+    this.region = region;
+    this.user = 'All';
 
-
-    onItemChange(user: string){
-    this.user = user;
-    this.rtflag = false;
-    this.itflag = true;
-
-
-
-
+    this.teamList(this.region); 
 
     this.onChangeofBoth();
   }
 
-  onRegionChange(region: string){
-    this.region = region;
-    this.itflag = false;
-    this.rtflag = true;
-
-   /*let valuecount = Object.keys(this.opportunities).length
-    let i =0;
-
-
-
-if (region == 'All') {
-  for(i=0;i<= valuecount; i++){
-    if(this.opportunities[i].opportunity_assignedto != undefined) {
-      this.person_list.push(this.opportunities[i].opportunity_assignedto);
-      console.log(this.opportunities[i].opportunity_assignedto)
-      console.log("All",this.person_list)
-      
-    }
-
+  onItemChange(user: string){
+    this.user = user;
+    this.onChangeofBoth();
   }
-  
-} else if (region != 'All'){
-  this.oppo_list = this.opportunities.filter(
-    i => { return i.region == region})
 
-  let valuecounts = Object.keys(this.person_list).length
-  console.log("!All", valuecounts, this.oppo_list)
-  
-  for(i=0;i<= valuecounts; i++){
-    if(this.opportunities[i].opportunity_assignedto != undefined) {
-    this.person_list.push(this.opportunities[i].opportunity_assignedto)
-    console.log("Not All",this.person_list)
+  teamList(region: string){
+    if (region == 'All') {
+      this.filteredData = this.opportunities
+      .map(item => item.opportunity_assignedto)
+      .filter((value, index, self) => { return self.indexOf(value) === index })
 
-  }
-  
-  }*/
-
-
-
+      console.log("pp234oppo", this.filteredData, this.opportunities)
+    } else if (region != 'All'){
     
+      this.oppo_list = this.opportunities.filter(i => { return i.region == region})
 
+      this.filteredData = this.oppo_list
+      .map(item => item.opportunity_assignedto)
+      .filter((value, index, self) => { return self.indexOf(value) === index })
+
+      console.log("pp234oppo", this.filteredData, this.oppo_list)
+    }
   }
-
 
   onChangeofBoth(){
+
+    console.log("dates", this.edcStartDate, this.edcEndDate)
    
-
-    this.firebaseservice.getopportunities()
-              .takeWhile(() => this.alive)
-              .subscribe(v => {
-   this.opportunities = v;
-
-   if (this.itflag == true) {
-              if (this.user == 'All' ){
-        console.log("pp234oppo", this.user)
-        this.opportunities = v;
+      if (this.user == 'All' && this.region == 'All' ){
+        this.oppo_list = this.opportunities
+        console.log("pp234oppo", this.user, this.region, this.opportunities, this.oppo_list)  
       } 
 
-
-      else if (this.user != '' && this.user != undefined) {
-        console.log("pp234oppo", this.user)
-        this.opportunities = v.filter (u =>  {
+      else if (this.user != 'All' && this.user != undefined && this.region != 'All' && this.region != undefined ) {
+        
+        this.oppo_list = this.opportunities.filter (u =>  {
           return (u.opportunity_assignedto == this.user 
-           )
-      })
-  }
-}
-
-if(this.rtflag == true) {
-if ( this.region == 'All'){
-        console.log("pp234oppo",  this.region)
-        this.opportunities = v;
-      } 
-
-
-      else if ( this.region != '' && this.region != undefined) {
-        console.log("pp234oppo", this.region)
-        this.opportunities = v.filter (u =>  {
+            && u.region == this.region )
+        })
+        console.log("pp234oppo", this.user, this.region, this.opportunities, this.oppo_list)
+      } else if ( this.region == 'All' && this.user != 'All' && this.user != undefined ){
+       
+        this.oppo_list = this.opportunities.filter (u =>  {
+          return (u.opportunity_assignedto == this.user )
+        })
+        console.log("pp234oppo", this.user, this.region, this.opportunities, this.oppo_list)
+      } else if ( this.user == 'All' && this.region != undefined && this.region != 'All') {
+       
+        this.oppo_list = this.opportunities.filter (u =>  {
           return (u.region == this.region)
-      })
-  }
-}
+        })
+        console.log("pp234oppo", this.user, this.region, this.opportunities,this.oppo_list)
+      }
+
             
              this.arrayvalue = []
              this.qualifiedleadlist = []
@@ -273,7 +247,7 @@ if ( this.region == 'All'){
              this.caselostopportunitylist = []
 
              // qualified lead sum code
-             this.opportunities.forEach(item => {
+             this.oppo_list.forEach(item => {
 
                // qualified lead sum code
                if (item.opportunity_state == 'Qualified_lead')
@@ -376,7 +350,8 @@ if ( this.region == 'All'){
                }
 
                })
-this.arraylist = this.arrayvalue
+
+             this.arraylist = this.arrayvalue
              this.qualifiedleadsum1 = this.arraylist.reduce((a, b) => a + b, 0)
              this.qualifiedleadsum = this.qualifiedleadsum1.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
              // presales sum code
@@ -420,11 +395,7 @@ this.arraylist = this.arrayvalue
              this.totalValue =  inrstr1.concat(this.qualifiedleadsum1 + this.presalesopportunitysum1 + this.budgetaryopportunitysum1 + this.bomopportunitysum1
              + this.pocopportunitysum1 + this.finalnegoopportunitysum1 + this.finalproposalopportunitysum1+ this.caselostopportunitysum1 + this.casewonopportunitysum1).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
-            }) 
-
-
-            
-              return this.ev = true;
+           
   }
 
    getsum(opitems){

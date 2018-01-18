@@ -9,6 +9,7 @@ import { NgxPaginationModule } from 'ngx-pagination'; // <-- pagination module
 import { MomentModule } from 'angular2-moment'; // <-- Date & time Format
 import { HttpModule } from '@angular/http';
 import { DatepickerModule } from 'angular2-material-datepicker'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 //Firebase Modules
@@ -209,7 +210,8 @@ export function highchartsFactory() {
     MomentModule,
     HttpModule,
     ChartModule,
-    DatepickerModule
+    DatepickerModule,
+    BrowserAnimationsModule
   ],
   providers: [FirebaseService,
   {provide: HighchartsStatic,

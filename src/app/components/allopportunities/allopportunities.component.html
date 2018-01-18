@@ -29,8 +29,8 @@
               <label style="font-weight: bold; font-size: 15px;color: white" for="exampleFormControlSelect1">Team List: </label>
               <select class="form-control" id="exampleFormControlSelect1" name="user" [(ngModel)]="user" (change)="onItemChange($event.target.value)" style="height: 29px;">
               <option [value]="'All'">All</option>
-              <option *ngFor="let o of opportunities | regionfilter: region   " [value]="o.opportunity_assignedto">
-                 <app-assignedtonameget [name]="o.opportunity_assignedto"></app-assignedtonameget>
+              <option *ngFor="let fD of filteredData" [value]="fD"> 
+                 <app-assignedtonameget [name]="fD"></app-assignedtonameget>
               </option>
               </select>
             </div>
@@ -38,15 +38,12 @@
         </form>
       </div>
 
-
-      <div class = "column">
+      <!--div class = "column">
         <form class="ui mini form">
           <div class="form-group column" style="padding: 5px;">
- 
-          <label style="font-weight: bold; font-size: 15px;color: white">EDC Start Date: </label>
-            <material-datepicker [(date)]="edcStartDate"></material-datepicker>
-    
 
+          <label style="font-weight: bold; font-size: 15px;color: white">EDC Start Date: </label>
+<material-datepicker [(date)]="edcStartDate"></material-datepicker>
       </div>
       </form>
       </div>
@@ -61,7 +58,7 @@
       
       </div>
       </form>
-      </div>
+      </div-->
 
       <div class ="column">
 <form class="ui mini form">

@@ -14,18 +14,20 @@ export class UsernamefilterPipe implements PipeTransform {
 	
 	let filteredData = value
 	.map(item => item.opportunity_assignedto)
-	.filter((value, index, self) => {self.indexOf(value) === index})
+	.filter((value, index, self) => { return self.indexOf(value) === index })
 
   	console.log("unamefilter", filteredData);
 
 	let oppocountvalue = Object.keys(filteredData).length;
+	console.log("uuname", oppocountvalue);
 
-	for(let i=0; i<oppocountvalue; i++){
-  	this.oppolist[i].opportunity_assignedto = filteredData[i];
-  }
-console.log("uname",this.oppolist);
+	for(let i=0; i< oppocountvalue; i++){
+  		console.log(filteredData[i]);
+  	}
+	console.log("uname",this.oppolist, oppocountvalue);
 
-    //return filteredData;
+	return filteredData;
+    //return this.oppolist;
   }
 
 }

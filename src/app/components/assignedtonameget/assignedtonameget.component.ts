@@ -28,6 +28,10 @@ export class AssignedtonamegetComponent implements OnInit {
     {
     	 this.result = value;
     	 this.text = this.result.name;
+       if(this.text == undefined){
+         this.text = "NO USER";
+       }
+       console.log("Hello",this.text);
 
     })
   } 
