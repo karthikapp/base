@@ -3,6 +3,7 @@ import { FirebaseService } from "../../services/firebase.service";
 import { Router, ActivatedRoute } from '@angular/router';
 import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
 import "rxjs/add/operator/takeWhile";
+import {IMyDrpOptions} from 'mydaterangepicker';
 
 @Component({
   selector: 'app-allopportunities',
@@ -10,6 +11,14 @@ import "rxjs/add/operator/takeWhile";
   styleUrls: ['./allopportunities.component.css']
 })
 export class AllopportunitiesComponent implements OnInit, OnDestroy {
+
+    myDateRangePickerOptions: IMyDrpOptions = {
+        // other options...
+        dateFormat: 'dd.mm.yyyy',
+    };
+
+     private model: any = {beginDate: {year: 2018, month: 10, day: 9},
+                             endDate: {year: 2018, month: 10, day: 19}};
 
 uid: string;
    ev: boolean = false;
@@ -397,6 +406,8 @@ uid: string;
 
            
   }
+
+  
 
    getsum(opitems){
      console.log(opitems)

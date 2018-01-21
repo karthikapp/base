@@ -369,7 +369,7 @@ dofunnelcharts(){
 
   this.options = {
   chart: { type: 'funnel' },
-  title: { text: 'Sales funnel' },
+  title: { text: 'MY SALES FUNNEL' },
   plotOptions: {
         series: {
             dataLabels: {

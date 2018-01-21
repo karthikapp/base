@@ -87,6 +87,15 @@ import { GetcompanycontactnameComponent } from './components/getcompanycontactna
 import { RegionfilterPipe } from './pipes/regionfilter.pipe';
 import { UsernamefilterPipe } from './pipes/usernamefilter.pipe';
 import { AssignednameduplicatesComponent } from './components/assignednameduplicates/assignednameduplicates.component';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatMomentDateModule} from '@angular/material-moment-adapter';
+import {MatNativeDateModule} from '@angular/material';
+import {MatInputModule} from '@angular/material';
+import { NgDatepickerModule } from 'ng2-datepicker';
+import { MyDateRangePickerModule } from 'mydaterangepicker';
+
 
 const appRoutes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -211,7 +220,15 @@ export function highchartsFactory() {
     HttpModule,
     ChartModule,
     DatepickerModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatTabsModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatMomentDateModule,
+    MatNativeDateModule,
+    MatInputModule,
+    NgDatepickerModule,
+    MyDateRangePickerModule
   ],
   providers: [FirebaseService,
   {provide: HighchartsStatic,
