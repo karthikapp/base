@@ -81,14 +81,23 @@ export class TeamopportunitiesComponent implements OnInit , OnDestroy{
    itflag: boolean = true;
    rtflag: boolean = true;
 
+   oppo_list: any[];
+   oppo_list_dates: any[];
+
    role: string;
    report: string;
+   startDate: any;
+   endDate: any;
 
   constructor(private firebaseservice : FirebaseService, 
     private router: Router, private afAuth: AngularFireAuth) { }
 
   ngOnInit() {
   	this.opportunities = [];
+    this.oppo_list = [];
+    this.oppo_list_dates = [];
+    this.startDate = null;
+    this.endDate = null;
     this.totalCount = '';
     this.totalValue = '';
     this.role = '';
@@ -119,7 +128,19 @@ export class TeamopportunitiesComponent implements OnInit , OnDestroy{
 
             if (v.report.toUpperCase() == 'RECIPIENT')
             {
-             this.onChangeofBoth();
+              this.firebaseservice.getUsersByReportsTo(this.uid).subscribe(u => {
+              console.log(u);
+              this.person_list = u;
+            })
+
+              this.firebaseservice.getopportunitiesbyreporttoid(this.uid)
+              .takeWhile(() => this.alive)
+              .subscribe(v => {
+                  this.opportunities = v;
+                 this.onChangeofBoth();
+              })
+
+              return this.ev = true;
             }
             else
             {
@@ -137,48 +158,52 @@ export class TeamopportunitiesComponent implements OnInit , OnDestroy{
      });
   }
 
-  onItemChange(user: string, itflag: boolean){
+  onItemChange(user: string){
     this.user = user;
-    this.rtflag = false;
-    this.itflag = itflag;
     this.onChangeofBoth();
   }
 
-  onRegionChange(region: string, rtflag: boolean){
+  /*onRegionChange(region: string, rtflag: boolean){
     this.region = region;
     this.itflag = false;
     this.rtflag = rtflag;
     this.onChangeofBoth();
+  }*/
+
+  onStartDateChange(val){
+    console.log("dates",val);
+    this.startDate = val;
+    this.onChangeofBoth();
+  }
+
+  onEndDateChange(val){
+    console.log("dates",val);
+    this.endDate = val;
+    if(this.endDate < this.startDate){
+      alert("Start Date is greater than the End Date");
+      this.endDate = '';
+    }
+    this.onChangeofBoth();
   }
 
   onChangeofBoth(){
-     this.firebaseservice.getUsersByReportsTo(this.uid).subscribe(u => {
-              console.log(u);
-              this.person_list = u;
-            })
-
-              this.firebaseservice.getopportunitiesbyreporttoid(this.uid)
-              .takeWhile(() => this.alive)
-              .subscribe(v => {
-
-                if (this.itflag == true) {
-                  console.log("flagu", this.itflag, this.rtflag,this.user, this.region)
-                  if (this.user == 'All'){
-                console.log("flagu", this.user)
-                this.opportunities = v;
+     
+        if (this.user == 'All'){
+                console.log("pp234oppo", this.user)
+                this.oppo_list = this.opportunities 
               } 
 
               else if (this.user != '' && this.user != undefined) {
 
-                console.log("flaguu", this.user)
-                this.opportunities = v.filter (u =>  {
+                console.log("pp234oppo", this.user)
+                this.oppo_list = this.opportunities.filter (u =>  {
                 return (u.opportunity_assignedto == this.user 
               )
             })
           }
-        }
+        
 
-        if(this.rtflag == true) {
+        /*if(this.rtflag == true) {
           console.log("flagr", this.itflag, this.rtflag, this.user, this.region)
            if (this.region == 'All' ){
                 console.log("flagr", this.region)
@@ -191,7 +216,26 @@ export class TeamopportunitiesComponent implements OnInit , OnDestroy{
                 return (u.region == this.region)
             })
           }
-           }
+           }*/
+
+           this.oppo_list_dates = this.oppo_list
+
+
+      if (this.startDate != null || this.endDate != null) {
+        if (this.startDate != null && (this.endDate == null || this.endDate == '')){
+         this.oppo_list_dates = this.oppo_list.filter( u=> 
+         { return (u.edc >= this.startDate)} )
+       } else if (this.startDate == null && (this.endDate != null && this.endDate != '')){
+         this.oppo_list_dates = this.oppo_list.filter( u=> 
+         { return (u.edc <= this.endDate)} )
+       } else if (this.startDate != null && (this.endDate != null && this.endDate != '')){
+         this.oppo_list_dates = this.oppo_list.filter( u=> 
+         { return (u.edc >= this.startDate && u.edc <= this.endDate)} )
+       }
+      }
+
+      console.log("pp234oppo", this.oppo_list_dates)
+
 
              this.arrayvalue = []
              this.qualifiedleadlist = []
@@ -213,7 +257,7 @@ export class TeamopportunitiesComponent implements OnInit , OnDestroy{
              this.caselostopportunitylist = []
 
              // qualified lead sum code
-             this.opportunities.forEach(item => {
+             this.oppo_list_dates.forEach(item => {
 
                // qualified lead sum code
                if (item.opportunity_state == 'Qualified_lead')
@@ -361,8 +405,8 @@ export class TeamopportunitiesComponent implements OnInit , OnDestroy{
              this.totalValue =  inrstr1.concat(this.qualifiedleadsum1 + this.presalesopportunitysum1 + this.budgetaryopportunitysum1 + this.bomopportunitysum1
              + this.pocopportunitysum1 + this.finalnegoopportunitysum1 + this.finalproposalopportunitysum1+ this.caselostopportunitysum1 + this.casewonopportunitysum1).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
-            }) 
-              return this.ev = true;
+            
+              
   }
 
    getsum(opitems){

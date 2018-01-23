@@ -8,8 +8,8 @@ import { L_SEMANTIC_UI_MODULE, TAB_DIRECTIVES } from 'angular2-semantic-ui'; // 
 import { NgxPaginationModule } from 'ngx-pagination'; // <-- pagination module
 import { MomentModule } from 'angular2-moment'; // <-- Date & time Format
 import { HttpModule } from '@angular/http';
-import { DatepickerModule } from 'angular2-material-datepicker'
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+//import { DatepickerModule } from 'angular2-material-datepicker'
+//import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 //Firebase Modules
@@ -87,14 +87,15 @@ import { GetcompanycontactnameComponent } from './components/getcompanycontactna
 import { RegionfilterPipe } from './pipes/regionfilter.pipe';
 import { UsernamefilterPipe } from './pipes/usernamefilter.pipe';
 import { AssignednameduplicatesComponent } from './components/assignednameduplicates/assignednameduplicates.component';
-import {MatTabsModule} from '@angular/material/tabs';
+/*import {MatTabsModule} from '@angular/material/tabs';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
 import {MatNativeDateModule} from '@angular/material';
 import {MatInputModule} from '@angular/material';
 import { NgDatepickerModule } from 'ng2-datepicker';
-import { MyDateRangePickerModule } from 'mydaterangepicker';
+import { MyDateRangePickerModule } from 'mydaterangepicker';*/
+import { DaterangePipe } from './pipes/daterange.pipe';
 
 
 const appRoutes: Routes = [
@@ -202,7 +203,8 @@ export function highchartsFactory() {
     GetcompanycontactnameComponent,
     RegionfilterPipe,
     UsernamefilterPipe,
-    AssignednameduplicatesComponent
+    AssignednameduplicatesComponent,
+    DaterangePipe
   ],
   imports: [
     BrowserModule ,
@@ -218,17 +220,17 @@ export function highchartsFactory() {
     NgxPaginationModule,
     MomentModule,
     HttpModule,
-    ChartModule,
-    DatepickerModule,
-    BrowserAnimationsModule,
-    MatTabsModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatMomentDateModule,
-    MatNativeDateModule,
-    MatInputModule,
-    NgDatepickerModule,
-    MyDateRangePickerModule
+    ChartModule
+    //DatepickerModule,
+    //BrowserAnimationsModule
+    // MatTabsModule,
+    // MatDatepickerModule,
+    // MatFormFieldModule,
+    // MatMomentDateModule,
+    // MatNativeDateModule,
+    // MatInputModule,
+    // NgDatepickerModule,
+    // MyDateRangePickerModule
   ],
   providers: [FirebaseService,
   {provide: HighchartsStatic,

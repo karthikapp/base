@@ -8,7 +8,7 @@
         <form class="ui mini form">
           <div class="form-group column" style="padding: 5px;">
             <label style="font-weight: bold; font-size: 15px; color: white" for="exampleFormControlSelect11">Region: </label>
-            <select class="form-control" id="exampleFormControlSelect11" name="region" [(ngModel)]="region" (change)="onRegionChange($event.target.value)" style="height: 29px;">
+            <select class="form-control" id="exampleFormControlSelect11" name="region" [(ngModel)]="region" (change)="onRegionChange($event.target.value)" style="height: 29px;font-size: 1.2em">
               <option [value]="'All'">All</option>
               <option [value]="'chennai'">Chennai</option>
               <option [value]="'hyderabad'">Hyderabad</option>
@@ -25,7 +25,7 @@
         <form class="ui mini form">
           <div class="form-group column" style="padding: 5px;">
             <label style="font-weight: bold; font-size: 15px;color: white" for="exampleFormControlSelect1">Team List: </label>
-            <select class="form-control" id="exampleFormControlSelect1" name="user" [(ngModel)]="user" (change)="onItemChange($event.target.value)" style="height: 29px;">
+            <select class="form-control" id="exampleFormControlSelect1" name="user" [(ngModel)]="user" (change)="onItemChange($event.target.value)" style="height: 29px;font-size: 1.2em">
               <option [value]="'All'">All</option>
               <option *ngFor="let fD of filteredData" [value]="fD"> 
                <app-assignedtonameget [name]="fD"></app-assignedtonameget>
@@ -40,16 +40,37 @@
 
        <form class="ui mini form">
         <div class="form-group column" style="padding: 5px;">
-         <label style="font-weight: bold; font-size: 15px;color: white" for="exampleFormControlSelect1">EDC Start Date: </label>
-         <div class="ui input" style="width: 100px;">
-          <input [ngModel]="startDate | date:'yyyy-MM-dd'" (ngModelChange)="startDate = $event" type="date" name="startDate" style="height: 29px;width: 100px;"/>
+         <label style="font-weight: bold; font-size: 15px;color: white">EDC Start Date: </label> 
+         <div class="ui input" style="width: 140px;">
+          <input [ngModel]="startDate | date:'yyyy-MM-dd'" (ngModelChange)="onStartDateChange($event)" type="date" name="startDate" style="height: 29px;width: 135px;padding-left: 2px;padding-right: 2px;"/>
         </div>
       </div>
       </form>
-
-      <!-- <ng-datepicker [(ngModel)]="date"></ng-datepicker> -->
     </div>
 
+              <div class="column">
+
+       <form class="ui mini form">
+        <div class="form-group column" style="padding: 5px;">
+         <label style="font-weight: bold; font-size: 15px;color: white">EDC End Date: </label> 
+         <div class="ui input" style="width: 140px;">
+          <input [ngModel]="endDate | date:'yyyy-MM-dd'" (ngModelChange)="onEndDateChange($event)" type="date" name="endDate" style="height: 29px;width: 135px;padding-left: 2px;padding-right: 2px;"/>
+        </div>
+      </div>
+      </form>
+    </div>
+
+          <!--div class="column">
+
+       <form class="ui mini form">
+        <div class="form-group column" style="padding: 5px;">
+         <label style="font-weight: bold; font-size: 15px;color: white">EDC End Date: </label> 
+
+        <my-date-range-picker name="mydaterange" [options]="myDateRangePickerOptions"
+                    [(ngModel)]="model" required></my-date-range-picker>
+      </div>
+      </form>
+    </div-->    
 
 
 
@@ -79,8 +100,8 @@
       <form class="ui mini form">
 
         <div class="field" style="padding: 5px;">
-          <label style="font-weight: bold; font-size: 15px;color: white">Total Count: </label>
-          <input type="text"  name="totalCount" placeholder="totalCount" [(ngModel)]="totalCount"  readonly>
+          <label style="font-weight: bold; font-size: 15px;color: white; margin-bottom: 1px;">Total Count: </label>
+          <input type="text"  name="totalCount" placeholder="totalCount" [(ngModel)]="totalCount" style="padding-top:5px; padding-bottom: 5px" readonly>
         </div>
         
       </form>
@@ -90,8 +111,8 @@
      <form class="ui mini form">
 
       <div class="field" style="padding: 5px;">
-        <label style="font-weight: bold; font-size: 15px;color: white" >Total Value: </label>
-        <input type="text"  name="totalValue" placeholder="totalValue" [(ngModel)]="totalValue" readonly>
+        <label style="font-weight: bold; font-size: 15px;color: white; margin-bottom: 1px;" >Total Value: </label>
+        <input type="text"  name="totalValue" placeholder="totalValue" [(ngModel)]="totalValue" style="padding-top:5px; padding-bottom: 5px" readonly>
       </div>
 
     </form>

@@ -3,7 +3,7 @@ import { FirebaseService } from "../../services/firebase.service";
 import { Router, ActivatedRoute } from '@angular/router';
 import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
 import "rxjs/add/operator/takeWhile";
-import {IMyDrpOptions} from 'mydaterangepicker';
+//import {IMyDrpOptions} from 'mydaterangepicker';
 
 @Component({
   selector: 'app-allopportunities',
@@ -12,15 +12,14 @@ import {IMyDrpOptions} from 'mydaterangepicker';
 })
 export class AllopportunitiesComponent implements OnInit, OnDestroy {
 
-    myDateRangePickerOptions: IMyDrpOptions = {
+    /*myDateRangePickerOptions: IMyDrpOptions = {
         // other options...
         dateFormat: 'dd.mm.yyyy',
     };
 
-     private model: any = {beginDate: {year: 2018, month: 10, day: 9},
-                             endDate: {year: 2018, month: 10, day: 19}};
+     private model: any = null;*/
 
-uid: string;
+   uid: string;
    ev: boolean = false;
 
    alive: boolean = true;
@@ -91,23 +90,27 @@ uid: string;
    title: string;
 
    oppo_list: any[];
+   oppo_list_dates: any[];
    filteredData: any;
 
-   edcStartDate: any;
-   edcEndDate: any;
+   startDate: any;
+   endDate: any;
 
 
   constructor(private firebaseservice : FirebaseService, 
-    private router: Router, private afAuth: AngularFireAuth) { }
+    private router: Router, private afAuth: AngularFireAuth) {
+     }
 
   ngOnInit() {
   	this.opportunities = [];
+    this.oppo_list = [];
+    this.oppo_list_dates = [];
     this.totalCount = '';
     this.totalValue = '';
     this.role = '';
     this.report = '';
-
-   this.edcEndDate = new Date();
+    this.startDate = null;
+    this.endDate = null;
 
   	//Opportunities list
     this.afAuth.authState
@@ -205,16 +208,33 @@ uid: string;
     }
   }
 
+  onStartDateChange(val){
+    console.log("dates",val);
+    this.startDate = val;
+    this.onChangeofBoth();
+  }
+
+  onEndDateChange(val){
+    console.log("dates",val);
+    this.endDate = val;
+    if(this.endDate < this.startDate){
+      alert("Start Date is greater than the End Date");
+      this.endDate = '';
+    }
+    this.onChangeofBoth();
+  }
+
   onChangeofBoth(){
 
-    console.log("dates", this.edcStartDate, this.edcEndDate)
+    console.log("dates", this.startDate, this.endDate)
    
       if (this.user == 'All' && this.region == 'All' ){
         this.oppo_list = this.opportunities
         console.log("pp234oppo", this.user, this.region, this.opportunities, this.oppo_list)  
       } 
 
-      else if (this.user != 'All' && this.user != undefined && this.region != 'All' && this.region != undefined ) {
+      else if (this.user != 'All' && this.user != undefined && this.region != 'All' 
+        && this.region != undefined ) {
         
         this.oppo_list = this.opportunities.filter (u =>  {
           return (u.opportunity_assignedto == this.user 
@@ -235,6 +255,22 @@ uid: string;
         console.log("pp234oppo", this.user, this.region, this.opportunities,this.oppo_list)
       }
 
+      this.oppo_list_dates = this.oppo_list;
+
+      if (this.startDate != null || this.endDate != null) {
+        if (this.startDate != null && (this.endDate == null || this.endDate == '')){
+         this.oppo_list_dates = this.oppo_list.filter( u=> 
+         { return (u.edc >= this.startDate)} )
+       } else if (this.startDate == null && (this.endDate != null && this.endDate != '')){
+         this.oppo_list_dates = this.oppo_list.filter( u=> 
+         { return (u.edc <= this.endDate)} )
+       } else if (this.startDate != null && (this.endDate != null && this.endDate != '')){
+         this.oppo_list_dates = this.oppo_list.filter( u=> 
+         { return (u.edc >= this.startDate && u.edc <= this.endDate)} )
+       }
+      }
+
+      console.log("pp234oppo",this.oppo_list_dates)
             
              this.arrayvalue = []
              this.qualifiedleadlist = []
@@ -256,7 +292,8 @@ uid: string;
              this.caselostopportunitylist = []
 
              // qualified lead sum code
-             this.oppo_list.forEach(item => {
+
+             this.oppo_list_dates.forEach(item => {
 
                // qualified lead sum code
                if (item.opportunity_state == 'Qualified_lead')

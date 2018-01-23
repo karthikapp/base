@@ -2,13 +2,13 @@
   <div id="" style="overflow-y: scroll;height: 100%; width:100%;">
 
     <div *ngIf="ev">
- <div class = "ui stackable four column grid" style="height:70px;">
+ <div class = "ui stackable five column grid" style="height:70px;">
         <div class="column">
         <form class="ui mini form">
           
             <div class="form-group column" style="padding: 5px;">
               <label style="font-weight: bold; font-size: 15px;color: white" for="exampleFormControlSelect1">Team List: </label>
-              <select class="form-control" id="exampleFormControlSelect1" name="user" [(ngModel)]="user" (change)="onItemChange($event.target.value, true)">
+              <select class="form-control" id="exampleFormControlSelect1" name="user" [(ngModel)]="user" (change)="onItemChange($event.target.value)"  style="height: 29px;font-size: 1.2em">
               <option [value]="'All'">All</option>
               <option *ngFor="let p of person_list" [value]="p.userid">{{ p.name }}</option>
               </select>
@@ -16,7 +16,7 @@
         
         </form>
       </div>
-      <div class = "column" *ngIf="role == 'MASTER'">
+      <!--div class = "column" *ngIf="role == 'MASTER'">
         <form class="ui mini form">
           
             <div class="form-group column" style="padding: 5px;">
@@ -32,13 +32,38 @@
             </div>
         
         </form>
+      </div-->
+
+     <div class="column">
+
+       <form class="ui mini form">
+        <div class="form-group column" style="padding: 5px;">
+         <label style="font-weight: bold; font-size: 15px;color: white">EDC Start Date: </label> 
+         <div class="ui input" style="width: 140px;">
+          <input [ngModel]="startDate | date:'yyyy-MM-dd'" (ngModelChange)="onStartDateChange($event)" type="date" name="startDate" style="height: 29px;width: 135px;padding-left: 2px;padding-right: 2px;"/>
+        </div>
       </div>
+      </form>
+    </div>
+
+              <div class="column">
+
+       <form class="ui mini form">
+        <div class="form-group column" style="padding: 5px;">
+         <label style="font-weight: bold; font-size: 15px;color: white">EDC End Date: </label> 
+         <div class="ui input" style="width: 140px;">
+          <input [ngModel]="endDate | date:'yyyy-MM-dd'" (ngModelChange)="onEndDateChange($event)" type="date" name="endDate" style="height: 29px;width: 135px;padding-left: 2px;padding-right: 2px;"/>
+        </div>
+      </div>
+      </form>
+    </div>
+
       <div class ="column">
 <form class="ui mini form">
           
             <div class="field" style="padding: 5px;">
-              <label style="font-weight: bold; font-size: 15px;color: white">Total Count: </label>
-              <input type="text"  name="totalCount" placeholder="totalCount" [(ngModel)]="totalCount" style="padding-top:2px; padding-bottom: 2px" readonly>
+              <label style="font-weight: bold; font-size: 15px;color: white; margin-bottom: 1px;">Total Count: </label>
+              <input type="text"  name="totalCount" placeholder="totalCount" [(ngModel)]="totalCount" style="padding-top:5px; padding-bottom: 5px" readonly>
             </div>
         
         </form>
@@ -48,8 +73,8 @@
 <form class="ui mini form">
           
             <div class="field" style="padding: 5px;">
-              <label style="font-weight: bold; font-size: 15px;color: white" >Total Value: </label>
-              <input type="text"  name="totalValue" placeholder="totalValue" [(ngModel)]="totalValue" style="padding-top:2px; padding-bottom: 2px" readonly>
+              <label style="font-weight: bold; font-size: 15px;color: white; margin-bottom: 1px;" >Total Value: </label>
+              <input type="text"  name="totalValue" placeholder="totalValue" [(ngModel)]="totalValue" style="padding-top:5px; padding-bottom: 5px" readonly>
             </div>
         
         </form>
