@@ -6,7 +6,6 @@
     <div class="mdl-layout__header-row" >
       <div appMzterialDesignLite class="mdl-layout-spacer"></div>
         <!--LogOut-->
-
         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" style="background-color: #fff8e1; font-weight: bolder;font-family: 'Marvel', sans-serif; font-size: 18px; text-transform: capitalize;" (click)="doLogout()">
           Logout
         </button>
@@ -33,22 +32,24 @@
       <a class="mdl-navigation__link" routerLink="/dashboard/Distributors" routerLinkActive="active">Distributors</a>
       <a class="mdl-navigation__link" routerLink="/dashboard/Products" routerLinkActive="active">Products</a>
       <a class="mdl-navigation__link" routerLink="/dashboard/Needlists" routerLinkActive="active">Need Lists</a>
+      <a class="mdl-navigation__link" routerLink="/dashboard/Suppliers" routerLinkActive="active">Suppliers</a>
     </nav>
 
     <!--Routing for Users-->
     <nav class="mdl-navigation" style="" [hidden]="!showReportsFlag">
       <a class="mdl-navigation__link" routerLink="/dashboard/Charts" routerLinkActive="active">Dashboard</a>
       <a class="mdl-navigation__link" routerLink="/dashboard/MyLeads" routerLinkActive="active">My Leads</a>
-            <a class="mdl-navigation__link" routerLink="/dashboard/MyOpportunities" routerLinkActive="active">My Opportunities</a>
+      <a class="mdl-navigation__link" routerLink="/dashboard/MyOpportunities" routerLinkActive="active">My Opportunities</a>
       <a class="mdl-navigation__link" routerLink="/dashboard/TeamLeads" routerLinkActive="active" *ngIf="report == 'recipient'">Team Leads</a>
-            <a class="mdl-navigation__link" routerLink="/dashboard/TeamOpportunities" routerLinkActive="active" *ngIf="report == 'recipient'">Team Opportunities</a>
-            <a class="mdl-navigation__link" routerLink="/dashboard/TeampreOpportunities" routerLinkActive="active" *ngIf="role == 'presales'">Team Opportunities</a>
+      <a class="mdl-navigation__link" routerLink="/dashboard/TeamOpportunities" routerLinkActive="active" *ngIf="report == 'recipient'">Team Opportunities</a>
+      <a class="mdl-navigation__link" routerLink="/dashboard/TeampreOpportunities" routerLinkActive="active" *ngIf="role == 'presales'">Team Opportunities</a>
       <a class="mdl-navigation__link" routerLink="/dashboard/AllLeads" routerLinkActive="active" *ngIf="role== 'master'">All Leads</a>
-          <a class="mdl-navigation__link" routerLink="/dashboard/AllLeads" routerLinkActive="active" *ngIf="title == 'Pre-Sales Head'">All Leads</a>
-          <a class="mdl-navigation__link" routerLink="/dashboard/AllOpportunities" routerLinkActive="active" *ngIf="role== 'master'">All Opportunities</a>    
-          <a class="mdl-navigation__link" routerLink="/dashboard/AllOpportunities" routerLinkActive="active" *ngIf="title == 'Pre-Sales Head'">All Opportunities</a>   
-          <!--a class="mdl-navigation__link" routerLink="/dashboard/UpcomingLead" routerLinkActive="active">Upcoming Lead</a>    
-          <a class="mdl-navigation__link" routerLink="/dashboard/UpcomingOpportunities" routerLinkActive="active">Upcoming Opportunities</a--> 
+      <a class="mdl-navigation__link" routerLink="/dashboard/AllLeads" routerLinkActive="active" *ngIf="title == 'Pre-Sales Head'">All Leads</a>
+      <a class="mdl-navigation__link" routerLink="/dashboard/AllOpportunities" routerLinkActive="active" *ngIf="role== 'master'">All Opportunities</a>    
+      <a class="mdl-navigation__link" routerLink="/dashboard/AllOpportunities" routerLinkActive="active" *ngIf="title == 'Pre-Sales Head'">All Opportunities</a>   
+      <!-- <a class="mdl-navigation__link" routerLink="/dashboard/UpcomingLead" routerLinkActive="active">Upcoming Lead</a>    
+      <a class="mdl-navigation__link" routerLink="/dashboard/UpcomingOpportunities" routerLinkActive="active">Upcoming Opportunities</a> 
+      <a class="mdl-navigation__link" routerLink="/dashboard/insidesales" routerLinkActive="active">In</a>  -->
     </nav>
   </div>
 

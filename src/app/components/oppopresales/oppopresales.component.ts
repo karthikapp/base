@@ -11,16 +11,14 @@ import "rxjs/add/operator/takeWhile";
 })
 export class OppopresalesComponent implements OnInit , OnDestroy {
 
-  uid: string;
+   uid: string;
    ev: boolean = false;
 
    alive: boolean = true;
    opportunities: any[];
 
    totalValue: any;
-
    totalCount: any;
-
 
    arraylist: any;
    sumlist: any;
@@ -83,14 +81,23 @@ export class OppopresalesComponent implements OnInit , OnDestroy {
    role: string;
    report: string;
 
+   regions: string;
+   userid: any;
+   sdate: any;
+   edate: any;
 
   constructor(private firebaseservice : FirebaseService, 
     private router: Router, private afAuth: AngularFireAuth) { }
 
   ngOnInit() {
   	this.opportunities = [];
-        this.totalValue = '';
+    this.totalValue = '';
     this.totalCount = '';
+
+    this.regions = '';
+    this.userid = '';
+    this.edate = null;
+    this.sdate = null;
 
   	//Opportunities list
     this.afAuth.authState

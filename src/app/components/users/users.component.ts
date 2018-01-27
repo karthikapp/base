@@ -20,6 +20,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   reports_to: any;
   email: string;
   userid: string;
+  region: string;
   default_pwd: string;
 
   user_recipient_list: Users[];
@@ -34,6 +35,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   ureports_to: any;
   uemail: string;
   uuserid: string;
+  uregion: string;
 
   created_at: Date;
 
@@ -163,6 +165,7 @@ export class UsersComponent implements OnInit, OnDestroy {
           			 reports_to: this.reports_to,
           			 email: this.email,
           			 userid: this.userid,
+                 region: this.region,
                  created_at: this.created_at
             	}
     this.firebaseservice.createUser(user,this.default_pwd);
@@ -182,6 +185,7 @@ export class UsersComponent implements OnInit, OnDestroy {
               			 report: this.ureport,
               			 reports_to: this.ureports_to,
               			 email: this.uemail,
+                     region: this.uregion,
                      created_at: this.created_at
             	     }
     this.firebaseservice.saveUser(this.uuserid, userData)
@@ -203,6 +207,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   	this.report = '';
   	this.reports_to = '';
   	this.email = '';
+    this.region = '';
     this.default_pwd = '';
   	
     this.addUserModal_flag = true;
@@ -244,6 +249,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.ureport = user.report;
     this.uemail = user.email;
     this.uuserid = user.userid;
+    this.uregion = user.region;
     this.user = user})
 
     this.editUsersModal();

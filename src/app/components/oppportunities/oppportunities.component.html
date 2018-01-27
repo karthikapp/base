@@ -19,10 +19,10 @@
       <div class="four wide column">
       <form class="ui mini form">
           
-            <div class="field" style="padding: 5px;">
-              <label style="font-weight: bold; font-size: 15px;color: white; margin-bottom: 1px;" >Total Value: </label>
-              <input type="text"  name="totalValue" placeholder="totalValue" [(ngModel)]="totalValue" style="padding-top:5px; padding-bottom: 5px" readonly>
-            </div>
+        <div class="field" style="padding: 5px;">
+          <label style="font-weight: bold; font-size: 15px;color: white; margin-bottom: 1px;" >Total Value: </label>
+          <input type="text"  name="totalValue" placeholder="totalValue" [(ngModel)]="totalValue" style="padding-top:5px; padding-bottom: 5px" readonly>
+        </div>
         
         </form>
       </div>
@@ -34,7 +34,7 @@
         
         <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand">
 
-        <!--Qualified Leads-->
+          <!--Qualified Leads-->
           <div class="mdl-card__title">
             <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.8vw;font-weight: bold;" 
                >
@@ -68,14 +68,14 @@
             </div>
           </div>
           <br>
-          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewQLeads', rflag]">
-        	<i class="unhide icon"></i>
-        	View All
-  		</div>
-  	</div>
+          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewQLeads', rflag, regions, userid, (sdate ? sdate : ''), (edate ? edate : '')]">
+        	  <i class="unhide icon"></i>
+        	  View All
+  		    </div>
+  	    </div>
           
- <!--Presales presentation-->
- 		<div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand">
+        <!--Presales presentation-->
+ 		    <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand">
           <div class="mdl-card__title">
             <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.8vw;font-weight: bold;" 
                >
@@ -108,14 +108,14 @@
               </div>
             </div>
           </div>
-<br>
-          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewPreSales' , rflag]">
-        	<i class="unhide icon"></i>
-        	View All
-  		</div>
-  	</div>
+          <br>
+          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewPreSales' , rflag, regions, userid, (sdate ? sdate : ''), (edate ? edate : '')]">
+        	  <i class="unhide icon"></i>
+        	  View All
+  		    </div>
+  	    </div>
 
-<!--Budgetary Price Shared-->
+        <!--Budgetary Price Shared-->
         <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand">
           <div class="mdl-card__title">
             <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.8vw;font-weight: bold;" 
@@ -149,14 +149,14 @@
               </div>
             </div>
           </div>
-<br>
-          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewBudgetary' , rflag]">
-        	<i class="unhide icon"></i>
-        	View All
-  		</div>
-  	</div>
+          <br>
+          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewBudgetary' , rflag, regions, userid, (sdate ? sdate : ''), (edate ? edate : '')]">
+        	  <i class="unhide icon"></i>
+        	  View All
+  		    </div>
+  	    </div>
       
-<!--Finalising BOM-->
+        <!--Finalising BOM-->
         <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand">
           <div class="mdl-card__title">
             <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.8vw;font-weight: bold;" 
@@ -190,14 +190,14 @@
               </div>
             </div>
           </div>
-<br>
-          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewFinalBOM' , rflag]">
-        	<i class="unhide icon"></i>
-        	View All
-  		</div>
-  	</div>
+          <br>
+          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewFinalBOM', rflag, regions, userid, (sdate ? sdate : ''), (edate ? edate : '')]">
+        	  <i class="unhide icon"></i>
+        	  View All
+  		    </div>
+  	    </div>
 
-<!-- POC / DEMO-->
+        <!-- POC / DEMO-->
         <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand">
           <div class="mdl-card__title">
             <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.8vw;font-weight: bold;" 
@@ -231,14 +231,14 @@
               </div>
             </div>
           </div>
-<br>
-          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewPOCDemo', rflag]">
-        	<i class="unhide icon"></i>
-        	View All
-  		</div>
-  	</div>
+          <br>
+          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewPOCDemo', rflag, regions, userid, (sdate ? sdate : ''), (edate ? edate : '')]">
+        	  <i class="unhide icon"></i>
+        	  View All
+  		    </div>
+  	    </div>
 
-<!-- Final Proposal-->
+        <!-- Final Proposal-->
         <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand">
           <div class="mdl-card__title">
             <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.8vw;font-weight: bold;" 
@@ -272,14 +272,14 @@
               </div>
             </div>
           </div>
-<br>
-          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewFinalProposal', rflag]">
-        	<i class="unhide icon"></i>
-        	View All
-  		</div>
-  	</div>
+          <br>
+          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewFinalProposal', rflag, regions, userid, (sdate ? sdate : ''), (edate ? edate : '')]">
+        	  <i class="unhide icon"></i>
+        	  View All
+  		    </div>
+  	    </div>
 
-<!-- Final Negotiation-->
+        <!-- Final Negotiation-->
         <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand">
           <div class="mdl-card__title">
             <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.8vw;font-weight: bold;" 
@@ -313,14 +313,14 @@
               </div>
             </div>
           </div>
-<br>
-          <div class="ui bottom attached teal medium button"[routerLink]="['/dashboard/ViewFinalnego', rflag]">
-        	<i class="unhide icon"></i>
-        	View All
-  		</div>
-  	</div>
+          <br>
+          <div class="ui bottom attached teal medium button"[routerLink]="['/dashboard/ViewFinalnego', rflag, regions, userid, (sdate ? sdate : ''), (edate ? edate : '')]">
+        	  <i class="unhide icon"></i>
+        	  View All
+  		    </div>
+  	    </div>
 
-<!-- Case Won-->
+        <!-- Case Won-->
         <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand">
           <div class="mdl-card__title">
             <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.8vw;font-weight: bold;" 
@@ -354,14 +354,14 @@
               </div>
             </div>
           </div>
-<br>
-          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewCaseWon', rflag]">
-        	<i class="unhide icon"></i>
-        	View All
-  		</div>
-  	</div>
+          <br>
+          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewCaseWon', rflag, regions, userid, (sdate ? sdate : ''), (edate ? edate : '')]">
+        	  <i class="unhide icon"></i>
+        	  View All
+  		    </div>
+  	    </div>
 
-<!-- Case Lost-->
+        <!-- Case Lost-->
         <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand">
           <div class="mdl-card__title">
             <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.8vw;font-weight: bold;" 
@@ -395,17 +395,15 @@
               </div>
             </div>
           </div>
-<br>
-          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewCaseLost', rflag]">
-        	<i class="unhide icon"></i>
-        	View All
-  		</div>
-  	</div>
-
-
+          <br>
+          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewCaseLost', rflag, regions, userid, (sdate ? sdate : ''), (edate ? edate : '')]">
+        	  <i class="unhide icon"></i>
+        	  View All
+  		    </div>
+  	    </div>
 
    		</div>
-	</div>
+	  </div>
 
   </div>
 </div>

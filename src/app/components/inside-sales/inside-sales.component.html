@@ -1,0 +1,30 @@
+<div class="main">
+  <div *ngIf="ev">
+  	<div id="" style="overflow-y: scroll; height: 100%; width: 100%">
+
+  		<div class="ui card" style="width: 90%;height: 100%;">
+      		<div class="content">
+        		<div class="ui container">
+          			<div class="ui segment">
+
+          				<!--Company Name-->
+	            		<form class="ui form" >
+	              		<div class="field">
+		                	 <label style="font-weight: bold;" for="exampleFormControlSelect1">Company Name</label>
+		                	 <select class="form-control" id="exampleFormControlSelect1" name="company_name" [(ngModel)]="company_name">
+		                	 <option *ngFor="let co of companies" value={{co.id}}>{{co.name}}</option>
+		                	</select>
+	              		</div>
+	            		</form>
+	            		<br>
+
+
+
+          			</div>
+          		</div>
+          	</div>
+        </div>
+
+  	</div>
+  </div>
+</div>

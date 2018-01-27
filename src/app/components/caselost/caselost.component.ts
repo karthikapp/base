@@ -3,6 +3,7 @@ import { FirebaseService } from "../../services/firebase.service";
 import { Router, ActivatedRoute } from '@angular/router';
 import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
 import "rxjs/add/operator/takeWhile";
+import { OppoFilterAllTeamService } from "../../services/oppo-filter-all-team.service";
 
 @Component({
   selector: 'app-caselost',
@@ -10,7 +11,7 @@ import "rxjs/add/operator/takeWhile";
   styleUrls: ['./caselost.component.css']
 })
 export class CaselostComponent implements OnInit, OnDestroy {
-caselost: any;
+  caselost: any;
   
   uid: string;
   ev: boolean = false;
@@ -23,8 +24,12 @@ caselost: any;
 
   rflag: string;
 
+  userid: string;
+  region: string;
+  startEDCDate: any;
+  endEDCDate: any;
 
-  constructor(private firebaseservice : FirebaseService, 
+  constructor(private firebaseservice : FirebaseService,  private oppoService : OppoFilterAllTeamService,
     private route: Router, private afAuth: AngularFireAuth, private router: ActivatedRoute) { }
 
   ngOnInit() {
@@ -32,9 +37,14 @@ caselost: any;
   	this.caselost = [];
 
     this.rflag = this.router.snapshot.params['rflag'];
-    console.log(this.rflag);
+    this.region = this.router.snapshot.params['regions'];
+    this.userid = this.router.snapshot.params['userid'];
+    this.startEDCDate = this.router.snapshot.params['sdate'];
+    this.endEDCDate = this.router.snapshot.params['edate'];
 
-  	//Qualified leads list
+    console.log("oppo123",this.rflag, this.region, this.userid, this.startEDCDate, this.endEDCDate);
+
+  	//Case Lost list
     this.afAuth.authState
     .takeWhile(() => this.alive)
     .subscribe(data => {
@@ -63,54 +73,53 @@ caselost: any;
               || v.report.toUpperCase() == 'RECIPIENT'
               || v.role.toUpperCase() == "MASTER" )
             {
-          if(this.rflag == 'me'){  
-            this.firebaseservice.getOpportunitiesByID(this.uid)
-              .takeWhile(() => this.alive)
-              .subscribe(cl => {
-              this.caselost = cl.filter(v => {
-              return v.opportunity_state == 'Case_lost'
-          	})
-              
-    		})
-                      }
-           else if(this.rflag == 'team') {
-
-            this.firebaseservice.getopportunitiesbyreporttoid(this.uid)
-              .takeWhile(() => this.alive)
-              .subscribe(cl => {
-              this.caselost = cl.filter(v => {
-              return v.opportunity_state == 'Case_lost'
-            })
-             console.log("nego",this.caselost) 
-           })
-         }
-           
-           else if(this.rflag == 'all'){
-            this.firebaseservice.getopportunities()
-              .takeWhile(() => this.alive)
-              .subscribe(cl => {
-              this.caselost = cl.filter(v => {
-              return v.opportunity_state == 'Case_lost'
-            })
-             console.log("nego",this.caselost) 
-           })
+              if(this.rflag == 'me'){  
+                this.firebaseservice.getOpportunitiesByID(this.uid)
+                  .takeWhile(() => this.alive)
+                  .subscribe(cl => {
+                  this.caselost = cl.filter(v => {
+                  return v.opportunity_state == 'Case_lost'
+          	      })   
+    		        })
+              }
+              else if(this.rflag == 'team') {
+                this.firebaseservice.getopportunitiesbyreporttoid(this.uid)
+                  .takeWhile(() => this.alive)
+                  .subscribe(cl => {
+                  this.caselost = cl.filter(v => {
+                  return v.opportunity_state == 'Case_lost'
+                })
+                console.log("nego",this.caselost) 
+                this.caselost = this.oppoService.onChangeofRegion(this.caselost, this.userid, this.startEDCDate, this.endEDCDate)
+              })
+            }
+            else if(this.rflag == 'all'){
+              this.firebaseservice.getopportunities()
+                  .takeWhile(() => this.alive)
+                  .subscribe(cl => {
+                  this.caselost = cl.filter(v => {
+                  return v.opportunity_state == 'Case_lost'
+                })
+                console.log("nego",this.caselost) 
+                this.caselost = this.oppoService.onChangeofRegionUser(this.caselost, this.region, this.userid, this.startEDCDate, this.endEDCDate) 
+              })
+            }
+            return this.ev = true;
           }
-              return this.ev = true;
-            }
-            else
-            {
-              console.log('No access to this page choco');
-              alert('No access to this page');
-              return this.ev=false;
-            }
-         })
-       }
-       else{
-            console.log('No access to this page m&m');
-            this.route.navigate(['login']);
+          else
+          {
+            console.log('No access to this page choco');
+            alert('No access to this page');
             return this.ev=false;
-       }
-     });
+          }
+        })
+      }
+      else{
+        console.log('No access to this page m&m');
+        this.route.navigate(['login']);
+        return this.ev=false;
+      }
+    });
   }
 
   returnruppeamount(value)
@@ -119,139 +128,139 @@ caselost: any;
   }
 
   // lead source label 
-leadsourcelabel(leadsource: String){
-  if (String(leadsource) == "inbound-landline"){
+  leadsourcelabel(leadsource: String){
+    if (String(leadsource) == "inbound-landline"){
       this.cllabel = "INBOUND LANDLINE"
+    }
+
+    else if (String(leadsource) == "event"){
+      this.cllabel = "EVENT"
+    }
+    else if (String(leadsource) == "distributor"){
+      this.cllabel = "DISTRIBUTOR"
+    }
+
+    else if (String(leadsource) == "oem")
+    {
+      this.cllabel = "OEM"
+    }
+
+    else if (String(leadsource) == "outboundcall")
+    {
+      this.cllabel = "OUTBOUND CALL"
+    }
+
+    else if (String(leadsource) == "onsite")
+    {
+      this.cllabel = "ON SITE VISIT"
+    }
+
+    return this.cllabel
+
   }
 
-  else if (String(leadsource) == "event"){
-    this.cllabel = "EVENT"
-  }
-  else if (String(leadsource) == "distributor"){
-    this.cllabel = "DISTRIBUTOR"
-  }
-
-  else if (String(leadsource) == "oem")
-  {
-    this.cllabel = "OEM"
-  }
-
-   else if (String(leadsource) == "outboundcall")
-  {
-    this.cllabel = "OUTBOUND CALL"
-  }
-
-   else if (String(leadsource) == "onsite")
-  {
-    this.cllabel = "ON SITE VISIT"
-  }
-
-  return this.cllabel
-
-}
-
-ngOnDestroy() {
+  ngOnDestroy() {
     this.alive = false;
   }
 
-showContentActivOppo(cl) {
-  if (!cl.isActivOpen) {
-      this.closeallActivOppo();
+  showContentActivOppo(cl) {
+    if (!cl.isActivOpen) {
+        this.closeallActivOppo();
+      }
+      cl.isActivOpen = !cl.isActivOpen;
+      console.log("clshow", cl, cl.isActivOpen);
+   }
+
+  closeallActivOppo(): void {
+    this.caselost.forEach((cl) => {
+        cl.isActivOpen = false;
+      });
+  }
+
+
+  getactivitytypetext(activitytype){
+    if (activitytype == 'phonecall')
+    {
+      return "Phone Call"
     }
-    cl.isActivOpen = !cl.isActivOpen;
-    console.log("clshow", cl, cl.isActivOpen);
- }
+    else if (activitytype == 'onsitevisit') {
+      return "On Site Visit"
+    }
+    else if (activitytype == 'presentation')
+    {
+      return "Presentation"
+    }
+    else if (activitytype == 'solutiondocumenting')
+    {
+      return "Solution Documenting"
+    }
+    else if (activitytype == 'poc')
+    {
+      return "POC"
+    }
+    else if (activitytype == 'demo')
+    {
+      return "Demo"
+    }
+  }
 
-closeallActivOppo(): void {
-  this.caselost.forEach((cl) => {
-      cl.isActivOpen = false;
-    });
-}
+  returnopportunitystate(text)
+  {
+    if(text == 'Qualified_lead')
+    {
+      return 'Qualified Lead'
+    }
+    else if (text == 'Presales_Presentation')
+    {
+      return 'Presales Presentation'
+    }
+    else if (text == 'Budgetary_Price_Shared')
+    {
+      return 'Budgetary Price Shared'
+    }
+    else if (text == 'Finalising_BOM')
+    {
+      return 'Finalising BOM'
+    }
+    else if (text == 'POC/Demo')
+    {
+      return 'POC / Demo'
+    }
+    else if (text == 'Final_Proposal')
+    {
+      return 'Final Proposal'
+    }
+    else if (text == 'Final_Negotiation')
+    {
+      return 'Final Negotiation'
+    }
+    else if (text == 'Case_won')
+    {
+      return 'Case Won'
+    }
+    else if (text == 'Case_lost')
+    {
+      return 'Case Lost'
+    }
 
+  }
 
-   getactivitytypetext(activitytype){
-     if (activitytype == 'phonecall')
-     {
-       return "Phone Call"
-     }
-     else if (activitytype == 'onsitevisit') {
-       return "On Site Visit"
-     }
-     else if (activitytype == 'presentation')
-     {
-       return "Presentation"
-     }
-       else if (activitytype == 'solutiondocumenting')
-     {
-       return "Solution Documenting"
-     }
-       else if (activitytype == 'poc')
-     {
-       return "POC"
-     }
-       else if (activitytype == 'demo')
-     {
-       return "Demo"
-     }
-   }
+  getupcomingtext(value)
+  {
+    if (value == 'phone_call') 
+    {
+      return "Phone Call"
+    }
 
-   returnopportunitystate(text)
-   {
-     if(text == 'Qualified_lead')
-     {
-       return 'Qualified Lead'
-     }
-     else if (text == 'Presales_Presentation')
-     {
-       return 'Presales Presentation'
-     }
-     else if (text == 'Budgetary_Price_Shared')
-     {
-       return 'Budgetary Price Shared'
-     }
-       else if (text == 'Finalising_BOM')
-     {
-       return 'Finalising BOM'
-     }
-     else if (text == 'POC/Demo')
-     {
-       return 'POC / Demo'
-     }
-     else if (text == 'Final_Proposal')
-     {
-       return 'Final Proposal'
-     }
-     else if (text == 'Final_Negotiation')
-     {
-       return 'Final Negotiation'
-     }
-     else if (text == 'Case_won')
-     {
-       return 'Case Won'
-     }
-     else if (text == 'Case_lost')
-     {
-       return 'Case Lost'
-     }
+    else if (value == 'online_meeting')
+    {
+      return "Online Meeting"
+    }
 
-   }
-
-   getupcomingtext(value)
-   {
-     if (value == 'phone_call') 
-     {
-       return "Phone Call"
-     }
-
-     else if (value == 'online_meeting')
-     {
-       return "Online Meeting"
-     }
-
-     else if (value == 'on_site_visit')
-     {
-       return "On Site Visit"
-     }
-   }
+    else if (value == 'on_site_visit')
+    {
+      return "On Site Visit"
+    }
+  }
 
 }

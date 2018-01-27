@@ -10,13 +10,11 @@ import "rxjs/add/operator/takeWhile";
   styleUrls: ['./allleads.component.css']
 })
 export class AllleadsComponent implements OnInit, OnDestroy {
-leads: any;
-  
   uid: string;
   ev: boolean = false;
-
   alive: boolean = true;
 
+  leads: any;
   leadlabel: string;
   followupno: any;
 
@@ -26,68 +24,58 @@ leads: any;
   ngOnInit() {  	
   	this.leads = ''; 
 
-  //Leads list
+    //Leads list
     this.afAuth.authState
     .takeWhile(() => this.alive)
     .subscribe(data => {
-       if (data) {
-         this.uid = data.uid
-         
-         this.firebaseservice.getUser(this.uid)
-          .takeWhile(() => this.alive)
-          .subscribe((v) => {
-            if (v.report == undefined)
-            {
-                v.report = '';
-            }
+      if (data) {
+        this.uid = data.uid
 
-            if (v.role == undefined)
-            {
-              v.role = '';
-            }
+        this.firebaseservice.getUser(this.uid)
+        .takeWhile(() => this.alive)
+        .subscribe((v) => {
+          if (v.report == undefined)
+          {
+            v.report = '';
+          }
 
-            if (v.title == undefined){
-              v.title = '';
-            }
+          if (v.role == undefined)
+          {
+            v.role = '';
+          }
 
-            if (v.role.toUpperCase() == "MASTER" || v.title.toUpperCase() == "PRE-SALES HEAD" )
-            {
-              this.firebaseservice.getAllLeads()
-              .takeWhile(() => this.alive)
-              .subscribe(lead => {
+          if (v.title == undefined){
+            v.title = '';
+          }
+
+          if (v.role.toUpperCase() == "MASTER" || v.title.toUpperCase() == "PRE-SALES HEAD" )
+          {
+            this.firebaseservice.getAllLeads()
+            .takeWhile(() => this.alive)
+            .subscribe(lead => {
               this.leads = lead.filter(v => {
-              return v.leadstatus != 'Qualified'})
+                return v.leadstatus != 'Qualified'})
               console.log(this.leads);
             }) 
-              return this.ev = true;
-            } /*else if(v.title.toUpperCase() == "PRE-SALES HEAD" 
-              ){
-              this.firebaseservice.getAllLeads()
-              .takeWhile(() => this.alive)
-              .subscribe(lead => {
-              this.leads = lead.filter(v => {
-              return v.leadstatus == 'Qualified-awaiting-presales'})
-              console.log(this.leads);   
-              }) 
-              return this.ev = true;           
-            }*/
-            else
-            {
-              console.log('No access to this page choco');
-              alert('No access to this page');
-              return this.ev=false;
-            }
-         })
-       }
-       else{
-            console.log('No access to this page m&m');
-            this.router.navigate(['login']);
+            return this.ev = true;
+          } 
+          else
+          {
+            console.log('No access to this page choco');
+            alert('No access to this page');
             return this.ev=false;
-       }
-     });
+          }
+        })
+      }
+      else{
+        console.log('No access to this page m&m');
+        this.router.navigate(['login']);
+        return this.ev=false;
+      }
+    });
   }
 
-  // lead source label 
+  //lead source label 
   leadsourcelabel(leadsource: String){
     if (String(leadsource) == "inbound-landline"){
         this.leadlabel = "INBOUND LANDLINE"
@@ -114,43 +102,39 @@ leads: any;
     {
       this.leadlabel = "ONSITE VISIT"
     }
-
     return this.leadlabel
-
   }
 
+  //Lead Activities
   getnooffollowups(leadactivities) {
-     if (leadactivities == undefined){
-       this.followupno = "None"
-       return this.followupno
-     }
-     else {
-       this.followupno = Object.keys(leadactivities).length
-       // console.log(this.followupno)
+    if (leadactivities == undefined){
+      this.followupno = "None"
+      return this.followupno
+    }
+    else {
+      this.followupno = Object.keys(leadactivities).length
       return  this.followupno
-     }
-   }
+    }
+  }
 
+  //Lead Approval Status
   getleadapprovalstatus(state) {
-
      if (state == "Qualified-awaiting-presales")
      {
        return "AWAITING PRESALES"
      }
      else if (state == "Qualified-awaiting-manager")
-      {
-        return "AWAITING MANAGER APPROVAL"
-      }
-      else if (state == "Rejected")
-      {
-        return "Rejected"
-      }
-
+     {
+       return "AWAITING MANAGER APPROVAL"
+     }
+     else if (state == "Rejected")
+     {
+       return "Rejected"
+     }
    }
 
   ngOnDestroy() {
     this.alive = false;
   }
-
 
 }

@@ -3,6 +3,7 @@ import { FirebaseService } from "../../services/firebase.service";
 import { Router, ActivatedRoute } from '@angular/router';
 import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
 import "rxjs/add/operator/takeWhile";
+import { OppoFilterAllTeamService } from "../../services/oppo-filter-all-team.service";
 
 @Component({
   selector: 'app-viewpoc',
@@ -10,7 +11,7 @@ import "rxjs/add/operator/takeWhile";
   styleUrls: ['./viewpoc.component.css']
 })
 export class ViewpocComponent implements OnInit, OnDestroy {
-poclist: any;
+  poclist: any;
   
   uid: string;
   ev: boolean = false;
@@ -21,19 +22,29 @@ poclist: any;
   
   isActivOpen : boolean = false;
 
-rflag: string;
+  rflag: string;
 
-  constructor(private firebaseservice : FirebaseService, 
+  userid: string;
+  region: string;
+  startEDCDate: any;
+  endEDCDate: any;
+
+  constructor(private firebaseservice : FirebaseService, private oppoService : OppoFilterAllTeamService,
     private route: Router, private afAuth: AngularFireAuth, private router: ActivatedRoute) { }
 
   ngOnInit() {
 
   	this.poclist = [];
 
-this.rflag = this.router.snapshot.params['rflag'];
-    console.log(this.rflag);
+    this.rflag = this.router.snapshot.params['rflag'];
+    this.region = this.router.snapshot.params['regions'];
+    this.userid = this.router.snapshot.params['userid'];
+    this.startEDCDate = this.router.snapshot.params['sdate'];
+    this.endEDCDate = this.router.snapshot.params['edate'];
 
-  	//Qualified leads list
+    console.log("oppo123",this.rflag, this.region, this.userid, this.startEDCDate, this.endEDCDate);
+
+  	//POC list
     this.afAuth.authState
     .takeWhile(() => this.alive)
     .subscribe(data => {
@@ -81,7 +92,8 @@ this.rflag = this.router.snapshot.params['rflag'];
               this.poclist = poc.filter(v => {
               return v.opportunity_state == 'POC/Demo'
             })
-             console.log("nego",this.poclist) 
+             console.log("nego",this.poclist)
+             this.poclist = this.oppoService.onChangeofRegion(this.poclist, this.userid, this.startEDCDate, this.endEDCDate) 
            })
          }
            
@@ -93,6 +105,7 @@ this.rflag = this.router.snapshot.params['rflag'];
               return v.opportunity_state == 'POC/Demo'
             })
              console.log("nego",this.poclist) 
+             this.poclist = this.oppoService.onChangeofRegionUser(this.poclist, this.region, this.userid, this.startEDCDate, this.endEDCDate) 
            })
           }
 

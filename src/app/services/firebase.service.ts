@@ -17,6 +17,7 @@ export class FirebaseService {
   distributors: FirebaseListObservable<any[]>;
   products: FirebaseListObservable<any[]>;
   needlist: FirebaseListObservable<any[]>;
+  suppliers: FirebaseListObservable<any[]>;
 
   users: FirebaseListObservable<any[]>;
   user: any;
@@ -31,7 +32,33 @@ export class FirebaseService {
   	this.fireAuth = firebase.auth();
    }	
 
+addneedList(needList: {
+	needname: any,
+	needvalue: any
+}){
+	console.log("nf",needList);
+	if (needList != null) {
+			//console.log('CP Object',contactpersonObject, contactpersonObject.contact_person_name);
+			let ndCount = Object.keys(needList).length
+			let ndlist = Object.values(needList)
 
+			console.log(ndlist, ndCount)
+
+			for(let key1=0; key1 < ndCount; key1++ )
+			{
+				
+					var ndURL = '/needlist/' ;
+					//console.log ("firebase add cp",contactpersonlist[key1] )
+					var ndObject = this.af.list(ndURL).push(needList[key1]);
+					var ndid = ndObject.key;
+					var ndid_URL1 = '/needlist/' + ndid;
+					var ndData1 = this.af.object(ndid_URL1).update({'needvalue': ndid});
+				
+			}
+		}
+
+
+}
 //START ACCOUNTS
    	//Fetch list of Accounts information
 	getAccounts()
@@ -107,7 +134,7 @@ export class FirebaseService {
 
 			for(key1=0; key1 < contactpersonCount; key1++ )
 			{
-				if(contactpersonlist[key].contact_person_name != ''){
+				if(contactpersonlist[key1].contact_person_name != ''){
 					var addcontactpersonURL = '/accounts/' + company_id + '/contact_persons';
 					//console.log ("firebase add cp",contactpersonlist[key1] )
 					var addcontactpersonObject = this.af.list(addcontactpersonURL).push(contactpersonlist[key1]);
@@ -423,6 +450,51 @@ export class FirebaseService {
 	}
 //END NEED_LIST
 
+//START SUPPLIERS
+
+	getSuppliers(){
+		this.suppliers = this.af.list('/suppliers',{query:
+			{orderByChild: 'created_at'}});
+		return this.suppliers ;
+	}
+
+	//Fetch single supplier information
+	getSupplier(supplier_id){
+		//console.log(supplier_id);
+		var needURLs = '/suppliers/' + supplier_id
+		return this.af.object(needURLs);
+	}
+
+	//Update Supplier information
+	saveSupplier(supplierid, supplierObject: {supplier_name: string,
+		created_at: Date}){
+		var supplierURL = '/suppliers/' + supplierid
+		var supplierData = this.af.object(supplierURL).update(supplierObject);
+
+		return supplierData;
+	}
+
+	//Add a new Supplier information 
+	addSupplier(suppliersObject: {supplier_name: string,
+		supplier_id: string,
+		created_at: Date}){
+
+		//Pushing supplier data and setting supplier id with the generated key
+		var suppliersData = this.af.list('/suppliers').push(suppliersObject);
+		var suppliersid = suppliersData.key;
+		var suppliers_URL = '/suppliers/' + suppliersid; 
+		var suppliers1 = this.af.object(suppliers_URL).update({'supplier_id': suppliersid});
+
+		return suppliers1;
+	}
+
+	//Delete a Supplier
+	deleteSupplier(supplierid: string){
+		var supplier_URL = "/suppliers/" + supplierid
+		this.af.list(supplier_URL).remove();
+	}
+//END SUPPLIERS
+
 //START COMPETITORS
 	getCompetitorList(competitorid){
 		let competitorURL = '/competitors/' + competitorid;
@@ -538,6 +610,7 @@ export class FirebaseService {
     			 reports_to: string,
     			 email: string,
     			 userid: string,
+    			 region: string,
                  created_at: Date
 	}, default_pwd: string ){
 		 secondaryApp.auth().createUserWithEmailAndPassword(usersObject.email, default_pwd)
@@ -590,6 +663,7 @@ export class FirebaseService {
         report: string,
         reports_to: string,
         email: string,
+        region: string,
         created_at: Date
 	}){
 		var userURL = '/user/' + userid

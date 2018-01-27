@@ -1,0 +1,112 @@
+<div align="center">
+  <div *ngIf="ev">
+
+	<!--Modal for adding a new Supplier-->
+	<lsu-modal [(ngModel)]="addSupplierModal_flag" [options]="modalOptions" align="center">
+  
+  		<div class="header">Create Supplier</div>
+  
+  		<div class="description">
+    	<br>
+    	<!--Supplier Name-->
+    		<form class="ui mini form">
+      			<div class="field" style="padding: 20px;">
+        			<label style="font-weight: bold; font-size: 15px;">Supplier Name</label>
+        			<br>
+        			<input type="text"  name="supplier_name" placeholder="Supplier Name" [(ngModel)]="supplier_name" required> 
+      			</div>
+    		</form>
+  		</div>
+
+  		<div class="actions">
+    		<button class="ui black deny button" (click)="cancelSupplierModal()">Cancel</button>
+    		<button class="ui positive right labeled icon button" [disabled]="supplier_name==''" (click)="on_add_Supplier()">Add
+      			<i class="checkmark icon"></i>
+    		</button>
+  		</div>
+	</lsu-modal>
+
+	<div id="" style="overflow-y: scroll;height: 100%; width: 95%;">
+  <br>
+
+  <!--Search button with expandable holder-->
+  <div appMzterialDesignLite style="float:right; color: white;height:50px">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+      <label class="mdl-button mdl-js-button mdl-button--icon" for="site-search">
+        <i class="material-icons" style="top: 10px">search</i>
+      </label>
+      <div class="mdl-textfield__expandable-holder">
+        <input class="mdl-textfield__input" type="search" id="site-search" name="site-search" placeholder="Supplier Name" [(ngModel)] ="querystring" />
+        <label class="mdl-textfield__label" for="site-search">Search</label>
+      </div>
+    </div>
+  </div>
+
+  <!--Add Supplier Button on top right corner-->
+  <div style="float:right;padding: 5px;font-family: 'Marvel', sans-serif;">
+      <button class="ui inverted button" (click)="addSupplierModal()">Add Supplier</button>
+  </div>
+  <br>
+  <br>
+  <br>
+
+	<!--List Supplier in a table with fields supplier name and actions (Edit/ Delete)-->
+	<table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp" style="width: 95%;background-color: white;height:50vh">
+  	<thead>
+  		<tr>
+    		<th>Supplier Name</th>
+    		<th>Actions</th>
+  		</tr>
+  	</thead>
+
+  	<tbody>
+  		<tr *ngFor="let supp of suppliers | filterrecords: querystring : 'suppliers' | sortorder | paginate: { itemsPerPage: 7, currentPage: p }">
+    		<td class="mdl-data-table__cell--non-numeric">{{supp.supplier_name}}</td>
+    		<td>
+    			<a (click)="editSupplierModal(supp.supplier_id)">
+    				<i class="material-icons">edit</i>
+    			</a>
+    			&nbsp;
+    			<a (click)="on_delete_Supplier(supp.supplier_id)">
+    				<i class="material-icons">delete</i>
+    			</a>
+    		</td>
+  		</tr>
+  	</tbody>
+	</table>
+  <br>
+
+
+  <!--Pagination-->
+  <div class="ui item" style="color: white; background-color: #eee; float:right; border-radius: 5px;">
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  </div>
+
+</div>
+  
+	<!--Modal for Editing a Supplier -->
+	<lsu-modal [(ngModel)]="editSupplierModal_flag" [options]="modalOptions">
+  
+  		<div class="header">Edit Supplier</div>
+  
+  		<div class="description">
+    	<br>
+    	<!--Supplier Name-->
+    		<form class="ui mini form">
+      			<div class="field" style="padding: 20px;">
+        			<label style="font-weight: bold; font-size: 15px;">Supplier Name</label>
+        			<br>
+        			<input type="text"  name="suppliername" placeholder="Supplier Name" [(ngModel)]="suppliername" required> 
+      			</div>
+   			</form>
+  		</div>
+
+  		<div class="actions">
+    		<button class="ui black deny button" (click)="cancelSupplierModal()">Cancel</button>
+    		<button class="ui positive right labeled icon button" [disabled]="suppliername==''"(click)="on_edit_Supplier()">Save changes
+      			<i class="checkmark icon"></i>
+    		</button>
+  		</div>
+	 </lsu-modal>
+  </div>
+</div>

@@ -27,7 +27,7 @@ export class ReversegeocoderComponent implements OnInit {
     	{this.result =  res
     	 this.address = this.result.results[0].formatted_address
     	 console.log(this.result.results[0].formatted_address)
-    	 })
+    })
   }
 
 }

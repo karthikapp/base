@@ -3,14 +3,13 @@
 }
 
 .mdl-card{
-    min-height: 150px;
-
-    padding-bottom: 5px;
+  min-height: 150px;
+  padding-bottom: 5px;
 }
 
 .wide-card.mdl-card {
   width: 230px;
-    margin-top: 10px;
+  margin-top: 10px;
   margin-bottom: 10px;
 }
 .demo-card-wide > .mdl-card__title {
@@ -27,29 +26,30 @@
 }
 
 .fixedbutton {
- position:absolute;
-   top:5px;
-   right:5px;
+  position:absolute;
+  top:5px;
+  right:5px;
 }
 
-.navbar {
-    overflow: hidden;
-    background-color: #333;
-    position: fixed; /* Set the navbar to fixed position */
-    top: 0; /* Position the navbar at the top of the page */
-    width: 100%; /* Full width */
+.navbar 
+{
+  overflow: hidden;
+  background-color: #333;
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
 }
 
 .mdl-card__title
 {
-font-family: 'Marvel', sans-serif; 
-text-transform: capitalize;
-padding: 10px;
+  font-family: 'Marvel', sans-serif; 
+  text-transform: capitalize;
+  padding: 10px;
 }
 
-.ui.form input:not([type]), .ui.form input[type=text], .ui.form input[type=email], .ui.form input[type=search], .ui.form input[type=password], .ui.form input[type=date], .ui.form input[type=datetime-local], .ui.form input[type=tel], .ui.form input[type=time], .ui.form input[type=url], .ui.form input[type=number] {
-  font-size: 1.2em;
-  
+.ui.form input:not([type]), .ui.form input[type=text], .ui.form input[type=email], .ui.form input[type=search], .ui.form input[type=password], .ui.form input[type=date], .ui.form input[type=datetime-local], .ui.form input[type=tel], .ui.form input[type=time], .ui.form input[type=url], .ui.form input[type=number] 
+{
+  font-size: 1.2em;  
 }
 
 

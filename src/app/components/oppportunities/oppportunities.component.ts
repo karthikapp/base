@@ -10,7 +10,7 @@ import "rxjs/add/operator/takeWhile";
   styleUrls: ['./oppportunities.component.css']
 })
 export class OppportunitiesComponent implements OnInit, OnDestroy {
- uid: string;
+   uid: string;
    ev: boolean = false;
 
    alive: boolean = true;
@@ -82,6 +82,11 @@ export class OppportunitiesComponent implements OnInit, OnDestroy {
    role: string;
    report: string;
 
+   regions: string;
+   userid: any;
+   sdate: any;
+   edate: any;
+
   constructor(private firebaseservice : FirebaseService, 
     private router: Router, private afAuth: AngularFireAuth) { }
 
@@ -89,6 +94,11 @@ export class OppportunitiesComponent implements OnInit, OnDestroy {
   	this.opportunities = [];
     this.totalValue = '';
     this.totalCount = '';
+
+    this.regions = '';
+    this.userid = '';
+    this.edate = null;
+    this.sdate = null;
 
   	//Opportunities list
     this.afAuth.authState

@@ -113,33 +113,33 @@ leads: any;
   }
 
   getnooffollowups(leadactivities) {
-     if (leadactivities == undefined){
-       this.followupno = "None"
-       return this.followupno
-     }
-     else {
-       this.followupno = Object.keys(leadactivities).length
+    if (leadactivities == undefined){
+      this.followupno = "None"
+      return this.followupno
+    }
+    else {
+      this.followupno = Object.keys(leadactivities).length
        // console.log(this.followupno)
-      return  this.followupno
+       return  this.followupno
      }
    }
 
   getleadapprovalstatus(state) {
 
-     if (state == "Qualified-awaiting-presales")
-     {
-       return "AWAITING PRESALES"
-     }
-     else if (state == "Qualified-awaiting-manager")
-      {
-        return "AWAITING MANAGER APPROVAL"
-      }
-      else if (state == "Rejected")
-      {
-        return "Rejected"
-      }
+    if (state == "Qualified-awaiting-presales")
+    {
+      return "AWAITING PRESALES"
+    }
+    else if (state == "Qualified-awaiting-manager")
+    {
+      return "AWAITING MANAGER APPROVAL"
+    }
+    else if (state == "Rejected")
+    {
+      return "Rejected"
+    }
 
-   }
+  }
 
   ngOnDestroy() {
     this.alive = false;

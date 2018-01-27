@@ -19,8 +19,6 @@
       <br> 
       <br>
       <br>
-    
-
 
       <!-- Wide card with Edit and Delete button -->
       <div class="ui stackable three column grid">
@@ -94,73 +92,69 @@
             </div>
           </div>
 
-                      <div class="ui divider"></div>
+          <div class="ui divider"></div>
 
-            <div  align="center">
-                <div class="labelspec" style="color: black; font-size: 10px;">CONTACTS:</div>
-  
-       
-          <app-getcompanycontactname [companyid]="presale.company_id" > </app-getcompanycontactname>
-      
+          <div  align="center">
+            <div class="labelspec" style="color: black; font-size: 10px;">CONTACTS:</div>
+            <app-getcompanycontactname [companyid]="presale.company_id" > </app-getcompanycontactname>
           </div>
 
           <div class="ui divider"></div>
 
           <!--Product name and Quantity-->
           <div class="ui blue labels" align="center">
-<div class="labelspec" style="color: black; font-size: 10px;">PRODUCTS:</div>
+            <div class="labelspec" style="color: black; font-size: 10px;">PRODUCTS:</div>
             <a class="ui label">
               {{presale.product_name}}
               <div class="detail">{{presale.quantity}}</div>
             </a>
           </div>  
 
-                    <div class="ui divider"></div>
-       
-      <div class="ui teal labels" align="center">
-        <div class="labelspec" style="color: black; font-size: 10px;">ASSIGNED TO:</div>
-             <a class="ui label">
-          <app-assignedtonameget name="{{poc.opportunity_assignedto}}"> </app-assignedtonameget>
-        </a>
-          </div>
-
-          <div class="ui divider"></div>   
-<div class="ui stackable two column grid">
-
-
-
-  <div class = "column">
-      <div class="ui teal labels" align="center">
-        <div class="labelspec" style="color: black; font-size: 10px;">PRESALES APPROVED:</div>
-    
-        <a class="ui  label">
-          <app-assignedtonameget name="{{presale.lead_approved_by_presales}}"> </app-assignedtonameget>
-        </a>
-          </div>
-    <p style="font-size: 12px;" align="center"> {{presale.lead_approved_by_presales_date | date: 'medium' }} </p>
-        </div>
-
-     <div class = "column">
-      <div class="ui teal labels" align="center">
-        <div class="labelspec" style="color: black; font-size: 10px;">PRESALES ASSIGNED:</div>
-    
-        <a class="ui label">
-          <app-assignedtonameget name="{{presale.lead_presales_approved_to}}"> </app-assignedtonameget>
-        </a>
-          </div>
-    <p style="font-size: 12px;" align="center"> {{presale.lead_approved_by_presales_date | date: 'medium' }} </p>
-        </div>   
-
-      </div>
           <div class="ui divider"></div>
-
-          <!--Activities, Upcoming and Remarks -->
-          <div class="title"  style="color: purple; font-size: 15px; font-weight: bold" (click)="showContentActivOppo(presale)"> 
-            <i class="dropdown icon"></i>
-            ACTIVITIES/ UPCOMING/ REMARKS:    
+       
+          <!-- Assigned To -->
+          <div class="ui teal labels" align="center">
+            <div class="labelspec" style="color: black; font-size: 10px;">ASSIGNED TO:</div>
+            <a class="ui label">
+              <app-assignedtonameget name="{{poc.opportunity_assignedto}}"> </app-assignedtonameget>
+            </a>
           </div>
+
+          <div class="ui divider"></div>
+          <!-- Presales approved & Presales assigned -->   
+          <div class="ui stackable two column grid">
+            <div class = "column">
+              <div class="ui teal labels" align="center">
+                <div class="labelspec" style="color: black; font-size: 10px;">PRESALES APPROVED:</div>
+              
+                <a class="ui  label">
+                  <app-assignedtonameget name="{{presale.lead_approved_by_presales}}"> </app-assignedtonameget>
+                </a>
+              </div>
+              <p style="font-size: 12px;" align="center"> {{presale.lead_approved_by_presales_date | date: 'medium' }} </p>
+            </div>
+
+            <div class = "column">
+              <div class="ui teal labels" align="center">
+                <div class="labelspec" style="color: black; font-size: 10px;">PRESALES ASSIGNED:</div>
+
+                <a class="ui label">
+                  <app-assignedtonameget name="{{presale.lead_presales_approved_to}}"> </app-assignedtonameget>
+                </a>
+              </div>
+              <p style="font-size: 12px;" align="center"> {{presale.lead_approved_by_presales_date | date: 'medium' }} </p>
+            </div>   
+          </div>
+          
+            <div class="ui divider"></div>
+
+            <!--Activities, Upcoming and Remarks -->
+            <div class="title"  style="color: purple; font-size: 15px; font-weight: bold" (click)="showContentActivOppo(presale)"> 
+              <i class="dropdown icon"></i>
+              ACTIVITIES/ UPCOMING/ REMARKS:    
+            </div>
    
-          <div class="content" *ngIf="presale.isActivOpen" >
+            <div class="content" *ngIf="presale.isActivOpen" >
               <div class="title"  style="color: purple; font-size: 12px; font-weight: bold"> OPPORTUNITIES ACTIVITIES </div>
     
               <div class="segment" *ngFor = "let actv of presale.opportunity_activities | contactpersons">

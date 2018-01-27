@@ -6,5 +6,6 @@ export class Users {
     reports_to: any;
     email: string;
     userid: string;
+    region: string;
     created_at: Date;
 }

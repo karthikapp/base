@@ -23,8 +23,6 @@ constructor(public firebaseservice: FirebaseService){}
   	let values = Object.values(value);
   	//console.log(value_count, values);
 
-
-
   	let competitorlists = [];
 
   	for(let i=0; i<= value_count; i++){

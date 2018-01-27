@@ -1,11 +1,11 @@
 <div class ="main">
   <div id="" style="overflow-y: scroll;height: 100%; width:100%;">
-
     <div *ngIf="ev">
- <div class = "ui stackable five column grid" style="height:70px;">
+
+      <!-- Users (All/ Team), Start EDC Date, End EDC Date, Total Count & Total Value -->
+      <div class = "ui stackable five column grid" style="height:70px;">
         <div class="column">
-        <form class="ui mini form">
-          
+          <form class="ui mini form">
             <div class="form-group column" style="padding: 5px;">
               <label style="font-weight: bold; font-size: 15px;color: white" for="exampleFormControlSelect1">Team List: </label>
               <select class="form-control" id="exampleFormControlSelect1" name="user" [(ngModel)]="user" (change)="onItemChange($event.target.value)"  style="height: 29px;font-size: 1.2em">
@@ -13,74 +13,48 @@
               <option *ngFor="let p of person_list" [value]="p.userid">{{ p.name }}</option>
               </select>
             </div>
-        
-        </form>
-      </div>
-      <!--div class = "column" *ngIf="role == 'MASTER'">
-        <form class="ui mini form">
-          
+          </form>
+        </div>
+
+        <div class="column">
+          <form class="ui mini form">
             <div class="form-group column" style="padding: 5px;">
-              <label style="font-weight: bold; font-size: 15px; color: white" for="exampleFormControlSelect11">Region: </label>
-              <select class="form-control" id="exampleFormControlSelect11" name="region" [(ngModel)]="region" (change)="onRegionChange($event.target.value, true)">
-                <option>All</option>
-                <option>chennai</option>
-                <option>hyderabad</option>
-                <option>mumbai</option>
-                <option>coimbatore</option>
-                <option>bangalore</option>
-              </select>
+              <label style="font-weight: bold; font-size: 15px;color: white">EDC Start Date: </label> 
+              <div class="ui input" style="width: 140px;">
+                <input [ngModel]="startDate | date:'yyyy-MM-dd'" (ngModelChange)="onStartDateChange($event)" type="date" name="startDate" style="height: 29px;width: 135px;padding-left: 2px;padding-right: 2px;"/>
+              </div>
             </div>
-        
-        </form>
-      </div-->
-
-     <div class="column">
-
-       <form class="ui mini form">
-        <div class="form-group column" style="padding: 5px;">
-         <label style="font-weight: bold; font-size: 15px;color: white">EDC Start Date: </label> 
-         <div class="ui input" style="width: 140px;">
-          <input [ngModel]="startDate | date:'yyyy-MM-dd'" (ngModelChange)="onStartDateChange($event)" type="date" name="startDate" style="height: 29px;width: 135px;padding-left: 2px;padding-right: 2px;"/>
+          </form>
         </div>
-      </div>
-      </form>
-    </div>
 
-              <div class="column">
-
-       <form class="ui mini form">
-        <div class="form-group column" style="padding: 5px;">
-         <label style="font-weight: bold; font-size: 15px;color: white">EDC End Date: </label> 
-         <div class="ui input" style="width: 140px;">
-          <input [ngModel]="endDate | date:'yyyy-MM-dd'" (ngModelChange)="onEndDateChange($event)" type="date" name="endDate" style="height: 29px;width: 135px;padding-left: 2px;padding-right: 2px;"/>
+        <div class="column">
+          <form class="ui mini form">
+            <div class="form-group column" style="padding: 5px;">
+              <label style="font-weight: bold; font-size: 15px;color: white">EDC End Date: </label> 
+              <div class="ui input" style="width: 140px;">
+                <input [ngModel]="endDate | date:'yyyy-MM-dd'" (ngModelChange)="onEndDateChange($event)" type="date" name="endDate" style="height: 29px;width: 135px;padding-left: 2px;padding-right: 2px;"/>
+              </div>
+            </div>
+          </form>
         </div>
-      </div>
-      </form>
-    </div>
 
-      <div class ="column">
-<form class="ui mini form">
-          
+        <div class ="column">
+          <form class="ui mini form">
             <div class="field" style="padding: 5px;">
               <label style="font-weight: bold; font-size: 15px;color: white; margin-bottom: 1px;">Total Count: </label>
               <input type="text"  name="totalCount" placeholder="totalCount" [(ngModel)]="totalCount" style="padding-top:5px; padding-bottom: 5px" readonly>
             </div>
-        
-        </form>
-      </div>
+          </form>
+        </div>
 
-      <div class="column">
-<form class="ui mini form">
-          
+        <div class="column">
+          <form class="ui mini form">
             <div class="field" style="padding: 5px;">
               <label style="font-weight: bold; font-size: 15px;color: white; margin-bottom: 1px;" >Total Value: </label>
               <input type="text"  name="totalValue" placeholder="totalValue" [(ngModel)]="totalValue" style="padding-top:5px; padding-bottom: 5px" readonly>
             </div>
-        
-        </form>
-      </div>
-
-
+          </form>
+        </div>
       </div>
 
       <!-- Wide card with Edit and Delete button -->
@@ -122,14 +96,14 @@
             </div>
           </div>
           <br>
-          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewQLeads', rflag]">
-        	<i class="unhide icon"></i>
-        	View All
-  		</div>
-  	</div>
+          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewQLeads', rflag, regions, userid, (sdate ? sdate : ''), (edate ? edate : '')]">
+        	  <i class="unhide icon"></i>
+        	  View All
+  		    </div>
+  	    </div>
           
- <!--Presales presentation-->
- 		<div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand">
+        <!--Presales presentation-->
+ 		    <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand">
           <div class="mdl-card__title">
             <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.8vw;font-weight: bold;" 
                >
@@ -162,14 +136,14 @@
               </div>
             </div>
           </div>
-<br>
-          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewPreSales', rflag]">
-        	<i class="unhide icon"></i>
-        	View All
-  		</div>
-  	</div>
+          <br>
+          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewPreSales', rflag, regions, userid, (sdate ? sdate : ''), (edate ? edate : '')]">
+        	  <i class="unhide icon"></i>
+        	  View All
+  		    </div>
+  	    </div>
 
-<!--Budgetary Price Shared-->
+        <!--Budgetary Price Shared-->
         <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand">
           <div class="mdl-card__title">
             <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.8vw;font-weight: bold;" 
@@ -203,14 +177,14 @@
               </div>
             </div>
           </div>
-<br>
-          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewBudgetary' , rflag]">
-        	<i class="unhide icon"></i>
-        	View All
-  		</div>
-  	</div>
+          <br>
+          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewBudgetary' , rflag, regions, userid, (sdate ? sdate : ''), (edate ? edate : '')]">
+        	  <i class="unhide icon"></i>
+        	  View All
+  		    </div>
+  	    </div>
       
-<!--Finalising BOM-->
+        <!--Finalising BOM-->
         <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand">
           <div class="mdl-card__title">
             <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.8vw;font-weight: bold;" 
@@ -244,14 +218,14 @@
               </div>
             </div>
           </div>
-<br>
-          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewFinalBOM', rflag]">
-        	<i class="unhide icon"></i>
-        	View All
-  		</div>
-  	</div>
+          <br>
+          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewFinalBOM', rflag, regions, userid, (sdate ? sdate : ''), (edate ? edate : '')]">
+        	  <i class="unhide icon"></i>
+        	  View All
+  		    </div>
+  	    </div>
 
-<!-- POC / DEMO-->
+        <!-- POC / DEMO-->
         <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand">
           <div class="mdl-card__title">
             <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.8vw;font-weight: bold;" 
@@ -285,14 +259,14 @@
               </div>
             </div>
           </div>
-<br>
-          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewPOCDemo', rflag]">
-        	<i class="unhide icon"></i>
-        	View All
-  		</div>
-  	</div>
+          <br>
+          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewPOCDemo', rflag, regions, userid, (sdate ? sdate : ''), (edate ? edate : '')]">
+        	  <i class="unhide icon"></i>
+        	  View All
+  		    </div>
+  	    </div>
 
-<!-- Final Proposal-->
+        <!-- Final Proposal-->
         <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand">
           <div class="mdl-card__title">
             <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.8vw;font-weight: bold;" 
@@ -326,14 +300,14 @@
               </div>
             </div>
           </div>
-<br>
-          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewFinalProposal', rflag]">
-        	<i class="unhide icon"></i>
-        	View All
-  		</div>
-  	</div>
+          <br>
+          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewFinalProposal', rflag, regions, userid, (sdate ? sdate : ''), (edate ? edate : '')]">
+        	  <i class="unhide icon"></i>
+        	  View All
+  		    </div>
+  	    </div>
 
-<!-- Final Negotiation-->
+        <!-- Final Negotiation-->
         <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand">
           <div class="mdl-card__title">
             <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.8vw;font-weight: bold;" 
@@ -367,14 +341,14 @@
               </div>
             </div>
           </div>
-<br>
-          <div class="ui bottom attached teal medium button"[routerLink]="['/dashboard/ViewFinalnego', rflag]">
-        	<i class="unhide icon"></i>
-        	View All
-  		</div>
-  	</div>
+          <br>
+          <div class="ui bottom attached teal medium button"[routerLink]="['/dashboard/ViewFinalnego', rflag, regions, userid, (sdate ? sdate : ''), (edate ? edate : '')]">
+        	  <i class="unhide icon"></i>
+        	  View All
+  		    </div>
+  	    </div>
 
-<!-- Case Won-->
+        <!-- Case Won-->
         <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand">
           <div class="mdl-card__title">
             <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.8vw;font-weight: bold;" 
@@ -408,14 +382,14 @@
               </div>
             </div>
           </div>
-<br>
-          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewCaseWon', rflag]">
-        	<i class="unhide icon"></i>
-        	View All
-  		</div>
-  	</div>
+          <br>
+          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewCaseWon', rflag, regions, userid, (sdate ? sdate : ''), (edate ? edate : '')]">
+        	  <i class="unhide icon"></i>
+        	  View All
+  		    </div>
+  	    </div>
 
-<!-- Case Lost-->
+        <!-- Case Lost-->
         <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand">
           <div class="mdl-card__title">
             <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.8vw;font-weight: bold;" 
@@ -449,18 +423,15 @@
               </div>
             </div>
           </div>
-<br>
-          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewCaseLost', rflag]">
-        	<i class="unhide icon"></i>
-        	View All
-  		</div>
-  	</div>
-
-
-
+          <br>
+          <div class="ui bottom attached teal medium button" [routerLink]="['/dashboard/ViewCaseLost', rflag, regions, userid, (sdate ? sdate : ''), (edate ? edate : '')]">
+        	  <i class="unhide icon"></i>
+        	  View All
+  		    </div>
+  	    </div>
    		</div>
-	</div>
 
+	  </div>
   </div>
 </div>
 

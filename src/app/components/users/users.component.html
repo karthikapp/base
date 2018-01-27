@@ -5,27 +5,29 @@
   
   		<div class="header">Create New User</div>
   
-  		<div class="description">
+  		<div class="description" style="padding-left: 10px; padding-right: 10px; height: 370px;">
     	<br>
-    	<!--User Name-->
+
+    	  <!--User Name-->
     		<form class="ui mini form">
-      			<div class="field" style="padding: 20px;">
+      			<div class="field" style="padding-top: 10px;padding-bottom:  10px;">
         			<label style="font-weight: bold; font-size: 15px;">User Name</label>
         			<br>
         			<input type="text"  name="name" placeholder="name" [(ngModel)]="name" required> 
       			</div>
     		</form>
-    	<!--Email-->
+
+    	  <!--Email-->
         <form class="ui mini form">
           <div class ="ui stackable two column grid">
-        		<div class="field" class="column" style="padding: 30px;">
-          		<label style="font-weight: bold; font-size: 15px;">&nbsp; Email ID</label>
+        		<div class="field" class="column" style="padding-top: 10px;padding-bottom:  10px;">
+          		<label style="font-weight: bold; font-size: 15px;">&nbsp;Email ID</label>
           		<br>
               <br>
           		<input type="text"  name="email" placeholder="email" [(ngModel)]="email" required> 
         		</div>
 
-            <div class="field" class="column" style="padding: 30px;">
+            <div class="field" class="column" style="padding-top: 10px;padding-bottom:  10px;">
               <label style="font-weight: bold; font-size: 15px;">Password</label>
               <br>
               <br>
@@ -35,21 +37,15 @@
             </div>
     		</form>
 
-      <!--Role & Title-->
+        <!--Role & Title-->
         <form class="ui mini form">
           <div class ="ui stackable two column grid">
-            <!--div class="field" class="column" style="padding: 30px;">
-              <label style="font-weight: bold; font-size: 15px;">&nbsp; Role</label>
-              <br>
-              <br>
-              <input type="text"  name="role" placeholder="role" [(ngModel)]="role" required> 
-            </div-->
 
-            <div class="form-group column" style="padding: 30px;">
-              <label style="font-weight: bold; font-size: 15px;" for="exampleFormControlSelect18">Role</label>
+            <div class="form-group column" style="padding-top: 10px;padding-bottom:  10px;">
+              <label style="font-weight: bold; font-size: 15px;" for="exampleFormControlSelect22">Role</label>
               <br>
               <br>
-              <select class="form-control" id="exampleFormControlSelect18" name="role" [(ngModel)]="role">
+              <select class="form-control" id="exampleFormControlSelect22" name="role" [(ngModel)]="role" style="height: 29px;font-size: 1.2em">
                 <option>presales</option>
                 <option>sales engineer</option>
                 <option>Tech Support</option>
@@ -62,7 +58,7 @@
               </select>
             </div>
 
-            <div class="field" class="column" style="padding: 30px;">
+            <div class="field" class="column" style="padding-top: 10px;padding-bottom:  10px;">
               <label style="font-weight: bold; font-size: 15px;">Title</label>
               <br>
               <br>
@@ -71,27 +67,27 @@
           </div>
         </form>
 
-      <!--Report & Reports To-->
+        <!--Report & Reports To-->
         <form class="ui mini form">
           <div class ="ui stackable two column grid">
 
-            <div class="form-group column" style="padding: 30px;">
+            <div class="form-group column" style="padding-top: 10px;padding-bottom:  10px;">
               <label style="font-weight: bold; font-size: 15px;" for="exampleFormControlSelect12">Report</label>
               <br>
               <br>
-              <select class="form-control" id="exampleFormControlSelect12" name="report" [(ngModel)]="report" (change)="onSelect($event.target.value)">
+              <select class="form-control" id="exampleFormControlSelect12" name="report" [(ngModel)]="report" (change)="onSelect($event.target.value)" style="height: 29px;font-size: 1.2em">
                 <option>reporter</option>
                 <option>recipient</option>
                 <option>other</option>
               </select>
             </div>
 
-            <div class="form-group column" style="padding: 30px;" [hidden]="selectShowFlag">
+            <div class="form-group column" style="padding-top: 10px;padding-bottom: 10px;" [hidden]="selectShowFlag">
               <label style="font-weight: bold; font-size: 15px;" for="exampleFormControlSelect13">Reports To</label>
               <br>
               <br>
               
-              <select class="form-control" id="exampleFormControlSelect13" name="reports_to" [(ngModel)]="reports_to">
+              <select class="form-control" id="exampleFormControlSelect13" name="reports_to" [(ngModel)]="reports_to" style="height: 29px;font-size: 1.2em">
 
                   <option>Select</option>
                   <option *ngFor="let v of user_recipient_list" value= {{v.userid}}>{{ v.name }}</option>
@@ -99,6 +95,24 @@
               </select>
             </div>
           </div>  
+        </form>
+
+        <!-- Region -->
+        <form class="ui mini form">
+          <div class="ui stackable two column grid">
+            <div class="form-group column" style="padding-top: 10px;padding-bottom:  10px;">
+              <label style="font-weight: bold; font-size: 15px;" for="exampleFormControlSelect25">Region</label>
+              <br>
+              <br>
+              <select class="form-control" id="exampleFormControlSelect25" name="region" [(ngModel)]="region" style="height: 29px;font-size: 1.2em">
+                <option [value]="'chennai'">Chennai</option>
+                <option [value]="'hyderabad'">Hyderabad</option>
+                <option [value]="'mumbai'">Mumbai</option>
+                <option [value]="'coimbatore'">Coimbatore</option>
+                <option [value]="'bangalore'">Bangalore</option>
+              </select>
+            </div>
+          </div>
         </form>
 
   		</div>
@@ -182,38 +196,35 @@
   
   		<div class="header">Edit User Details</div>
   
-  		<div class="description">
+  		<div class="description" style="padding-right: 10px; padding-left: 10px; height: 390px;">
     	<br>
-    	<!--User Name-->
+      
+    	  <!--User Name-->
     		<form class="ui mini form">
-      			<div class="field" style="padding: 20px;">
+      			<div class="field" style="padding-top: 10px;padding-bottom: 10px;">
         			<label style="font-weight: bold; font-size: 15px;">Name</label>
         			<br>
         			<input type="text"  name="uname" placeholder="name" [(ngModel)]="uname" required> 
       			</div>
    			</form>
-    	<!--Email-->
+
+    	  <!--Email-->
     		<form class="ui mini form">
-      			<div class="field" style="padding: 20px;">
+      			<div class="field" style="padding-top: 10px;padding-bottom: 10px;">
         			<label style="font-weight: bold; font-size: 15px;">Email</label>
         			<br>
         			<input type="text"  name="uemail" placeholder="email" [(ngModel)]="uemail" required> 
       			</div>
    			</form>
-      <!--Role & Title-->
+
+        <!--Role & Title-->
         <form class="ui mini form">
           <div class ="ui stackable two column grid">
-            <!--div class="field" class="column" style="padding: 30px;">
-              <label style="font-weight: bold; font-size: 15px;">&nbsp; Role</label>
-              <br>
-              <br>
-              <input type="text"  name="urole" placeholder="role" [(ngModel)]="urole" required> 
-            </div-->
-            <div class="form-group column" style="padding: 30px;">
+            <div class="form-group column" style="padding-top: 10px;padding-bottom: 10px;">
               <label style="font-weight: bold; font-size: 15px;" for="exampleFormControlSelect18">Role</label>
               <br>
               <br>
-              <select class="form-control" id="exampleFormControlSelect18" name="role" [(ngModel)]="role">
+              <select class="form-control" id="exampleFormControlSelect18" name="role" [(ngModel)]="role" style="height: 29px;font-size: 1.2em">
                 <option>presales</option>
                 <option>sales engineer</option>
                 <option>Tech Support</option>
@@ -226,7 +237,7 @@
               </select>
             </div>
 
-            <div class="field" class="column" style="padding: 30px;">
+            <div class="field" class="column" style="padding-top: 10px;padding-bottom: 10px;">
               <label style="font-weight: bold; font-size: 15px;">Title</label>
               <br>
               <br>
@@ -235,34 +246,50 @@
           </div>
         </form>
 
-      <!--Report & Reports To-->
+        <!--Report & Reports To-->
         <form class="ui mini form">
           <div class ="ui stackable two column grid">
 
-            <div class="form-group column" style="padding: 30px;">
+            <div class="form-group column" style="padding-top: 10px;padding-bottom: 10px;">
               <label style="font-weight: bold; font-size: 15px;" for="exampleFormControlSelect14">Report</label>
               <br>
               <br>
-              <select class="form-control" id="exampleFormControlSelect14" name="ureport" [(ngModel)]="ureport" (change)="onSelectEdit($event.target.value)">
+              <select class="form-control" id="exampleFormControlSelect14" name="ureport" [(ngModel)]="ureport" (change)="onSelectEdit($event.target.value)" style="height: 29px;font-size: 1.2em">
                 <option>reporter</option>
                 <option>recipient</option>
                 <option>other</option>
               </select>
             </div>
 
-            <div class="form-group column" style="padding: 30px;" [hidden]="selectShowFlag">
+            <div class="form-group column" style="padding-top: 10px;padding-bottom: 10px;" [hidden]="selectShowFlag">
               <label style="font-weight: bold; font-size: 15px;" for="exampleFormControlSelect15">Reports To</label>
               <br>
               <br>
               
-              <select class="form-control" id="exampleFormControlSelect15" name="ureports_to" [(ngModel)]="ureports_to">
-                  <option *ngFor="let p of user_recipient_list" [ngValue]= "p.userid">{{ p.name }}</option>
-            
+              <select class="form-control" id="exampleFormControlSelect15" name="ureports_to" [(ngModel)]="ureports_to" style="height: 29px;font-size: 1.2em">
+                <option *ngFor="let p of user_recipient_list" [ngValue]= "p.userid">{{ p.name }}</option>
               </select>
             </div>
           </div>  
         </form>
 
+        <!-- Region -->
+        <form class="ui mini form">
+          <div class ="ui stackable two column grid">
+            <div class="form-group column" style="padding-top: 10px;padding-bottom: 10px;">
+              <label style="font-weight: bold; font-size: 15px;" for="exampleFormControlSelect19">Region</label>
+              <br>
+              <br>
+              <select class="form-control" id="exampleFormControlSelect19" name="uregion" [(ngModel)]="uregion" style="height: 29px;font-size: 1.2em">
+                <option [value]="'chennai'">Chennai</option>
+                <option [value]="'hyderabad'">Hyderabad</option>
+                <option [value]="'mumbai'">Mumbai</option>
+                <option [value]="'coimbatore'">Coimbatore</option>
+                <option [value]="'bangalore'">Bangalore</option>
+              </select>
+            </div>
+          </div>
+        </form>
 
   		</div>
 

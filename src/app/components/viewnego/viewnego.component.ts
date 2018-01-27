@@ -3,6 +3,7 @@ import { FirebaseService } from "../../services/firebase.service";
 import { Router, ActivatedRoute } from '@angular/router';
 import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
 import "rxjs/add/operator/takeWhile";
+import { OppoFilterAllTeamService } from "../../services/oppo-filter-all-team.service";
 
 @Component({
   selector: 'app-viewnego',
@@ -23,16 +24,26 @@ export class ViewnegoComponent implements OnInit, OnDestroy {
 
   rflag: string;
 
-  constructor(private firebaseservice : FirebaseService, 
+  userid: string;
+  region: string;
+  startEDCDate: any;
+  endEDCDate: any;
+
+  constructor(private firebaseservice : FirebaseService, private oppoService : OppoFilterAllTeamService,
     private route: Router, private afAuth: AngularFireAuth, private router: ActivatedRoute) { }
 
   ngOnInit() {
   	this.negolist = [];
 
-        this.rflag = this.router.snapshot.params['rflag'];
-    console.log(this.rflag);
+    this.rflag = this.router.snapshot.params['rflag'];
+    this.region = this.router.snapshot.params['regions'];
+    this.userid = this.router.snapshot.params['userid'];
+    this.startEDCDate = this.router.snapshot.params['sdate'];
+    this.endEDCDate = this.router.snapshot.params['edate'];
 
-  	//Qualified leads list
+    console.log("oppo123",this.rflag, this.region, this.userid, this.startEDCDate, this.endEDCDate);
+
+  	//NEGO list
     this.afAuth.authState
     .takeWhile(() => this.alive)
     .subscribe(data => {
@@ -59,197 +70,195 @@ export class ViewnegoComponent implements OnInit, OnDestroy {
 
             if (v.report.toUpperCase() == 'REPORTER'
               || v.report.toUpperCase() == 'RECIPIENT'
-               || v.role.toUpperCase() == "MASTER" )
+              || v.role.toUpperCase() == "MASTER" )
             {
-            if(this.rflag == 'me'){
-            this.firebaseservice.getOpportunitiesByID(this.uid)
-              .takeWhile(() => this.alive)
-              .subscribe(nego => {
-              this.negolist = nego.filter(v => {
-              return v.opportunity_state == 'Final_Negotiation'
-          	})
-             console.log("nego",this.negolist) 
-    		})
-     }
-           else if(this.rflag == 'team') {
-
-            this.firebaseservice.getopportunitiesbyreporttoid(this.uid)
-              .takeWhile(() => this.alive)
-              .subscribe(nego => {
-              this.negolist = nego.filter(v => {
-              return v.opportunity_state == 'Final_Negotiation'
-            })
-             console.log("nego",this.negolist) 
-           })
-         }
-           
-           else if(this.rflag == 'all'){
-            this.firebaseservice.getopportunities()
-              .takeWhile(() => this.alive)
-              .subscribe(nego => {
-              this.negolist = nego.filter(v => {
-              return v.opportunity_state == 'Final_Negotiation'
-            })
-             console.log("nego",this.negolist) 
-           })
-          }
+              if(this.rflag == 'me'){
+                this.firebaseservice.getOpportunitiesByID(this.uid)
+                  .takeWhile(() => this.alive)
+                  .subscribe(nego => {
+                  this.negolist = nego.filter(v => {
+                    return v.opportunity_state == 'Final_Negotiation'
+          	      })
+                  console.log("nego",this.negolist) 
+    		        })
+              }
+              else if(this.rflag == 'team') {
+                this.firebaseservice.getopportunitiesbyreporttoid(this.uid)
+                  .takeWhile(() => this.alive)
+                  .subscribe(nego => {
+                  this.negolist = nego.filter(v => {
+                    return v.opportunity_state == 'Final_Negotiation'
+                })
+                console.log("nego",this.negolist)
+                this.negolist = this.oppoService.onChangeofRegion(this.negolist, this.userid, this.startEDCDate, this.endEDCDate) 
+                })
+              }
+              else if(this.rflag == 'all'){
+                this.firebaseservice.getopportunities()
+                  .takeWhile(() => this.alive)
+                  .subscribe(nego => {
+                  this.negolist = nego.filter(v => {
+                  return v.opportunity_state == 'Final_Negotiation'
+                })
+                console.log("nego",this.negolist) 
+                this.negolist = this.oppoService.onChangeofRegionUser(this.negolist, this.region, this.userid, this.startEDCDate, this.endEDCDate)
+                })
+              }
               return this.ev = true;
             }
-            else
-            {
-              console.log('No access to this page choco');
-              alert('No access to this page');
-              return this.ev=false;
-            }
-         })
-       }
-       else{
-            console.log('No access to this page m&m');
-            this.route.navigate(['login']);
+          else
+          {
+            console.log('No access to this page choco');
+            alert('No access to this page');
             return this.ev=false;
-       }
-     });
+          }
+        })
+      }
+      else {
+        console.log('No access to this page m&m');
+        this.route.navigate(['login']);
+        return this.ev=false;
+      }
+    });
   }
 
-returnruppeamount(value)
+  returnruppeamount(value)
   {
   	return value.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
   }
 
   // lead source label 
-leadsourcelabel(leadsource: String){
-  if (String(leadsource) == "inbound-landline"){
+  leadsourcelabel(leadsource: String){
+    if (String(leadsource) == "inbound-landline"){
       this.negolabel = "INBOUND LANDLINE"
+    }
+
+    else if (String(leadsource) == "event"){
+      this.negolabel = "EVENT"
+    }
+    else if (String(leadsource) == "distributor"){
+      this.negolabel = "DISTRIBUTOR"
+    }
+
+    else if (String(leadsource) == "oem")
+    {
+      this.negolabel = "OEM"
+    }
+
+     else if (String(leadsource) == "outboundcall")
+    {
+      this.negolabel = "OUTBOUND CALL"
+    }
+
+     else if (String(leadsource) == "onsite")
+    {
+      this.negolabel = "ON SITE VISIT"
+    }
+
+    return this.negolabel
   }
 
-  else if (String(leadsource) == "event"){
-    this.negolabel = "EVENT"
-  }
-  else if (String(leadsource) == "distributor"){
-    this.negolabel = "DISTRIBUTOR"
-  }
 
-  else if (String(leadsource) == "oem")
-  {
-    this.negolabel = "OEM"
-  }
-
-   else if (String(leadsource) == "outboundcall")
-  {
-    this.negolabel = "OUTBOUND CALL"
-  }
-
-   else if (String(leadsource) == "onsite")
-  {
-    this.negolabel = "ON SITE VISIT"
-  }
-
-  return this.negolabel
-
-}
-
-
- ngOnDestroy() {
+  ngOnDestroy() {
     this.alive = false;
   }
 
   showContentActivOppo(nego) {
-  if (!nego.isActivOpen) {
+    if (!nego.isActivOpen) {
       this.closeallActivOppo();
     }
     nego.isActivOpen = !nego.isActivOpen;
     console.log("negoshow", nego, nego.isActivOpen);
- }
+  }
 
-closeallActivOppo(): void {
-  this.negolist.forEach((nego) => {
+  closeallActivOppo(): void {
+    this.negolist.forEach((nego) => {
       nego.isActivOpen = false;
     });
-}
+  }
 
 
-   getactivitytypetext(activitytype){
-     if (activitytype == 'phonecall')
-     {
-       return "Phone Call"
-     }
-     else if (activitytype == 'onsitevisit') {
-       return "On Site Visit"
-     }
-     else if (activitytype == 'presentation')
-     {
-       return "Presentation"
-     }
-       else if (activitytype == 'solutiondocumenting')
-     {
-       return "Solution Documenting"
-     }
-       else if (activitytype == 'poc')
-     {
-       return "POC"
-     }
-       else if (activitytype == 'demo')
-     {
-       return "Demo"
-     }
-   }
+  getactivitytypetext(activitytype){
+    if (activitytype == 'phonecall')
+    {
+      return "Phone Call"
+    }
+    else if (activitytype == 'onsitevisit') {
+      return "On Site Visit"
+    }
+    else if (activitytype == 'presentation')
+    {
+      return "Presentation"
+    }
+    else if (activitytype == 'solutiondocumenting')
+    {
+      return "Solution Documenting"
+    }
+    else if (activitytype == 'poc')
+    {
+      return "POC"
+    }
+    else if (activitytype == 'demo')
+    {
+      return "Demo"
+    }
+  }
 
-   returnopportunitystate(text)
-   {
-     if(text == 'Qualified_lead')
-     {
-       return 'Qualified Lead'
-     }
-     else if (text == 'Presales_Presentation')
-     {
-       return 'Presales Presentation'
-     }
-     else if (text == 'Budgetary_Price_Shared')
-     {
-       return 'Budgetary Price Shared'
-     }
-       else if (text == 'Finalising_BOM')
-     {
-       return 'Finalising BOM'
-     }
-     else if (text == 'POC/Demo')
-     {
-       return 'POC / Demo'
-     }
-     else if (text == 'Final_Proposal')
-     {
-       return 'Final Proposal'
-     }
-     else if (text == 'Final_Negotiation')
-     {
-       return 'Final Negotiation'
-     }
-     else if (text == 'Case_won')
-     {
-       return 'Case Won'
-     }
-     else if (text == 'Case_lost')
-     {
-       return 'Case Lost'
-     }
+  returnopportunitystate(text)
+  {
+    if(text == 'Qualified_lead')
+    {
+      return 'Qualified Lead'
+    }
+    else if (text == 'Presales_Presentation')
+    {
+      return 'Presales Presentation'
+    }
+    else if (text == 'Budgetary_Price_Shared')
+    {
+      return 'Budgetary Price Shared'
+    }
+    else if (text == 'Finalising_BOM')
+    {
+      return 'Finalising BOM'
+    }
+    else if (text == 'POC/Demo')
+    {
+      return 'POC / Demo'
+    }
+    else if (text == 'Final_Proposal')
+    {
+      return 'Final Proposal'
+    }
+    else if (text == 'Final_Negotiation')
+    {
+      return 'Final Negotiation'
+    }
+    else if (text == 'Case_won')
+    {
+      return 'Case Won'
+    }
+    else if (text == 'Case_lost')
+    {
+      return 'Case Lost'
+    }
+  }
 
-   }
+  getupcomingtext(value)
+  {
+    if (value == 'phone_call') 
+    {
+      return "Phone Call"
+    }
 
-   getupcomingtext(value)
-   {
-     if (value == 'phone_call') 
-     {
-       return "Phone Call"
-     }
+    else if (value == 'online_meeting')
+    {
+      return "Online Meeting"
+    }
 
-     else if (value == 'online_meeting')
-     {
-       return "Online Meeting"
-     }
-
-     else if (value == 'on_site_visit')
-     {
-       return "On Site Visit"
-     }
-   }
+    else if (value == 'on_site_visit')
+    {
+      return "On Site Visit"
+    }
+  }
 }

@@ -30,7 +30,6 @@ export class DashboardComponent  {
     if (data) {
       this.uid = data.uid;
       
-
       this.firebaseservice.getUser(this.uid).subscribe(val =>{
         this.name = val.name;
           if (val.report == undefined)
