@@ -4,11 +4,11 @@ import { Observable } from 'rxjs/Observable';
 import * as firebase from 'firebase';
 
 @Component({
-  selector: 'app-assignedtonameget',
-  templateUrl: './assignedtonameget.component.html',
-  styleUrls: ['./assignedtonameget.component.css']
+  selector: 'app-assignedtocompanyget',
+  templateUrl: './assignedtocompanyget.component.html',
+  styleUrls: ['./assignedtocompanyget.component.css']
 })
-export class AssignedtonamegetComponent implements OnInit {
+export class AssignedtocompanygetComponent implements OnInit {
   @Input() name: string;
 
   text: string;
@@ -17,15 +17,16 @@ export class AssignedtonamegetComponent implements OnInit {
   constructor(public afDB: FirebaseService) {}
 
   ngOnInit() {      
-    //console.log('Hello AssignedtonamegetComponent Component', this.name); 
-    this.afDB.getUser(this.name).subscribe(value => 
+    //console.log('Hello AssignedtocompanygetComponent Component', this.name); 
+    this.afDB.getAccount(this.name).subscribe(value => 
       {
         this.result = value;
         this.text = this.result.name;
         if(this.text == undefined){
-          this.text = "NO USER";
+          this.text = "None";
       }
       //console.log("Hello",this.text);
     })
   } 
+
 }

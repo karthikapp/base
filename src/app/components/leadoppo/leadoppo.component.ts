@@ -109,6 +109,7 @@ export class LeadoppoComponent implements OnInit, OnDestroy {
   }
 
   showContent(lead) {
+    console.log("p2",lead);
     if (!lead.isOpen) {
       this.closeAllLeads();
     }

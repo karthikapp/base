@@ -89,6 +89,10 @@ import { FunnelallregionchartsComponent } from './components/funnelallregionchar
 import { UpcomingLeadComponent } from './components/upcoming-lead/upcoming-lead.component';
 import { UpcomingOpportunityComponent } from './components/upcoming-opportunity/upcoming-opportunity.component';
 import { InsideSalesComponent } from './components/inside-sales/inside-sales.component';
+import { AssignedtocompanygetComponent } from './components/assignedtocompanyget/assignedtocompanyget.component';
+import { AssignedtoproductgetComponent } from './components/assignedtoproductget/assignedtoproductget.component';
+import { AssignedtosuppliergetComponent } from './components/assignedtosupplierget/assignedtosupplierget.component';
+import { InsideSalesMasterComponent } from './components/inside-sales-master/inside-sales-master.component';
 
 
 const appRoutes: Routes = [
@@ -128,6 +132,7 @@ const appRoutes: Routes = [
                {path:'UpcomingLead', component: UpcomingLeadComponent},
                {path:'UpcomingOpportunities',component: UpcomingOpportunityComponent},
                {path:'insidesales', component: InsideSalesComponent },
+               {path:'insidesales_master', component: InsideSalesMasterComponent },
                {path:'Suppliers', component: SuppliersComponent}
               ]}
 ];
@@ -195,7 +200,11 @@ export function highchartsFactory() {
     UpcomingOpportunityComponent,
     GetcompanycontactnameComponent,
     InsideSalesComponent,
-    SuppliersComponent
+    SuppliersComponent,
+    AssignedtocompanygetComponent,
+    AssignedtoproductgetComponent,
+    AssignedtosuppliergetComponent,
+    InsideSalesMasterComponent
   ],
   imports: [
     BrowserModule ,

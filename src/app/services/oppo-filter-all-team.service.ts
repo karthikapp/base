@@ -16,6 +16,7 @@ export class OppoFilterAllTeamService {
     this.oppolistdates = [];
   }
 
+  //Opportunities list(9 cases) are filtered based on region, edcStartDate and edcEndDate for the 'TEAM'
   onChangeofRegion(oppoList, user, startEDCDate, endEDCDate){
   	//console.log("oppo123", oppoList,user,startEDCDate, endEDCDate)
   	if (user == 'All'){
@@ -42,12 +43,11 @@ export class OppoFilterAllTeamService {
           { return (u.edc >= startEDCDate && u.edc <= endEDCDate)} )
       }
     }
-
   	//console.log("oppo123", this.oppo_list_dates);
   	return this.oppo_list_dates;
-
   }
 
+  //Opportunities list(9 cases) are filtered based on region, userid, edcStartDate and edcEndDate for the 'ALL'
   onChangeofRegionUser(oppoList, region, user, startDate, endDate){
   	if (user == 'All' && region == 'All' ){
       this.oppoList = oppoList

@@ -32,12 +32,13 @@ export class FirebaseService {
   	this.fireAuth = firebase.auth();
    }	
 
-addneedList(needList: {
+	// This is for checking upload
+	addneedList(needList: {
 	needname: any,
 	needvalue: any
-}){
-	console.log("nf",needList);
-	if (needList != null) {
+	}){
+		//console.log("nf",needList);
+		if (needList != null) {
 			//console.log('CP Object',contactpersonObject, contactpersonObject.contact_person_name);
 			let ndCount = Object.keys(needList).length
 			let ndlist = Object.values(needList)
@@ -47,18 +48,18 @@ addneedList(needList: {
 			for(let key1=0; key1 < ndCount; key1++ )
 			{
 				
-					var ndURL = '/needlist/' ;
-					//console.log ("firebase add cp",contactpersonlist[key1] )
-					var ndObject = this.af.list(ndURL).push(needList[key1]);
-					var ndid = ndObject.key;
-					var ndid_URL1 = '/needlist/' + ndid;
-					var ndData1 = this.af.object(ndid_URL1).update({'needvalue': ndid});
+				var ndURL = '/needlist/' ;
+				//console.log ("firebase add cp",contactpersonlist[key1] )
+				var ndObject = this.af.list(ndURL).push(needList[key1]);
+				var ndid = ndObject.key;
+				var ndid_URL1 = '/needlist/' + ndid;
+				var ndData1 = this.af.object(ndid_URL1).update({'needvalue': ndid});
 				
 			}
 		}
+	}
+//End's here
 
-
-}
 //START ACCOUNTS
    	//Fetch list of Accounts information
 	getAccounts()
@@ -80,6 +81,7 @@ addneedList(needList: {
 		return this.account;
 	}
 
+	//Get Contact information for a specific company
 	getContactbyAccount(companyid: string){
 		var accountbyCntctURL = '/accounts/' + companyid + '/contact_persons'
 		return this.af.list(accountbyCntctURL);
@@ -171,7 +173,7 @@ addneedList(needList: {
   			contact_person_phone: string,
   			contact_person_email: string,
           	created_at: Date
-          })
+        })
 	{
 		//console.log(companyObject, contactpersonObject);
 
@@ -183,7 +185,7 @@ addneedList(needList: {
 
 		//Pushing contact person data and setting contact person id with the generated key
 
-		console.log('Add accounts', contactpersonsObject);
+		//console.log('Add accounts', contactpersonsObject);
 		var contactpersonsid_URL = '/accounts/' + companiesid + '/contact_persons'; 
 		var contactpersonsData = this.af.list(contactpersonsid_URL).push(contactpersonsObject);
 		var contactpersonsid = contactpersonsData.key;
@@ -199,25 +201,11 @@ addneedList(needList: {
 		this.af.list(account_URL).remove();
 	}
 
+	//Remove Contact Person information
 	removeCntctPerson(companyid: string, cntct: string){
-
 		var accountremove_URL = "/accounts/" + companyid + "/contact_persons/" + cntct;
-		console.log("remove",accountremove_URL)
+		//console.log("remove",accountremove_URL)
 		this.af.list(accountremove_URL).remove();
-
-		/*var key2 = 0;
-
-		if(cntct != undefined) {
-			let contactpersondeleteCount = Object.keys(cntct).length
-
-		for(key2=0; key2 < contactpersondeleteCount; key2++ )
-		{
-
-		var accountremove_URL = "/accounts/" + companyid + "/contact_persons/" + cntct[key2];
-		console.log("remove",accountremove_URL)
-		this.af.list(accountremove_URL).remove();
-		}
-	}*/
 	}
 //END ACCOUNT
 
@@ -313,6 +301,7 @@ addneedList(needList: {
 
 //START DISTRIBUTORS
 	//Fetch list of Distributors
+	//Get Distributor data
 	getDistributors(){
 		this.distributors = this.af.list('/distributors',{query:
 			{orderByChild: 'created_at'}});
@@ -451,7 +440,7 @@ addneedList(needList: {
 //END NEED_LIST
 
 //START SUPPLIERS
-
+	//Get suppliers information (created date)
 	getSuppliers(){
 		this.suppliers = this.af.list('/suppliers',{query:
 			{orderByChild: 'created_at'}});
@@ -496,6 +485,7 @@ addneedList(needList: {
 //END SUPPLIERS
 
 //START COMPETITORS
+	//Get Competitors based on competitor id
 	getCompetitorList(competitorid){
 		let competitorURL = '/competitors/' + competitorid;
 		return this.af.object(competitorURL);
@@ -504,6 +494,7 @@ addneedList(needList: {
 //END COMPETITORS
 
 //START Leads and Opportunities
+	//Leads
 	//LEADS based on company id
 	getLeads(company_id: string){
 		return this.af.list('/leads',{ query: {
@@ -512,6 +503,7 @@ addneedList(needList: {
 		} })
 	}
 
+	//All leads information
 	getAllLeads(){
 		return this.af.list('/leads')
 	}
@@ -540,8 +532,10 @@ addneedList(needList: {
 		let leadURL = '/leads/' + leadid
 		return this.af.object(leadURL);
 	}
+	//End's here
 
 	//OPPORTUNITIES
+	//Get Opportunities based on company id
 	getOpportunities(company_id: string){
 		return this.af.list('/opportunities',{ query: {
 			orderByChild : 'company_id',
@@ -559,6 +553,7 @@ addneedList(needList: {
 	});
 	}
 
+	//Get Opportunities for presales approved to 
 	getopportunitiesbypresalesid(userid: String)
     {
       // console.log(userid)
@@ -570,6 +565,7 @@ addneedList(needList: {
  		});
     }
 
+    //Get Opportunities for presales approved by 
     getopportunitiesforpresales(userid: String){
     	      // console.log(userid)
       return this.af.list('/opportunities', 
@@ -580,7 +576,7 @@ addneedList(needList: {
  		});
     }
 
-
+    //Get opportunities based on the manager whom the team reports to
 	getopportunitiesbyreporttoid(userid: String)
     {
       // console.log(userid)
@@ -588,21 +584,95 @@ addneedList(needList: {
       	{ query: {
       		orderByChild: 'reports_to',
       		equalTo: String(userid)
-    	}
-	});
+    	}});
 	}
 
-      //Get opportunities by id information
+    //Get opportunities
     getopportunities()
     {
       // console.log(userid)
       return this.af.list('/opportunities');
     }
+    //End's here
 //END Leads and Opportunities
 
-//START USER
+//START INSIDE SALES
+	//List all the Inside Sales Opportunities
+	getInsideSales(){
+		return this.af.list('/insideSales',{query:
+			{orderByChild: 'license_to'}});
 
-//Create a new user
+	}
+
+	//List the Inside Sales Opportunity information for single person
+	getInsideSale(uid){
+		return this.af.list('/insideSales',{query:
+			{orderByChild: 'assigned_to',
+			equalTo: String(uid)}});
+
+	}
+
+	//Add a new inside sales Opportunity information
+	addInsideSales(insideSalesObject: {quote_id: string,
+      quote_ref_no: string,
+      quote_date: Date,
+      cpo_no: string,
+      cpo_date: Date,
+      cpo_det_id: string,
+      indent_date: Date,
+      customer_name: string,
+      product: string,
+      uom: string,
+      quantity: number,
+      sales_rate: number,
+      sales_amt: number,
+      purchase_rate: number,
+      purchase_amt: number,
+      supplier_po_no: string,
+      supplier_purchase_date: Date,
+      supplier_invoice_date: Date,
+      supplier: string,
+      supplier_rate: number,
+      supplier_invoice_no: string,
+      license_key: string,
+      license_upload_file_location: string,
+      license_from: Date,
+      license_to: Date,
+      invoice_no: string,
+      invoice_date: Date,
+      invoice_amt: number,
+      status: string,
+      created_by: string,
+      assigned_to: string,
+      remarks: string,
+      region: string,
+      created_at: Date}){
+
+      	console.log("fb1",insideSalesObject);
+
+		//Pushing inside sales data and setting insidesales id with the generated key
+		var insideSalesData = this.af.list('/insideSales').push(insideSalesObject);
+		var insideSalesid = insideSalesData.key;
+		var insideSales_URL = '/insideSales/' + insideSalesid; 
+		var insideSales1 = this.af.object(insideSales_URL).update({'insideSalesid': insideSalesid});
+
+		return insideSales1;
+
+	}
+
+	//Update inside sales Opportunity information
+	saveInsideSales(){
+
+	}
+
+	//Delete inside sales Opportunity information
+	removeInsideSales(){
+
+	}
+//END INSIDE SALES
+
+//START USER
+	//Create a new user
 	createUser(usersObject:{ name: string,
     			 role: string,
     			 title: string,
@@ -646,13 +716,20 @@ addneedList(needList: {
 		return this.users;
 	}
 
+	//get users based on manager whom the team reports to
 	getUsersByReportsTo(userid: string){
 		return this.af.list('/user', {query: {
 			orderByChild: 'reports_to',
 			equalTo: String(userid)
-			}});
+		}});		
+	}
 
-		
+	//get Users based on Inside Sales
+	getUsersByInsideSales(){
+		return this.af.list('/user', {query: {
+			orderByChild: 'role',
+			equalTo: String('Inside Sales')
+		}});
 	}
 
 	//Update a User
@@ -679,7 +756,6 @@ addneedList(needList: {
 		this.af.list(userlist_URL).remove();
 	}
 
-
 //END USER
 
 //START LOGIN & LOGOUT
@@ -694,12 +770,8 @@ addneedList(needList: {
 	logoutUser()
 	{
 		return this.fireAuth.signOut();
-	}
-
-	
-  }
-
+	}	
 //END LOGIN AND LOGOUT
 
-
+}
 

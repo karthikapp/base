@@ -75,6 +75,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   	this.email = '';
   	this.userid = '';
     this.default_pwd = '';
+    this.region = '';
 
     this.created_at = firebaseservice.created_at;
   }
