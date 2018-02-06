@@ -43,6 +43,15 @@ export class CasewonComponent implements OnInit, OnDestroy {
     this.startEDCDate = this.router.snapshot.params['sdate'];
     this.endEDCDate = this.router.snapshot.params['edate'];
 
+    if(this.startEDCDate == '1900-01-01')
+    {
+      this.startEDCDate = null;
+    }
+
+    if(this.endEDCDate == '1900-01-01'){
+      this.endEDCDate = null
+    }
+    
     //console.log("oppo123",this.rflag, this.region, this.userid, this.startEDCDate, this.endEDCDate);
 
   	//Case Won list
@@ -73,7 +82,8 @@ export class CasewonComponent implements OnInit, OnDestroy {
                 this.firebaseservice.getOpportunitiesByID(this.uid)
                   .takeWhile(() => this.alive)
                   .subscribe(cw => {
-                    this.casewon = cw.filter(v => {
+                    this.casewon = cw;
+                    this.casewon = this.casewon.filter(v => {
                     return v.opportunity_state == 'Case_won'
               	  })      
     		        })
@@ -82,7 +92,8 @@ export class CasewonComponent implements OnInit, OnDestroy {
                 this.firebaseservice.getopportunitiesbyreporttoid(this.uid)
                   .takeWhile(() => this.alive)
                   .subscribe(cw => {
-                  this.casewon = cw.filter(v => {
+                  this.casewon = cw;
+                  this.casewon = this.casewon.filter(v => {
                   return v.opportunity_state == 'Case_won'
                 })
                   console.log("nego",this.casewon) 
@@ -93,7 +104,8 @@ export class CasewonComponent implements OnInit, OnDestroy {
                 this.firebaseservice.getopportunities()
                   .takeWhile(() => this.alive)
                   .subscribe(cw => {
-                  this.casewon = cw.filter(v => {
+                  this.casewon = cw;
+                  this.casewon = this.casewon.filter(v => {
                   return v.opportunity_state == 'Case_won'
                 })
                   console.log("nego",this.casewon) 

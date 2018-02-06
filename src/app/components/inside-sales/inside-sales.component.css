@@ -89,6 +89,16 @@ font-family: 'Marvel', sans-serif; text-transform: capitalize;
 
 .ui.tiny.statistic>.value, .ui.tiny.statistics .statistic>.value {
     font-size: 1.2rem!important;
+    text-align: left;
+    overflow: auto; 
+    text-overflow:  ellipsis-word; 
+    white-space: nowrap;
+    width: 100px;
+    height: 16px;
+}
+
+.ui.tiny.statistic>.label, .ui.tiny.statistics .statistic>.label {
+    text-align: left;
 }
 
 .ui.styled.accordion .title{

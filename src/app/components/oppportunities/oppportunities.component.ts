@@ -14,7 +14,7 @@ export class OppportunitiesComponent implements OnInit, OnDestroy {
    ev: boolean = false;
 
    alive: boolean = true;
-   opportunities: any[];
+   opportunities: any;
 
    totalValue: any;
 
@@ -158,7 +158,7 @@ export class OppportunitiesComponent implements OnInit, OnDestroy {
              this.caselostopportunitylist = []
 
              // qualified lead sum code
-             v.forEach(item => {
+             this.opportunities.forEach(item => {
 
                // qualified lead sum code
                if (item.opportunity_state == 'Qualified_lead')

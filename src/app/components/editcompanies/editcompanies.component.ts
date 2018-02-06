@@ -224,9 +224,9 @@ delete_contact_person_id: string;
           created_at: this.created_at
         };
 
-     let contact_persons = this.contact_persons;
+     let contact_persons: any = this.contact_persons;
 
-     let contact_person = this.contact_person;
+     let contact_person: any = this.contact_person;
 
     //console.log('keys',Object.keys(contact_persons).length,Object.values(contact_person).length)
     //console.log('editcompanies',this.company_id,account,contact_persons,contact_person)

@@ -42,6 +42,15 @@ export class ViewbomComponent implements OnInit,OnDestroy {
     this.startEDCDate = this.router.snapshot.params['sdate'];
     this.endEDCDate = this.router.snapshot.params['edate'];
 
+    if(this.startEDCDate == '1900-01-01')
+    {
+      this.startEDCDate = null;
+    }
+
+    if(this.endEDCDate == '1900-01-01'){
+      this.endEDCDate = null
+    }
+    
     console.log("oppo123",this.rflag, this.region, this.userid, this.startEDCDate, this.endEDCDate);
 
   	//BOM list
@@ -76,7 +85,8 @@ export class ViewbomComponent implements OnInit,OnDestroy {
               this.firebaseservice.getOpportunitiesByID(this.uid)
                   .takeWhile(() => this.alive)
                   .subscribe(bom => {
-                  this.bomlist = bom.filter(v => {
+                  this.bomlist = bom;
+                  this.bomlist = this.bomlist.filter(v => {
                   return v.opportunity_state == 'Finalising_BOM'
           	    })
                 console.log("nego",this.bomlist)  
@@ -86,7 +96,8 @@ export class ViewbomComponent implements OnInit,OnDestroy {
               this.firebaseservice.getopportunitiesbyreporttoid(this.uid)
               .takeWhile(() => this.alive)
               .subscribe(bom => {
-                this.bomlist = bom.filter(v => {
+                this.bomlist = bom;
+                this.bomlist = this.bomlist.filter(v => {
                   return v.opportunity_state == 'Finalising_BOM'
                 })
                 //console.log("oppo123",this.bomlist) 
@@ -98,7 +109,8 @@ export class ViewbomComponent implements OnInit,OnDestroy {
               this.firebaseservice.getopportunities()
               .takeWhile(() => this.alive)
               .subscribe(bom => {
-                this.bomlist = bom.filter(v => {
+                this.bomlist = bom;
+                this.bomlist = this.bomlist.filter(v => {
                   return v.opportunity_state == 'Finalising_BOM'
                 })
                 //console.log("nego",this.bomlist)
@@ -109,7 +121,8 @@ export class ViewbomComponent implements OnInit,OnDestroy {
               this.firebaseservice.getopportunitiesbypresalesid(this.uid)
               .takeWhile(() => this.alive)
               .subscribe(bom => {
-                this.bomlist = bom.filter(v => {
+                this.bomlist = bom;
+                this.bomlist = this.bomlist.filter(v => {
                   return v.opportunity_state == 'Finalising_BOM'
                 })
                 console.log("nego",this.bomlist) 
@@ -272,6 +285,7 @@ export class ViewbomComponent implements OnInit,OnDestroy {
     {
       return "On Site Visit"
     }
+
   }
 
 

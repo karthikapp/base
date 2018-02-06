@@ -1,0 +1,208 @@
+ <div class ="main">
+    <div *ngIf ="ev">
+      <div id="" style="overflow-y: scroll;height: 100%; width:100%;">
+        <div class="card" style=" background-color: #e8eaf6; border-radius: 5px;">
+          <!--Tabs of Opportunities and Activities -->
+          <lsu-tabset type="'tabular'">
+            <!--List of Opportunities-->
+            <lsu-tab  [headerText]="'Opportunities'" [active]="'true'">
+              <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp" style="width: 95%;background-color: white;height:50vh">
+                <thead>
+                  <tr>
+                    <th>Lead Title</th>
+                    <th>Company Name</th>
+                    <th>Lead Source</th>
+                    <th>OEM/Distributor/Event Name</th>
+                    <th>Region</th>
+                    <th>Value</th>
+                    <th>Product, Quantity</th>
+                    <th>Contacts</th>
+                    <th>EDC</th>
+                    <th>Opportunity assigned to</th>
+                    <th>Status</th>
+                    <th>Lead Activities Count</th>
+                    <th>Opportunity Activities Count</th>
+                    <th>Presales Assigned</th>
+                    <th>Presales Approved</th>
+                    <th>Presales Date</th>
+                    <th>Created At</th>
+                    <th>Remarks</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr *ngFor="let vv of v | sortorder" >
+                    <td class="mdl-data-table__cell--non-numeric">{{vv.lead_title}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{vv.company_name}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{leadsourcelabel(vv.leadsource)}}</td> 
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="vv.leadsource == 'inbound-landline' || vv.leadsource == 'outboundcall' || vv.leadsource == 'onsite'"></td> 
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="vv.leadsource == 'oem'">{{vv.oem_name}}</td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="vv.leadsource == 'distributor'">{{vv.distributor_name}}</td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="vv.leadsource == 'event'">{{vv.event_name}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{vv.region}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{returnruppeamount(vv.value)}}</td>   
+                    <td class="mdl-data-table__cell--non-numeric">{{vv.product_name}}, {{vv.quantity}}</td>  
+                    <td class="mdl-data-table__cell--non-numeric"><app-getcompanycontactname [companyid]="vv.company_id"> </app-getcompanycontactname> </td>
+                    <td class="mdl-data-table__cell--non-numeric">{{vv.edc}}</td>
+                    <td class="mdl-data-table__cell--non-numeric"><app-assignedtonameget name="{{vv.opportunity_assignedto}}"> </app-assignedtonameget></td>
+                    <td class="mdl-data-table__cell--non-numeric">{{vv.opportunity_state}}</td> 
+                    <td>{{getnooffollowups(vv.lead_activities)}} </td>
+                    <td>{{getnooffollowups(vv.opportunity_activities)}} </td>
+                    <td class="mdl-data-table__cell--non-numeric"><app-assignedtonameget name="{{vv.lead_presales_approved_to}}"> </app-assignedtonameget></td>
+                    <td class="mdl-data-table__cell--non-numeric"><app-assignedtonameget name="{{vv.lead_approved_by_presales}}"> </app-assignedtonameget></td>
+                    <td class="mdl-data-table__cell--non-numeric">{{vv.lead_approved_by_presales_date | date: 'medium' }}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{vv.opportunity_created_at| date: 'medium' }} </td> 
+                    <td class="mdl-data-table__cell--non-numeric">
+                    {{vv.lead_meeting_remark}} </td>      
+                  </tr>
+                </tbody>
+              </table>
+            </lsu-tab>
+
+            <lsu-tab  [headerText]="'Lead Activities'" [active]="'true'">
+              <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp" style="width: 95%;background-color: white;height:50vh">
+                <thead>
+                  <tr>
+                    <th>Lead Title</th>
+                    <th>Company Name</th>
+                    <th>Value</th>
+                    <th>Product, Quantity</th>
+                    <th>Activity Type</th>
+                    <th>Date</th>
+                    <th>Remarks</th>
+                    <th>Activity Created at</th>
+                  </tr>
+                </thead>
+
+                <tbody *ngFor="let activ of v | sortorder">
+                  <tr *ngFor="let lead_activ of activ.lead_activities | contactpersons">
+                    <td class="mdl-data-table__cell--non-numeric">{{activ.lead_title}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{activ.company_name}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{returnruppeamount(activ.value)}}</td>   
+                    <td class="mdl-data-table__cell--non-numeric">{{activ.product_name}}, {{activ.quantity}}</td> 
+                    <td class="mdl-data-table__cell--non-numeric">
+                    {{getactivitytypetext(lead_activ.activity_type)}}</td>         
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="lead_activ.activity_type == 'phonecall'"> {{lead_activ.phonecallDate | date: 'longDate'}}</td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="lead_activ.activity_type == 'onsitevisit'">
+                    {{lead_activ.visitDate | date: 'longDate' }}</td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="lead_activ.activity_type == ''"></td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="lead_activ.activity_type == 'onsitevisit'">
+                    {{lead_activ.visitremarks}}</td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="lead_activ.activity_type == 'phonecall'">
+                    {{lead_activ.phonecallremarks}}</td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="lead_activ.activity_type == ''"></td>
+                    <td class="mdl-data-table__cell--non-numeric">
+                    {{lead_activ.created_at | date: 'medium'}}</td>
+                  </tr>
+                </tbody> 
+              </table>
+            </lsu-tab>
+
+            <lsu-tab  [headerText]="'Opportunity Activities'" [active]="'true'">
+              <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp" style="width: 95%;background-color: white;height:50vh">
+                <thead>
+                  <tr>
+                    <th>Lead Title</th>
+                    <th>Company Name</th>
+                    <th>Value</th>
+                    <th>Product, Quantity</th>
+                    <th>Activity Type</th>
+                    <th>Activity Created By</th>
+                    <th>Activity Created at</th>
+                    <th>Stage</th>
+                    <th>Date</th>
+                    <th>Remarks</th>               
+                  </tr>
+                </thead>
+
+                <tbody *ngFor="let acti of v | sortorder">
+                  <tr *ngFor="let oppo_activ of acti.opportunity_activities | contactpersons">
+                    <td class="mdl-data-table__cell--non-numeric">{{acti.lead_title}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{acti.company_name}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{returnruppeamount(acti.value)}}</td>   
+                    <td class="mdl-data-table__cell--non-numeric">{{acti.product_name}}, {{acti.quantity}}</td> 
+                    <td class="mdl-data-table__cell--non-numeric">
+                    {{getactivitytypetext(oppo_activ.activity_type)}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">
+                    <app-assignedtonameget name="{{oppo_activ.activity_created_by}}"> </app-assignedtonameget></td>
+                    <td class="mdl-data-table__cell--non-numeric">
+                    {{oppo_activ.created_at | date: 'medium' }} </td>
+                    <td class="mdl-data-table__cell--non-numeric">
+                    {{returnopportunitystate(oppo_activ.opportunity_stage)}}</td>
+                    <td class="mdl-data-table__cell--non-numeric"  *ngIf="oppo_activ.activity_type == 'phonecall'">
+                    {{oppo_activ.phonecallDate | date: 'longDate'}}</td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="oppo_activ.activity_type == 'onsitevisit'">
+                    {{oppo_activ.visitDate | date: 'longDate' }}</td>
+                    <td class="mdl-data-table__cell--non-numeric"   *ngIf="oppo_activ.activity_type == 'presentation'">
+                    {{oppo_activ.presentationDate | date: 'longDate' }}</td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="oppo_activ.activity_type == 'solutiondocumenting'">
+                    {{oppo_activ.solutiondocumentingDate | date: 'longDate' }}</td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="oppo_activ.activity_type == 'poc'">
+                    {{oppo_activ.pocstartDate | date: 'longDate' }}</td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="oppo_activ.activity_type == 'poc'">
+                    {{oppo_activ.pocendDate | date: 'longDate' }}</td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="oppo_activ.activity_type == 'poc'">
+                    {{oppo_activ.poc_signoff }}</td>
+                    <td class="mdl-data-table__cell--non-numeric"  *ngIf="oppo_activ.activity_type == 'demo'">
+                    {{oppo_activ.demostartDate | date: 'longDate' }}</td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="oppo_activ.activity_type == 'demo'">
+                    {{oppo_activ.demoendDate| date: 'longDate' }}</td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="oppo_activ.activity_type == 'demo'">
+                    {{oppo_activ.demo_signoff }}</td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="oppo_activ.activity_type == ''"></td>
+
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="oppo_activ.activity_type == 'onsitevisit'">
+                    {{oppo_activ.visitremarks}}</td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="oppo_activ.activity_type == 'phonecall'">
+                    {{oppo_activ.phonecallremarks}}</td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="oppo_activ.activity_type == 'presentation'">
+                    {{oppo_activ.presentationremarks}}</td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="oppo_activ.activity_type == 'solutiondocumenting'">
+                    {{oppo_activ.solutiondocumentingremarks}}</td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="oppo_activ.activity_type == 'poc'">
+                    {{oppo_activ.pocremarks}}</td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="oppo_activ.activity_type == 'demo'">
+                    {{oppo_activ.demoremarks}}</td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="oppo_activ.activity_type == ''"></td>
+                  </tr>
+                </tbody> 
+              </table>
+            </lsu-tab>
+
+            <lsu-tab  [headerText]="'Upcoming Activities'" [active]="'true'">
+              <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp" style="width: 95%;background-color: white;height:50vh">
+                <thead>
+                  <tr>
+                    <th>Lead Title</th>
+                    <th>Company Name</th>
+                    <th>Value</th>
+                    <th>Product, Quantity</th>
+                    <th>Activity Type</th>
+                    <th>Date</th>
+                    <th>Activity Created at</th>       
+                  </tr>
+                </thead>
+
+                <tbody *ngFor="let ac of v | sortorder">
+                  <tr *ngFor="let up of ac.upcoming | contactpersons">
+                    <td class="mdl-data-table__cell--non-numeric">{{ac.lead_title}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{ac.company_name}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{returnruppeamount(ac.value)}}</td>   
+                    <td class="mdl-data-table__cell--non-numeric">{{ac.product_name}}, {{ac.quantity}}</td> 
+                    <td class="mdl-data-table__cell--non-numeric">
+                    {{getupcomingtext(up.next_meeting_type)}}
+                    </td>
+                    <td class="mdl-data-table__cell--non-numeric"> 
+                    {{up.next_meeting_date | date: 'longDate' }} </td>
+                    <td class="mdl-data-table__cell--non-numeric">
+                    {{up.created_at  | date: 'medium'}} </td>
+                  </tr>
+                </tbody>
+              </table>
+            </lsu-tab>
+
+          </lsu-tabset>
+        </div>
+    </div>
+  </div>
+</div>

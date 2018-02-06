@@ -53,7 +53,8 @@ export class AllleadsComponent implements OnInit, OnDestroy {
             this.firebaseservice.getAllLeads()
             .takeWhile(() => this.alive)
             .subscribe(lead => {
-              this.leads = lead.filter(v => {
+              this.leads = lead;
+              this.leads = this.leads.filter(v => {
                 return v.leadstatus != 'Qualified'})
               console.log(this.leads);
             }) 

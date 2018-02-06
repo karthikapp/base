@@ -61,7 +61,8 @@ export class DashboardComponent  {
              || val.report.toUpperCase() == "OTHER"
              || val.title.toUpperCase() == "PRE-SALES HEAD"
              || val.role.toUpperCase() == "PRESALES" 
-             || val.role.toUpperCase() == "MASTER"){
+             || val.role.toUpperCase() == "MASTER"
+             || val.role.toUpperCase() == "INSIDE SALES"){
             this.showReportsFlag = true;
             this.showAdminFlag = false;
             this.showOthersFlag = false;

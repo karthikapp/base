@@ -42,6 +42,15 @@ export class CaselostComponent implements OnInit, OnDestroy {
     this.startEDCDate = this.router.snapshot.params['sdate'];
     this.endEDCDate = this.router.snapshot.params['edate'];
 
+    if(this.startEDCDate == '1900-01-01')
+    {
+      this.startEDCDate = null;
+    }
+
+    if(this.endEDCDate == '1900-01-01'){
+      this.endEDCDate = null
+    }
+    
     console.log("oppo123",this.rflag, this.region, this.userid, this.startEDCDate, this.endEDCDate);
 
   	//Case Lost list
@@ -77,7 +86,8 @@ export class CaselostComponent implements OnInit, OnDestroy {
                 this.firebaseservice.getOpportunitiesByID(this.uid)
                   .takeWhile(() => this.alive)
                   .subscribe(cl => {
-                  this.caselost = cl.filter(v => {
+                  this.caselost = cl;
+                  this.caselost = this.caselost.filter(v => {
                   return v.opportunity_state == 'Case_lost'
           	      })   
     		        })
@@ -86,7 +96,8 @@ export class CaselostComponent implements OnInit, OnDestroy {
                 this.firebaseservice.getopportunitiesbyreporttoid(this.uid)
                   .takeWhile(() => this.alive)
                   .subscribe(cl => {
-                  this.caselost = cl.filter(v => {
+                  this.caselost = cl;
+                  this.caselost = this.caselost.filter(v => {
                   return v.opportunity_state == 'Case_lost'
                 })
                 console.log("nego",this.caselost) 
@@ -97,7 +108,8 @@ export class CaselostComponent implements OnInit, OnDestroy {
               this.firebaseservice.getopportunities()
                   .takeWhile(() => this.alive)
                   .subscribe(cl => {
-                  this.caselost = cl.filter(v => {
+                  this.caselost = cl;
+                  this.caselost = this.caselost.filter(v => {
                   return v.opportunity_state == 'Case_lost'
                 })
                 console.log("nego",this.caselost) 

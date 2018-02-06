@@ -12,7 +12,7 @@ import "rxjs/add/operator/takeWhile";
 })
 export class UsersComponent implements OnInit, OnDestroy {
 
-  users: Users[];
+  users: any;
   name: string;
   role: string;
   title: string;
@@ -180,6 +180,42 @@ export class UsersComponent implements OnInit, OnDestroy {
       this.ureports_to = this.uuserid;
     }
 
+    if(this.uname == undefined)
+    {
+      this.uname = ''
+    }
+
+    if(this.urole == undefined)
+    {
+      this.urole = ''
+    }
+
+    if(this.utitle == undefined)
+    {
+      this.utitle = ''
+    }
+
+    if (this.ureport == undefined)
+    {
+      this.ureport = ''
+    }
+
+    if (this.uregion == undefined)
+    {
+      this.uregion = ''
+    }
+
+    if(this.ureports_to == undefined)
+    {
+      this.ureports_to = '';
+    }
+
+    if(this.uemail == undefined)
+    {
+      this.uemail = ''
+    }
+
+
     let userData = { name: this.uname,
               			 role: this.urole,
               			 title: this.utitle,
@@ -189,6 +225,8 @@ export class UsersComponent implements OnInit, OnDestroy {
                      region: this.uregion,
                      created_at: this.created_at
             	     }
+
+    console.log("pp",userData)
     this.firebaseservice.saveUser(this.uuserid, userData)
     this.cancelUserModal();
   }

@@ -1,5 +1,5 @@
 .main{
-	padding:5px 30px 10px 30px;
+	padding:5px 20px 10px 20px;
 }
 
 .wide-card.mdl-card {
@@ -21,6 +21,14 @@
     padding-right: 5px;
     padding-left: 5px;
     padding-bottom: 5px;
+}
+
+.mdl_textfield {
+  padding: 8px;
+}
+
+.mdl_textfield__label {
+  top: 10px;
 }
 
 .demo-card-wide > .mdl-card__menu {

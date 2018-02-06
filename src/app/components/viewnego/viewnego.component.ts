@@ -41,6 +41,15 @@ export class ViewnegoComponent implements OnInit, OnDestroy {
     this.startEDCDate = this.router.snapshot.params['sdate'];
     this.endEDCDate = this.router.snapshot.params['edate'];
 
+    if(this.startEDCDate == '1900-01-01')
+    {
+      this.startEDCDate = null;
+    }
+
+    if(this.endEDCDate == '1900-01-01'){
+      this.endEDCDate = null
+    }
+    
     console.log("oppo123",this.rflag, this.region, this.userid, this.startEDCDate, this.endEDCDate);
 
   	//NEGO list
@@ -76,7 +85,8 @@ export class ViewnegoComponent implements OnInit, OnDestroy {
                 this.firebaseservice.getOpportunitiesByID(this.uid)
                   .takeWhile(() => this.alive)
                   .subscribe(nego => {
-                  this.negolist = nego.filter(v => {
+                  this.negolist = nego;
+                  this.negolist = this.negolist.filter(v => {
                     return v.opportunity_state == 'Final_Negotiation'
           	      })
                   console.log("nego",this.negolist) 
@@ -86,7 +96,8 @@ export class ViewnegoComponent implements OnInit, OnDestroy {
                 this.firebaseservice.getopportunitiesbyreporttoid(this.uid)
                   .takeWhile(() => this.alive)
                   .subscribe(nego => {
-                  this.negolist = nego.filter(v => {
+                  this.negolist = nego
+                  this.negolist = this.negolist.filter(v => {
                     return v.opportunity_state == 'Final_Negotiation'
                 })
                 console.log("nego",this.negolist)
@@ -97,7 +108,8 @@ export class ViewnegoComponent implements OnInit, OnDestroy {
                 this.firebaseservice.getopportunities()
                   .takeWhile(() => this.alive)
                   .subscribe(nego => {
-                  this.negolist = nego.filter(v => {
+                  this.negolist = nego;
+                  this.negolist = this.negolist.filter(v => {
                   return v.opportunity_state == 'Final_Negotiation'
                 })
                 console.log("nego",this.negolist) 
@@ -202,6 +214,7 @@ export class ViewnegoComponent implements OnInit, OnDestroy {
     {
       return "Demo"
     }
+
   }
 
   returnopportunitystate(text)
@@ -242,6 +255,7 @@ export class ViewnegoComponent implements OnInit, OnDestroy {
     {
       return 'Case Lost'
     }
+
   }
 
   getupcomingtext(value)

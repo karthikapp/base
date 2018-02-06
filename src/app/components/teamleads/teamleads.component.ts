@@ -56,7 +56,8 @@ leads: any;
               this.firebaseservice.getLeadsByreporttoID(this.uid)
               .takeWhile(() => this.alive)
               .subscribe(lead => {
-              this.leads = lead.filter(v => {
+              this.leads = lead;
+              this.leads = this.leads.filter(v => {
               return v.leadstatus == 'Qualified-awaiting-manager'})
               console.log(this.leads);
             }) 

@@ -93,6 +93,8 @@ import { AssignedtocompanygetComponent } from './components/assignedtocompanyget
 import { AssignedtoproductgetComponent } from './components/assignedtoproductget/assignedtoproductget.component';
 import { AssignedtosuppliergetComponent } from './components/assignedtosupplierget/assignedtosupplierget.component';
 import { InsideSalesMasterComponent } from './components/inside-sales-master/inside-sales-master.component';
+import { SortascPipe } from './pipes/sortasc.pipe';
+import { ReportsComponent } from './components/reports/reports.component';
 
 
 const appRoutes: Routes = [
@@ -133,7 +135,8 @@ const appRoutes: Routes = [
                {path:'UpcomingOpportunities',component: UpcomingOpportunityComponent},
                {path:'insidesales', component: InsideSalesComponent },
                {path:'insidesales_master', component: InsideSalesMasterComponent },
-               {path:'Suppliers', component: SuppliersComponent}
+               {path:'Suppliers', component: SuppliersComponent},
+               {path:'Reports', component: ReportsComponent}
               ]}
 ];
 
@@ -204,7 +207,9 @@ export function highchartsFactory() {
     AssignedtocompanygetComponent,
     AssignedtoproductgetComponent,
     AssignedtosuppliergetComponent,
-    InsideSalesMasterComponent
+    InsideSalesMasterComponent,
+    SortascPipe,
+    ReportsComponent
   ],
   imports: [
     BrowserModule ,

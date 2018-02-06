@@ -56,12 +56,14 @@ export class LeadComponent implements OnInit, OnDestroy {
               || v.report.toUpperCase() == 'RECIPIENT'
               || v.title.toUpperCase() == "PRE-SALES HEAD"
               || v.role.toUpperCase() == "PRESALES"
-              || v.role.toUpperCase() == "MASTER")
+              || v.role.toUpperCase() == "MASTER"
+              || v.role.toUpperCase() == "INSIDE SALES")
             {
               this.firebaseservice.getLeadsByID(this.uid)
               .takeWhile(() => this.alive)
               .subscribe(lead => {
-              this.leads = lead.filter(v => {
+              this.leads = lead;
+              this.leads = this.leads.filter(v => {
               return v.leadstatus != 'Qualified' && v.leadstatus != 'Rejected'})
               console.log(this.leads);
             }) 

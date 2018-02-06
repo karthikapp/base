@@ -49,13 +49,21 @@ export class LoginComponent implements OnInit, OnDestroy {
             v.role = '';
           }
 
+          if(v.title == undefined){
+            v.title = '';
+          }
+
           if (v.role.toUpperCase() == 'ADMIN')
           {      
             this.router.navigate(['/dashboard/ListCompanies']);
             return this.ev = true;
           } else if (v.report.toUpperCase() == "REPORTER" 
             || v.report.toUpperCase() == "RECIPIENT" 
-            || v.report.toUpperCase() == "OTHER") {
+            || v.report.toUpperCase() == "OTHER"                      
+            || v.title.toUpperCase() == "PRE-SALES HEAD"
+            || v.role.toUpperCase() == "PRESALES" 
+            || v.role.toUpperCase() == "MASTER"
+            || v.role.toUpperCase() == "INSIDE SALES") {
             this.router.navigate(['/dashboard/MyLeads']);
             return this.ev = true;
           } else {
@@ -102,6 +110,10 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.users.report = '';
           }
 
+          if(this.users.title == undefined){
+            this.users.title = '';
+          }
+
           if(this.users.email != undefined) 
           {
             if(this.users.role != '' || this.users.report != '') 
@@ -112,7 +124,12 @@ export class LoginComponent implements OnInit, OnDestroy {
               }
               else if (this.users.report.toUpperCase() == "REPORTER" 
                       || this.users.report.toUpperCase() == "RECIPIENT" 
-                      || this.users.report.toUpperCase() == "OTHER")
+                      || this.users.report.toUpperCase() == "OTHER"
+                      || this.users.title.toUpperCase() == "PRE-SALES HEAD"
+                      || this.users.role.toUpperCase() == "PRESALES" 
+                      || this.users.role.toUpperCase() == "MASTER"
+                      || this.users.role.toUpperCase() == "INSIDE SALES"
+                      )
               {
                 this.router.navigate(['/dashboard/MyLeads']);
               }

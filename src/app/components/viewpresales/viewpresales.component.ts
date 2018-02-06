@@ -43,6 +43,15 @@ export class ViewpresalesComponent implements OnInit, OnDestroy {
     this.startEDCDate = this.router.snapshot.params['sdate'];
     this.endEDCDate = this.router.snapshot.params['edate'];
 
+    if(this.startEDCDate == '1900-01-01')
+    {
+      this.startEDCDate = null;
+    }
+
+    if(this.endEDCDate == '1900-01-01'){
+      this.endEDCDate = null
+    }
+    
     console.log("oppo123",this.rflag, this.region, this.userid, this.startEDCDate, this.endEDCDate);
     
   	//PRESALES list
@@ -74,7 +83,8 @@ export class ViewpresalesComponent implements OnInit, OnDestroy {
                 this.firebaseservice.getOpportunitiesByID(this.uid)
                   .takeWhile(() => this.alive)
                   .subscribe(presales => {
-                  this.presaleslist = presales.filter(v => {
+                  this.presaleslist = presales;
+                  this.presaleslist = this.presaleslist.filter(v => {
                   return v.opportunity_state == 'Presales_Presentation'
               	  })    
         		    })
@@ -84,7 +94,8 @@ export class ViewpresalesComponent implements OnInit, OnDestroy {
                 this.firebaseservice.getopportunitiesbyreporttoid(this.uid)
                 .takeWhile(() => this.alive)
                 .subscribe(presales => {
-                  this.presaleslist = presales.filter(v => {
+                  this.presaleslist = presales;
+                  this.presaleslist = this.presaleslist.filter(v => {
                     return v.opportunity_state == 'Presales_Presentation'
                   })
                   console.log("nego",this.presaleslist) 
@@ -95,7 +106,8 @@ export class ViewpresalesComponent implements OnInit, OnDestroy {
                 this.firebaseservice.getopportunities()
                 .takeWhile(() => this.alive)
                 .subscribe(presales => {
-                  this.presaleslist = presales.filter(v => {
+                  this.presaleslist = presales;
+                  this.presaleslist = this.presaleslist.filter(v => {
                     return v.opportunity_state == 'Presales_Presentation'
                   })
                   console.log("nego",this.presaleslist) 
@@ -106,7 +118,8 @@ export class ViewpresalesComponent implements OnInit, OnDestroy {
                 this.firebaseservice.getopportunitiesbypresalesid(this.uid)
                   .takeWhile(() => this.alive)
                   .subscribe(presales => {
-                  this.presaleslist = presales.filter(v => {
+                  this.presaleslist = presales
+                  this.presaleslist = this.presaleslist.filter(v => {
                   return v.opportunity_state == 'Presales_Presentation'
                   })
                   console.log("nego",this.presaleslist) 

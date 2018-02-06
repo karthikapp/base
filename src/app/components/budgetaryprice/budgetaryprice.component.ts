@@ -40,6 +40,15 @@ export class BudgetarypriceComponent implements OnInit , OnDestroy{
     this.startEDCDate = this.router.snapshot.params['sdate'];
     this.endEDCDate = this.router.snapshot.params['edate'];
 
+    if(this.startEDCDate == '1900-01-01')
+    {
+      this.startEDCDate = null;
+    }
+
+    if(this.endEDCDate == '1900-01-01'){
+      this.endEDCDate = null
+    }
+    
     //console.log("oppo123",this.rflag, this.region, this.userid, this.startEDCDate, this.endEDCDate);
 
   	//Budgetary Price list
@@ -70,7 +79,8 @@ export class BudgetarypriceComponent implements OnInit , OnDestroy{
               this.firebaseservice.getOpportunitiesByID(this.uid)
                 .takeWhile(() => this.alive)
                 .subscribe(bp => {
-                  this.bplist = bp.filter(v => {
+                  this.bplist = bp;
+                  this.bplist = this.bplist.filter(v => {
                   return v.opportunity_state == 'Budgetary_Price_Shared'
             	  })     
     		      })
@@ -79,7 +89,8 @@ export class BudgetarypriceComponent implements OnInit , OnDestroy{
               this.firebaseservice.getopportunitiesbyreporttoid(this.uid)
                 .takeWhile(() => this.alive)
                 .subscribe(bp => {
-                this.bplist = bp.filter(v => {
+                this.bplist = bp;
+                this.bplist = this.bplist.filter(v => {
                   return v.opportunity_state == 'Budgetary_Price_Shared'
                 })
                 //console.log("nego",this.bplist) 
@@ -90,7 +101,8 @@ export class BudgetarypriceComponent implements OnInit , OnDestroy{
               this.firebaseservice.getopportunities()
                 .takeWhile(() => this.alive)
                 .subscribe(bp => {
-                this.bplist = bp.filter(v => {
+                this.bplist = bp;
+                this.bplist = this.bplist.filter(v => {
                   return v.opportunity_state == 'Budgetary_Price_Shared'
                 })
                 //console.log("nego",this.bplist)

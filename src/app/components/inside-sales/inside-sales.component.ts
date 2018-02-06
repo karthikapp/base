@@ -11,7 +11,6 @@ import "rxjs/add/operator/takeWhile";
 })
 export class InsideSalesComponent implements OnInit, OnDestroy {
 
-	inside_sales: any;
   in_sales: any;
   accounts: any;
   products: any;
@@ -106,7 +105,6 @@ export class InsideSalesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.inside_sales = [];
     this.in_sales = []; 
     this.accounts = [];
     this.products = [];
@@ -144,12 +142,6 @@ export class InsideSalesComponent implements OnInit, OnDestroy {
 
             if ( v.role.toUpperCase() == "INSIDE SALES")
             {
-
-              this.firebaseservice.getInsideSales()
-                .takeWhile(() => this.alive)
-                .subscribe(insales => {console.log(insales);
-                  this.inside_sales = insales}); 
-
               this.firebaseservice.getInsideSale(this.uid)
                 .takeWhile(() => this.alive)
                 .subscribe(insale => {console.log(insale);
@@ -282,7 +274,7 @@ export class InsideSalesComponent implements OnInit, OnDestroy {
 
   //Accordion - show and hide for inside sales
   closeAllOppo(): void {
-    this.inside_sales.forEach((insales) => {
+    this.in_sales.forEach((insales) => {
       insales.quoteInfo = false;
       insales.cpoInfo = false;
       insales.spInfo = false;

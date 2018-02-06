@@ -9,7 +9,7 @@
           <lsu-tab  [headerText]="'Opportunities'" [active]="'true'">
             <div class="ui stackable three column grid" style="margin-top: 14px; margin-bottom: 3px;">
               <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand" 
-              *ngFor="let insales of in_sales | paginate: { itemsPerPage: 3, currentPage: p }">
+              *ngFor="let insales of in_sales | sortasc: {property: 'license_to', direction: 1 } | paginate: { itemsPerPage: 3, currentPage: p }">
 
                 <!--Customer Name , Product with uom & quantity, License From & to Date, Status -->
                 <div class="ui card" style="width: 100%;height: 100%;">
@@ -396,7 +396,7 @@
                       <form class="ui form">
                         <div class="field"  class ="column">
                          <label style="font-weight: bold;">Quote Ref. No.</label>
-                         <input type="text"  class="form-control" name="quote_id" placeholder="Quote Ref" [(ngModel)]="quote_ref">
+                         <input type="text"  class="form-control" name="quote_ref_no" placeholder="Quote Ref" [(ngModel)]="quote_ref_no">
                         </div>
                       </form>
 

@@ -13,12 +13,12 @@
 
 .wide-card.mdl-card {
   width: 285px;
-         padding-left: 10px;
-    padding-right: 10px;
-    padding-bottom: 10px;
-    padding-top: 10px;
-        margin-top: 5px;
-    margin-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 .demo-card-wide > .mdl-card__title {
   color: #fff;
@@ -70,6 +70,16 @@ font-family: 'Marvel', sans-serif; text-transform: capitalize;
 
 .ui.tiny.statistic>.value, .ui.tiny.statistics .statistic>.value {
     font-size: 1.2rem!important;
+    text-align: left;
+    overflow: auto; 
+    text-overflow:  ellipsis-word; 
+    white-space: nowrap;
+    width: 100px;
+    height: 16px;
+}
+
+.ui.tiny.statistic>.label, .ui.tiny.statistics .statistic>.label {
+    text-align: left;
 }
 
 .ui.styled.accordion .title{

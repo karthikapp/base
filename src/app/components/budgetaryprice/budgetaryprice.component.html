@@ -149,10 +149,10 @@
             </div>
    
             <div class="content" *ngIf="bp.isActivOpen">
-              <div class="title"  style="color: purple; font-size: 12px; font-weight: bold"> OPPORTUNITIES ACTIVITIES </div>
+              <div class="title"  style="color: purple; font-size: 13px; font-weight: bold"> OPPORTUNITIES ACTIVITIES </div>
     
               <div class="segment" *ngFor = "let actv of bp.opportunity_activities | contactpersons">
-                <div class="ui tag labels" style="font-size: 12px; margin-top: 2px;margin-bottom: 2px;"> 
+                <!-- <div class="ui tag labels" style="font-size: 12px; margin-top: 2px;margin-bottom: 2px;"> 
                   <a class="ui grey label" style="color: black; font-size: 12px; font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;">{{getactivitytypetext(actv.activity_type)}} </a>
                   
                   <a class="ui teal label" align="center">
@@ -161,109 +161,162 @@
                   <a class="ui teal label" style="color: black; font-size: 12px; font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;"> Created At: {{actv.created_at | amTimeAgo }} </a>
                 </div> 
 
-                <p style="font-size: 10px;"> <span style="font-weight: bold;"> Stage: </span>{{returnopportunitystate(actv.opportunity_stage)}}</p>
+                <p style="font-size: 10px;"> <span style="font-weight: bold;"> Stage: </span>{{returnopportunitystate(actv.opportunity_stage)}}</p> -->
+
+                <div class="ui divided selection list">
+                    <div class="item">
+                      <div class="labelspec" style="color: black; font-size: 10px;">Activity Type: 
+                        <span style="font-size: 12px; color: blue">{{getactivitytypetext(actv.activity_type)}}</span>
+                        
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="labelspec" style="color: black; font-size: 10px;">Created By: 
+                        <span style="font-size: 12px; color: blue"><app-assignedtonameget name="{{actv.activity_created_by}}"> </app-assignedtonameget></span> 
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="labelspec" style="color: black; font-size: 10px;">Created At: 
+                        <span style="font-size: 12px; color: blue">{{actv.created_at | amTimeAgo }} </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="labelspec" style="color: black; font-size: 10px;"> Stage: <span style="font-size: 12px; color: teal">
+                   {{returnopportunitystate(actv.opportunity_stage)}} </span>
+                  </div>
 
                 <app-reversegeocoder lat="{{actv.latitude}}" long="{{actv.longitude}}"></app-reversegeocoder>
             
                 <div *ngIf="actv.activity_type == 'phonecall'">
-                  <p style="font-size: 10px;"> <span style="font-weight: bold;"> Call Date : </span>{{actv.phonecallDate | date: 'longDate'}}</p>
+                  <p style="font-size: 12px;"> <span style="font-weight: bold;"> Call Date : </span>{{actv.phonecallDate | date: 'longDate'}}</p>
                 </div>
                 <div *ngIf="actv.activity_type == 'onsitevisit'">
-                  <p style="font-size: 10px;"> <span style="font-weight: bold;"> Visit Date : </span>{{actv.visitDate | date: 'longDate' }}</p>
+                  <p style="font-size: 12px;"> <span style="font-weight: bold;"> Visit Date : </span>{{actv.visitDate | date: 'longDate' }}</p>
                 </div>
                 <div *ngIf="actv.activity_type == 'presentation'">
-                  <p style="font-size: 10px;"> <span style="font-weight: bold;"> Presentation Date : </span>{{actv.presentationDate | date: 'longDate' }}</p>
+                  <p style="font-size: 12px;"> <span style="font-weight: bold;"> Presentation Date : </span>{{actv.presentationDate | date: 'longDate' }}</p>
                 </div>
                 <div *ngIf="actv.activity_type == 'solutiondocumenting'">
-                  <p style="font-size: 10px;"> <span style="font-weight: bold;"> Documenting Date : </span>{{actv.solutiondocumentingDate | date: 'longDate' }}</p>
+                  <p style="font-size: 12px;"> <span style="font-weight: bold;"> Documenting Date : </span>{{actv.solutiondocumentingDate | date: 'longDate' }}</p>
                 </div>
 
                 <div *ngIf="actv.activity_type == 'poc'">
-                  <p style="font-size: 10px;"> <span style="font-weight: bold;"> POC Start Date : </span>{{actv.pocstartDate | date: 'longDate' }}</p>
+                  <p style="font-size: 12px;"> <span style="font-weight: bold;"> POC Start Date : </span>{{actv.pocstartDate | date: 'longDate' }}</p>
                 </div>
                 <div *ngIf="actv.activity_type == 'poc'">
-                  <p style="font-size: 10px;"> <span style="font-weight: bold;"> POC End Date : </span>{{actv.pocendDate | date: 'longDate' }}</p>
+                  <p style="font-size: 12px;"> <span style="font-weight: bold;"> POC End Date : </span>{{actv.pocendDate | date: 'longDate' }}</p>
                 </div>
                 <div *ngIf="actv.activity_type == 'poc'">
-                  <p style="font-size: 10px;"> <span style="font-weight: bold;"> POC Sign Off : </span>{{actv.poc_signoff }}</p>
+                  <p style="font-size: 12px;"> <span style="font-weight: bold;"> POC Sign Off : </span>{{actv.poc_signoff }}</p>
                 </div>
 
                 <div *ngIf="actv.activity_type == 'demo'">
-                  <p style="font-size: 10px;"> <span style="font-weight: bold;"> POC Start Date : </span>{{actv.demostartDate | date: 'longDate' }}</p>
+                  <p style="font-size: 12px;"> <span style="font-weight: bold;"> POC Start Date : </span>{{actv.demostartDate | date: 'longDate' }}</p>
                 </div>
                 <div *ngIf="actv.activity_type == 'demo'">
-                  <p style="font-size: 10px;"> <span style="font-weight: bold;"> POC End Date : </span>{{actv.demoendDate| date: 'longDate' }}</p>
+                  <p style="font-size: 12px;"> <span style="font-weight: bold;"> POC End Date : </span>{{actv.demoendDate| date: 'longDate' }}</p>
                 </div>
                 <div *ngIf="actv.activity_type == 'demo'">
-                  <p style="font-size: 10px;"> <span style="font-weight: bold;"> POC Sign Off : </span>{{actv.demo_signoff }}</p>
+                  <p style="font-size: 12px;"> <span style="font-weight: bold;"> POC Sign Off : </span>{{actv.demo_signoff }}</p>
                 </div>
 
                 <div *ngIf="actv.activity_type == 'onsitevisit'">
-                  <span style="font-size: 10px;font-weight: bold;"> Visit Remarks : </span>
+                  <span style="font-size: 12px;font-weight: bold;"> Visit Remarks : </span>
                   <p>{{actv.visitremarks}}</p>
                 </div>
                 <div *ngIf="actv.activity_type == 'phonecall'">
-                  <span style="font-size: 10px;font-weight: bold;"> Call Remarks :</span>
+                  <span style="font-size: 12px;font-weight: bold;"> Call Remarks :</span>
                   <p>{{actv.phonecallremarks}}</p>
                 </div>
 
                 <div *ngIf="actv.activity_type == 'presentation'">
-                  <span style="font-size: 10px;font-weight: bold;"> Presentation Remarks :</span>
+                  <span style="font-size: 12px;font-weight: bold;"> Presentation Remarks :</span>
                   <p>{{actv.presentationremarks}}</p>
                 </div>
 
                 <div *ngIf="actv.activity_type == 'solutiondocumenting'">
-                  <span style="font-size: 10px;font-weight: bold;"> Solution Documenting Remarks :</span>
+                  <span style="font-size: 12px;font-weight: bold;"> Solution Documenting Remarks :</span>
                   <p>{{actv.solutiondocumentingremarks}}</p>
                 </div>
                 <div *ngIf="actv.activity_type == 'poc'">
-                  <span style="font-size: 10px;font-weight: bold;"> POC Remarks :</span>
+                  <span style="font-size: 12px;font-weight: bold;"> POC Remarks :</span>
                   <p>{{actv.pocremarks}}</p>
                 </div>
                 <div *ngIf="actv.activity_type == 'demo'">
-                  <span style="font-size: 10px;font-weight: bold;"> Demo Remarks :</span>
+                  <span style="font-size: 12px;font-weight: bold;"> Demo Remarks :</span>
                   <p>{{actv.demoremarks}}</p>
                 </div>
               </div>
               <br>
              
-          <div class="title"  style="color: purple; font-size: 12px; font-weight: bold"> LEAD ACTIVITIES </div>
+          <div class="title"  style="color: purple; font-size: 13px; font-weight: bold"> LEAD ACTIVITIES </div>
           <div *ngFor="let activity of bp.lead_activities| contactpersons ">
-            <div class="ui tag labels" style="font-size: 12px; margin-top: 2px;margin-bottom: 2px;">
+            <!-- <div class="ui tag labels" style="font-size: 12px; margin-top: 2px;margin-bottom: 2px;">
               <a class="ui grey label" style="color: black; font-size: 12px; font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;">{{getactivitytypetext(activity.activity_type)}}</a>
             </div>
 
-            <p style="font-size: 10px;"> <span style="font-weight: bold;"> Created At: </span>{{activity.created_at  | date: 'medium'}}</p>
+            <p style="font-size: 10px;"> <span style="font-weight: bold;"> Created At: </span>{{activity.created_at  | date: 'medium'}}</p> -->
+
+            <div class="ui divided selection list">
+                  <div class="item">
+                    <div class="labelspec" style="color: black; font-size: 10px;"> Activity Type: <span style="font-size: 12px; color: blue">
+                     {{getactivitytypetext(activity.activity_type)}} </span>
+                    </div>
+                  </div>
+                  <div class ="item">
+                    <div class="labelspec" style="color: black; font-size: 10px;"> Created At: <span style="font-size: 12px; color: blue">
+                     {{activity.created_at  | date: 'medium'}} </span>
+                    </div>
+                  </div>
+                </div>
 
             <app-reversegeocoder lat="{{activity.latitude}}" long="{{activity.longitude}}"></app-reversegeocoder> 
 
             <div *ngIf="activity.activity_type == 'phonecall'">
-              <p style="font-size: 10px;"> <span style="font-weight: bold;"> Call Date : </span>{{activity.phonecallDate | date: 'longDate'}}</p>
+              <p style="font-size: 12px;"> <span style="font-weight: bold;"> Call Date : </span>{{activity.phonecallDate | date: 'longDate'}}</p>
             </div>
             <div *ngIf="activity.activity_type == 'onsitevisit'">
-              <p style="font-size: 10px;"> <span style="font-weight: bold;"> Visit Date : </span>{{activity.visitDate | date: 'longDate' }}</p>
+              <p style="font-size: 12px;"> <span style="font-weight: bold;"> Visit Date : </span>{{activity.visitDate | date: 'longDate' }}</p>
             </div>
             <div *ngIf="activity.activity_type == 'onsitevisit'">
-              <span style="font-size: 10px;font-weight: bold;"> Visit Remarks : </span>
+              <span style="font-size: 12px;font-weight: bold;"> Visit Remarks : </span>
               <p>{{activity.visitremarks}}</p>
             </div>
             <div *ngIf="activity.activity_type == 'phonecall'">
-              <span style="font-size: 10px;font-weight: bold;"> Call Remarks :</span>
+              <span style="font-size: 12px;font-weight: bold;"> Call Remarks :</span>
               <p>{{activity.phonecallremarks}}</p>
             </div>
           </div>   
 
-          <div class="title"  style="color: purple; font-size: 12px; font-weight: bold"> UPCOMING </div>
+          <div class="title"  style="color: purple; font-size: 13px; font-weight: bold"> UPCOMING </div>
 
           <div class="item" *ngFor = "let upactv of bp.upcoming | contactpersons">
-            <div class="ui tag labels" style="font-size: 12px; margin-top: 2px;margin-bottom: 2px;"> 
+            <!-- <div class="ui tag labels" style="font-size: 12px; margin-top: 2px;margin-bottom: 2px;"> 
               <a class="ui grey label" style="color: black; font-size: 12px; font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;">{{getupcomingtext(upactv.next_meeting_type)}}</a>
                 {{upactv.created_at  | date: 'medium'}} , 
                 {{upactv.next_meeting_date | date: 'longDate' }}
-            </div>  
+            </div>   -->
+            <div class="ui divided selection list">
+                  <div class="item">
+                    <div class="labelspec" style="color: black; font-size: 10px;"> Upcoming Activity Type: <span style="font-size: 12px; color: blue">
+                     {{getupcomingtext(upactv.next_meeting_type)}} </span>
+                    </div>
+                  </div>
+                  <div class="item">
+                    <div class="labelspec" style="color: black; font-size: 10px;"> Created At: <span style="font-size: 12px; color: blue">
+                     {{upactv.created_at  | date: 'medium'}} </span>
+                    </div>
+                  </div>
+                  <div class = "item">
+                    <div class="labelspec" style="color: black; font-size: 10px;"> Upcoming Meeting Date: <span style="font-size: 12px; color: blue">
+                     {{upactv.next_meeting_date | date: 'longDate' }} </span>
+                    </div>
+                  </div>
           </div>  
+        </div>
 
-          <div class="title"  style="color: purple; font-size: 12px; font-weight: bold"> REMARKS </div>
+          <div class="title"  style="color: purple; font-size: 13px; font-weight: bold"> REMARKS </div>
             {{bp.lead_meeting_remark}}
           </div>
         </div>
@@ -272,7 +325,7 @@
       
       <!--Pagination-->
              
-      <div class="ui item" style="color: white; background-color: #eee; float:right; border-radius: 3px; position: relative; z-index: 1">
+      <div class="ui item" style="color: white; background-color: #eee; float:right; border-radius: 3px; position: relative; z-index: 1; height: 45px;">
         <pagination-controls (pageChange)="p = $event"></pagination-controls>
       </div>
       <br>

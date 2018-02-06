@@ -115,7 +115,7 @@ export class FirebaseService {
 			//console.log('CPS Object', contactspersonObject);
 
 			let contactpersonsCount = Object.keys(contactspersonObject).length
-			let contactpersonslist = Object.values(contactspersonObject)
+			let contactpersonslist: any = Object.values(contactspersonObject)
 
 			//console.log(contactpersonlist[0].contact_person_id, contactpersonCount)
 
@@ -132,7 +132,7 @@ export class FirebaseService {
 		if (contactpersonObject != null) {
 			//console.log('CP Object',contactpersonObject, contactpersonObject.contact_person_name);
 			let contactpersonCount = Object.keys(contactpersonObject).length
-			let contactpersonlist = Object.values(contactpersonObject)
+			let contactpersonlist:any = Object.values(contactpersonObject)
 
 			for(key1=0; key1 < contactpersonCount; key1++ )
 			{
@@ -591,7 +591,11 @@ export class FirebaseService {
     getopportunities()
     {
       // console.log(userid)
-      return this.af.list('/opportunities');
+      return this.af.list('/opportunities',{query:
+		{
+			orderByChild: 'opportunity_created_at'
+		}
+		});
     }
     //End's here
 //END Leads and Opportunities
@@ -743,8 +747,10 @@ export class FirebaseService {
         region: string,
         created_at: Date
 	}){
+
 		var userURL = '/user/' + userid
 		var userlistData = this.af.object(userURL).update(userObject);
+		console.log("fbpp",userlistData);
 
 		return userlistData;
 	}

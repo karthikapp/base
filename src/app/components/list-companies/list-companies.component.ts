@@ -11,7 +11,7 @@ import "rxjs/add/operator/takeWhile";
 })
 export class ListCompaniesComponent implements OnInit, OnDestroy {
 
-  accounts: any[];
+  accounts: any;
   querystring: string;
 
   totalCounts: number;

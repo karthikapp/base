@@ -15,7 +15,7 @@ export class OppopresalesComponent implements OnInit , OnDestroy {
    ev: boolean = false;
 
    alive: boolean = true;
-   opportunities: any[];
+   opportunities: any;
 
    totalValue: any;
    totalCount: any;

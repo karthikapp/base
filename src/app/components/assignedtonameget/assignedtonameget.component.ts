@@ -17,7 +17,7 @@ export class AssignedtonamegetComponent implements OnInit {
   constructor(public afDB: FirebaseService) {}
 
   ngOnInit() {      
-    //console.log('Hello AssignedtonamegetComponent Component', this.name); 
+    console.log('Hello AssignedtonamegetComponent Component', this.name); 
     this.afDB.getUser(this.name).subscribe(value => 
       {
         this.result = value;

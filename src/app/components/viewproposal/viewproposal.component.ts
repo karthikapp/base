@@ -3,6 +3,7 @@ import { FirebaseService } from "../../services/firebase.service";
 import { Router, ActivatedRoute } from '@angular/router';
 import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
 import "rxjs/add/operator/takeWhile";
+import 'rxjs/add/operator/filter';
 import { OppoFilterAllTeamService } from "../../services/oppo-filter-all-team.service";
 
 @Component({
@@ -42,6 +43,14 @@ export class ViewproposalComponent implements OnInit, OnDestroy{
     this.startEDCDate = this.router.snapshot.params['sdate'];
     this.endEDCDate = this.router.snapshot.params['edate'];
 
+    if(this.startEDCDate == '1900-01-01')
+    {
+      this.startEDCDate = null;
+    }
+
+    if(this.endEDCDate == '1900-01-01'){
+      this.endEDCDate = null
+    }
     console.log("oppo123",this.rflag, this.region, this.userid, this.startEDCDate, this.endEDCDate);
 
   	//PROPOSAL list
@@ -72,7 +81,8 @@ export class ViewproposalComponent implements OnInit, OnDestroy{
                 this.firebaseservice.getOpportunitiesByID(this.uid)
                   .takeWhile(() => this.alive)
                   .subscribe(proposal => {
-                  this.proposallist = proposal.filter(v => {
+                  this.proposallist = proposal;
+                  this.proposallist = this.proposallist.filter(v => {
                   return v.opportunity_state == 'Final_Proposal'
               	})
               
@@ -83,7 +93,8 @@ export class ViewproposalComponent implements OnInit, OnDestroy{
                 this.firebaseservice.getopportunitiesbyreporttoid(this.uid)
                   .takeWhile(() => this.alive)
                   .subscribe(proposal => {
-                  this.proposallist = proposal.filter(v => {
+                  this.proposallist = proposal;
+                  this.proposallist = this.proposallist.filter(v => {
                   return v.opportunity_state == 'Final_Proposal'
                 })
                 console.log("nego",this.proposallist) 
@@ -96,7 +107,8 @@ export class ViewproposalComponent implements OnInit, OnDestroy{
               this.firebaseservice.getopportunities()
                 .takeWhile(() => this.alive)
                 .subscribe(proposal => {
-                this.proposallist = proposal.filter(v => {
+                this.proposallist = proposal;
+                this.proposallist = this.proposallist.filter(v => {
                 return v.opportunity_state == 'Final_Proposal'
               })
                console.log("nego",this.proposallist) 
