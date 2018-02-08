@@ -25,6 +25,10 @@ export class ReportsComponent implements OnInit {
   report:any;
   title: any;
 
+  filteredLead: any;
+  filteredOppo: any;
+  isLoading: boolean = true;
+
   constructor(private firebaseservice : FirebaseService, 
     private router: Router, private afAuth: AngularFireAuth) { }
 
@@ -60,8 +64,18 @@ export class ReportsComponent implements OnInit {
 
             if (v.role.toUpperCase() == 'MASTER' || v.title.toUpperCase() == "PRE-SALES HEAD")
             {
-  	          this.firebaseservice.getopportunities().subscribe(v=> this.v = v);
-            return this.ev = true;
+  	          this.firebaseservice.getopportunities().subscribe(v=> {
+                this.v = v;
+                this.u = this.v;
+                this.filteredOppo = this.u
+                  .map(item => item.opportunity_assignedto)
+                  .filter((value, index, self) => { return self.indexOf(value) === index });
+                this.filteredLead = this.u
+                  .map(item => item.lead_assigned_to)
+                  .filter((value, index, self) => { return self.indexOf(value) === index });
+                this.isLoading = false;
+                });
+              return this.ev = true;
             }
             else
             {

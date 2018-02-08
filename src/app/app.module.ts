@@ -95,6 +95,7 @@ import { AssignedtosuppliergetComponent } from './components/assignedtosupplierg
 import { InsideSalesMasterComponent } from './components/inside-sales-master/inside-sales-master.component';
 import { SortascPipe } from './pipes/sortasc.pipe';
 import { ReportsComponent } from './components/reports/reports.component';
+import { FilterreportsPipe } from './pipes/filterreports.pipe';
 
 
 const appRoutes: Routes = [
@@ -209,7 +210,8 @@ export function highchartsFactory() {
     AssignedtosuppliergetComponent,
     InsideSalesMasterComponent,
     SortascPipe,
-    ReportsComponent
+    ReportsComponent,
+    FilterreportsPipe
   ],
   imports: [
     BrowserModule ,
