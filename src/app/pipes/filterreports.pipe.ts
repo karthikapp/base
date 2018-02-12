@@ -87,16 +87,16 @@ export class FilterreportsPipe implements PipeTransform {
                 	console.log("pp",oppoassigned,values.opportunity_assignedto.toLowerCase().indexOf(oppoassigned.toLowerCase()) === -1)
                     return false;
                 }
-                if (EDCStartDate && EDCStartDate != null && EDCEndDate == null && values.edc >= EDCStartDate ){
+                if (EDCStartDate && EDCStartDate != null && EDCEndDate == null && !(values.edc >= EDCStartDate)){
                 	console.log("filter for dates",EDCStartDate, EDCEndDate, values.edc, values.edc >= EDCStartDate,  values.edc <= EDCEndDate)
                 	console.log("hello")
                 	return false;	
                 }
-                if(EDCEndDate && EDCEndDate != null && EDCStartDate == null && values.edc <= EDCEndDate){
+                if(EDCEndDate && EDCEndDate != null && EDCStartDate == null && !(values.edc <= EDCEndDate)){
                 	console.log("krishna")
                 	return false;
                 }
-                if(EDCStartDate  && EDCEndDate && EDCStartDate!= null && EDCEndDate !=null && values.edc >= EDCStartDate && values.edc <= EDCEndDate){
+                if(EDCStartDate  && EDCEndDate && EDCStartDate!= null && EDCEndDate !=null && !(values.edc >= EDCStartDate && values.edc <= EDCEndDate)){
 	                console.log("bharadwaj")
 	                return false;
 	            }
