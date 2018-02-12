@@ -72,11 +72,17 @@
                     </select>
                     </th>
                     <th><input type="text"  name="region" placeholder="Region" [(ngModel)]="region"> </th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th> <input [(ngModel)]="EDCStartDate" type="date" name="EDCStartDate" style="height: 29px;width: 135px;padding-left: 2px;padding-right: 2px;"/>
+                        <input [(ngModel)]="EDCEndDate" type="date" name="EDCEndDate" style="height: 29px;width: 135px;padding-left: 2px;padding-right: 2px;"/>
+                    </th>
                   </tr>
                 </thead>
 
                 <tbody>
-                  <tr *ngFor="let vv of v | filterreports: lead_title : company_name : opportunity_assignedto : lead_assigned_to : status : region | sortorder" >
+                  <tr *ngFor="let vv of v | filterreports: lead_title : company_name : opportunity_assignedto : lead_assigned_to : status : region : EDCStartDate : EDCEndDate | sortorder" >
                     <td class="mdl-data-table__cell--non-numeric">{{vv.lead_title}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{vv.company_name}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{leadsourcelabel(vv.leadsource)}}</td> 

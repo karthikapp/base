@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class FilterreportsPipe implements PipeTransform {
 
   transform(value: any, leadtitle:any,companyname: any,oppoassigned: any, leadassigned: any,
-  	status: any, region: any,args?: any): any {
+  	status: any, region: any, EDCStartDate: any, EDCEndDate: any, args?: any): any {
 
 	if (status == 'Select'){
 		status = undefined
@@ -49,8 +49,19 @@ export class FilterreportsPipe implements PipeTransform {
 		leadassigned = undefined
 	}
 
+	if(EDCStartDate == undefined || EDCStartDate == ''){
+		EDCStartDate = null
+	}
+
+	if(EDCEndDate == undefined || EDCEndDate == ''){
+		EDCEndDate = null
+	}
+
+
+	console.log("cpp",EDCStartDate, EDCEndDate)
+
  	if (value && value.length){
- 		console.log("pp",value,value.length, status,oppoassigned, leadassigned)
+ 		console.log("pp",value,value.length, status,oppoassigned, leadassigned, EDCStartDate)
     	return value.filter(values =>{
                 if (leadtitle && values.lead_title.toLowerCase().indexOf(leadtitle.toLowerCase()) === -1){
                 	console.log("pp", leadtitle,values.lead_title.toLowerCase().indexOf(leadtitle.toLowerCase()) === -1 )
@@ -76,6 +87,19 @@ export class FilterreportsPipe implements PipeTransform {
                 	console.log("pp",oppoassigned,values.opportunity_assignedto.toLowerCase().indexOf(oppoassigned.toLowerCase()) === -1)
                     return false;
                 }
+                if (EDCStartDate && EDCStartDate != null && EDCEndDate == null && values.edc >= EDCStartDate ){
+                	console.log("filter for dates",EDCStartDate, EDCEndDate, values.edc, values.edc >= EDCStartDate,  values.edc <= EDCEndDate)
+                	console.log("hello")
+                	return false;	
+                }
+                if(EDCEndDate && EDCEndDate != null && EDCStartDate == null && values.edc <= EDCEndDate){
+                	console.log("krishna")
+                	return false;
+                }
+                if(EDCStartDate  && EDCEndDate && EDCStartDate!= null && EDCEndDate !=null && values.edc >= EDCStartDate && values.edc <= EDCEndDate){
+	                console.log("bharadwaj")
+	                return false;
+	            }
                 return true;
            })
         }
