@@ -1,4 +1,5 @@
-<div class="ui card" style="width: 90%;height: 100%;">
+<div style="padding:25px; ">
+    <div class="ui card" style="width: 90%;height: 100%;padding: 10px;">
 
 <!-- <ul>
 	<li (click)="selectRegion()">REGIONS
@@ -16,7 +17,7 @@
 	</li>
 </ul> -->
 
-<ul>
+<!-- <ul>
     <li (click)="selectRegion()">REGIONS
         <ul>
             <li *ngFor="let item of regionList" (click)="select(item, '')" [ngClass]="{active: isActive(item,'')}">{{item}}
@@ -30,6 +31,70 @@
             </li>
         </ul>
     </li>
-</ul>
+</ul> -->
 
+<div class="ui accordion">
+    <div *ngFor="let item of regionList">
+      <div class="title" (click) = "selectRegion(item)" style="color: #B71C1C;">
+        <i class="dropdown icon"></i>
+        {{item | uppercase }}
+    </div>
+    <div class="content" style="padding-left: 12px;">
+        <div class="accordion">
+            <div *ngFor="let executive of executivelist">
+              <div class="title" (click) = 'selectedexec(executive,item)'>
+                  <i class="dropdown icon"></i>
+                  <app-assignedtonameget name="{{executive}}"> </app-assignedtonameget>
+              </div>
+              <div class="content" style="padding-left: 15px;">
+                <div class="accordion">
+                    <div *ngFor="let opportunity of exec_wiseopportunity">
+                      <div class="title">
+                          <i class="dropdown icon"></i>
+                          {{opportunity.lead_title | uppercase }}
+                      </div>
+                      <div class="content" style="padding-left: 12px;">
+                        <h4> Status :  {{getstatus(opportunity.opportunity_state)}}</h4>
+                         <table class="ui celled padded table">
+                          <thead>
+                            <tr><th class="single line">Account</th>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Activities</th>
+                            </tr></thead>
+                            <tbody>
+                                <tr>
+                                  <td>
+                                    <h5 class="ui center aligned header">{{opportunity.company_name}}</h5>
+                                </td>
+                                <td class="single line">
+                                    {{opportunity.product_name}}
+                                </td>
+                                <td class="single line">
+                                   {{opportunity.quantity}}
+                                </td>
+                                <td class="right aligned">
+                                    {{opportunity.value}}
+                                    
+                                </td>
+                                <td>{{getnooffollowups(opportunity.opportunity_activities)}}</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+
+
+
+
+</div>
 </div>

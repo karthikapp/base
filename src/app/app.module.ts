@@ -97,6 +97,7 @@ import { SortascPipe } from './pipes/sortasc.pipe';
 import { ReportsComponent } from './components/reports/reports.component';
 import { FilterreportsPipe } from './pipes/filterreports.pipe';
 import { ReviewComponent } from './components/review/review.component';
+import { MaterializeModule } from "angular2-materialize";
 
 
 const appRoutes: Routes = [

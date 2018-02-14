@@ -139,6 +139,10 @@ export class LeadComponent implements OnInit, OnDestroy {
       {
         return "AWAITING MANAGER APPROVAL"
       }
+      else if (state == "prequal")
+      {
+        return "PRE-QUALIFICATION"
+      }
       else if (state == "Rejected")
       {
         return "Rejected"
