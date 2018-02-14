@@ -1,0 +1,35 @@
+<div class="ui card" style="width: 90%;height: 100%;">
+
+<!-- <ul>
+	<li (click)="selectRegion()">REGIONS
+		<ul>
+    		<li *ngFor="let item of regionList" (click)="selectPerson(item)" [ngClass]="{active: isActivePerson(item)}">{{item}}
+        		<ul *ngIf="this.selectFlag">
+            		<li *ngFor="let v of oppo_personList" (click)="selectActivities(v)" [ngClass]="{active: isActiveActivities(v)}">{{v}}
+            			<ul *ngIf="this.selectActFlag">
+            				<li *ngFor="let p of oppo_personActiv">{{p.product_name}} </li>
+            			</ul>	
+            		</li>
+        		</ul>
+    		</li>
+		</ul>
+	</li>
+</ul> -->
+
+<ul>
+    <li (click)="selectRegion()">REGIONS
+        <ul>
+            <li *ngFor="let item of regionList" (click)="select(item, '')" [ngClass]="{active: isActive(item,'')}">{{item}}
+                <ul *ngIf="this.selectFlag">
+                    <li *ngFor="let v of oppo_personList" (click)="select('', v)" [ngClass]="{active: isActive('',v)}">{{v}}
+                        <ul *ngIf="this.selectFlag">
+                            <li *ngFor="let p of oppo_personActiv">{{p.product_name}} </li>
+                        </ul>   
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+</ul>
+
+</div>

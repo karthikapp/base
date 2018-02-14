@@ -96,6 +96,7 @@ import { InsideSalesMasterComponent } from './components/inside-sales-master/ins
 import { SortascPipe } from './pipes/sortasc.pipe';
 import { ReportsComponent } from './components/reports/reports.component';
 import { FilterreportsPipe } from './pipes/filterreports.pipe';
+import { ReviewComponent } from './components/review/review.component';
 
 
 const appRoutes: Routes = [
@@ -137,7 +138,8 @@ const appRoutes: Routes = [
                {path:'insidesales', component: InsideSalesComponent },
                {path:'insidesales_master', component: InsideSalesMasterComponent },
                {path:'Suppliers', component: SuppliersComponent},
-               {path:'Reports', component: ReportsComponent}
+               {path:'Reports', component: ReportsComponent},
+               {path:'Review', component: ReviewComponent}
               ]}
 ];
 
@@ -211,7 +213,8 @@ export function highchartsFactory() {
     InsideSalesMasterComponent,
     SortascPipe,
     ReportsComponent,
-    FilterreportsPipe
+    FilterreportsPipe,
+    ReviewComponent
   ],
   imports: [
     BrowserModule ,
