@@ -597,6 +597,20 @@ export class FirebaseService {
 		}
 		});
     }
+
+    //Oppo Add Remarks
+    addRemarks(remarksObject: {remarks_id : any,
+        remarksdtl : any,
+        created_by: any,
+        created_at: any}, oppoid){
+    	var opporemURL = '/opportunities/' + oppoid + "/remarks";
+		var opporemData = this.af.list(opporemURL).push(remarksObject);
+		var opporemid = opporemData.key;
+		var opporemid_URL1 = '/opportunities/' + oppoid + '/remarks/' + opporemid;
+		var opporemData1 = this.af.object(opporemid_URL1).update({'remarks_id': opporemid});
+
+		return opporemData1;
+    }
     //End's here
 //END Leads and Opportunities
 

@@ -1,100 +1,136 @@
 <div style="padding:25px; ">
-    <div class="ui card" style="width: 90%;height: 100%;padding: 10px;">
-
-<!-- <ul>
-	<li (click)="selectRegion()">REGIONS
-		<ul>
-    		<li *ngFor="let item of regionList" (click)="selectPerson(item)" [ngClass]="{active: isActivePerson(item)}">{{item}}
-        		<ul *ngIf="this.selectFlag">
-            		<li *ngFor="let v of oppo_personList" (click)="selectActivities(v)" [ngClass]="{active: isActiveActivities(v)}">{{v}}
-            			<ul *ngIf="this.selectActFlag">
-            				<li *ngFor="let p of oppo_personActiv">{{p.product_name}} </li>
-            			</ul>	
-            		</li>
-        		</ul>
-    		</li>
-		</ul>
-	</li>
-</ul> -->
-
-<!-- <ul>
-    <li (click)="selectRegion()">REGIONS
-        <ul>
-            <li *ngFor="let item of regionList" (click)="select(item, '')" [ngClass]="{active: isActive(item,'')}">{{item}}
-                <ul *ngIf="this.selectFlag">
-                    <li *ngFor="let v of oppo_personList" (click)="select('', v)" [ngClass]="{active: isActive('',v)}">{{v}}
-                        <ul *ngIf="this.selectFlag">
-                            <li *ngFor="let p of oppo_personActiv">{{p.product_name}} </li>
-                        </ul>   
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </li>
-</ul> -->
-
-<div class="ui accordion">
-    <div *ngFor="let item of regionList">
-      <div class="title" (click) = "selectRegion(item)" style="color: #B71C1C;">
-        <i class="dropdown icon"></i>
-        {{item | uppercase }}
+  <div class="ui card" style="width: 90%;height: 100%;padding: 10px;">
+    <div class="title" style="color: #B71C1C;font-size: 17px;font-weight: bold" *ngIf="ev">
+      REGIONS
     </div>
     <div class="content" style="padding-left: 12px;">
-        <div class="accordion">
-            <div *ngFor="let executive of executivelist">
-              <div class="title" (click) = 'selectedexec(executive,item)'>
+      <div class="ui accordion">
+        <div *ngFor="let item of regionList">
+          <div class="title" (click) = "selectRegion(item)" style="color: #B71C1C;">
+            <i class="dropdown icon"></i>
+            {{item | uppercase }}
+          </div>
+          <div class="content" style="padding-left: 12px;">
+            <div class="ui accordion">
+              <div *ngFor="let executive of executivelist">
+                <div class="title" (click) = "selectedexec(executive,item)">
                   <i class="dropdown icon"></i>
-                  <app-assignedtonameget name="{{executive}}"> </app-assignedtonameget>
-              </div>
-              <div class="content" style="padding-left: 15px;">
-                <div class="accordion">
+                  <app-assignedtonameget name="{{executive}}"> 
+                  </app-assignedtonameget>
+                </div>
+                <div class="content" style="padding-left: 15px;">
+                  <div class="ui accordion">
                     <div *ngFor="let opportunity of exec_wiseopportunity">
                       <div class="title">
-                          <i class="dropdown icon"></i>
-                          {{opportunity.lead_title | uppercase }}
+                        <i class="dropdown icon"></i>
+                        {{opportunity.lead_title | uppercase }}
                       </div>
                       <div class="content" style="padding-left: 12px;">
                         <h4> Status :  {{getstatus(opportunity.opportunity_state)}}</h4>
-                         <table class="ui celled padded table">
+                        <table class="ui celled padded table">
                           <thead>
                             <tr><th class="single line">Account</th>
-                                <th>Product</th>
-                                <th>Quantity</th>
-                                <th>Price</th>
-                                <th>Activities</th>
-                            </tr></thead>
-                            <tbody>
-                                <tr>
-                                  <td>
-                                    <h5 class="ui center aligned header">{{opportunity.company_name}}</h5>
-                                </td>
-                                <td class="single line">
-                                    {{opportunity.product_name}}
-                                </td>
-                                <td class="single line">
-                                   {{opportunity.quantity}}
-                                </td>
-                                <td class="right aligned">
-                                    {{opportunity.value}}
-                                    
-                                </td>
-                                <td>{{getnooffollowups(opportunity.opportunity_activities)}}</td>
+                              <th>Product</th>
+                              <th>Quantity</th>
+                              <th>Price</th>
+                              <th>Activities</th>
+                              <th>Remarks</th>
                             </tr>
-
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>
+                                <h5 class="ui center aligned header">{{opportunity.company_name}}</h5>
+                              </td>
+                              <td class="single line">
+                                {{opportunity.product_name}}
+                              </td>
+                              <td class="single line">
+                               {{opportunity.quantity}}
+                             </td>
+                             <td class="right aligned">
+                              {{opportunity.value}}
+                            </td>
+                            <td>{{getnooffollowups(opportunity.opportunity_activities)}}</td>
+                            <td>
+                              <input type="text" name="remarks" placeholder="Remarks" [(ngModel)]="remarks"> 
+                              <i class="large material-icons icon-blue" (click)="submit_remarks(remarks,opportunity.sourceleadid)">check_box</i>
+                            </td>
+                          </tr>
                         </tbody>
-                    </table>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div class = "ui stackable three column grid" style="height:70px;" >
+                    <div class = column>
+                      <div class="title" style="color: blue;font-size: 15px;font-weight: bold">
+                        EXECUTIVE WISE:
+                      </div>
+                    </div>
+                    <div class ="column">
+                      <form class="ui mini form">
+
+                        <div class="field" style="padding: 5px;">
+                          <label style="font-weight: bold; font-size: 15px;color: black; margin-bottom: 1px;">Total Count: </label>
+                          <input type="text"  name="totalCountExec" placeholder="totalCount" [(ngModel)]="totalCountExec" style="padding-top:5px; padding-bottom: 5px" readonly>
+                        </div>
+                        
+                      </form>
+                    </div>
+
+                    <div class="column">
+                      <form class="ui mini form">
+
+                        <div class="field" style="padding: 5px;">
+                          <label style="font-weight: bold; font-size: 15px;color: black; margin-bottom: 1px;" >Total Value: </label>
+                          <input type="text"  name="totalValueExec" placeholder="totalValue" [(ngModel)]="totalValueExec" style="padding-top:5px; padding-bottom: 5px" readonly>
+                        </div>
+
+                      </form>
+                    </div>
+                  </div>
+
                 </div>
-
+              </div>
             </div>
+
+            <div class = "ui stackable three column grid" style="height:70px;" >
+              <div class = column>
+                <div class="title" style="color: blue;font-size: 15px;font-weight: bold">
+                  REGION WISE:
+                </div>
+              </div>
+              <div class ="column">
+                <form class="ui mini form">
+
+                  <div class="field" style="padding: 5px;">
+                    <label style="font-weight: bold; font-size: 15px;color: black; margin-bottom: 1px;">Total Count: </label>
+                    <input type="text"  name="totalCountReg" placeholder="totalCount" [(ngModel)]="totalCountReg" style="padding-top:5px; padding-bottom: 5px" readonly>
+                  </div>
+
+                </form>
+              </div>
+
+              <div class="column">
+                <form class="ui mini form">
+
+                  <div class="field" style="padding: 5px;">
+                    <label style="font-weight: bold; font-size: 15px;color: black; margin-bottom: 1px;" >Total Value: </label>
+                    <input type="text"  name="totalValueReg" placeholder="totalValue" [(ngModel)]="totalValueReg" style="padding-top:5px; padding-bottom: 5px" readonly>
+                  </div>
+
+                </form>
+              </div>
+            </div>
+
+          </div>
         </div>
+
+      </div>
+      
+
     </div>
-</div>
-</div>
+  </div>
 </div>
 
-
-
-
-
-</div>
-</div>

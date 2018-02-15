@@ -81,7 +81,8 @@ export class ViewpocComponent implements OnInit, OnDestroy {
             if (v.report.toUpperCase() == 'REPORTER'
               || v.report.toUpperCase() == 'RECIPIENT'
               || v.role.toUpperCase() == "MASTER" 
-              || v.role.toUpperCase() == "PRESALES" )
+              || v.role.toUpperCase() == "PRESALES"
+              || v.title.toUpperCase() == "PRE-SALES HEAD" )
             {
              if(this.rflag == 'me'){
             this.firebaseservice.getOpportunitiesByID(this.uid)

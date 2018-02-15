@@ -49,7 +49,7 @@
       <a class="mdl-navigation__link" routerLink="/dashboard/AllOpportunities" routerLinkActive="active" *ngIf="title == 'Pre-Sales Head'">All Opportunities</a>   
       <a class="mdl-navigation__link" routerLink="/dashboard/Reports" routerLinkActive="active" *ngIf="title == 'Pre-Sales Head'">Reports</a> 
       <a class="mdl-navigation__link" routerLink="/dashboard/Reports" routerLinkActive="active" *ngIf="role== 'master'">Reports</a> 
-      <!-- <a class="mdl-navigation__link" routerLink="/dashboard/Review" routerLinkActive="active">Review</a> -->
+      <a class="mdl-navigation__link" routerLink="/dashboard/Review" routerLinkActive="active" *ngIf="report == 'recipient' || title == 'Pre-Sales Head' || role== 'master'">Review</a> 
       <!-- <a class="mdl-navigation__link" routerLink="/dashboard/UpcomingLead" routerLinkActive="active">Upcoming Lead</a>    
       <a class="mdl-navigation__link" routerLink="/dashboard/UpcomingOpportunities" routerLinkActive="active">Upcoming Opportunities</a>  
       <a class="mdl-navigation__link" routerLink="/dashboard/insidesales" routerLinkActive="active" *ngIf="role== 'Inside Sales'">Inside Sales</a>
