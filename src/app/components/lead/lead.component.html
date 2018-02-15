@@ -2,7 +2,28 @@
   <div *ngIf="ev">
   <div id="" style="overflow-y: scroll; height: 100%; width: 100%">
      
+    <!-- Total Count and Total Value-->
+      <div class = "ui stackable three column grid" style="height:70px;">
+        <div class ="column">
+          <form class="ui mini form">
+            <div class="field" style="padding: 5px;">
+              <label style="font-weight: bold; font-size: 15px;color: white; margin-bottom: 1px;">Total Count: </label>
+              <input type="text"  name="totalCount" placeholder="totalCount" [(ngModel)]="totalCount" style="padding-top:5px; padding-bottom: 5px" readonly>
+            </div>  
+          </form>
+        </div>
+
+        <div class="column">
+          <form class="ui mini form">
+            <div class="field" style="padding: 5px;">
+              <label style="font-weight: bold; font-size: 15px;color: white; margin-bottom: 1px;" >Total Value: </label>
+              <input type="text"  name="totalValue" placeholder="totalValue" [(ngModel)]="totalValue" style="padding-top:5px; padding-bottom: 5px" readonly>
+            </div>
+          </form>
+        </div>
+
       <!--Search button with expandable holder-->
+      <div class="column">
       <div appMzterialDesignLite style="float:right; color: white;">
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
           <label class="mdl-button mdl-js-button mdl-button--icon" for="site-search">
@@ -14,11 +35,8 @@
           </div>
         </div>
       </div>
-
-      <br> 
-      <br>
-      <br>
-
+    </div>
+    </div>
 
       <!-- Wide card with Edit and Delete button -->
 

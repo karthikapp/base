@@ -34,19 +34,20 @@
 
 .mdl-card__title
 {
-font-family: 'Marvel', sans-serif; text-transform: capitalize;
+  font-family: 'Marvel', sans-serif; text-transform: capitalize;
 }
 
 .ui.tiny.statistic>.value, .ui.tiny.statistics .statistic>.value {
-    font-size: 1rem!important;
+  font-size: 1rem!important;
 }
 
 .ui.mini.horizontal.statistic>.value, .ui.mini.horizontal.statistics .statistic>.value, .ui.mini.statistic>.value, .ui.mini.statistics .statistic>.value{
-    font-size: 1rem!important;
+  font-size: 1rem!important;
 }
 
 .ui.black.label>.value {
   font-size: 1rem!important;
 }
+
 
 

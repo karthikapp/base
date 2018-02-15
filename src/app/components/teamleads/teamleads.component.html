@@ -2,8 +2,71 @@
   <div id="" style="overflow-y: scroll;height: 100%; width:100%;">
 
     <div *ngIf="ev">
+
+            <!--Regions, Lead Source, Total Count and Total Value-->
+      <div class = "ui stackable six column grid" style="height:70px;">
+        <div class = "column">
+          <form class="ui mini form">
+            <div class="form-group column" style="padding: 5px;">
+              <label style="font-weight: bold; font-size: 15px; color: white" for="exampleFormControlSelect11">Region: </label>
+              <select class="form-control" id="exampleFormControlSelect11" name="region" [(ngModel)]="region" (change)="onRegionChange($event.target.value)" style="height: 29px;font-size: 1.2em; padding-top: 4px; padding-bottom: 4px;">
+                <option [value]="'All'">All</option>
+                <option [value]="'chennai'">Chennai</option>
+                <option [value]="'hyderabad'">Hyderabad</option>
+                <option [value]="'mumbai'">Mumbai</option>
+                <option [value]="'coimbatore'">Coimbatore</option>
+                <option [value]="'bangalore'">Bangalore</option>
+              </select>
+            </div>
+          </form>
+        </div>
+
+        <div class="column">
+          <form class="ui mini form">
+            <div class="form-group column" style="padding: 5px;">
+              <label style="font-weight: bold; font-size: 15px;color: white" for="exampleFormControlSelect1">Lead Assigned to:</label>
+              <select class="form-control" id="exampleFormControlSelect1" name="lead_assigned_to" [(ngModel)]="lead_assigned_to" (change)="onLeadAssignedChange($event.target.value)" style="height: 29px;font-size: 1.2em; padding-top: 4px; padding-bottom: 4px;">
+                <option [value]="'All'">All</option>
+                <option *ngFor="let fD of filteredData" [value]="fD"> 
+                 <app-assignedtonameget [name]="fD"></app-assignedtonameget>
+                </option>
+              </select>
+            </div>
+          </form>
+        </div>
+
+        <div class="column">
+          <form class="ui mini form">
+            <div class="form-group column" style="padding: 5px;">
+              <label style="font-weight: bold; font-size: 15px;color: white" for="exampleFormControlSelect12">Lead Source:</label>
+              <select class="form-control" id="exampleFormControlSelect12" name="lead_source" [(ngModel)]="lead_source" (change)="onLeadSourceChange($event.target.value)" style="height: 29px;font-size: 1.2em; padding-top: 4px; padding-bottom: 4px;">
+                <option [value]="'All'">All</option>
+                <option *ngFor="let fsD of filteredSourceData" [value]="fsD">{{leadsourcelabel(fsD)}} </option>
+              </select>
+            </div>
+          </form>
+        </div>
+
+        <div class ="column">
+          <form class="ui mini form">
+            <div class="field" style="padding: 5px;">
+              <label style="font-weight: bold; font-size: 15px;color: white; margin-bottom: 1px;">Total Count: </label>
+              <input type="text"  name="totalCount" placeholder="totalCount" [(ngModel)]="totalCount" style="padding-top:5px; padding-bottom: 5px" readonly>
+            </div>  
+          </form>
+        </div>
+
+        <div class="column">
+          <form class="ui mini form">
+            <div class="field" style="padding: 5px;">
+              <label style="font-weight: bold; font-size: 15px;color: white; margin-bottom: 1px;" >Total Value: </label>
+              <input type="text"  name="totalValue" placeholder="totalValue" [(ngModel)]="totalValue" style="padding-top:5px; padding-bottom: 5px" readonly>
+            </div>
+          </form>
+        </div>
     
       <!--Search button with expandable holder-->
+      <div class = "column">
       <div appMzterialDesignLite style="float:right; color: white;">
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
           <label class="mdl-button mdl-js-button mdl-button--icon" for="site-search">
@@ -15,15 +78,15 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
 
-      <br> 
-      <br>
-      <br>
+
 
       <!-- Wide card with Edit and Delete button -->
       <div class="ui stackable three column grid" style="height:70vh">
         <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand" 
-        *ngFor="let lead of leads | filterrecords: querystring : 'leads' | sortorder | paginate: { itemsPerPage: 4, currentPage: p }">
+        *ngFor="let lead of leads_list | filterrecords: querystring : 'leads' | sortorder | paginate: { itemsPerPage: 4, currentPage: p }">
 
           <!--Lead Title-->
           <div class="mdl-card__title">

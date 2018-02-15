@@ -19,13 +19,23 @@ export class LeadComponent implements OnInit, OnDestroy {
 
   leadlabel: string;
   followupno: any;
+  totalCount: any;
+  totalValue: any;
 
+  leadsarrayvalue: any;
+  leadsarraylist: any;
+  leadsum: any;
 
   constructor(private firebaseservice : FirebaseService, 
     private router: Router, private afAuth: AngularFireAuth) { }
 
   ngOnInit() {  	
   	this.leads = ''; 
+    this.leadsarrayvalue = [];
+    this.leadsarraylist = [];
+    this.leadsum = '';
+    this.totalValue = '';
+    this.totalCount = '';
 
   //Leads list
     this.afAuth.authState
@@ -66,6 +76,35 @@ export class LeadComponent implements OnInit, OnDestroy {
               this.leads = this.leads.filter(v => {
               return v.leadstatus != 'Qualified' && v.leadstatus != 'Rejected'})
               console.log(this.leads);
+              this.totalCount = Object.keys(this.leads).length;
+
+              this.leads.forEach(element => {
+                if (element.products_list == undefined)
+                {
+                  this.leadsarrayvalue.push(0);
+                  this.leadsarraylist.push(element);
+                }
+                else 
+                {
+                  let somelist = element.products_list
+                  somelist.forEach(value =>
+                  {
+                    if(value.value != undefined){
+                    this.leadsarrayvalue.push(value.value);
+                    this.leadsarraylist.push(value);
+                  }
+                  })
+                }
+              })
+
+              this.leadsarraylist = this.leadsarrayvalue
+              this.leadsum = this.leadsarraylist.reduce((a, b) => a + b, 0);
+              if(this.leadsum == undefined || isNaN(this.leadsum)) {
+                  this.leadsum = 0;
+                }
+
+              this.totalValue = parseFloat(this.leadsum);
+              console.log("TV",this.totalValue, this.leadsum, this.leadsarrayvalue, this.leadsarraylist)
             }) 
               return this.ev = true;
             }
@@ -146,6 +185,10 @@ export class LeadComponent implements OnInit, OnDestroy {
       else if (state == "Rejected")
       {
         return "Rejected"
+      }
+      else if (state == "prequal")
+      {
+        return "Pre - Qualification"
       }
 
    }
