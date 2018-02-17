@@ -12,7 +12,7 @@
                 <div class="ui active dimmer" *ngIf="isLoading">
                     <div class="ui text loader">Loading</div>
                 </div>
-              <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp" style="width: 95%;background-color: white;height:50vh">
+                <table class="ui inverted table">
                 <thead>
                   <tr>
                     <th>Lead Title</th>
@@ -37,25 +37,37 @@
                     <th>Remarks</th>
                   </tr>
                   <tr>
-                    <th><input type="text"  name="lead_title" placeholder="Lead Title" [(ngModel)]="lead_title"> </th>
-                    <th><input type="text"  name="company_name" placeholder="Company Name" [(ngModel)]="company_name"> </th>
-                    <th></th>
-                    <th> </th>
                     <th>
-                       <select [(ngModel)]="opportunity_assignedto">
-                            <option>Select</option>
-                            <option *ngFor="let foa of filteredOppo" [value]="foa">
-                                <app-assignedtonameget name="{{foa}}"> </app-assignedtonameget>
-                            </option>
-                        </select>
+                        <div class="ui input">
+                            <input type="text"  name="lead_title" placeholder="Lead Title" [(ngModel)]="lead_title"> 
+                        </div>
                     </th>
                     <th>
-                        <select [(ngModel)]="lead_assigned_to">
-                            <option>Select</option>
-                            <option *ngFor="let fla of filteredLead" [value]="fla">
-                                <app-assignedtonameget name="{{fla}}"> </app-assignedtonameget>
-                            </option>
-                        </select>
+                        <div class="ui input">
+                            <input type="text"  name="company_name" placeholder="Company Name" [(ngModel)]="company_name"> 
+                        </div>
+                    </th>
+                    <th></th>
+                    <th></th>
+                    <th>
+                        <div class="ui input">
+                           <select [(ngModel)]="opportunity_assignedto">
+                                <option>Select</option>
+                                <option *ngFor="let foa of filteredOppo" [value]="foa">
+                                    <app-assignedtonameget name="{{foa}}"> </app-assignedtonameget>
+                                </option>
+                            </select>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="ui input">
+                            <select [(ngModel)]="lead_assigned_to">
+                                <option>Select</option>
+                                <option *ngFor="let fla of filteredLead" [value]="fla">
+                                    <app-assignedtonameget name="{{fla}}"> </app-assignedtonameget>
+                                </option>
+                            </select>
+                        </div>
                     </th>
                     <th>
                     <select [(ngModel)]="status">
@@ -71,42 +83,49 @@
                     <option>Case Lost</option>
                     </select>
                     </th>
-                    <th><input type="text"  name="region" placeholder="Region" [(ngModel)]="region"> </th>
+                    <th>
+                        <div class="ui input">
+                            <input type="text"  name="region" placeholder="Region" [(ngModel)]="region"> 
+                        </div>
+                    </th>
                     <th></th>
                     <th></th>
                     <th></th>
-                    <th> <input [(ngModel)]="EDCStartDate" type="date" name="EDCStartDate" style="height: 29px;width: 135px;padding-left: 2px;padding-right: 2px;"/>
-                        <input [(ngModel)]="EDCEndDate" type="date" name="EDCEndDate" style="height: 29px;width: 135px;padding-left: 2px;padding-right: 2px;"/>
+                    <th> 
+                        <div class="ui input">
+                            <input [(ngModel)]="EDCStartDate" type="date" name="EDCStartDate" style="height: 29px;width: 137px;padding-left: 2px;padding-right: 2px;"/>
+                        
+                            <input [(ngModel)]="EDCEndDate" type="date" name="EDCEndDate" style="height: 29px;width: 137px;padding-left: 2px;padding-right: 2px;"/>
+                        </div>
                     </th>
                   </tr>
                 </thead>
 
                 <tbody>
                   <tr *ngFor="let vv of v | filterreports: lead_title : company_name : opportunity_assignedto : lead_assigned_to : status : region : EDCStartDate : EDCEndDate | sortorder" >
-                    <td class="mdl-data-table__cell--non-numeric">{{vv.lead_title}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{vv.company_name}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{leadsourcelabel(vv.leadsource)}}</td> 
-                    <td class="mdl-data-table__cell--non-numeric" *ngIf="vv.leadsource == 'inbound-landline' || vv.leadsource == 'outboundcall' || vv.leadsource == 'onsite'"></td> 
-                    <td class="mdl-data-table__cell--non-numeric" *ngIf="vv.leadsource == 'oem'">{{vv.oem_name}}</td>
-                    <td class="mdl-data-table__cell--non-numeric" *ngIf="vv.leadsource == 'distributor'">{{vv.distributor_name}}</td>
-                    <td class="mdl-data-table__cell--non-numeric" *ngIf="vv.leadsource == 'event'">{{vv.event_name}}</td>
+                    <td>{{vv.lead_title}}</td>
+                    <td>{{vv.company_name}}</td>
+                    <td>{{leadsourcelabel(vv.leadsource)}}</td> 
+                    <td *ngIf="vv.leadsource == 'inbound-landline' || vv.leadsource == 'outboundcall' || vv.leadsource == 'onsite'"></td> 
+                    <td *ngIf="vv.leadsource == 'oem'">{{vv.oem_name}}</td>
+                    <td *ngIf="vv.leadsource == 'distributor'">{{vv.distributor_name}}</td>
+                    <td *ngIf="vv.leadsource == 'event'">{{vv.event_name}}</td>
+                    <td><app-assignedtonameget name="{{vv.opportunity_assignedto}}"> </app-assignedtonameget></td>
+                    <td><app-assignedtonameget name="{{vv.lead_assigned_to}}"> </app-assignedtonameget></td>
+                    <td>{{vv.opportunity_state}}</td> 
+                    <td>{{vv.region}}</td>
 
-                    <td class="mdl-data-table__cell--non-numeric"><app-assignedtonameget name="{{vv.opportunity_assignedto}}"> </app-assignedtonameget></td>
-                    <td class="mdl-data-table__cell--non-numeric"><app-assignedtonameget name="{{vv.lead_assigned_to}}"> </app-assignedtonameget></td>
-                    <td class="mdl-data-table__cell--non-numeric">{{vv.opportunity_state}}</td> 
-                    <td class="mdl-data-table__cell--non-numeric">{{vv.region}}</td>
-
-                    <td class="mdl-data-table__cell--non-numeric">{{returnruppeamount(vv.value)}}</td>   
-                    <td class="mdl-data-table__cell--non-numeric">{{vv.product_name}}, {{vv.quantity}}</td>  
-                    <td class="mdl-data-table__cell--non-numeric"><app-getcompanycontactname [companyid]="vv.company_id"> </app-getcompanycontactname> </td>
-                    <td class="mdl-data-table__cell--non-numeric">{{vv.edc}}</td>
+                    <td>{{returnruppeamount(vv.value)}}</td>   
+                    <td>{{vv.product_name}}, {{vv.quantity}}</td>  
+                    <td><app-getcompanycontactname [companyid]="vv.company_id"> </app-getcompanycontactname> </td>
+                    <td>{{vv.edc}}</td>
                     <td>{{getnooffollowups(vv.lead_activities)}} </td>
                     <td>{{getnooffollowups(vv.opportunity_activities)}} </td>
-                    <td class="mdl-data-table__cell--non-numeric"><app-assignedtonameget name="{{vv.lead_presales_approved_to}}"> </app-assignedtonameget></td>
-                    <td class="mdl-data-table__cell--non-numeric"><app-assignedtonameget name="{{vv.lead_approved_by_presales}}"> </app-assignedtonameget></td>
-                    <td class="mdl-data-table__cell--non-numeric">{{vv.lead_approved_by_presales_date | date: 'medium' }}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{vv.opportunity_created_at| date: 'medium' }} </td> 
-                    <td class="mdl-data-table__cell--non-numeric">
+                    <td><app-assignedtonameget name="{{vv.lead_presales_approved_to}}"> </app-assignedtonameget></td>
+                    <td><app-assignedtonameget name="{{vv.lead_approved_by_presales}}"> </app-assignedtonameget></td>
+                    <td>{{vv.lead_approved_by_presales_date | date: 'medium' }}</td>
+                    <td>{{vv.opportunity_created_at| date: 'medium' }} </td> 
+                    <td>
                     {{vv.lead_meeting_remark}} </td>      
                   </tr>
                 </tbody>
@@ -114,7 +133,7 @@
             </lsu-tab>
 
             <lsu-tab  [headerText]="'Lead Activities'" [active]="'true'">
-              <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp" style="width: 95%;background-color: white;height:50vh">
+              <table class="ui inverted table">
                 <thead>
                   <tr>
                     <th>Lead Title</th>
@@ -128,38 +147,48 @@
                     <th>Activity Created at</th>
                   </tr>
                   <tr>
-                    <th><input type="text"  name="lead_title1" placeholder="Lead Title" [(ngModel)]="lead_title1"> </th>
-                    <th><input type="text"  name="company_name1" placeholder="Company Name" [(ngModel)]="company_name1"> </th>
                     <th>
-                       <select [(ngModel)]="lead_assigned_to1">
-                            <option>Select</option>
-                            <option *ngFor="let fla of filteredLead" [value]="fla">
-                                <app-assignedtonameget name="{{fla}}"> </app-assignedtonameget>
-                            </option>
-                        </select>
+                        <div class ="ui input">
+                            <input type="text"  name="lead_title1" placeholder="Lead Title" [(ngModel)]="lead_title1">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="ui input">
+                            <input type="text"  name="company_name1" placeholder="Company Name" [(ngModel)]="company_name1">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="ui input">
+                            <select [(ngModel)]="lead_assigned_to1">
+                                <option>Select</option>
+                                <option *ngFor="let fla of filteredLead" [value]="fla">
+                                    <app-assignedtonameget name="{{fla}}"> </app-assignedtonameget>
+                                </option>
+                            </select>
+                        </div>
                     </th>
                   </tr>
                 </thead>
 
                 <tbody *ngFor="let activ of v | filterreports: lead_title1 : company_name1 : opportunity_assignedto1 : lead_assigned_to1 : status1 : region1 | sortorder">
                   <tr *ngFor="let lead_activ of activ.lead_activities | contactpersons">
-                    <td class="mdl-data-table__cell--non-numeric">{{activ.lead_title}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{activ.company_name}}</td>
-                    <td class="mdl-data-table__cell--non-numeric"><app-assignedtonameget name="{{activ.lead_assigned_to}}"> </app-assignedtonameget></td>
-                    <td class="mdl-data-table__cell--non-numeric">{{returnruppeamount(activ.value)}}</td>   
-                    <td class="mdl-data-table__cell--non-numeric">{{activ.product_name}}, {{activ.quantity}}</td> 
-                    <td class="mdl-data-table__cell--non-numeric">
+                    <td>{{activ.lead_title}}</td>
+                    <td>{{activ.company_name}}</td>
+                    <td><app-assignedtonameget name="{{activ.lead_assigned_to}}"> </app-assignedtonameget></td>
+                    <td>{{returnruppeamount(activ.value)}}</td>   
+                    <td>{{activ.product_name}}, {{activ.quantity}}</td> 
+                    <td>
                     {{getactivitytypetext(lead_activ.activity_type)}}</td>         
-                    <td class="mdl-data-table__cell--non-numeric" *ngIf="lead_activ.activity_type == 'phonecall'"> {{lead_activ.phonecallDate | date: 'longDate'}}</td>
-                    <td class="mdl-data-table__cell--non-numeric" *ngIf="lead_activ.activity_type == 'onsitevisit'">
+                    <td *ngIf="lead_activ.activity_type == 'phonecall'"> {{lead_activ.phonecallDate | date: 'longDate'}}</td>
+                    <td *ngIf="lead_activ.activity_type == 'onsitevisit'">
                     {{lead_activ.visitDate | date: 'longDate' }}</td>
-                    <td class="mdl-data-table__cell--non-numeric" *ngIf="lead_activ.activity_type == ''"></td>
-                    <td class="mdl-data-table__cell--non-numeric" *ngIf="lead_activ.activity_type == 'onsitevisit'">
+                    <td *ngIf="lead_activ.activity_type == ''"></td>
+                    <td *ngIf="lead_activ.activity_type == 'onsitevisit'">
                     {{lead_activ.visitremarks}}</td>
-                    <td class="mdl-data-table__cell--non-numeric" *ngIf="lead_activ.activity_type == 'phonecall'">
+                    <td *ngIf="lead_activ.activity_type == 'phonecall'">
                     {{lead_activ.phonecallremarks}}</td>
-                    <td class="mdl-data-table__cell--non-numeric" *ngIf="lead_activ.activity_type == ''"></td>
-                    <td class="mdl-data-table__cell--non-numeric">
+                    <td *ngIf="lead_activ.activity_type == ''"></td>
+                    <td>
                     {{lead_activ.created_at | date: 'medium'}}</td>
                   </tr>
                 </tbody> 
@@ -167,7 +196,7 @@
             </lsu-tab>
 
             <lsu-tab  [headerText]="'Opportunity Activities'" [active]="'true'">
-              <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp" style="width: 95%;background-color: white;height:50vh">
+              <table class="ui inverted table">
                 <thead>
                   <tr>
                     <th>Lead Title</th>
@@ -183,77 +212,87 @@
                     <th>Remarks</th>               
                   </tr>
                   <tr>
-                    <th><input type="text"  name="lead_title2" placeholder="Lead Title" [(ngModel)]="lead_title2"> </th>
-                    <th><input type="text"  name="company_name2" placeholder="Company Name" [(ngModel)]="company_name2"> </th>
                     <th>
-                       <select [(ngModel)]="opportunity_assignedto2">
-                            <option>Select</option>
-                            <option *ngFor="let foa of filteredOppo" [value]="foa">
-                                <app-assignedtonameget name="{{foa}}"> </app-assignedtonameget>
-                            </option>
-                        </select>
+                        <div class ="ui input">
+                            <input type="text"  name="lead_title2" placeholder="Lead Title" [(ngModel)]="lead_title2">
+                        </div>
+                    </th>
+                    <th>
+                        <div class ="ui input">
+                            <input type="text"  name="company_name2" placeholder="Company Name" [(ngModel)]="company_name2">
+                        </div>
+                    </th>
+                    <th>
+                        <div class ="ui input">
+                           <select [(ngModel)]="opportunity_assignedto2">
+                                <option>Select</option>
+                                <option *ngFor="let foa of filteredOppo" [value]="foa">
+                                    <app-assignedtonameget name="{{foa}}"> </app-assignedtonameget>
+                                </option>
+                            </select>
+                        </div>
                     </th>
                   </tr>
                 </thead>
 
                 <tbody *ngFor="let acti of v | filterreports: lead_title2 : company_name2 : opportunity_assignedto2 : lead_assigned_to2 : status2 : region2 | sortorder">
                   <tr *ngFor="let oppo_activ of acti.opportunity_activities | contactpersons">
-                    <td class="mdl-data-table__cell--non-numeric">{{acti.lead_title}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{acti.company_name}}</td>
+                    <td>{{acti.lead_title}}</td>
+                    <td>{{acti.company_name}}</td>
 
-                    <td class="mdl-data-table__cell--non-numeric"> <app-assignedtonameget name="{{acti.opportunity_assignedto}}"> </app-assignedtonameget></td>
-                    <td class="mdl-data-table__cell--non-numeric">{{returnruppeamount(acti.value)}}</td>   
-                    <td class="mdl-data-table__cell--non-numeric">{{acti.product_name}}, {{acti.quantity}}</td> 
-                    <td class="mdl-data-table__cell--non-numeric">
+                    <td> <app-assignedtonameget name="{{acti.opportunity_assignedto}}"> </app-assignedtonameget></td>
+                    <td>{{returnruppeamount(acti.value)}}</td>   
+                    <td>{{acti.product_name}}, {{acti.quantity}}</td> 
+                    <td>
                     {{getactivitytypetext(oppo_activ.activity_type)}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">
+                    <td>
                     <app-assignedtonameget name="{{oppo_activ.activity_created_by}}"> </app-assignedtonameget></td>
-                    <td class="mdl-data-table__cell--non-numeric">
+                    <td>
                     {{oppo_activ.created_at | date: 'medium' }} </td>
-                    <td class="mdl-data-table__cell--non-numeric">
+                    <td>
                     {{returnopportunitystate(oppo_activ.opportunity_stage)}}</td>
-                    <td class="mdl-data-table__cell--non-numeric"  *ngIf="oppo_activ.activity_type == 'phonecall'">
+                    <td *ngIf="oppo_activ.activity_type == 'phonecall'">
                     {{oppo_activ.phonecallDate | date: 'longDate'}}</td>
-                    <td class="mdl-data-table__cell--non-numeric" *ngIf="oppo_activ.activity_type == 'onsitevisit'">
+                    <td *ngIf="oppo_activ.activity_type == 'onsitevisit'">
                     {{oppo_activ.visitDate | date: 'longDate' }}</td>
-                    <td class="mdl-data-table__cell--non-numeric"   *ngIf="oppo_activ.activity_type == 'presentation'">
+                    <td *ngIf="oppo_activ.activity_type == 'presentation'">
                     {{oppo_activ.presentationDate | date: 'longDate' }}</td>
-                    <td class="mdl-data-table__cell--non-numeric" *ngIf="oppo_activ.activity_type == 'solutiondocumenting'">
+                    <td *ngIf="oppo_activ.activity_type == 'solutiondocumenting'">
                     {{oppo_activ.solutiondocumentingDate | date: 'longDate' }}</td>
-                    <td class="mdl-data-table__cell--non-numeric" *ngIf="oppo_activ.activity_type == 'poc'">
+                    <td *ngIf="oppo_activ.activity_type == 'poc'">
                     {{oppo_activ.pocstartDate | date: 'longDate' }}</td>
-                    <td class="mdl-data-table__cell--non-numeric" *ngIf="oppo_activ.activity_type == 'poc'">
+                    <td *ngIf="oppo_activ.activity_type == 'poc'">
                     {{oppo_activ.pocendDate | date: 'longDate' }}</td>
-                    <td class="mdl-data-table__cell--non-numeric" *ngIf="oppo_activ.activity_type == 'poc'">
+                    <td *ngIf="oppo_activ.activity_type == 'poc'">
                     {{oppo_activ.poc_signoff }}</td>
-                    <td class="mdl-data-table__cell--non-numeric"  *ngIf="oppo_activ.activity_type == 'demo'">
+                    <td *ngIf="oppo_activ.activity_type == 'demo'">
                     {{oppo_activ.demostartDate | date: 'longDate' }}</td>
-                    <td class="mdl-data-table__cell--non-numeric" *ngIf="oppo_activ.activity_type == 'demo'">
+                    <td *ngIf="oppo_activ.activity_type == 'demo'">
                     {{oppo_activ.demoendDate| date: 'longDate' }}</td>
-                    <td class="mdl-data-table__cell--non-numeric" *ngIf="oppo_activ.activity_type == 'demo'">
+                    <td *ngIf="oppo_activ.activity_type == 'demo'">
                     {{oppo_activ.demo_signoff }}</td>
-                    <td class="mdl-data-table__cell--non-numeric" *ngIf="oppo_activ.activity_type == ''"></td>
+                    <td *ngIf="oppo_activ.activity_type == ''"></td>
 
-                    <td class="mdl-data-table__cell--non-numeric" *ngIf="oppo_activ.activity_type == 'onsitevisit'">
+                    <td *ngIf="oppo_activ.activity_type == 'onsitevisit'">
                     {{oppo_activ.visitremarks}}</td>
-                    <td class="mdl-data-table__cell--non-numeric" *ngIf="oppo_activ.activity_type == 'phonecall'">
+                    <td *ngIf="oppo_activ.activity_type == 'phonecall'">
                     {{oppo_activ.phonecallremarks}}</td>
-                    <td class="mdl-data-table__cell--non-numeric" *ngIf="oppo_activ.activity_type == 'presentation'">
+                    <td *ngIf="oppo_activ.activity_type == 'presentation'">
                     {{oppo_activ.presentationremarks}}</td>
-                    <td class="mdl-data-table__cell--non-numeric" *ngIf="oppo_activ.activity_type == 'solutiondocumenting'">
+                    <td *ngIf="oppo_activ.activity_type == 'solutiondocumenting'">
                     {{oppo_activ.solutiondocumentingremarks}}</td>
-                    <td class="mdl-data-table__cell--non-numeric" *ngIf="oppo_activ.activity_type == 'poc'">
+                    <td *ngIf="oppo_activ.activity_type == 'poc'">
                     {{oppo_activ.pocremarks}}</td>
-                    <td class="mdl-data-table__cell--non-numeric" *ngIf="oppo_activ.activity_type == 'demo'">
+                    <td *ngIf="oppo_activ.activity_type == 'demo'">
                     {{oppo_activ.demoremarks}}</td>
-                    <td class="mdl-data-table__cell--non-numeric" *ngIf="oppo_activ.activity_type == ''"></td>
+                    <td *ngIf="oppo_activ.activity_type == ''"></td>
                   </tr>
                 </tbody> 
               </table>
             </lsu-tab>
 
             <lsu-tab  [headerText]="'Upcoming Activities'" [active]="'true'">
-              <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp" style="width: 95%;background-color: white;height:50vh">
+              <table class="ui inverted table">
                 <thead>
                   <tr>
                     <th>Lead Title</th>
@@ -267,41 +306,53 @@
                     <th>Activity Created at</th>       
                   </tr>
                   <tr>
-                    <th><input type="text"  name="lead_title3" placeholder="Lead Title" [(ngModel)]="lead_title3"> </th>
-                    <th><input type="text"  name="company_name3" placeholder="Company Name" [(ngModel)]="company_name3"> </th>
                     <th>
-                       <select [(ngModel)]="opportunity_assignedto3">
-                            <option>Select</option>
-                            <option *ngFor="let foa of filteredOppo" [value]="foa">
-                                <app-assignedtonameget name="{{foa}}"> </app-assignedtonameget>
-                            </option>
-                        </select>
+                        <div class ="ui input">
+                            <input type="text"  name="lead_title3" placeholder="Lead Title" [(ngModel)]="lead_title3">
+                        </div>
                     </th>
                     <th>
-                        <select [(ngModel)]="lead_assigned_to3">
-                            <option>Select</option>
-                            <option *ngFor="let fla of filteredLead" [value]="fla">
-                                <app-assignedtonameget name="{{fla}}"> </app-assignedtonameget>
-                            </option>
-                        </select>
+                        <div class ="ui input">
+                            <input type="text"  name="company_name3" placeholder="Company Name" [(ngModel)]="company_name3"> 
+                        </div>
+                    </th>
+                    <th>
+                        <div class ="ui input">
+                           <select [(ngModel)]="opportunity_assignedto3">
+                                <option>Select</option>
+                                <option *ngFor="let foa of filteredOppo" [value]="foa">
+                                    <app-assignedtonameget name="{{foa}}"> </app-assignedtonameget>
+                                </option>
+                            </select>
+                        </div>
+                    </th>
+                    <th>
+                        <div class ="ui input">
+                            <select [(ngModel)]="lead_assigned_to3">
+                                <option>Select</option>
+                                <option *ngFor="let fla of filteredLead" [value]="fla">
+                                    <app-assignedtonameget name="{{fla}}"> </app-assignedtonameget>
+                                </option>
+                            </select>
+                        </div>
                     </th>
                   </tr>
                 </thead>
 
                 <tbody *ngFor="let ac of v | filterreports: lead_title3 : company_name3 : opportunity_assignedto3 : lead_assigned_to3 : status3 : region3  | sortorder">
                   <tr *ngFor="let up of ac.upcoming | contactpersons">
-                    <td class="mdl-data-table__cell--non-numeric">{{ac.lead_title}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{ac.company_name}}</td>
-                    <td class="mdl-data-table__cell--non-numeric"><app-assignedtonameget name="{{ac.opportunity_assignedto}}"> </app-assignedtonameget></td>
-                    <td class="mdl-data-table__cell--non-numeric"><app-assignedtonameget name="{{ac.lead_assigned_to}}"> </app-assignedtonameget></td>
-                    <td class="mdl-data-table__cell--non-numeric">{{returnruppeamount(ac.value)}}</td>   
-                    <td class="mdl-data-table__cell--non-numeric">{{ac.product_name}}, {{ac.quantity}}</td> 
-                    <td class="mdl-data-table__cell--non-numeric">
+                    <td>{{ac.lead_title}}</td>
+                    <td>{{ac.company_name}}</td>
+                    <td><app-assignedtonameget name="{{ac.opportunity_assignedto}}"> </app-assignedtonameget></td>
+                    <td><app-assignedtonameget name="{{ac.lead_assigned_to}}"> </app-assignedtonameget></td>
+                    <td>{{returnruppeamount(ac.value)}}</td>   
+                    <td>{{ac.product_name}}, {{ac.quantity}}</td> 
+                    <td>
                     {{getupcomingtext(up.next_meeting_type)}}
                     </td>
-                    <td class="mdl-data-table__cell--non-numeric"> 
+                    <td> 
                     {{up.next_meeting_date | date: 'longDate' }} </td>
-                    <td class="mdl-data-table__cell--non-numeric">
+                    <td>
                     {{up.created_at  | date: 'medium'}} </td>
                   </tr>
                 </tbody>

@@ -2,6 +2,13 @@
 	padding:10px 10px 10px 10px;
 }
 
-.mdl-data-table th {
+/*.mdl-data-table th {
     text-align: left;
+    color: blue;
+    font-size: 12px;
+    font-weight: bolder;
+}*/
+
+.ui.input{
+	height: 25px;
 }

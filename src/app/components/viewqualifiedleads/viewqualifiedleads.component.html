@@ -27,8 +27,7 @@
 
           <!--Lead Title-->
           <div class="mdl-card__title">
-            <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.6vw;font-weight: bold;" 
-               >
+            <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.6vw;font-weight: bold;" [routerLink]="['/dashboard/OppoDetail', lead.$key]">
               {{lead.lead_title}}  
             </a>
           </div>
@@ -106,7 +105,7 @@
           <div class="ui blue labels" align="center">
             <div class="labelspec" style="color: black; font-size: 10px;">PRODUCTS:</div>
             <a class="ui label">
-              {{lead.product_name}}
+              {{lead.product_name | uppercase}},
               <div class="detail">{{lead.quantity}}</div>
             </a>
           </div>  

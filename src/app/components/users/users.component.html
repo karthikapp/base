@@ -170,9 +170,8 @@
             <td class="mdl-data-table__cell--non-numeric">{{user.title}}</td>
             <td class="mdl-data-table__cell--non-numeric">{{user.report}}</td>
             <td class="mdl-data-table__cell--non-numeric">{{onListReportsTo(user.reports_to, user.report, user.role)}}</td>
-		    		<td>
             <td class="mdl-data-table__cell--non-numeric">{{user.region}}</td>
-            <td class="mdl-data-table__cell--non-numeric">{{user.created_at | date: 'medium'}}</td>
+            <!-- <td class="mdl-data-table__cell--non-numeric">{{user.created_at | date: 'medium'}}</td> -->
             <td>
 		    			<a (click)="editUserModal(user.userid)">
 		    				<i class="material-icons">edit</i>

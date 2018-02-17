@@ -28,8 +28,7 @@
 
           <!--Lead Title-->
           <div class="mdl-card__title">
-            <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.6vw;font-weight: bold;" 
-               >
+            <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.6vw;font-weight: bold;" [routerLink]="['/dashboard/OppoDetail', proposal.$key]" >
               {{proposal.lead_title}}  
             </a>
           </div>
@@ -105,7 +104,7 @@
             <div class="ui blue labels" align="center">
               <div class="labelspec" style="color: black; font-size: 10px;">PRODUCTS:</div>
               <a class="ui label">
-                {{proposal.product_name}}
+                {{proposal.product_name | uppercase}},
                 <div class="detail">{{proposal.quantity}}</div>
               </a>
 
@@ -264,7 +263,7 @@
                 
                 <p style="font-size: 10px;"> <span style="font-weight: bold;"> Created At: </span>{{activity.created_at  | date: 'medium'}}</p>
  -->
-<div class="ui divided selection list">
+                <div class="ui divided selection list">
                   <div class="item">
                     <div class="labelspec" style="color: black; font-size: 10px;"> Activity Type: <span style="font-size: 12px; color: blue">
                      {{getactivitytypetext(activity.activity_type)}} </span>
@@ -328,7 +327,7 @@
           </div>
         </div>
       </div>
-<br>
+      <br>
 
 
 

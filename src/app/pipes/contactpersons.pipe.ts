@@ -13,12 +13,13 @@ export class ContactpersonsPipe implements PipeTransform {
   	//When value is undefined or null or empty, set to empty as NULL or UNDEFINED is unacceptable in *ngFor
   	if (value == '' || value == null || value == undefined){ 
   		console.log('cpplist',value);
-  		return value='';
+  		return value=[];
   	};
     
     //When value is present
     let list = Object.values(value);
-    console.log('cplist',list,value);
+    let key = Object.keys(value).length
+    console.log('cplist',list,value, key);
     return list;
 }
 

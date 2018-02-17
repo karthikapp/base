@@ -98,6 +98,7 @@ import { ReportsComponent } from './components/reports/reports.component';
 import { FilterreportsPipe } from './pipes/filterreports.pipe';
 import { ReviewComponent } from './components/review/review.component';
 import { MaterializeModule } from "angular2-materialize";
+import { OppodetailComponent } from './components/oppodetail/oppodetail.component';
 
 
 const appRoutes: Routes = [
@@ -121,6 +122,7 @@ const appRoutes: Routes = [
                {path:'TeamLeads', component: TeamleadsComponent},
                {path:'TeamOpportunities', component: TeamopportunitiesComponent},
                {path:'LeadDetail/:leadid', component: LeadsdetailComponent},
+               {path:'OppoDetail/:oppoid', component: OppodetailComponent},
                {path:'Charts',component: ChartsComponent},
                {path:'ViewQLeads/:rflag/:regions/:userid/:sdate/:edate', component:ViewqualifiedleadsComponent},
                {path:'ViewPreSales/:rflag/:regions/:userid/:sdate/:edate', component:ViewpresalesComponent},
@@ -215,7 +217,8 @@ export function highchartsFactory() {
     SortascPipe,
     ReportsComponent,
     FilterreportsPipe,
-    ReviewComponent
+    ReviewComponent,
+    OppodetailComponent
   ],
   imports: [
     BrowserModule ,

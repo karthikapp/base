@@ -1,26 +1,105 @@
 <div style="padding:25px; ">
   <div class="ui card" style="width: 90%;height: 100%;padding: 10px;">
-    <div class="title" style="color: #B71C1C;font-size: 17px;font-weight: bold" *ngIf="ev">
+    <!-- REGIONS -->
+    <div class="title" style="color: #B71C1C;font-size: 17px;font-weight: bold; font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;" *ngIf="ev">
       REGIONS
     </div>
+
     <div class="content" style="padding-left: 12px;">
+      <div class = "ui stackable three column grid" style="height:70px;">
+        <div class = column>
+          <div class="title" style="color: blue;font-size: 15px;font-weight: bold; font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;">
+            TOTAL:
+          </div>
+        </div>
+
+        <div class ="column">
+          <form class="ui mini form">
+            <div class="field" style="padding: 5px;">
+              <label style="font-weight: bold; font-size: 15px;color: black; margin-bottom: 1px;">Total Count: </label>
+              <input type="text"  name="totalCount" placeholder="totalCount" [(ngModel)]="totalCount" style="padding-top:5px; padding-bottom: 5px" readonly>
+            </div>
+          </form>
+        </div>
+
+        <div class="column">
+          <form class="ui mini form">
+            <div class="field" style="padding: 5px;">
+              <label style="font-weight: bold; font-size: 15px;color: black; margin-bottom: 1px;" >Total Value: </label>
+              <input type="text"  name="totalValue" placeholder="totalValue" [(ngModel)]="totalValue" style="padding-top:5px; padding-bottom: 5px" readonly>
+            </div>
+          </form>
+        </div>
+      </div>
       <div class="ui accordion">
+        <!-- List all regions with total count and value-->
         <div *ngFor="let item of regionList">
+          
           <div class="title" (click) = "selectRegion(item)" style="color: #B71C1C;">
             <i class="dropdown icon"></i>
             {{item | uppercase }}
           </div>
           <div class="content" style="padding-left: 12px;">
+            <div class = "ui stackable three column grid" style="height:70px;" >
+              <div class = column>
+                <div class="title" style="color: blue;font-size: 15px;font-weight: bold">
+                  REGION WISE:
+                </div>
+              </div>
+              <div class ="column">
+                <form class="ui mini form">
+                  <div class="field" style="padding: 5px;">
+                    <label style="font-weight: bold; font-size: 15px;color: black; margin-bottom: 1px;">Total Count: </label>
+                    <input type="text"  name="totalCountReg" placeholder="totalCount" [(ngModel)]="totalCountReg" style="padding-top:5px; padding-bottom: 5px" readonly>
+                  </div>
+                </form>
+              </div>
+              <div class="column">
+                <form class="ui mini form">
+                  <div class="field" style="padding: 5px;">
+                    <label style="font-weight: bold; font-size: 15px;color: black; margin-bottom: 1px;" >Total Value: </label>
+                    <input type="text"  name="totalValueReg" placeholder="totalValue" [(ngModel)]="totalValueReg" style="padding-top:5px; padding-bottom: 5px" readonly>
+                  </div>
+                </form>
+              </div>
+            </div>
             <div class="ui accordion">
+              <!-- List all exceutive with region wise count and value for that particular region-->
               <div *ngFor="let executive of executivelist">
+                
                 <div class="title" (click) = "selectedexec(executive,item)">
                   <i class="dropdown icon"></i>
                   <app-assignedtonameget name="{{executive}}"> 
                   </app-assignedtonameget>
                 </div>
                 <div class="content" style="padding-left: 15px;">
+                  <div class = "ui stackable three column grid" style="height:70px;" >
+                    <div class = column>
+                      <div class="title" style="color: blue;font-size: 15px;font-weight: bold">
+                        EXECUTIVE WISE:
+                      </div>
+                    </div>
+                    <div class ="column">
+                      <form class="ui mini form">
+                        <div class="field" style="padding: 5px;">
+                          <label style="font-weight: bold; font-size: 15px;color: black; margin-bottom: 1px;">Total Count: </label>
+                          <input type="text"  name="totalCountExec" placeholder="totalCount" [(ngModel)]="totalCountExec" style="padding-top:5px; padding-bottom: 5px" readonly>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="column">
+                      <form class="ui mini form">
+                        <div class="field" style="padding: 5px;">
+                          <label style="font-weight: bold; font-size: 15px;color: black; margin-bottom: 1px;" >Total Value: </label>
+                          <input type="text"  name="totalValueExec" placeholder="totalValue" [(ngModel)]="totalValueExec" style="padding-top:5px; padding-bottom: 5px" readonly>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
                   <div class="ui accordion">
+                    <!-- List all opportunities for that executive and region with total count and value-->
                     <div *ngFor="let opportunity of exec_wiseopportunity">
+                      
                       <div class="title">
                         <i class="dropdown icon"></i>
                         {{opportunity.lead_title | uppercase }}
@@ -29,12 +108,12 @@
                         <h4> Status :  {{getstatus(opportunity.opportunity_state)}}</h4>
                         <table class="ui celled padded table">
                           <thead>
-                            <tr><th class="single line">Account</th>
+                            <tr>
+                              <th class="single line">Account</th>
                               <th>Product</th>
                               <th>Quantity</th>
                               <th>Price</th>
                               <th>Activities</th>
-                              <th>Remarks</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -46,90 +125,64 @@
                                 {{opportunity.product_name}}
                               </td>
                               <td class="single line">
-                               {{opportunity.quantity}}
-                             </td>
-                             <td class="right aligned">
-                              {{opportunity.value}}
-                            </td>
-                            <td>{{getnooffollowups(opportunity.opportunity_activities)}}</td>
-                            <td>
-                              <input type="text" name="remarks" placeholder="Remarks" [(ngModel)]="remarks"> 
-                              <i class="large material-icons icon-blue" (click)="submit_remarks(remarks,opportunity.sourceleadid)">check_box</i>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
+                                {{opportunity.quantity}}
+                              </td>
+                              <td class="right aligned">
+                                {{opportunity.value}}
+                              </td>
+                              <td>
+                                {{getnooffollowups(opportunity.opportunity_activities)}}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
 
-                  <div class = "ui stackable three column grid" style="height:70px;" >
-                    <div class = column>
-                      <div class="title" style="color: blue;font-size: 15px;font-weight: bold">
-                        EXECUTIVE WISE:
+                        <div class="ui stackable three column grid">
+                          <div class="row">
+                            <div class ="column" style =" width: 103px;padding-top: 10px;padding-left: 10px;">
+                              <label style="font-weight: bold; font-size: 17px;color: black; margin-bottom: 1px;" >Review: </label>
+                            </div>
+                            <div class="column">
+                              <div class="ui input">
+                                <input type="text" name="reviews" placeholder="Reviews" [(ngModel)]="reviews" style="height: 34px;width: 256px;"> 
+                              </div>
+                            </div>
+                            <div class="column">
+                              <button class="ui blue button" [disabled]="reviews==''" (click)="submit_reviews(reviews,opportunity.sourceleadid)">SUBMIT
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="title" (click) = "selectedexecReview(opportunity.sourceleadid)" style="color: #B71C1C;"> 
+                          <i class="dropdown icon"></i>
+                          REVIEW HISTORY
+                        </div>
+                        <div class="content" style="padding-left: 15px;">
+                          <div class="ui accordion">
+                            <!-- List review history-->
+                            <div *ngFor="let ac of execreview_wiseopportunity">
+                              <div *ngFor ="let actv of ac.reviews| contactpersons">
+                                <h6 style="color: blue;margin-top: 0px;margin-bottom: 0px; font-weight: bold">{{actv.reviewsdtl}}</h6>
+                                <p style="font-size: 12px;"> 
+                                  <app-assignedtonameget name="{{actv.created_by}}"> </app-assignedtonameget>
+                                  <br>
+                                  {{actv.created_at | date: 'medium' }}
+                                </p>
+                                <div class="ui divider"> </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <div class ="column">
-                      <form class="ui mini form">
-
-                        <div class="field" style="padding: 5px;">
-                          <label style="font-weight: bold; font-size: 15px;color: black; margin-bottom: 1px;">Total Count: </label>
-                          <input type="text"  name="totalCountExec" placeholder="totalCount" [(ngModel)]="totalCountExec" style="padding-top:5px; padding-bottom: 5px" readonly>
-                        </div>
-                        
-                      </form>
-                    </div>
-
-                    <div class="column">
-                      <form class="ui mini form">
-
-                        <div class="field" style="padding: 5px;">
-                          <label style="font-weight: bold; font-size: 15px;color: black; margin-bottom: 1px;" >Total Value: </label>
-                          <input type="text"  name="totalValueExec" placeholder="totalValue" [(ngModel)]="totalValueExec" style="padding-top:5px; padding-bottom: 5px" readonly>
-                        </div>
-
-                      </form>
-                    </div>
                   </div>
-
                 </div>
               </div>
             </div>
-
-            <div class = "ui stackable three column grid" style="height:70px;" >
-              <div class = column>
-                <div class="title" style="color: blue;font-size: 15px;font-weight: bold">
-                  REGION WISE:
-                </div>
-              </div>
-              <div class ="column">
-                <form class="ui mini form">
-
-                  <div class="field" style="padding: 5px;">
-                    <label style="font-weight: bold; font-size: 15px;color: black; margin-bottom: 1px;">Total Count: </label>
-                    <input type="text"  name="totalCountReg" placeholder="totalCount" [(ngModel)]="totalCountReg" style="padding-top:5px; padding-bottom: 5px" readonly>
-                  </div>
-
-                </form>
-              </div>
-
-              <div class="column">
-                <form class="ui mini form">
-
-                  <div class="field" style="padding: 5px;">
-                    <label style="font-weight: bold; font-size: 15px;color: black; margin-bottom: 1px;" >Total Value: </label>
-                    <input type="text"  name="totalValueReg" placeholder="totalValue" [(ngModel)]="totalValueReg" style="padding-top:5px; padding-bottom: 5px" readonly>
-                  </div>
-
-                </form>
-              </div>
-            </div>
-
           </div>
         </div>
-
       </div>
-      
-
     </div>
   </div>
 </div>

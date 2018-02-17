@@ -29,8 +29,9 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
   region_wiseopportunity: any;
   executivelist: any;
   exec_wiseopportunity: any;
+  execreview_wiseopportunity: any;
   followupno: any;
-  remarks: any;
+  reviews: any;
 
   uid: any;
   ev: boolean = false;
@@ -52,12 +53,14 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
   execarrayvalue: any;
   execarraylist: any;
 
+  regarrayvalue:any;
+  regarraylist: any;
   constructor(private firebaseservice : FirebaseService, 
     private router: Router, private afAuth: AngularFireAuth) { }
 
   ngOnInit() {
 
-  	this.remarks =''; 
+  	this.reviews =''; 
     this.selected = '';
     this.executivelist = '';
     this.created_at = this.firebaseservice.created_at;
@@ -100,8 +103,8 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
               this.opportunities.forEach(el => {
                 regionlistall.push(el.region)
               })
-              this.regionList = this.unique(regionlistall)
-
+              this.regionList = this.unique(regionlistall);
+              this.totalCountValueAll(this.opportunities);
               console.log("oppo",this.opportunities)
               
             })
@@ -116,8 +119,8 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
             this.opportunities.forEach(el => {
               regionlistall.push(el.region)
             })
-            this.regionList = this.unique(regionlistall)
-            
+            this.regionList = this.unique(regionlistall);
+            this.totalCountValueAll(this.opportunities);   
           })
           return this.ev = true;
         }
@@ -150,21 +153,21 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
     return a;
   }
 
-  submit_remarks(remarks: string, oppoid: any){
-    console.log("remarks",remarks, oppoid)
+  submit_reviews(reviews: string, oppoid: any){
+    console.log("reviews",reviews, oppoid)
 
-    if(remarks != '')
+    if(reviews != '')
     {
       console.log("hello");
-      let remarksObject ={
-        remarks_id : '',
-        remarksdtl : remarks,
+      let reviewsObject ={
+        reviews_id : '',
+        reviewsdtl : reviews,
         created_by: this.uid,
         created_at: this.created_at
       }
-      this.firebaseservice.addRemarks(remarksObject, oppoid);
+      this.firebaseservice.addReviews(reviewsObject, oppoid);
 
-      this.remarks = '';
+      this.reviews = '';
     }
   }
 
@@ -192,6 +195,8 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
     this.totalCountValueReg(this.region_wiseopportunity);
 
   }
+
+
 
   getnooffollowups(leadactivities) {
     if (leadactivities == undefined){
@@ -272,11 +277,30 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
     
   }
 
-  totalCountValueReg(arr){
+  selectedexecReview( source_leadid){
+    console.log("exec", source_leadid)
+    this.execreview_wiseopportunity = []
+   
+    // var opportunitylistall = []
+    var reviews = [];
+
+    this.execreview_wiseopportunity = this.opportunities
+    .filter(
+      r => {
+        return (
+         r.sourceleadid == source_leadid)
+      })
+ 
+    //this.executivelist = this.unique(execlistall)
+    console.log("exec",this.execreview_wiseopportunity)
+    
+  }
+
+  totalCountValueAll(arr){
     this.arraylist = [];
     this.arrayvalue = [];
 
-    this.totalCountReg = Object.keys(arr).length;
+    this.totalCount = Object.keys(arr).length;
 
     arr.forEach(element => {
       this.arrayvalue.push(element.value);
@@ -284,7 +308,29 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
     })
                   
     this.arraylist = this.arrayvalue
-    this.totalValueReg = this.arraylist.reduce((a, b) => a + b, 0);
+    this.totalValue = this.arraylist.reduce((a, b) => a + b, 0);
+    if(this.totalValue == undefined || isNaN(this.totalValue)) {
+      this.totalValue = 0;
+    }
+
+    this.totalValue = parseFloat(this.totalValue);
+
+    console.log("total",arr, this.totalValue)
+  }
+
+  totalCountValueReg(arr){
+    this.regarraylist = [];
+    this.regarrayvalue = [];
+
+    this.totalCountReg = Object.keys(arr).length;
+
+    arr.forEach(element => {
+      this.regarrayvalue.push(element.value);
+      this.regarraylist.push(element);
+    })
+                  
+    this.regarraylist = this.regarrayvalue
+    this.totalValueReg = this.regarraylist.reduce((a, b) => a + b, 0);
     if(this.totalValueReg == undefined || isNaN(this.totalValueReg)) {
       this.totalValueReg = 0;
     }

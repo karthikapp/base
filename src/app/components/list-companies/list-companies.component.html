@@ -39,33 +39,33 @@
         </div>
 
         <!--Company Address-->
-        <p style="font-size: 12px;" pattern="[a-zA-Z0-9]+$">  
-            {{acct.company_address_line1}}
+        <p style="font-size: 12px;">  
+            {{getAddressline1(acct.company_address_line1)}}
           <br>
-            {{acct.company_address_line2}},
+          {{getAddress(acct.company_address_line2, acct.company_address_area, acct.company_address_state, acct.company_address_pincode)}}
+            <!-- {{acct.company_address_line2}},
             {{acct.company_address_area}},   
             {{acct.company_address_state}},
-            {{acct.company_address_pincode}}
-          
+            {{acct.company_address_pincode}}   -->
         </p>
 
         <!--Company type, Industry type, Employee Count, Contact Person Count -->
         <div class = "ui stackable four column grid">
 
           <div class = "column">
-            <a class="ui blue label">{{acct.companytype}}</a><br>
+            <a class="ui blue label">{{getStringValue(acct.companytype)}}</a><br>
             <span class="labelspec" style="color: black; font-size: 10px;font-weight: bold">COMPANY TYPE</span>
           </div>
 
           <div class = "column">
-            <a class="ui black label">{{acct.industrytype}} </a><br>
+            <a class="ui black label">{{getStringValue(acct.industrytype) }} </a><br>
             <span class="labelspec" style="color: black; font-size: 10px;">INDUSTRY TYPE</span>
           </div>
 
           <div class = "column">
             <div class="ui mini blue statistic">
               <div class="value" style=" font-weight: bold;">
-                {{acct.employee_count}}
+                {{getStringValue(acct.employee_count)}}
               </div>
               <div class="labelspec" style="color: black; font-size: 10px;">EMPLOYEES</div>
             </div>

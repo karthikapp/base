@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FirebaseService } from "../../services/firebase.service";
 import { Router, ActivatedRoute } from '@angular/router';
 import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
@@ -9,7 +9,7 @@ import "rxjs/add/operator/takeWhile";
   templateUrl: './leadsdetail.component.html',
   styleUrls: ['./leadsdetail.component.css']
 })
-export class LeadsdetailComponent implements OnInit {
+export class LeadsdetailComponent implements OnInit, OnDestroy {
 
   leads: any;
   
@@ -125,7 +125,9 @@ export class LeadsdetailComponent implements OnInit {
             if (v.report.toUpperCase() == 'REPORTER'
               || v.report.toUpperCase() == 'RECIPIENT'
               || v.title.toUpperCase() == 'PRE-SALES HEAD'
-              || v.role.toUpperCase() == 'MASTER')
+              || v.role.toUpperCase() == "PRESALES"
+              || v.role.toUpperCase() == "MASTER"
+              || v.role.toUpperCase() == "INSIDE SALES")
             {
               this.firebaseservice.getLeadsByKey(this.leadid)
               .takeWhile(() => this.alive)

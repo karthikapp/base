@@ -93,6 +93,8 @@
                       </tr>
             				</thead>
 
+                
+                      
             				<tbody *ngFor="let cntct of contact_persons | contactpersons">
             				<tr>
                      
@@ -158,7 +160,9 @@
                       </td>
 
                     </tr>
+                    
             			</tbody>
+                  
 
                   <tbody>
                     <tr *ngFor="let cntct of contact_person">
@@ -229,7 +233,7 @@
 
           			</table>
                
-                <button class="ui teal button" [disabled]="editcompanybuttonshow()" (click)="save_contact_persons()">Save Company</button>
+                <button class="ui teal button" [disabled]="editcompanybuttonshow()" (click)="save_contact_persons()">Update</button>
            
                 &nbsp;
                 <button class="ui red button" (click)="cancel_contact_persons()">Cancel</button>     		

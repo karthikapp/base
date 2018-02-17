@@ -9,7 +9,7 @@ import "rxjs/add/operator/takeWhile";
   templateUrl: './reports.component.html',
   styleUrls: ['./reports.component.css']
 })
-export class ReportsComponent implements OnInit {
+export class ReportsComponent implements OnInit, OnDestroy {
 
   v: any;
   u: any;
@@ -243,5 +243,8 @@ export class ReportsComponent implements OnInit {
      }
    }
 
+ngOnDestroy() {
+    this.alive = false;
+  }
 
 }

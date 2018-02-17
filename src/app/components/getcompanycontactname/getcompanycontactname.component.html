@@ -1,5 +1,5 @@
 <div *ngFor="let cntct of contacts">
 	
-		<p style="font-size: 14px;"> {{cntct.contact_person_name}} - {{cntct.contact_person_mobile}} </p>
+		<p style="font-size: 14px;"> {{(cntct.contact_person_name ? cntct.contact_person_name : 'NA') | uppercase }} - {{cntct.contact_person_mobile ? cntct.contact_person_mobile : 'NA' }} </p>
 
 </div>

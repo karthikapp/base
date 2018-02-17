@@ -231,16 +231,23 @@ delete_contact_person_id: string;
     //console.log('keys',Object.keys(contact_persons).length,Object.values(contact_person).length)
     //console.log('editcompanies',this.company_id,account,contact_persons,contact_person)
 
-     this.firebaseservice.saveAccount(this.company_id,account,contact_persons,contact_person)
-
-     
-
-     this.route.navigate(['/dashboard/ListCompanies'])
+     this.firebaseservice.saveAccount(this.company_id,account,contact_persons,contact_person).then(success => {
+       alert("Updated Successfully");  
+       this.route.navigate(['/dashboard/ListCompanies']);
+       })
+     .catch( error => {
+       alert("ERROR");
+       console.log(error);
+     })
     }
 
   //if there is no update and Cancel button is pressed, redirect to List companies page
   cancel_contact_persons(){
     this.route.navigate(['/dashboard/ListCompanies']);
+  }
+
+  checkContact(cntct: any[]): boolean{
+    return (cntct.length > 0) ? true : false;
   }
 
   remove_contact_persons(cntct){
@@ -252,8 +259,6 @@ delete_contact_person_id: string;
     this.delete_contact_person_id = cntct;
      console.log("removecntct", this.delete_contact_person_id)
      this.firebaseservice.removeCntctPerson(this.company_id, this.delete_contact_person_id)
-
-
   }
 
   //Add contact persons for the existing customer

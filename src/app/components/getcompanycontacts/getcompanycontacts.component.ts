@@ -13,6 +13,7 @@ export class GetcompanycontactsComponent implements OnInit {
   text: any;
   contactlist: any;
   contactslength: any;
+  contacts: any;
 
   constructor(public afDB: FirebaseService ) {
    
@@ -23,7 +24,7 @@ export class GetcompanycontactsComponent implements OnInit {
     this.text = this.companyid;
     console.log(this.text)
     let contactslist = []
-    this.afDB.getAccount(String(this.companyid)).subscribe( (v) => 
+    this.afDB.getContactbyAccount(String(this.companyid)).subscribe( (v) => 
     {
         if (v == null){
           console.log("null detected")
@@ -31,7 +32,8 @@ export class GetcompanycontactsComponent implements OnInit {
         }
         else {
           console.log("non null value",v)
-          this.contactslength = Object.keys(v).length
+          this.contacts = v;
+          this.contactslength = Object.keys(this.contacts).length
         }
     })
   }

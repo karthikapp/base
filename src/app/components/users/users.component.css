@@ -1,9 +1,16 @@
 .mdl-data-table 
 th{
 	text-align: left !important;
+	font-weight: bold;
+	font-size: 17px;
+	color: black;
+	background-color: #e0f2f1 
 }
 td{
 	text-align: left !important;
+	padding-bottom: 1px;
+	padding-top: 1px;
+	font-size: 16px;
 }
 
 .ui.form input:not([type]), .ui.form input[type=text], .ui.form input[type=email], .ui.form input[type=search], .ui.form input[type=password], .ui.form input[type=date], .ui.form input[type=datetime-local], .ui.form input[type=tel], .ui.form input[type=time], .ui.form input[type=url], .ui.form input[type=number] {

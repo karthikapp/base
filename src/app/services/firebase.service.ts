@@ -146,7 +146,16 @@ export class FirebaseService {
 				}
 			}
 		}
-		return contactpersonData;
+		if(addcontactpersonData1 != undefined)
+		{
+			return addcontactpersonData1;
+		}
+		else if(contactpersonData != undefined){
+			return contactpersonData;
+		}
+		else{
+			return companyData;
+		}
 	}
 
 	//Add company and contact information from AddCompaniesComponent
@@ -543,6 +552,12 @@ export class FirebaseService {
 		} })
 	}
 
+	//Get Opportunities by Opportunity Key
+	getOpportunitiesByKey(oppoid: string){
+		let oppoURL = '/opportunities/' + oppoid;
+		return this.af.object(oppoURL);
+	}
+
 	//Get Opportunities based on user id
 	getOpportunitiesByID(userid: string){
 		return this.af.list('/opportunities', 
@@ -598,16 +613,16 @@ export class FirebaseService {
 		});
     }
 
-    //Oppo Add Remarks
-    addRemarks(remarksObject: {remarks_id : any,
-        remarksdtl : any,
+    //Oppo Add Reviews
+    addReviews(reviewsObject: {reviews_id : any,
+        reviewsdtl : any,
         created_by: any,
         created_at: any}, oppoid){
-    	var opporemURL = '/opportunities/' + oppoid + "/remarks";
-		var opporemData = this.af.list(opporemURL).push(remarksObject);
+    	var opporemURL = '/opportunities/' + oppoid + "/reviews";
+		var opporemData = this.af.list(opporemURL).push(reviewsObject);
 		var opporemid = opporemData.key;
-		var opporemid_URL1 = '/opportunities/' + oppoid + '/remarks/' + opporemid;
-		var opporemData1 = this.af.object(opporemid_URL1).update({'remarks_id': opporemid});
+		var opporemid_URL1 = '/opportunities/' + oppoid + '/reviews/' + opporemid;
+		var opporemData1 = this.af.object(opporemid_URL1).update({'reviews_id': opporemid});
 
 		return opporemData1;
     }

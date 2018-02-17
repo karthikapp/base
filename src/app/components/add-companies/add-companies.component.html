@@ -150,7 +150,7 @@
                 		</tr>
             			</tbody>
           			</table>
-                <button class="ui teal button" [disabled]="company_name=='' || contact_person_name == ''" (click)="add_contact_persons()">Add Customer</button>
+                <button class="ui teal button" [disabled]="company_name==''" (click)="add_contact_persons()">Add Customer</button>
                 &nbsp;
                 <button class="ui red button" (click)="cancel_contact_persons()">Cancel</button>
   				    </div>
