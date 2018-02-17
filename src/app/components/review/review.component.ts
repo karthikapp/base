@@ -156,8 +156,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
   submit_reviews(reviews: string, oppoid: any){
     console.log("reviews",reviews, oppoid)
 
-    if(reviews != '')
-    {
+
       console.log("hello");
       let reviewsObject ={
         reviews_id : '',
@@ -168,7 +167,6 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
       this.firebaseservice.addReviews(reviewsObject, oppoid);
 
       this.reviews = '';
-    }
   }
 
   ngAfterViewInit() 
@@ -260,6 +258,16 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
     this.exec_wiseopportunity = []
     console.log(item)
     // var opportunitylistall = []
+
+    // this.exec_wiseopportunity = this.opportunities
+    // .filter(
+    //   r => {
+    //     return (
+    //      r.opportunity_assignedto == exec &&
+    //      r.region == item &&
+    //      r.opportunity_state != 'Case_lost' &&
+    //      r.opportunity_state != 'Case_won')
+    //   })
  
     for (var i = 0; i < this.opportunities.length; i++) 
     {
