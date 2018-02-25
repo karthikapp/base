@@ -5,11 +5,20 @@
       REGIONS
     </div>
 
+  
     <div class="content" style="padding-left: 12px;">
-      <div class = "ui stackable three column grid" style="height:70px;">
+      <div class="title" style="color: blue;font-size: 15px;font-weight: bold; font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;" >
+            TOTAL Of {{totalCount}} Cases (&#8377;{{totalValue}}) 
+            | Review Complete: {{reviewComplete}} (&#8377;{{reviewCompleteValue1}}) 
+            | Live: {{liveReview}} (&#8377;{{liveReviewValue1}}) | Lapsed: {{lapsedReview}} (&#8377;{{lapsedReviewValue1}}) | Un-Reviewed: {{unReview}} (&#8377;{{unReviewValue1}})
+      </div>
+  
+    
+
+      <!-- <div class = "ui stackable three column grid" style="height:70px;">
         <div class = column>
           <div class="title" style="color: blue;font-size: 15px;font-weight: bold; font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;">
-            TOTAL:
+            TOTAL Of {{totalCount}} Cases ( {{totalValue}} ) | Reviewed | Live | Lapsed | Un-Reviewed
           </div>
         </div>
 
@@ -30,17 +39,21 @@
             </div>
           </form>
         </div>
-      </div>
+      </div> -->
+      
       <div class="ui accordion">
         <!-- List all regions with total count and value-->
-        <div *ngFor="let item of regionList">
+        <div *ngFor="let item of regList">
           
           <div class="title" (click) = "selectRegion(item)" style="color: #B71C1C;">
             <i class="dropdown icon"></i>
-            {{item | uppercase }}
+            {{item.region | uppercase }} | {{item.totalCountReg}} Cases (&#8377;{{item.totalValueReg}}) | Review Complete: {{item.reviewCompleteR}} (&#8377;{{item.reviewCompleteRV1}}) 
+            | Live: {{item.liveReviewR}} (&#8377;{{item.liveReviewRV1}}) | Lapsed: {{item.lapsedReviewR}} (&#8377;{{item.lapsedReviewRV1}}) | Un-Reviewed: {{item.unReviewR}} (&#8377;{{item.unReviewRV1}})
+            <!-- | Review Complete: {{item.reviewCompleteReg}} (&#8377;{{item.reviewCompleteRegValue1}}) 
+            | Live: {{item.liveReviewReg}} (&#8377;{{item.liveReviewRegValue1}}) | Lapsed: {{item.lapsedReviewReg}} (&#8377;{{item.lapsedReviewRegValue1}}) | Un-Reviewed: {{item.unReviewReg}} (&#8377;{{item.unReviewRegValue1}}) -->
           </div>
           <div class="content" style="padding-left: 12px;">
-            <div class = "ui stackable three column grid" style="height:70px;" >
+            <!-- <div class = "ui stackable three column grid" style="height:70px;" >
               <div class = column>
                 <div class="title" style="color: blue;font-size: 15px;font-weight: bold">
                   REGION WISE:
@@ -62,7 +75,7 @@
                   </div>
                 </form>
               </div>
-            </div>
+            </div> -->
             <div class="ui accordion">
               <!-- List all exceutive with region wise count and value for that particular region-->
               <div *ngFor="let executive of executivelist">
@@ -102,7 +115,7 @@
                       
                       <div class="title">
                         <i class="dropdown icon"></i>
-                        {{opportunity.lead_title | uppercase }}
+                        {{opportunity.lead_title | uppercase }} , Value: {{opportunity.value}}
                       </div>
                       <div class="content" style="padding-left: 12px;">
                         <h4> Status :  {{getstatus(opportunity.opportunity_state)}}</h4>
@@ -137,7 +150,7 @@
                           </tbody>
                         </table>
 
-                        <div class="ui stackable three column grid">
+                        <div class="ui stackable two column grid">
                           <div class="row">
                             <div class ="column" style =" width: 75px;padding-top: 10px;padding-left: 10px;">
                               <label style="font-weight: bold; font-size: 17px;color: black; margin-bottom: 1px;" >Review: </label>
@@ -147,30 +160,42 @@
                                 <input type="text" name="reviews" placeholder="Review" [(ngModel)]="reviews" style="height: 34px;width: 400px;"> 
                               </div>
                             </div>
+                          </div>
+                        </div>
+                        <div class="ui stackable three column grid">
+                          <div class="row">
                             <div class="column">
-                              <button class="ui blue button" [disabled]="reviews==''" (click)="submit_reviews(reviews,opportunity.sourceleadid)">SUBMIT
+                              <label style="font-weight: bold; font-size: 17px;color: black; margin-bottom: 1px;" >Next Review Date: </label>
+                              <input [(ngModel)]="next_review_date" type="datetime-local" name="next_review_date" style="height: 29px;width: 137px;padding-left: 2px;padding-right: 2px;"/>
+                            </div>
+                            <div class="column">
+                              <label style="font-weight: bold; font-size: 17px;color: black; margin-bottom: 1px;" >Feedback: </label>
+                              <lsu-rating [(ngModel)]="rating" [maxRating]="'5'" [type]="'star'" [size]="'huge'"></lsu-rating>
+                            </div>
+                            <div class="column">
+                              <button class="ui blue button" [disabled]="reviews==''" (click)="submit_reviews(reviews,opportunity.$key)">SUBMIT
                               </button>
                             </div>
                           </div>
                         </div>
-
-                        <div class="title" (click) = "selectedexecReview(opportunity.sourceleadid)" style="color: #B71C1C;"> 
+                        <div class="ui accordion">
+                        <div class="title"  (click) = "selectedexecReview(opportunity.$key)" style="color: #B71C1C;"> 
                           <i class="dropdown icon"></i>
                           REVIEW HISTORY
                         </div>
                         <div class="content" style="padding-left: 15px;">
-                          <div class="ui accordion">
-                            <!-- List review history-->
-                            <div *ngFor="let ac of execreview_wiseopportunity">
-                              <div *ngFor ="let actv of ac.reviews| contactpersons">
-                                <h6 style="color: blue;margin-top: 0px;margin-bottom: 0px; font-weight: bold">{{actv.reviewsdtl}}</h6>
-                                <p style="font-size: 12px;"> 
-                                  <app-assignedtonameget name="{{actv.created_by}}"> </app-assignedtonameget>
-                                  <br>
-                                  {{actv.created_at | date: 'medium' }}
-                                </p>
-                                <div class="ui divider"> </div>
-                              </div>
+
+                          <!-- List review history-->
+                        
+                        <div *ngFor="let actv of execreview_wiseopportunity | contactpersons | sortorder">
+                           
+                              <h6 style="color: blue;margin-top: 0px;margin-bottom: 0px; font-weight: bold">{{actv.reviewsdtl}}</h6>
+                              <p style="font-size: 12px;"> 
+                                <app-assignedtonameget name="{{actv.created_by}}"> </app-assignedtonameget>
+                                <br>
+                                {{actv.created_at | date: 'medium' }}
+                              </p>
+                              <div class="ui divider"> </div>
                             </div>
                           </div>
                         </div>

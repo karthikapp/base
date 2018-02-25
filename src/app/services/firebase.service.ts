@@ -613,9 +613,11 @@ export class FirebaseService {
 		});
     }
 
-    //Oppo Add Reviews
+    //Opportunities Add Reviews
     addReviews(reviewsObject: {reviews_id : any,
         reviewsdtl : any,
+        next_review_date: any,
+        ratings: any,
         created_by: any,
         created_at: any}, oppoid){
     	var opporemURL = '/opportunities/' + oppoid + "/reviews";
@@ -626,6 +628,19 @@ export class FirebaseService {
 
 		return opporemData1;
     }
+
+    //Opportunities View Reviews
+    viewReview(oppoid){
+    	var opporemURL1 = '/opportunities/'+ oppoid +'/reviews';
+    	var opporemData1 = this.af.list(opporemURL1,{query:
+    		{
+    			orderByChild: 'created_at'
+    		}
+    	})
+    	
+    	return opporemData1
+    }
+
     //End's here
 //END Leads and Opportunities
 

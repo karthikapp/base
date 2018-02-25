@@ -7,6 +7,7 @@ import { L_SEMANTIC_UI_MODULE, TAB_DIRECTIVES } from 'angular2-semantic-ui'; // 
 import { NgxPaginationModule } from 'ngx-pagination'; // <-- pagination module
 import { MomentModule } from 'angular2-moment'; // <-- Date & time Format
 import { HttpModule } from '@angular/http'; //<--Http Module
+import { RATING_DIRECTIVES } from 'angular2-semantic-ui'
 
 //Firebase Modules
 import { FirebaseService} from "./services/firebase.service";
