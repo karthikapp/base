@@ -1,5 +1,5 @@
-<div style="padding:25px; ">
-  <div class="ui card" style="width: 90%;height: 100%;padding: 10px;">
+<div class="main"> 
+ <div class="ui card" style="overflow-y: scroll;width: 100%;height: 100%;padding: 5px;">
     <!-- REGIONS -->
     <div class="title" style="color: #B71C1C;font-size: 17px;font-weight: bold; font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;" *ngIf="ev">
       REGIONS
@@ -7,286 +7,336 @@
 
 
 <!--Modal for adding a new Product-->
+
   <lsu-modal [(ngModel)]="addReviewModal_flag" [options]="modalOptions" align="center" >
-  
+    <div class="lsu-modal" style="overflow-y: scroll;width: 100%;height: 100%;padding: 10px;top:100px;height: 500px;">
+      <div class="ui active dimmer" *ngIf="isLoading">
+      <div class="ui text loader">Calculating...</div>
+    </div>
       <div class="header">
         <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.6vw;font-weight: bold;">
-          {{lead_title}}  
-          <!-- <p style="font-size: 12px;"> 
-            {{company_name}}
-            <br>
-            {{edc | amTimeAgo}}
-          </p> -->
-        </a>
-      </div>
-
-         <!--  <div class="ui stackable two column grid">
-            <!--Company Name & Created Date -->
-            <!-- <div class= "column">
-              
+            {{lead_title}} </a> 
+          <div class="ui two column grid">
+            <div class ="column">
+              <p style="font-size: 14px;"> 
+                {{company_name}}
+              </p>
             </div>
-
-            <div class="column">
+            <div class ="column">
               <div class="ui red statistic">
                 <div class="value" style="text-transform: uppercase;">
-                  {{bom.edc | amTimeAgo}}
-               <br>
-               <span style="font-size: 0.7rem; color: grey;">
-                  {{bom.edc | date: 'longDate'}} </span>
+                  {{edc | amTimeAgo}}
+                  <br>
+                  <span style="font-size: 0.7rem; color: grey;">
+                  {{edc | date: 'longDate'}} </span>
                 </div>
 
-                <div class="label" style="color: black; font-size: 10px;text-align: center;">EDC</div>
+                <div class="label" style="color: black; font-size: 10px;text-align: center;">EDC 
+                </div>
               </div>
-            </div></div> --> 
-  
+            </div>
+          </div>
+        </div> 
+
       <div class="description">
       <br>
 
-      </div>
-      <!-- <div class="ui divider"></div>
-
-            
-            <div class="title"  style="color: purple; font-size: 15px; font-weight: bold" (click)="showContentActivOppo(bom)"> 
-              <i class="dropdown icon"></i>
-              ACTIVITIES/ UPCOMING/ REMARKS:    
-            </div>
-     
-            <div class="content" *ngIf="bom.isActivOpen" >
-              <div class="title"  style="color: purple; font-size: 13px; font-weight: bold"> OPPORTUNITIES ACTIVITIES </div>
-    
-                <div class="segment" *ngFor = "let actv of bom.opportunity_activities | contactpersons">
-                  <div class="ui divided selection list">
-                    <div class="item">
-                      <div class="labelspec" style="color: black; font-size: 10px;">Activity Type: 
-                        <span style="font-size: 12px; color: blue">{{getactivitytypetext(actv.activity_type)}}</span>
-                        
-                      </div>
-                    </div>
-                    <div class="item">
-                      <div class="labelspec" style="color: black; font-size: 10px;">Created By: 
-                        <span style="font-size: 12px; color: blue"><app-assignedtonameget name="{{actv.activity_created_by}}"> </app-assignedtonameget></span> 
-                      </div>
-                    </div>
-                    <div class="item">
-                      <div class="labelspec" style="color: black; font-size: 10px;">Created At: 
-                        <span style="font-size: 12px; color: blue">{{actv.created_at | amTimeAgo }} </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="labelspec" style="color: black; font-size: 10px;"> Stage: <span style="font-size: 12px; color: teal">
-                   {{returnopportunitystate(actv.opportunity_stage)}} </span>
-                  </div>
-
-
-               
-
-                <app-reversegeocoder lat="{{actv.latitude}}" long="{{actv.longitude}}"></app-reversegeocoder> 
-            
-                <div *ngIf="actv.activity_type == 'phonecall'">
-                  <p style="font-size: 12px;"> <span style="font-weight: bold;"> Call Date : </span>{{actv.phonecallDate | date: 'longDate'}}</p>
-                </div>
-                <div *ngIf="actv.activity_type == 'onsitevisit'">
-                  <p style="font-size: 12px;"> <span style="font-weight: bold;"> Visit Date : </span>{{actv.visitDate | date: 'longDate' }}</p>
-                </div>
-                <div *ngIf="actv.activity_type == 'presentation'">
-                  <p style="font-size: 12px;"> <span style="font-weight: bold;"> Presentation Date : </span>{{actv.presentationDate | date: 'longDate' }}</p>
-                </div>
-                <div *ngIf="actv.activity_type == 'solutiondocumenting'">
-                  <p style="font-size: 12px;"> <span style="font-weight: bold;"> Documenting Date : </span>{{actv.solutiondocumentingDate | date: 'longDate' }}</p>
-                </div>
-
-                <div *ngIf="actv.activity_type == 'poc'">
-                  <p style="font-size: 12px;"> <span style="font-weight: bold;"> POC Start Date : </span>{{actv.pocstartDate | date: 'longDate' }}</p>
-                </div>
-                <div *ngIf="actv.activity_type == 'poc'">
-                  <p style="font-size: 12px;"> <span style="font-weight: bold;"> POC End Date : </span>{{actv.pocendDate | date: 'longDate' }}</p>
-                </div>
-                <div *ngIf="actv.activity_type == 'poc'">
-                  <p style="font-size: 12px;"> <span style="font-weight: bold;"> POC Sign Off : </span>{{actv.poc_signoff }}</p>
-                </div>
-
-                <div *ngIf="actv.activity_type == 'demo'">
-                  <p style="font-size: 12px;"> <span style="font-weight: bold;"> POC Start Date : </span>{{actv.demostartDate | date: 'longDate' }}</p>
-                </div>
-                <div *ngIf="actv.activity_type == 'demo'">
-                  <p style="font-size: 12px;"> <span style="font-weight: bold;"> POC End Date : </span>{{actv.demoendDate| date: 'longDate' }}</p>
-                </div>
-                <div *ngIf="actv.activity_type == 'demo'">
-                  <p style="font-size: 12px;"> <span style="font-weight: bold;"> POC Sign Off : </span>{{actv.demo_signoff }}</p>
-                </div>
-
-                <div *ngIf="actv.activity_type == 'onsitevisit'">
-                  <span style="font-size: 12px;font-weight: bold;"> Visit Remarks : </span>
-                  <p>{{actv.visitremarks}}</p>
-                </div>
-                <div *ngIf="actv.activity_type == 'phonecall'">
-                  <span style="font-size: 12px;font-weight: bold;"> Call Remarks :</span>
-                  <p>{{actv.phonecallremarks}}</p>
-                </div>
-
-                <div *ngIf="actv.activity_type == 'presentation'">
-                  <span style="font-size: 12px;font-weight: bold;"> Presentation Remarks :</span>
-                  <p>{{actv.presentationremarks}}</p>
-                </div>
-
-                <div *ngIf="actv.activity_type == 'solutiondocumenting'">
-                  <span style="font-size: 12px;font-weight: bold;"> Solution Documenting Remarks :</span>
-                  <p>{{actv.solutiondocumentingremarks}}</p>
-                </div>
-                <div *ngIf="actv.activity_type == 'poc'">
-                  <span style="font-size: 12px;font-weight: bold;"> POC Remarks :</span>
-                  <p>{{actv.pocremarks}}</p>
-                </div>
-                <div *ngIf="actv.activity_type == 'demo'">
-                  <span style="font-size: 12px;font-weight: bold;"> Demo Remarks :</span>
-                  <p>{{actv.demoremarks}}</p>
-                </div>
-              </div>
-              <br>
-             
-              <div class="title"  style="color: purple; font-size: 13px; font-weight: bold"> LEAD ACTIVITIES </div>
-              <div *ngFor="let activity of bom.lead_activities| contactpersons ">
-                <div class="ui divided selection list">
-                  <div class="item">
-                    <div class="labelspec" style="color: black; font-size: 10px;"> Activity Type: <span style="font-size: 12px; color: blue">
-                     {{getactivitytypetext(activity.activity_type)}} </span>
-                    </div>
-                  </div>
-                  <div class ="item">
-                    <div class="labelspec" style="color: black; font-size: 10px;"> Created At: <span style="font-size: 12px; color: blue">
-                     {{activity.created_at  | date: 'medium'}} </span>
-                    </div>
-                  </div>
-                </div>
-
-             
-
-                <app-reversegeocoder lat="{{activity.latitude}}" long="{{activity.longitude}}"></app-reversegeocoder> 
-                  
-                  <div *ngIf="activity.activity_type == 'phonecall'">
-                    <p style="font-size: 12px;"> <span style="font-weight: bold;"> Call Date : </span>{{activity.phonecallDate | date: 'longDate'}}</p>
-                  </div>
-                  <div *ngIf="activity.activity_type == 'onsitevisit'">
-                    <p style="font-size: 12px;"> <span style="font-weight: bold;"> Visit Date : </span>{{activity.visitDate | date: 'longDate' }}</p>
-                  </div>
-                  <div *ngIf="activity.activity_type == 'onsitevisit'">
-                    <span style="font-size: 12px;font-weight: bold;"> Visit Remarks : </span>
-                    <p>{{activity.visitremarks}}</p>
-                  </div>
-                  <div *ngIf="activity.activity_type == 'phonecall'">
-                    <span style="font-size: 12px;font-weight: bold;"> Call Remarks :</span>
-                    <p>{{activity.phonecallremarks}}</p>
-                  </div>
-              </div>   
-
-              <div class="title"  style="color: purple; font-size: 13px; font-weight: bold"> UPCOMING </div>
-  
-              <div class="item" *ngFor = "let upactv of bom.upcoming | contactpersons">
-                <div class="ui divided selection list">
-                  <div class="item">
-                    <div class="labelspec" style="color: black; font-size: 10px;"> Upcoming Activity Type: <span style="font-size: 12px; color: blue">
-                     {{getupcomingtext(upactv.next_meeting_type)}} </span>
-                    </div>
-                  </div>
-                  <div class="item">
-                    <div class="labelspec" style="color: black; font-size: 10px;"> Created At: <span style="font-size: 12px; color: blue">
-                     {{upactv.created_at  | date: 'medium'}} </span>
-                    </div>
-                  </div>
-                  <div class = "item">
-                    <div class="labelspec" style="color: black; font-size: 10px;"> Upcoming Meeting Date: <span style="font-size: 12px; color: blue">
-                     {{upactv.next_meeting_date | date: 'longDate' }} </span>
-                    </div>
-                  </div>
-              </div>  
-            </div>
-              <div class="title"  style="color: purple; font-size: 13px; font-weight: bold"> REMARKS </div>
-    
-              {{bom.lead_meeting_remark}}
-             
+      <div class="ui internally celled grid">
+        <div class="row">
+          <div class="eight wide column">
+            <span style="font-weight: bold;">Created At: </span>{{oppo_created_at | date: 'mediumDate'}}
           </div>
-        </div> -->
-      
+          <div class="eight wide column">
+            <span style="font-weight: bold;">Assigned To: </span> <app-assignedtonameget name="{{oppo_assignedto}}"> </app-assignedtonameget>
+          </div>
+        </div> 
+        <div class="row">
+          <div class="eight wide column">
+            <span style="font-weight: bold;">Value:</span> &#8377;{{returnruppeamount(oppo_values)}}
+          </div>
+          <div class="eight wide column">
+            <span style="font-weight: bold;">LeadSource:</span> {{leadsourcelabel(leadsource)}}
+          </div>
 
+        </div>
+        <div class="row">
+          <div class="eight wide column">
+            <span style="font-weight: bold;">Product:</span> {{product_name }}, {{quantity}}
+          </div>
+          <div class="eight wide column">
+            <span style="font-weight: bold;">Presales Assigned:</span> <app-assignedtonameget name="{{lead_presales_approved_to}}"> </app-assignedtonameget>
+          </div>
+        </div>
+      </div>
+
+      <div class="ui divider"></div>
+
+        <div class="title"  style="color: purple; font-size: 15px; font-weight: bold"> REVIEW HISTORY </div>
+        <table class="ui padded table">
+          <thead>
+            <tr>
+              <th>Review Dscr.</th>
+              <th>Next Review Date</th>
+              <th>Ratings</th>
+              <th>Created By</th>
+              <th>Created At</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor ="let rd of reviews_display | contactpersons | sortorder">
+              <td>
+                {{rd.reviewsdtl}}
+              </td>
+              <td>
+                {{rd.next_review_date | date: 'mediumDate'}}
+              </td>
+              <td>
+                <lsu-rating  [(ngModel)]="rd.ratings" [maxRating]="'5'" [type]="'star'" [size]="'large'"></lsu-rating>
+                
+              </td>
+              <td>
+                <app-assignedtonameget name="{{rd.created_by}}"> </app-assignedtonameget>
+              </td>
+              <td>
+                {{rd.created_at | date: 'mediumDate'}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="title"  style="color: purple; font-size: 15px; font-weight: bold"> ACTIVITIES DONE</div>
+        
+        <table class="ui padded table">
+          <thead>
+            <tr>
+              <th>Stage</th>
+              <th>Who</th>
+              <th>Date</th>
+              <th>Duration(hrs)</th>
+              <th>Type</th>
+              <th>Remarks</th>
+              <th>Created At</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor = "let actv of opportunity_activities | contactpersons | sortorder">
+              <td>
+                {{returnopportunitystate(actv.opportunity_stage)}}
+              </td>
+              <td>
+                <app-assignedtonameget name="{{actv.activity_created_by ? actv.activity_created_by : oppo_assignedto}}"> </app-assignedtonameget>
+              </td>
+              <td>
+                <div *ngIf="actv.activity_type == 'phonecall'">
+                  {{actv.phonecallDate | date: 'mediumDate'}}
+                </div>
+                <div *ngIf="actv.activity_type == 'onsitevisit'">
+                  {{actv.visitDate | date: 'mediumDate' }}
+                </div>
+                <div *ngIf="actv.activity_type == 'presentation'">
+                  {{actv.presentationDate | date: 'mediumDate' }}
+                </div>
+                <div *ngIf="actv.activity_type == 'solutiondocumenting'">
+                  {{actv.solutiondocumentingDate | date: 'mediumDate' }}
+                </div>
+
+                <div *ngIf="actv.activity_type == 'poc'">
+                  <span style="font-weight: bold;"> POC Start Date : </span>{{actv.pocstartDate | date: 'mediumDate' }}
+                </div>
+                <div *ngIf="actv.activity_type == 'poc'">
+                  <span style="font-weight: bold;"> POC End Date : </span>{{actv.pocendDate | date: 'mediumDate' }}
+                </div>
+                <div *ngIf="actv.activity_type == 'poc'">
+                  <span style="font-weight: bold;"> POC Sign Off : </span>{{actv.poc_signoff }}
+                </div>
+
+                <div *ngIf="actv.activity_type == 'demo'">
+                  <span style="font-weight: bold;"> POC Start Date : </span>{{actv.demostartDate | date: 'mediumDate' }}
+                  <span style="font-weight: bold;"> POC End Date : </span>{{actv.demoendDate| date: 'mediumDate' }}
+                  <span style="font-weight: bold;"> POC Sign Off : </span>{{actv.demo_signoff }}
+                </div>
+              </td>
+              <td>
+                <div *ngIf="actv.activity_type == 'phonecall'">
+                  {{gettimeDiff(actv.phonecalltimeto, actv.phonecalltimefrom)}}
+                </div>
+                <div *ngIf="actv.activity_type == 'onsitevisit' || actv.activity_type == 'presentation' || actv.activity_type == 'solutiondocumenting' || actv.activity_type == 'poc' || actv.activity_type == 'demo'">
+                  {{gettimeDiff(actv.visittimeto , actv.visittimefrom)}}
+                </div>
+              </td>
+              <td>
+                {{getactivitytypetext(actv.activity_type)}}
+              </td>
+              <td>
+                <div *ngIf="actv.activity_type == 'onsitevisit'">
+                  {{actv.visitremarks}}
+                </div>
+                <div *ngIf="actv.activity_type == 'phonecall'">
+                  {{actv.phonecallremarks}}
+                </div>
+                <div *ngIf="actv.activity_type == 'presentation'">
+                  {{actv.presentationremarks}}
+                </div>
+                <div *ngIf="actv.activity_type == 'solutiondocumenting'">
+                  {{actv.solutiondocumentingremarks}}
+                </div>
+                <div *ngIf="actv.activity_type == 'poc'">
+                  {{actv.pocremarks}}
+                </div>
+                <div *ngIf="actv.activity_type == 'demo'">
+                  {{actv.demoremarks}}
+                </div>
+              </td>
+              <td>
+                {{actv.created_at | date: 'mediumDate' }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+
+        <div class="title"  style="color: purple; font-size: 15px; font-weight: bold"> UPCOMING </div>
+
+        <table class="ui padded table">
+          <thead>
+            <tr>
+              <th>Stage</th>
+              <th>Who</th>
+              <th>Date</th>
+              <th>Type</th>
+              <th>Created At</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor = "let up of upcoming | contactpersons | sortorder">
+              <td>
+                {{returnopportunitystate(up.opportunity_stage)}}
+              </td>
+              <td>
+                <app-assignedtonameget name="{{up.activity_created_by ? up.activity_created_by : oppo_assignedto}}"> </app-assignedtonameget>
+              </td>
+              <td>
+                {{up.next_meeting_date | date: 'mediumDate'}}
+              </td>
+              <td>
+                {{getupcomingtext(up.next_meeting_type)}}
+              </td>
+              <td>
+                {{up.created_at  | date: 'mediumDate'}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="ui divider"> </div>
+
+        <div class="title"  style="color: purple; font-size: 15px; font-weight: bold"> REVIEW </div>
+        <br>
+        
+
+        <label style="font-weight: bold; font-size: 15px;color: black; margin-bottom: 1px;" >Review Dtl: </label>
+        <div class="ui input" style =" width: 430px;">
+          <input type="text" name="reviews" placeholder="Review" [(ngModel)]="reviews" style="height: 34px;width: 400px;"> 
+        </div>
+         <br>
+         <br>
+        <div class="ui stackable two column grid">
+            <div class="column">
+              <label style="font-weight: bold; font-size: 15px;color: black; margin-bottom: 1px;" >Next Review Date: </label>
+              <input [(ngModel)]="next_review_date" type="datetime-local" name="next_review_date" style="height: 29px;width: 137px;padding-left: 2px;padding-right: 2px;"/>
+            </div>
+            <div class="column">
+              <label style="font-weight: bold; font-size: 15px;color: black; margin-bottom: 1px;" >Rating: </label>
+              <lsu-rating [(ngModel)]="ratings" [maxRating]="'5'" [type]="'star'" [size]="'large'"></lsu-rating>
+            </div>
+          </div>
+      </div>
 
       <div class="actions">
+        <br>
         <button class="ui black deny button" (click)="cancelReviewModal()">Cancel</button>
-        <button class="ui positive right labeled icon button" [disabled]="Product_name==''" (click)="on_submit_review()">Add
+        <button class="ui positive right labeled icon button" [disabled]="reviews=='' || ratings == 0" (click)="submit_reviews(reviews,oppo_key)">Submit Review
             <i class="checkmark icon"></i>
         </button>
       </div>
+
+      </div>
   </lsu-modal>
+
   
     <div class="content" style="padding-left: 12px;">
-      <div class="title" style="color: blue;font-size: 15px;font-weight: bold; font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;" >
-            TOTAL Of {{totalCount}} Cases (&#8377;{{totalValue}}) 
-            | Review Complete: {{reviewComplete}} (&#8377;{{reviewCompleteValue1}}) 
-            | Live: {{liveReview}} (&#8377;{{liveReviewValue1}}) | Lapsed: {{lapsedReview}} (&#8377;{{lapsedReviewValue1}}) | Un-Reviewed: {{unReview}} (&#8377;{{unReviewValue1}})
+      <div class="ui active dimmer" *ngIf="isRegLoading">
+        <div class="ui text loader">Calculating...</div>
       </div>
-  
-    
+      <div class="title" style="color: blue;font-size: 13px;font-weight: bold; font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;" >
+            TOTAL Of {{totalCount}} Cases (&#8377;{{totalValue}}) | Review Complete: {{reviewComplete}} (&#8377;{{reviewCompleteValue1}}) 
+            | Live: {{liveReview}} (&#8377;{{liveReviewValue1}}) | Lapsed: {{lapsedReview}} (&#8377;{{lapsedReviewValue1}}) | Un-Reviewed: {{unReview}} (&#8377;{{unReviewValue1}}) 
+            
+            <!-- <div class="ui  four column grid">
 
-      <!-- <div class = "ui stackable three column grid" style="height:70px;">
-        <div class = column>
-          <div class="title" style="color: blue;font-size: 15px;font-weight: bold; font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;">
-            TOTAL Of {{totalCount}} Cases ( {{totalValue}} ) | Reviewed | Live | Lapsed | Un-Reviewed
+                <div class="four wide column">
+                  <div class = "ui teal label">Completed </div>
+                  <span class="label_span">{{reviewComplete}} (&#8377;{{reviewCompleteValue1}})</span>
+                </div>
+                <div class="four wide column">
+                  <div class = "ui blue label">Live </div> 
+                  <span class="label_span">{{liveReview}} (&#8377;{{liveReviewValue1}})</span>
+                </div>
+
+                <div class="four wide column">
+                  <div class = "ui orange label">Lapsed </div> 
+                  <span class="label_span">{{lapsedReview}} (&#8377;{{lapsedReviewValue1}})</span>
+                </div>
+                <div class="four wide column">
+                  <div class = "ui red label">UnReviewed </div>  
+                  <span class="label_span">{{unReview}} (&#8377;{{unReviewValue1}})</span>
+                </div>
+
+              </div>
+            </div> -->
+
+            
           </div>
-        </div>
-
-        <div class ="column">
-          <form class="ui mini form">
-            <div class="field" style="padding: 5px;">
-              <label style="font-weight: bold; font-size: 15px;color: black; margin-bottom: 1px;">Total Count: </label>
-              <input type="text"  name="totalCount" placeholder="totalCount" [(ngModel)]="totalCount" style="padding-top:5px; padding-bottom: 5px" readonly>
-            </div>
-          </form>
-        </div>
-
-        <div class="column">
-          <form class="ui mini form">
-            <div class="field" style="padding: 5px;">
-              <label style="font-weight: bold; font-size: 15px;color: black; margin-bottom: 1px;" >Total Value: </label>
-              <input type="text"  name="totalValue" placeholder="totalValue" [(ngModel)]="totalValue" style="padding-top:5px; padding-bottom: 5px" readonly>
-            </div>
-          </form>
-        </div>
-      </div> -->
+      
+    
       
       <div class="ui accordion">
+        
         <!-- List all regions with total count and value-->
         <div *ngFor="let item of regList">
           
-          <div class="title" (click) = "selectRegion(item.region)" style="color: #B71C1C;">
+          <div class="title"  (click) = "selectRegion(item.region)" style="color: #B71C1C;">
             <i class="dropdown icon"></i>
             {{item.region | uppercase }} | {{item.totalCountReg}} Cases (&#8377;{{item.totalValueReg}}) | Review Complete: {{item.reviewCompleteR}} (&#8377;{{item.reviewCompleteRV1}}) 
             | Live: {{item.liveReviewR}} (&#8377;{{item.liveReviewRV1}}) | Lapsed: {{item.lapsedReviewR}} (&#8377;{{item.lapsedReviewRV1}}) | Un-Reviewed: {{item.unReviewR}} (&#8377;{{item.unReviewRV1}})
-          </div>
-          <div class="content" style="padding-left: 12px;">
-            <!-- <div class = "ui stackable three column grid" style="height:70px;" >
-              <div class = column>
-                <div class="title" style="color: blue;font-size: 15px;font-weight: bold">
-                  REGION WISE:
+            
+           <!--  <div class="ui  four column grid">
+                <div class="four wide column">
+                  <div class = "ui teal label">Completed </div>
+                  <span class="label_span">{{item.reviewCompleteR}} (&#8377;{{item.reviewCompleteRV1}}) </span>
                 </div>
-              </div>
-              <div class ="column">
-                <form class="ui mini form">
-                  <div class="field" style="padding: 5px;">
-                    <label style="font-weight: bold; font-size: 15px;color: black; margin-bottom: 1px;">Total Count: </label>
-                    <input type="text"  name="totalCountReg" placeholder="totalCount" [(ngModel)]="totalCountReg" style="padding-top:5px; padding-bottom: 5px" readonly>
-                  </div>
-                </form>
-              </div>
-              <div class="column">
-                <form class="ui mini form">
-                  <div class="field" style="padding: 5px;">
-                    <label style="font-weight: bold; font-size: 15px;color: black; margin-bottom: 1px;" >Total Value: </label>
-                    <input type="text"  name="totalValueReg" placeholder="totalValue" [(ngModel)]="totalValueReg" style="padding-top:5px; padding-bottom: 5px" readonly>
-                  </div>
-                </form>
-              </div>
+                <div class="four wide column">
+                  <div class = "ui blue label">Live </div> 
+                  <span class="label_span">{{item.liveReviewR}} (&#8377;{{item.liveReviewRV1}})</span>
+                </div>
+                <div class="four wide column">
+                  <div class = "ui orange label">Lapsed </div> 
+                  <span class="label_span">{{item.lapsedReviewR}} (&#8377;{{item.lapsedReviewRV1}})</span>
+                </div>
+                <div class="four wide column">
+                  <div class = "ui red label">UnReviewed </div>  
+                  <span class="label_span">{{item.unReviewR}} (&#8377;{{item.unReviewRV1}})</span>
+                </div>
             </div> -->
+           
+          </div>
+    
+
+ 
+          
+          <div class="content" style="padding-left: 12px;">
+            
             <div class="ui accordion">
+              
               <!-- List all exceutive with region wise count and value for that particular region-->
               <div *ngFor="let executive of execList">
                 
@@ -296,126 +346,39 @@
                   </app-assignedtonameget>
                   | {{executive.totalCountExec}} Cases (&#8377;{{executive.totalValueExec}}) | Review Complete: {{executive.reviewCompleteE}} (&#8377;{{executive.reviewCompleteEV1}}) 
             | Live: {{executive.liveReviewE}} (&#8377;{{executive.liveReviewEV1}}) | Lapsed: {{executive.lapsedReviewE}} (&#8377;{{executive.lapsedReviewEV1}}) | Un-Reviewed: {{executive.unReviewE}} (&#8377;{{executive.unReviewEV1}})
+
+           <!--  <div class="ui  stackable four column grid">
+                <div class="column">
+                  <div class = "ui teal label">Completed </div>
+                  <span class="label_span">{{executive.reviewCompleteE}} (&#8377;{{executive.reviewCompleteEV1}}) </span>
+                <div class=" column">
+                  <div class = "ui blue label">Live </div> 
+                  <span class="label_span">{{executive.liveReviewE}} (&#8377;{{executive.liveReviewEV1}})</span>
                 </div>
+                <div class="column">
+                  <div class = "ui orange label">Lapsed </div> 
+                  <span class="label_span">{{executive.lapsedReviewE}} (&#8377;{{executive.lapsedReviewEV1}}) </span>
+                </div>
+                <div class=" column">
+                  <div class = "ui red label">UnReviewed </div>  
+                  <span class="label_span">{{executive.unReviewE}} (&#8377;{{executive.unReviewEV1}})</span>
+                </div>
+            </div>
+
+</div> -->
+                  
+            </div>    
                 <div class="content" style="padding-left: 15px;">
-                  <!-- <div class = "ui stackable three column grid" style="height:70px;" >
-                    <div class = column>
-                      <div class="title" style="color: blue;font-size: 15px;font-weight: bold">
-                        EXECUTIVE WISE:
-                      </div>
-                    </div>
-                    <div class ="column">
-                      <form class="ui mini form">
-                        <div class="field" style="padding: 5px;">
-                          <label style="font-weight: bold; font-size: 15px;color: black; margin-bottom: 1px;">Total Count: </label>
-                          <input type="text"  name="totalCountExec" placeholder="totalCount" [(ngModel)]="totalCountExec" style="padding-top:5px; padding-bottom: 5px" readonly>
-                        </div>
-                      </form>
-                    </div>
-                    <div class="column">
-                      <form class="ui mini form">
-                        <div class="field" style="padding: 5px;">
-                          <label style="font-weight: bold; font-size: 15px;color: black; margin-bottom: 1px;" >Total Value: </label>
-                          <input type="text"  name="totalValueExec" placeholder="totalValue" [(ngModel)]="totalValueExec" style="padding-top:5px; padding-bottom: 5px" readonly>
-                        </div>
-                      </form>
-                    </div>
-                  </div> -->
-                  <div class="ui accordion">
+                 
+                  <!-- <div class="ui accordion"> -->
                     <!-- List all opportunities for that executive and region with total count and value-->
                     <div *ngFor="let opportunity of exec_wiseopportunity">
-                      
-                      
-                      <div class="title" style="color: green" (click)="displayReview(opportunity)">
-                        <i class="dropdown icon"></i>
-                        {{opportunity.lead_title | uppercase }} | Value: &#8377;{{returnruppeamount(opportunity.value)}} | {{getReviewStatus(opportunity.reviews)}}|Next Review Date: {{getNextReviewDate(opportunity.reviews) | date: 'medium'}}|Account: {{opportunity.company_name}} | EDC: {{opportunity.edc | amTimeAgo}}|Status: {{getstatus(opportunity.opportunity_state)}}
+                      <div class="title" style="color: green" (click) = "displayReview(opportunity)">
+                        {{opportunity.lead_title | uppercase }} | Value: &#8377;{{returnruppeamount(opportunity.value)}} | Status: {{getReview(opportunity.reviews, 's') }}|Next Review Date: {{getReview(opportunity.reviews, 'd') | date: 'medium'}}|Account: {{opportunity.company_name}} | EDC: {{opportunity.edc | amTimeAgo}}|Status: {{getstatus(opportunity.opportunity_state)}} | 
+                         <lsu-rating [ngStyle]="{'width': getReview(opportunity.reviews, 'r')}" [(ngModel)]="rate" [maxRating]="'5'" [type]="'star'" [size]="'large'"></lsu-rating> 
                       </div>
-                      <div class="content" style="padding-left: 12px;">
-                        <!-- <h4> Status :  {{getstatus(opportunity.opportunity_state)}}</h4>
-                        <table class="ui celled padded table">
-                          <thead>
-                            <tr>
-                              <th class="single line">Account</th>
-                              <th>Product</th>
-                              <th>Quantity</th>
-                              <th>Price</th>
-                              <th>Activities</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>
-                                <h5 class="ui center aligned header">{{opportunity.company_name}}</h5>
-                              </td>
-                              <td class="single line">
-                                {{opportunity.product_name}}
-                              </td>
-                              <td class="single line">
-                                {{opportunity.quantity}}
-                              </td>
-                              <td class="right aligned">
-                                {{opportunity.value}}
-                              </td>
-                              <td>
-                                {{getnooffollowups(opportunity.opportunity_activities)}}
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
- -->
-                        <div class="ui stackable two column grid">
-                          <div class="row">
-                            <div class ="column" style =" width: 75px;padding-top: 10px;padding-left: 10px;">
-                              <label style="font-weight: bold; font-size: 17px;color: black; margin-bottom: 1px;" >Review: </label>
-                            </div>
-                            <div class="column" style =" width: 430px;">
-                              <div class="ui input">
-                                <input type="text" name="reviews" placeholder="Review" [(ngModel)]="reviews" style="height: 34px;width: 400px;"> 
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="ui stackable three column grid">
-                          <div class="row">
-                            <div class="column">
-                              <label style="font-weight: bold; font-size: 17px;color: black; margin-bottom: 1px;" >Next Review Date: </label>
-                              <input [(ngModel)]="next_review_date" type="datetime-local" name="next_review_date" style="height: 29px;width: 137px;padding-left: 2px;padding-right: 2px;"/>
-                            </div>
-                            <div class="column">
-                              <label style="font-weight: bold; font-size: 17px;color: black; margin-bottom: 1px;" >Feedback: </label>
-                              <lsu-rating [(ngModel)]="ratings" [maxRating]="'5'" [type]="'star'" [size]="'normal'" >{{ratings}}</lsu-rating>
-                            </div>
-                            <div class="column">
-                              <button class="ui blue button" [disabled]="reviews==''" (click)="submit_reviews(reviews,opportunity.$key)">SUBMIT
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="ui accordion">
-                        <div class="title"  (click) = "selectedexecReview(opportunity.$key)" style="color: #B71C1C;"> 
-                          <i class="dropdown icon"></i>
-                          REVIEW HISTORY
-                        </div>
-                        <div class="content" style="padding-left: 15px;">
-
-                          <!-- List review history-->
-                        
-                        <div *ngFor="let actv of execreview_wiseopportunity | contactpersons | sortorder">
-                           
-                              <h6 style="color: blue;margin-top: 0px;margin-bottom: 0px; font-weight: bold">{{actv.reviewsdtl}}</h6>
-                              <p style="font-size: 12px;"> 
-                                <app-assignedtonameget name="{{actv.created_by}}"> </app-assignedtonameget>
-                                <br>
-                                {{actv.created_at | date: 'medium' }}
-                              </p>
-                              <div class="ui divider"> </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                      
                   </div>
-                </div>
               </div>
             </div>
           </div>

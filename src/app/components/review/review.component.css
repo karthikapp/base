@@ -10,3 +10,17 @@ i.icon-blue {
     font-weight: bold;
     font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
 }
+
+.ui.red.statistic>.value, .ui.statistics .statistic>.value {
+    font-size: 1.0rem!important;
+}
+
+.main{
+	padding:25px;
+}
+
+.label_span{
+	font-weight: bold;
+    font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
+    font-size: 1em;
+}

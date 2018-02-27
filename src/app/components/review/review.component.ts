@@ -3,8 +3,10 @@ import { FirebaseService } from "../../services/firebase.service";
 import { Router, ActivatedRoute } from '@angular/router';
 import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
 import "rxjs/add/operator/takeWhile";
+import * as moment from 'moment';
 // import * as $ from 'jquery';
 declare var jQuery: any;
+
 
 
 @Component({
@@ -138,12 +140,30 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
   lead_title: any;
   company_name: any;
   oppo_created_at: any;
-  oppo_reviews: any;
   oppo_status: any;
   edc: any;
   oppo_values: any;
   oppo_assignedto : any;
 
+  reviews_display: any;
+  opportunity_activities: any;
+  upcoming: any;
+  product_name: any;
+  quantity: any;
+  leadlabel: any;
+  lead_presales_approved_to: any;
+  oppo_key: any;
+  leadsource: any;
+
+  isLoading: boolean = true;
+  isRegLoading: boolean = true;
+  isExecLoading: boolean = true;
+  isELoading: boolean = true;
+
+  rate: any;
+  role: any;
+  title: any;
+  report: any;
  
   constructor(private firebaseservice : FirebaseService, 
     private router: Router, private afAuth: AngularFireAuth) {
@@ -173,8 +193,6 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
     this.todays_date = new Date();
     this.opportunity_display = [];
 
-    
-
     this.afAuth.authState
     .takeWhile(() => this.alive)
     .subscribe(data => {
@@ -199,42 +217,16 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
             v.title = '';
           }
 
+          this.report = v.report.toUpperCase();
+          this.title = v.title.toUpperCase();
+          this.role = v.role.toUpperCase();
+
           if(v.role.toUpperCase() == "MASTER" 
             || v.title.toUpperCase() == "PRE-SALES HEAD"){
-            this.firebaseservice.getopportunities().subscribe(v =>{
-              this.opportunities = v;
-              this.totalCountValueAll(this.opportunities);
-              this.showReview(this.opportunities);
-              
-              var regionlistall = [];
-              this.opportunities.forEach(el => {
-                regionlistall.push(el.region)
-              })
-              this.regionList = this.unique(regionlistall);
-              this.showtotalCountReview(this.regionList, this.opportunities);
-
-              console.log("oppo",this.opportunities)
-              
-            })
-          return this.ev = true;
+           this.initial_app();
           }
           else if(v.report.toUpperCase() == 'RECIPIENT'){
-            this.firebaseservice.getopportunitiesbyreporttoid(this.uid)
-            .subscribe(v => {
-            this.opportunities = v;
-
-            console.log("oppo",this.opportunities)
-            var regionlistall = []
-            this.opportunities.forEach(el => {
-              regionlistall.push(el.region)
-            })
-            this.regionList = this.unique(regionlistall);
-            this.totalCountValueAll(this.opportunities); 
-            this.showReview(this.opportunities);
-
-
-          })
-          return this.ev = true;
+            this.initial_app_recip();
         }
         else
         {
@@ -250,6 +242,42 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
         return this.ev=false;
       }
     });  	 
+  }
+
+  initial_app(){
+     this.firebaseservice.getopportunities().subscribe(v =>{
+              this.opportunities = v;
+              this.totalCountValueAll(this.opportunities);
+              this.showReview(this.opportunities);
+              
+              var regionlistall = [];
+              this.opportunities.forEach(el => {
+                regionlistall.push(el.region)
+              })
+              this.regionList = this.unique(regionlistall);
+              this.showtotalCountReview(this.regionList, this.opportunities);
+
+              console.log("oppo",this.opportunities)
+              
+            })
+          return this.ev = true;
+  }
+
+  initial_app_recip(){
+    this.firebaseservice.getopportunitiesbyreporttoid(this.uid)
+            .subscribe(v => {
+            this.opportunities = v;
+
+            console.log("oppo",this.opportunities)
+            var regionlistall = []
+            this.opportunities.forEach(el => {
+              regionlistall.push(el.region)
+            })
+            this.regionList = this.unique(regionlistall);
+            this.showtotalCountReview(this.regionList, this.opportunities);
+          })
+          return this.ev = true;
+
   }
 
   showReview(oppo){
@@ -321,51 +349,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
           }
         }
       }
-
-
-    //     this.firebaseservice.viewReview(this.oppoValues[i].$key)
-    //     .subscribe(u => 
-    //     {
-    //       //console.log("oppo678",this.oppoValues[i].reviews,this.oppoValues[i].$key, i )
-    //       this.reviewCompleteList = u;
-    //       //this.reviewComplete = Object.values(this.reviewCompleteList);
-    //       console.log("oppo123", this.reviewCompleteList);
-
-    //       this.reviewCompleteList = this.reviewCompleteList.slice().reverse();
-
-    //       //console.log("oppo1234",new Date(this.reviewCompleteList[0].next_review_date), Date())
-
-    //       if(this.reviewCompleteList[0].next_review_date != undefined)
-    //       {
-    //         this.nxt_rvw_date = new Date(this.reviewCompleteList[0].next_review_date)
-    //       }
-    //       else
-    //       {
-    //         this.nxt_rvw_date = this.reviewCompleteList[0].next_review_date
-    //       }
-
-    //       console.log("oppo1234",this.nxt_rvw_date, this.nxt_rvw_date > this.todays_date,this.nxt_rvw_date <= this.todays_date );
-    //       if (this.nxt_rvw_date > this.todays_date)
-    //       {
-    //         this.lapsedReview = this.lapsedReview + 1;
-    //         this.lapsedReviewValue = this.lapsedReviewValue + this.oppoValues[i].value;
-    //         this.lapsedReviewValue1 = this.lapsedReviewValue.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-    //       }
-    //       else if (this.nxt_rvw_date <= this.todays_date)
-    //       {
-    //         this.liveReview = this.liveReview + 1;
-    //         this.liveReviewValue = this.liveReviewValue + this.oppoValues[i].value;
-    //         this.liveReviewValue1 = this.liveReviewValue.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-    //       }
-    //       else if(this.nxt_rvw_date == undefined )
-    //       {
-    //         this.reviewComplete = this.reviewComplete + 1;
-    //         this.reviewCompleteValue = this.reviewCompleteValue + this.oppoValues[i].value;
-    //         this.reviewCompleteValue1 = this.reviewCompleteValue.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-    //       }
-    //     })
-    //   }
-    // }
+      this.isRegLoading = false;
   }
 
   unique(arr) {
@@ -386,13 +370,26 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
         reviews_id : '',
         reviewsdtl : reviews,
         next_review_date: this.next_review_date,
-        ratings: '',
+        ratings: this.ratings,
         created_by: this.uid,
         created_at: this.created_at
       }
-      //this.firebaseservice.addReviews(reviewsObject, oppoid);
+      this.firebaseservice.addReviews(reviewsObject, oppoid).then(success => {
+        alert("Review submitted successfully");
+      });
 
       this.reviews = '';
+      this.ratings = 0;
+      this.next_review_date = null;
+
+      this.cancelReviewModal();
+      if(this.role == "MASTER" 
+            || this.title == "PRE-SALES HEAD"){
+           this.initial_app();
+          }
+          else if(this.report == 'RECIPIENT'){
+            this.initial_app_recip();
+        }
   }
 
   ngAfterViewInit() 
@@ -405,6 +402,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
 
   selectRegion(item)
   {
+  
     console.log("reg123",item)
     this.region_wiseopportunity = []
     var execlistall = []
@@ -420,7 +418,8 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
     this.executivelist = this.unique(execlistall)
     console.log("reg123", this.executivelist)
 
-    this.showtotalCountRExec(item, this.executivelist, this.region_wiseopportunity);
+    this.showtotalCountRExec(item, this.executivelist, this.opportunities);
+    
 
     // this.totalCountValueReg(this.region_wiseopportunity);
     // this.showRegReview(this.region_wiseopportunity);
@@ -431,9 +430,13 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
     this.oppoExecList = [];
     this.execList = [];
 
-    for(let i=0; i< Object.keys(execList).length; i++){
+    let oppokeys = Object.keys(execList).length
+
+    for(let i=0; i< oppokeys; i++){
       this.oppoExecList = opporegion.filter(u=> 
-        {return u.opportunity_assignedto == execList[i]})
+        {return u.opportunity_assignedto == execList[i] &&
+          u.region == region})
+      console.log("oppo", this.oppoExecList , execList[i] )
       this.totalCountValueExec(this.oppoExecList,execList[i]);
       //this.showRegReview(this.oppoRegionList);
     }
@@ -496,12 +499,6 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
       }
       else if(this.oppoEValues[i].reviews != undefined)
       { 
-        //console.log("oppo678",region, this.oppoRValues[i].reviews,this.oppoRValues[i].$key, i , this.oppoRValues[i])
-        
-        //this.oppoRegValues = this.oppoRValues[i];
-
-        //this.oppoRegValues.push(this.oppoRValues[i].reviews);
-
         this.oppoExecValues = Object.values(this.oppoEValues[i].reviews)
 
        this.oppoECount = Object.keys(this.oppoExecValues).length
@@ -554,6 +551,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
     this.execList.push(item_exec);
 
     console.log("oppo12345",this.execList)
+    
   }
 
 
@@ -629,10 +627,8 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
     }
     //this.executivelist = this.unique(execlistall)
     console.log("exec",this.exec_wiseopportunity)
-
-
-    //this.totalCountValue(this.exec_wiseopportunity);
-    
+    this.isELoading = false;
+   
   }
 
   selectedexecReview( oppoid){
@@ -668,63 +664,68 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
 
   returnruppeamount(value)
   {
-    return value.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+    if(value == undefined){
+      return 0;
+    }
+    else {
+      return value.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+    }
   }
 
-  getReviewStatus(reviews){
- console.log("reviews", reviews)
-    this.review = '';
-    this.reviewCount = 0;
-    this.review_date ='';
-    console.log("reviews", reviews)
-    if (reviews == undefined){
-      return 'UNREVIEWED'
-    }
-    else if (reviews != undefined){
-       this.review = Object.values(reviews);
-      this.reviewCount = Object.keys(reviews).length;
-
-      console.log("reviews", this.review, this.reviewCount)
-
-      if(this.review[this.reviewCount - 1].next_review_date != undefined){
-        this.review_date = new Date(this.review[this.reviewCount - 1].next_review_date);
-
-        if(this.review_date >= this.todays_date){
-          return 'LIVE'
-        }
-        else if(this.review_date < this.todays_date){
-          return 'LAPSED'
-        }
-      }else if(this.review[this.reviewCount -1].next_review_date == undefined)
+  getReview(reviews, rflag){
+      if (reviews == undefined)
       {
-        return 'REVIEW COMPLETE'
-      }
-      }
-
-  }
-
-  getNextReviewDate(reviews){
-    this.review = '';
-    this.reviewCount = 0;
-    console.log("reviews", reviews)
-    if (reviews == undefined){
-      return ''
-    }
-    else if (reviews != undefined){
-       this.review = Object.values(reviews);
-      this.reviewCount = Object.keys(reviews).length;
-
-      console.log("reviews", this.review, this.reviewCount)
-
-      if(this.review[this.reviewCount - 1].next_review_date != undefined){
-        return this.review[this.reviewCount -1].next_review_date
-      }else if(this.review[this.reviewCount -1].next_review_date == undefined)
+        //this.rate = 0;
+        if(rflag == 's'){
+          return 'UNREVIEWED'
+        }
+        else if (rflag == 'd'){
+          return ''
+        }
+        else if(rflag == 'r'){
+          return this.rate = 0;
+        }
+      } 
+      else if (reviews != undefined)
       {
-        return ''
+        this.review = Object.values(reviews);
+        this.reviewCount = Object.keys(reviews).length;
 
-      }
-    }
+        //this.rate = this.review[this.reviewCount - 1].ratings;
+
+        if (rflag == 's'){
+          if(this.review[this.reviewCount - 1].next_review_date != undefined){
+            this.review_date = new Date(this.review[this.reviewCount - 1].next_review_date);
+
+            if(this.review_date >= this.todays_date){
+              return 'LIVE'
+            }
+            else if(this.review_date < this.todays_date){
+              return 'LAPSED'
+            }
+          }else if(this.review[this.reviewCount -1].next_review_date == undefined)
+          {
+            return 'COMPLETED'
+          }
+        }
+        else if(rflag == 'd'){
+          if(this.review[this.reviewCount - 1].next_review_date != undefined){
+            return this.review[this.reviewCount -1].next_review_date
+          }else if(this.review[this.reviewCount -1].next_review_date == undefined)
+          {
+            return ''
+
+          }
+        }
+        else if(rflag == 'r'){
+          return this.rate = this.review[this.reviewCount - 1].ratings;
+        }
+      }    
   }
+
+toggle(){
+  this.isRegLoading = !this.isRegLoading;
+}
 
   showtotalCountReview(regionList, oppo){
     this.oppoRegionList = [];
@@ -837,82 +838,6 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
         }
     }
 
-        // console.log("oppo6789",this.oppoRegValues)
-
-        // this.firebaseservice.viewReview(this.oppoRValues[i].$key)
-        // .subscribe(u => 
-        // {
-        //   console.log("oppo678",region, this.oppoRValues[i].reviews,this.oppoRValues[i], this.oppoRValues[i].$key,this.oppoRegValues, i )
-        //   this.reviewCompleteRList = u;
-        //   //this.reviewComplete = Object.values(this.reviewCompleteList);
-        //   console.log("oppo123", this.reviewCompleteRList);
-        //   this.reviewCompleteRList = this.reviewCompleteRList.slice().reverse();
-
-        //   //console.log("oppo1234",new Date(this.reviewCompleteList[0].next_review_date), Date())
-
-        //   if(this.reviewCompleteRList[0].next_review_date != undefined)
-        //   {
-        //     this.nxt_rvw_date = new Date(this.reviewCompleteRList[0].next_review_date)
-        //   }
-        //   else if(this.reviewCompleteRList[0].next_review_date == undefined)
-        //   {
-        //     this.nxt_rvw_date = this.reviewCompleteRList[0].next_review_date
-        //   }
-
-        //   //console.log("oppo1234",this.nxt_rvw_date, this.nxt_rvw_date > this.todays_date,this.nxt_rvw_date <= this.todays_date );
-        //   if (this.nxt_rvw_date > this.todays_date)
-        //   {
-        //     this.lapsedReviewR = this.lapsedReviewR + 1;
-        //     this.lapsedReviewRV = this.lapsedReviewRV + this.oppoRValues[i].value;
-        //     this.lapsedReviewRV1 = this.lapsedReviewRV.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-        //   }
-        //   else if (this.nxt_rvw_date <= this.todays_date)
-        //   {
-        //     this.liveReviewR = this.liveReviewR + 1;
-        //     this.liveReviewRV = this.liveReviewRV + this.oppoRValues[i].value;
-        //     this.liveReviewRV1 = this.liveReviewRV.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-        //   }
-        //   else if(this.nxt_rvw_date == undefined )
-        //   {
-        //     this.reviewCompleteR = this.reviewCompleteR + 1;
-        //     this.reviewCompleteRV = this.reviewCompleteRV + this.oppoRValues[i].value;
-        //     this.reviewCompleteRV1 = this.reviewCompleteRV.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-        //   }
-        // })
-      
-
-          // if(this.reviewCompleteRegList[0].next_review_date != undefined)
-          // {
-          //   this.nxt_rvw_date = new Date(this.reviewCompleteRegList[0].next_review_date)
-          // }
-          // else
-          // {
-          //   this.nxt_rvw_date = this.reviewCompleteRegList[0].next_review_date
-          // }
-
-          // console.log("oppo1234",this.nxt_rvw_date, this.nxt_rvw_date > this.todays_date,this.nxt_rvw_date <= this.todays_date );
-          // if (this.nxt_rvw_date > this.todays_date)
-          // {
-          //   this.lapsedReviewReg = this.lapsedReviewReg + 1;
-          //   this.lapsedReviewRegValue = this.lapsedReviewRegValue + this.oppoRegValues[i].value;
-          //   this.lapsedReviewRegValue1 = this.lapsedReviewRegValue.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-          // }
-          // else if (this.nxt_rvw_date <= this.todays_date)
-          // {
-          //   this.liveReviewReg = this.liveReviewReg + 1;
-          //   this.liveReviewRegValue = this.liveReviewRegValue + this.oppoRegValues[i].value;
-          //   this.liveReviewRegValue1 = this.liveReviewRegValue.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-          // }
-          // else if(this.nxt_rvw_date == undefined )
-          // {
-          //   console.log("opporeview3", this.oppoRegValues[i].reviews, i)
-          //   this.reviewCompleteReg = this.reviewCompleteReg + 1;
-          //   this.reviewCompleteRegValue = this.reviewCompleteRegValue + this.oppoRegValues[i].value;
-          //   this.reviewCompleteRegValue1 = this.reviewCompleteRegValue.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-          // }
-      
-
-
     let item = {
       region: region,
       totalCountReg: this.totalCountReg,
@@ -956,6 +881,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
   }
 
   displayReview(opportunity){
+    this.isLoading = false;
     this.lead_title = '';
     this.company_name = '';
     this.oppo_created_at = null;
@@ -963,6 +889,16 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
     this.oppo_values = '';
     this.edc = null;
     this.oppo_status = '';
+    this.reviews_display = [];
+    this.opportunity_activities = [];
+    this.upcoming = [];
+    this.product_name  = '';
+    this.quantity = '';
+    this.lead_presales_approved_to = '';
+    this.oppo_key = '';
+    this.leadsource = '';
+
+
 
     this.addReviewModal();
 
@@ -970,17 +906,168 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
     //   this.company_name = '';
     // }
 
+    this.oppo_key = opportunity.$key;
+
+    this.reviews_display = opportunity.reviews
     // this.opportunity_display = opportunity;
-    // this.lead_title = opportunity.lead_title;
-    // this.company_name = opportunity.company_name;
-    // this.oppo_created_at = opportunity.opportunity_created_at;
-    // this.oppo_reviews = opportunity.reviews;
-    // this.oppo_values = opportunity.value;
-    // this.oppo_status = opportunity.status;
-    // this.edc = opportunity.edc;
-    // this.oppo_assignedto = opportunity.opportunity_assignedto;
+    this.lead_title = opportunity.lead_title;
+    this.company_name = opportunity.company_name;
+    this.oppo_created_at = opportunity.opportunity_created_at;
+    
+    this.oppo_values = opportunity.value;
+    this.oppo_status = opportunity.status;
+    this.edc = opportunity.edc;
+    this.oppo_assignedto = opportunity.opportunity_assignedto;
+    this.opportunity_activities = opportunity.opportunity_activities;
+    this.upcoming = opportunity.upcoming;
+    this.product_name = opportunity.product_name;
+    this.quantity = opportunity.quantity;
+    this.lead_presales_approved_to = opportunity.lead_presales_approved_to;
+    this.leadsource = opportunity.leadsource;
+
+    
+
 
   }
+
+  gettimeDiff(dateto , datefrom){
+    if(dateto == undefined || dateto == ''){
+      return 'NA'
+    }
+    if(datefrom == undefined || datefrom == ''){
+      return 'NA'
+    }
+
+    var startTime=moment(datefrom, "HH:mm:ss a");
+    var endTime=moment(dateto, "HH:mm:ss a");
+    var duration = moment.duration(endTime.diff(startTime));
+    var hours = Math.trunc(duration.asHours());
+    var minutes = Math.trunc(duration.asMinutes())- hours * 60;
+    var result = hours + 'hrs' + '' + minutes + 'min' 
+
+    console.log("datediff", dateto, datefrom, startTime, endTime, hours,duration.asHours(), duration.asMinutes(),
+     minutes );
+
+    return result;
+  }
+
+  getactivitytypetext(activitytype){
+    if (activitytype == 'phonecall')
+    {
+      return "Ph Call"
+    }
+    else if (activitytype == 'onsitevisit') {
+      return "OnSite"
+    }
+    else if (activitytype == 'presentation')
+    {
+      return "PPT"
+    }
+    else if (activitytype == 'solutiondocumenting')
+    {
+      return "Soln Docu"
+    }
+    else if (activitytype == 'poc')
+    {
+      return "POC"
+    }
+    else if (activitytype == 'demo')
+    {
+      return "Demo"
+    }
+  }
+
+  returnopportunitystate(text)
+  {
+    if(text == 'Qualified_lead')
+    {
+      return 'QL'
+    }
+    else if (text == 'Presales_Presentation')
+    {
+      return 'PP'
+    }
+    else if (text == 'Budgetary_Price_Shared')
+    {
+      return 'BPS'
+    }
+    else if (text == 'Finalising_BOM')
+    {
+      return 'BOM'
+    }
+    else if (text == 'POC/Demo')
+    {
+      return 'POC'
+    }
+    else if (text == 'Final_Proposal')
+    {
+      return 'Prop'
+    }
+    else if (text == 'Final_Negotiation')
+    {
+      return 'Nego'
+    }
+    else if (text == 'Case_won')
+    {
+      return 'CW'
+    }
+    else if (text == 'Case_lost')
+    {
+      return 'CL'
+    }
+
+  }
+
+  getupcomingtext(value)
+  {
+    if (value == 'phone_call') 
+    {
+      return "Ph Call"
+    }
+
+    else if (value == 'online_meeting')
+    {
+      return "Onlne Mtng"
+    }
+
+    else if (value == 'on_site_visit')
+    {
+      return "OnSite"
+    }
+  }
+
+  leadsourcelabel(leadsource: String){
+    if (String(leadsource) == "inbound-landline"){
+        this.leadlabel = "INBOUND LANDLINE"
+    }
+
+    else if (String(leadsource) == "event"){
+      this.leadlabel = "EVENT"
+    }
+    else if (String(leadsource) == "distributor"){
+      this.leadlabel = "DISTRIBUTOR"
+    }
+
+    else if (String(leadsource) == "oem")
+    {
+      this.leadlabel = "OEM"
+    }
+
+     else if (String(leadsource) == "outboundcall")
+    {
+      this.leadlabel = "OUTBOUND CALL"
+    }
+
+     else if (String(leadsource) == "onsite")
+    {
+      this.leadlabel = "ON SITE VISIT"
+    }
+
+    return this.leadlabel
+
+  }
+
+
   //START MODALS
   //Add Product Modal
   addReviewModal(): void {
