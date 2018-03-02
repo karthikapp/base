@@ -16,11 +16,23 @@ i.icon-blue {
 }
 
 .main{
-	padding:25px;
+	padding:10px;
 }
 
 .label_span{
 	font-weight: bold;
     font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
     font-size: 1em;
+}
+
+.mdl_textfield {
+  padding: 8px;
+}
+
+.mdl_textfield__label {
+  top: 10px;
+}
+
+.ui.input{
+    height: 25px;
 }

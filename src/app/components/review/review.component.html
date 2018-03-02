@@ -1,21 +1,59 @@
 <div class="main"> 
- <div class="ui card" style="overflow-y: scroll;width: 100%;height: 100%;padding: 5px;">
+  <div id="" style="overflow-y: scroll;width: 100%;height: 100%;">
+
+    <div class="ui stackable four column grid">
+      <div class="column" >
+    <form class="ui mini form">
+            <div class="form-group column" style="padding: 5px;">
+              <label style="font-weight: bold; font-size: 15px;color: white">EDC Start Date: </label> 
+              <div class="ui input" style="width: 140px;">
+                <input [(ngModel)]="startDate" type="date" name="startDate" style="height: 29px;width: 135px;padding-left: 2px;padding-right: 2px;"/>
+              </div>
+            </div>
+          </form>
+  </div>
+
+  <div class="column">
+
+   <form class="ui mini form">
+            <div class="form-group column" style="padding: 5px;">
+              <label style="font-weight: bold; font-size: 15px;color: white">EDC End Date: </label> 
+              <div class="ui input" style="width: 140px;">
+                <input [(ngModel)]="endDate" type="date" name="endDate" style="height: 29px;width: 135px;padding-left: 2px;padding-right: 2px;"/>
+              </div>
+            </div>
+          </form>
+  </div>
+
+
+  <!-- <div class="column">
+
+   <form class="ui mini form">
+    <div class="form-group column" style="padding: 5px;">
+      <label style="font-weight: bold; font-size: 15px;color: white">Value </label> 
+      <div class="ui input" style="width: 140px;">
+        <input [(ngModel)]="value" type="text" name="value" style="height: 29px;width: 135px;padding-left: 2px;padding-right: 2px;"/>
+      </div>
+    </div>
+  </form>
+  </div> -->
+
+</div>
+    <br> 
+
     <!-- REGIONS -->
+    <div class="ui card" style="width: 100%;height: 100%;padding: 10px;">
     <div class="title" style="color: #B71C1C;font-size: 17px;font-weight: bold; font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;" *ngIf="ev">
       REGIONS
     </div>
 
-
-<!--Modal for adding a new Product-->
-
-  <lsu-modal [(ngModel)]="addReviewModal_flag" [options]="modalOptions" align="center" >
-    <div class="lsu-modal" style="overflow-y: scroll;width: 100%;height: 100%;padding: 10px;top:100px;height: 500px;">
-      <div class="ui active dimmer" *ngIf="isLoading">
-      <div class="ui text loader">Calculating...</div>
-    </div>
-      <div class="header">
-        <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.6vw;font-weight: bold;">
-            {{lead_title}} </a> 
+    <!--Modal for adding a new Product-->
+    <lsu-modal [(ngModel)]="addReviewModal_flag" [options]="modalOptions" align="center">
+      <div class="lsu-modal" style="overflow-y: scroll;width: 100%;height: 100%;padding: 10px;top:100px;height: 500px;">
+        <div class="header">
+          <!--Lead Title, Company Name, EDC-->
+          <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.6vw;font-weight: bold;">
+          {{lead_title}}</a> 
           <div class="ui two column grid">
             <div class ="column">
               <p style="font-size: 14px;"> 
@@ -30,7 +68,6 @@
                   <span style="font-size: 0.7rem; color: grey;">
                   {{edc | date: 'longDate'}} </span>
                 </div>
-
                 <div class="label" style="color: black; font-size: 10px;text-align: center;">EDC 
                 </div>
               </div>
@@ -38,208 +75,207 @@
           </div>
         </div> 
 
-      <div class="description">
-      <br>
+        <div class="description">
+          <br>
+          <!-- Oppo Created At, Assigned To, Values, LeadSource, Product Name and Quantity, Presales Assigned -->
+          <div class="ui internally celled grid">
+            <div class="row">
+              <div class="eight wide column">
+                <span style="font-weight: bold;">Created At: </span>{{oppo_created_at | date: 'mediumDate'}}
+              </div>
+              <div class="eight wide column">
+                <span style="font-weight: bold;">Assigned To: </span> <app-assignedtonameget name="{{oppo_assignedto}}"> </app-assignedtonameget>
+              </div>
+            </div> 
+            <div class="row">
+              <div class="eight wide column">
+                <span style="font-weight: bold;">Value:</span> &#8377;{{returnruppeamount(oppo_values)}}
+              </div>
+              <div class="eight wide column">
+                <span style="font-weight: bold;">LeadSource:</span> {{leadsourcelabel(leadsource)}}
+              </div>
 
-      <div class="ui internally celled grid">
-        <div class="row">
-          <div class="eight wide column">
-            <span style="font-weight: bold;">Created At: </span>{{oppo_created_at | date: 'mediumDate'}}
+            </div>
+            <div class="row">
+              <div class="eight wide column">
+                <span style="font-weight: bold;">Product:</span> {{product_name}}, {{quantity}}
+              </div>
+              <div class="eight wide column">
+                <span style="font-weight: bold;">Presales Assigned:</span> <app-assignedtonameget name="{{lead_presales_approved_to}}"> </app-assignedtonameget>
+              </div>
+            </div>
           </div>
-          <div class="eight wide column">
-            <span style="font-weight: bold;">Assigned To: </span> <app-assignedtonameget name="{{oppo_assignedto}}"> </app-assignedtonameget>
+
+          <div class="ui divider"></div>
+          <!-- Review History--> 
+          <div class="title"  style="color: purple; font-size: 15px; font-weight: bold"> REVIEW HISTORY </div>
+          <table class="ui padded table">
+            <thead>
+              <tr>
+                <th>Review Dscr.</th>
+                <th>Next Review Date</th>
+                <th>Ratings</th>
+                <th>Created By</th>
+                <th>Created At</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor ="let rd of reviews_display | contactpersons | sortorder">
+                <td>
+                  {{rd.reviewsdtl}}
+                </td>
+                <td>
+                  {{rd.next_review_date | date: 'mediumDate'}}
+                </td>
+                <td>
+                  <lsu-rating  [(ngModel)]="rd.ratings" [maxRating]="'5'" [type]="'star'" [size]="'large'"></lsu-rating>
+
+                </td>
+                <td>
+                  <app-assignedtonameget name="{{rd.created_by}}"> </app-assignedtonameget>
+                </td>
+                <td>
+                  {{rd.created_at | date: 'mediumDate'}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!--Activities Complete -->
+          <div class="title"  style="color: purple; font-size: 15px; font-weight: bold"> ACTIVITIES DONE</div>
+          <table class="ui padded table">
+            <thead>
+              <tr>
+                <th>Stage</th>
+                <th>Who</th>
+                <th>Date</th>
+                <th>Duration(hrs)</th>
+                <th>Type</th>
+                <th>Remarks</th>
+                <th>Created At</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor = "let actv of opportunity_activities | contactpersons | sortorder">
+                <td>
+                  {{returnopportunitystate(actv.opportunity_stage)}}
+                </td>
+                <td>
+                  <app-assignedtonameget name="{{actv.activity_created_by ? actv.activity_created_by : oppo_assignedto}}"> </app-assignedtonameget>
+                </td>
+                <td>
+                  <div *ngIf="actv.activity_type == 'phonecall'">
+                    {{actv.phonecallDate | date: 'mediumDate'}}
+                  </div>
+                  <div *ngIf="actv.activity_type == 'onsitevisit'">
+                    {{actv.visitDate | date: 'mediumDate' }}
+                  </div>
+                  <div *ngIf="actv.activity_type == 'presentation'">
+                    {{actv.presentationDate | date: 'mediumDate' }}
+                  </div>
+                  <div *ngIf="actv.activity_type == 'solutiondocumenting'">
+                    {{actv.solutiondocumentingDate | date: 'mediumDate' }}
+                  </div>
+
+                  <div *ngIf="actv.activity_type == 'poc'">
+                    <span style="font-weight: bold;"> POC Start Date : </span>{{actv.pocstartDate | date: 'mediumDate' }}
+                  </div>
+                  <div *ngIf="actv.activity_type == 'poc'">
+                    <span style="font-weight: bold;"> POC End Date : </span>{{actv.pocendDate | date: 'mediumDate' }}
+                  </div>
+                  <div *ngIf="actv.activity_type == 'poc'">
+                    <span style="font-weight: bold;"> POC Sign Off : </span>{{actv.poc_signoff }}
+                  </div>
+
+                  <div *ngIf="actv.activity_type == 'demo'">
+                    <span style="font-weight: bold;"> POC Start Date : </span>{{actv.demostartDate | date: 'mediumDate' }}
+                    <span style="font-weight: bold;"> POC End Date : </span>{{actv.demoendDate| date: 'mediumDate' }}
+                    <span style="font-weight: bold;"> POC Sign Off : </span>{{actv.demo_signoff }}
+                  </div>
+                </td>
+                <td>
+                  <div *ngIf="actv.activity_type == 'phonecall'">
+                    {{gettimeDiff(actv.phonecalltimeto, actv.phonecalltimefrom)}}
+                  </div>
+                  <div *ngIf="actv.activity_type == 'onsitevisit' || actv.activity_type == 'presentation' || actv.activity_type == 'solutiondocumenting' || actv.activity_type == 'poc' || actv.activity_type == 'demo'">
+                    {{gettimeDiff(actv.visittimeto , actv.visittimefrom)}}
+                  </div>
+                </td>
+                <td>
+                  {{getactivitytypetext(actv.activity_type)}}
+                </td>
+                <td>
+                  <div *ngIf="actv.activity_type == 'onsitevisit'">
+                    {{actv.visitremarks}}
+                  </div>
+                  <div *ngIf="actv.activity_type == 'phonecall'">
+                    {{actv.phonecallremarks}}
+                  </div>
+                  <div *ngIf="actv.activity_type == 'presentation'">
+                    {{actv.presentationremarks}}
+                  </div>
+                  <div *ngIf="actv.activity_type == 'solutiondocumenting'">
+                    {{actv.solutiondocumentingremarks}}
+                  </div>
+                  <div *ngIf="actv.activity_type == 'poc'">
+                    {{actv.pocremarks}}
+                  </div>
+                  <div *ngIf="actv.activity_type == 'demo'">
+                    {{actv.demoremarks}}
+                  </div>
+                </td>
+                <td>
+                  {{actv.created_at | date: 'mediumDate' }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Upcoming Activities -->
+          <div class="title"  style="color: purple; font-size: 15px; font-weight: bold"> UPCOMING ACTIVITIES</div>
+          <table class="ui padded table">
+            <thead>
+              <tr>
+                <th>Stage</th>
+                <th>Who</th>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Created At</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor = "let up of upcoming | contactpersons | sortorder">
+                <td>
+                  {{returnopportunitystate(up.opportunity_stage)}}
+                </td>
+                <td>
+                  <app-assignedtonameget name="{{up.activity_created_by ? up.activity_created_by : oppo_assignedto}}"> </app-assignedtonameget>
+                </td>
+                <td>
+                  {{up.next_meeting_date | date: 'mediumDate'}}
+                </td>
+                <td>
+                  {{getupcomingtext(up.next_meeting_type)}}
+                </td>
+                <td>
+                  {{up.created_at  | date: 'mediumDate'}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="ui divider"> </div>
+
+          <!-- Review-->
+          <div class="title"  style="color: purple; font-size: 15px; font-weight: bold"> REVIEW</div>
+          <br>
+          <label style="font-weight: bold; font-size: 15px;color: black; margin-bottom: 1px;" >Review Dtl: </label>
+          <div class="ui input" style =" width: 430px;">
+            <input type="text" name="reviews" placeholder="Review" [(ngModel)]="reviews" style="height: 34px;width: 400px;"> 
           </div>
-        </div> 
-        <div class="row">
-          <div class="eight wide column">
-            <span style="font-weight: bold;">Value:</span> &#8377;{{returnruppeamount(oppo_values)}}
-          </div>
-          <div class="eight wide column">
-            <span style="font-weight: bold;">LeadSource:</span> {{leadsourcelabel(leadsource)}}
-          </div>
-
-        </div>
-        <div class="row">
-          <div class="eight wide column">
-            <span style="font-weight: bold;">Product:</span> {{product_name }}, {{quantity}}
-          </div>
-          <div class="eight wide column">
-            <span style="font-weight: bold;">Presales Assigned:</span> <app-assignedtonameget name="{{lead_presales_approved_to}}"> </app-assignedtonameget>
-          </div>
-        </div>
-      </div>
-
-      <div class="ui divider"></div>
-
-        <div class="title"  style="color: purple; font-size: 15px; font-weight: bold"> REVIEW HISTORY </div>
-        <table class="ui padded table">
-          <thead>
-            <tr>
-              <th>Review Dscr.</th>
-              <th>Next Review Date</th>
-              <th>Ratings</th>
-              <th>Created By</th>
-              <th>Created At</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor ="let rd of reviews_display | contactpersons | sortorder">
-              <td>
-                {{rd.reviewsdtl}}
-              </td>
-              <td>
-                {{rd.next_review_date | date: 'mediumDate'}}
-              </td>
-              <td>
-                <lsu-rating  [(ngModel)]="rd.ratings" [maxRating]="'5'" [type]="'star'" [size]="'large'"></lsu-rating>
-                
-              </td>
-              <td>
-                <app-assignedtonameget name="{{rd.created_by}}"> </app-assignedtonameget>
-              </td>
-              <td>
-                {{rd.created_at | date: 'mediumDate'}}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="title"  style="color: purple; font-size: 15px; font-weight: bold"> ACTIVITIES DONE</div>
-        
-        <table class="ui padded table">
-          <thead>
-            <tr>
-              <th>Stage</th>
-              <th>Who</th>
-              <th>Date</th>
-              <th>Duration(hrs)</th>
-              <th>Type</th>
-              <th>Remarks</th>
-              <th>Created At</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor = "let actv of opportunity_activities | contactpersons | sortorder">
-              <td>
-                {{returnopportunitystate(actv.opportunity_stage)}}
-              </td>
-              <td>
-                <app-assignedtonameget name="{{actv.activity_created_by ? actv.activity_created_by : oppo_assignedto}}"> </app-assignedtonameget>
-              </td>
-              <td>
-                <div *ngIf="actv.activity_type == 'phonecall'">
-                  {{actv.phonecallDate | date: 'mediumDate'}}
-                </div>
-                <div *ngIf="actv.activity_type == 'onsitevisit'">
-                  {{actv.visitDate | date: 'mediumDate' }}
-                </div>
-                <div *ngIf="actv.activity_type == 'presentation'">
-                  {{actv.presentationDate | date: 'mediumDate' }}
-                </div>
-                <div *ngIf="actv.activity_type == 'solutiondocumenting'">
-                  {{actv.solutiondocumentingDate | date: 'mediumDate' }}
-                </div>
-
-                <div *ngIf="actv.activity_type == 'poc'">
-                  <span style="font-weight: bold;"> POC Start Date : </span>{{actv.pocstartDate | date: 'mediumDate' }}
-                </div>
-                <div *ngIf="actv.activity_type == 'poc'">
-                  <span style="font-weight: bold;"> POC End Date : </span>{{actv.pocendDate | date: 'mediumDate' }}
-                </div>
-                <div *ngIf="actv.activity_type == 'poc'">
-                  <span style="font-weight: bold;"> POC Sign Off : </span>{{actv.poc_signoff }}
-                </div>
-
-                <div *ngIf="actv.activity_type == 'demo'">
-                  <span style="font-weight: bold;"> POC Start Date : </span>{{actv.demostartDate | date: 'mediumDate' }}
-                  <span style="font-weight: bold;"> POC End Date : </span>{{actv.demoendDate| date: 'mediumDate' }}
-                  <span style="font-weight: bold;"> POC Sign Off : </span>{{actv.demo_signoff }}
-                </div>
-              </td>
-              <td>
-                <div *ngIf="actv.activity_type == 'phonecall'">
-                  {{gettimeDiff(actv.phonecalltimeto, actv.phonecalltimefrom)}}
-                </div>
-                <div *ngIf="actv.activity_type == 'onsitevisit' || actv.activity_type == 'presentation' || actv.activity_type == 'solutiondocumenting' || actv.activity_type == 'poc' || actv.activity_type == 'demo'">
-                  {{gettimeDiff(actv.visittimeto , actv.visittimefrom)}}
-                </div>
-              </td>
-              <td>
-                {{getactivitytypetext(actv.activity_type)}}
-              </td>
-              <td>
-                <div *ngIf="actv.activity_type == 'onsitevisit'">
-                  {{actv.visitremarks}}
-                </div>
-                <div *ngIf="actv.activity_type == 'phonecall'">
-                  {{actv.phonecallremarks}}
-                </div>
-                <div *ngIf="actv.activity_type == 'presentation'">
-                  {{actv.presentationremarks}}
-                </div>
-                <div *ngIf="actv.activity_type == 'solutiondocumenting'">
-                  {{actv.solutiondocumentingremarks}}
-                </div>
-                <div *ngIf="actv.activity_type == 'poc'">
-                  {{actv.pocremarks}}
-                </div>
-                <div *ngIf="actv.activity_type == 'demo'">
-                  {{actv.demoremarks}}
-                </div>
-              </td>
-              <td>
-                {{actv.created_at | date: 'mediumDate' }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-
-        <div class="title"  style="color: purple; font-size: 15px; font-weight: bold"> UPCOMING </div>
-
-        <table class="ui padded table">
-          <thead>
-            <tr>
-              <th>Stage</th>
-              <th>Who</th>
-              <th>Date</th>
-              <th>Type</th>
-              <th>Created At</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor = "let up of upcoming | contactpersons | sortorder">
-              <td>
-                {{returnopportunitystate(up.opportunity_stage)}}
-              </td>
-              <td>
-                <app-assignedtonameget name="{{up.activity_created_by ? up.activity_created_by : oppo_assignedto}}"> </app-assignedtonameget>
-              </td>
-              <td>
-                {{up.next_meeting_date | date: 'mediumDate'}}
-              </td>
-              <td>
-                {{getupcomingtext(up.next_meeting_type)}}
-              </td>
-              <td>
-                {{up.created_at  | date: 'mediumDate'}}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div class="ui divider"> </div>
-
-        <div class="title"  style="color: purple; font-size: 15px; font-weight: bold"> REVIEW </div>
-        <br>
-        
-
-        <label style="font-weight: bold; font-size: 15px;color: black; margin-bottom: 1px;" >Review Dtl: </label>
-        <div class="ui input" style =" width: 430px;">
-          <input type="text" name="reviews" placeholder="Review" [(ngModel)]="reviews" style="height: 34px;width: 400px;"> 
-        </div>
-         <br>
-         <br>
-        <div class="ui stackable two column grid">
+          <br>
+          <br>
+          <div class="ui stackable two column grid">
             <div class="column">
               <label style="font-weight: bold; font-size: 15px;color: black; margin-bottom: 1px;" >Next Review Date: </label>
               <input [(ngModel)]="next_review_date" type="datetime-local" name="next_review_date" style="height: 29px;width: 137px;padding-left: 2px;padding-right: 2px;"/>
@@ -249,18 +285,17 @@
               <lsu-rating [(ngModel)]="ratings" [maxRating]="'5'" [type]="'star'" [size]="'large'"></lsu-rating>
             </div>
           </div>
-      </div>
+        </div>
 
-      <div class="actions">
-        <br>
-        <button class="ui black deny button" (click)="cancelReviewModal()">Cancel</button>
-        <button class="ui positive right labeled icon button" [disabled]="reviews=='' || ratings == 0" (click)="submit_reviews(reviews,oppo_key)">Submit Review
+        <div class="actions">
+          <br>
+          <button class="ui black deny button" (click)="cancelReviewModal()">Cancel</button>
+          <button class="ui positive right labeled icon button" [disabled]="reviews=='' || ratings == 0" (click)="submit_reviews(reviews,oppo_key)">Submit Review
             <i class="checkmark icon"></i>
-        </button>
+          </button>
+        </div>
       </div>
-
-      </div>
-  </lsu-modal>
+    </lsu-modal>
 
   
     <div class="content" style="padding-left: 12px;">
@@ -333,15 +368,18 @@
 
  
           
-          <div class="content" style="padding-left: 12px;">
-            
+          <div class="content"  style="padding-left: 12px;" >
+        
             <div class="ui accordion">
+
               
               <!-- List all exceutive with region wise count and value for that particular region-->
               <div *ngFor="let executive of execList">
                 
                 <div class="title" (click) = "selectedexec(executive.id,item.region)">
                   <i class="dropdown icon"></i>
+
+
                   <app-assignedtonameget name="{{executive.id}}"> 
                   </app-assignedtonameget>
                   | {{executive.totalCountExec}} Cases (&#8377;{{executive.totalValueExec}}) | Review Complete: {{executive.reviewCompleteE}} (&#8377;{{executive.reviewCompleteEV1}}) 
@@ -365,21 +403,28 @@
                 </div>
             </div>
 
-</div> -->
+          </div> -->
                   
             </div>    
                 <div class="content" style="padding-left: 15px;">
-                 
-                  <!-- <div class="ui accordion"> -->
+                  
                     <!-- List all opportunities for that executive and region with total count and value-->
-                    <div *ngFor="let opportunity of exec_wiseopportunity">
+                    <div *ngFor="let opportunity of exec_wiseopportunity | filterreviews: startDate : endDate">
+
+
+                      <!-- <div class="ui active dimmer" *ngIf="isELoading">
+        <div class="ui text loader">Calculating...</div>
+      </div> -->
+                     
                       <div class="title" style="color: green" (click) = "displayReview(opportunity)">
-                        {{opportunity.lead_title | uppercase }} | Value: &#8377;{{returnruppeamount(opportunity.value)}} | Status: {{getReview(opportunity.reviews, 's') }}|Next Review Date: {{getReview(opportunity.reviews, 'd') | date: 'medium'}}|Account: {{opportunity.company_name}} | EDC: {{opportunity.edc | amTimeAgo}}|Status: {{getstatus(opportunity.opportunity_state)}} | 
-                         <lsu-rating [ngStyle]="{'width': getReview(opportunity.reviews, 'r')}" [(ngModel)]="rate" [maxRating]="'5'" [type]="'star'" [size]="'large'"></lsu-rating> 
+                        {{opportunity.lead_title | uppercase }} | Value: &#8377;{{returnruppeamount(opportunity.value)}} | 
+                        Status: {{getReview( opportunity.reviews, 's') }}|Next Review Date: {{getReview( opportunity.reviews, 'd') | date: 'medium'}}|Account: {{opportunity.company_name}} | EDC: {{opportunity.edc | amTimeAgo}}|Status: {{getstatus(opportunity.opportunity_state)}} | 
+                        <lsu-rating [ngStyle]="{'width': getReview(opportunity.reviews,'r')}" [(ngModel)]="rate" [maxRating]="'5'" [type]="'star'" [size]="'large'"></lsu-rating> 
                       </div>
                       
-                  </div>
+                </div>
               </div>
+            </div>
             </div>
           </div>
         </div>

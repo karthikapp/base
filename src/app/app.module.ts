@@ -101,6 +101,7 @@ import { ReviewComponent } from './components/review/review.component';
 import { MaterializeModule } from "angular2-materialize";
 import { OppodetailComponent } from './components/oppodetail/oppodetail.component';
 import { OppoReviewDetailComponent } from './components/oppo-review-detail/oppo-review-detail.component';
+import { FilterreviewsPipe } from './pipes/filterreviews.pipe';
 
 
 
@@ -223,7 +224,8 @@ export function highchartsFactory() {
     FilterreportsPipe,
     ReviewComponent,
     OppodetailComponent,
-    OppoReviewDetailComponent
+    OppoReviewDetailComponent,
+    FilterreviewsPipe
   ],
   imports: [
     BrowserModule ,

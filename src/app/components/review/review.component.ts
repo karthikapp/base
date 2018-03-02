@@ -164,6 +164,8 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
   role: any;
   title: any;
   report: any;
+  startDate: any;
+  endDate: any;
  
   constructor(private firebaseservice : FirebaseService, 
     private router: Router, private afAuth: AngularFireAuth) {
@@ -192,6 +194,8 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
     this.nxt_rvw_date = null;
     this.todays_date = new Date();
     this.opportunity_display = [];
+    this.startDate = null;
+    this.endDate = null;
 
     this.afAuth.authState
     .takeWhile(() => this.alive)
@@ -248,7 +252,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
      this.firebaseservice.getopportunities().subscribe(v =>{
               this.opportunities = v;
               this.totalCountValueAll(this.opportunities);
-              this.showReview(this.opportunities);
+              //this.showReview(this.opportunities);
               
               var regionlistall = [];
               this.opportunities.forEach(el => {
@@ -267,6 +271,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
     this.firebaseservice.getopportunitiesbyreporttoid(this.uid)
             .subscribe(v => {
             this.opportunities = v;
+            this.totalCountValueAll(this.opportunities);
 
             console.log("oppo",this.opportunities)
             var regionlistall = []
@@ -280,76 +285,16 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
 
   }
 
-  showReview(oppo){
-    this.unReview = 0;
-    this.liveReview = 0;
-    this.reviewComplete = 0;
-    this.lapsedReview = 0;
-    this.reviewCompleteList =[];
-    this.unReviewValue = 0;
-    this.liveReviewValue = 0;
-    this.reviewCompleteValue = 0;
-    this.lapsedReviewValue = 0;
-    this.oppoValues = [];
-    this.oppoOValues = [];
-    this.oppoCount = 0;
+  showtotalCountReview(regionList, oppo){
+    this.oppoRegionList = [];
+    this.regList = [];
 
-    this.unReviewValue1 = '';
-    this.liveReviewValue1 = '';
-    this.reviewCompleteValue1 = '';
-    this.lapsedReviewValue1 = '';
-
-    this.oppoValues = Object.values(oppo);
-    console.log("opporeview", this.oppoValues, oppo)
-
-    for(let i= 0; i< Object.keys(oppo).length; i++)
-    {
-      console.log("opporeview", this.oppoValues[i].reviews, i)
-      if(this.oppoValues[i].reviews == undefined )
-      {
-        this.unReview = this.unReview + 1;
-        this.unReviewValue = this.unReviewValue + this.oppoValues[i].value;
-        this.unReviewValue1 = this.unReviewValue.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-      }
-      else if(this.oppoValues[i].reviews != undefined)
-      { 
-        //console.log("oppo678",this.oppoValues[i].reviews,this.oppoValues[i].$key, i )
-
-        this.oppoOValues = Object.values(this.oppoValues[i].reviews)
-
-         this.oppoCount = Object.keys(this.oppoOValues).length
-
-           if(this.oppoOValues[this.oppoCount - 1].next_review_date != undefined)
-          {
-            this.nxt_rvw_date = new Date(this.oppoOValues[this.oppoCount - 1].next_review_date)
-          }
-          else if(this.oppoOValues[this.oppoCount - 1].next_review_date == undefined)
-          {
-            this.nxt_rvw_date = this.oppoOValues[this.oppoCount - 1].next_review_date
-          }
-
-          console.log("oppo1234",this.nxt_rvw_date, this.nxt_rvw_date > this.todays_date,this.nxt_rvw_date <= this.todays_date );
-          if (this.nxt_rvw_date < this.todays_date)
-          {
-            this.lapsedReview = this.lapsedReview + 1;
-            this.lapsedReviewValue = this.lapsedReviewValue + this.oppoValues[i].value;
-            this.lapsedReviewValue1 = this.lapsedReviewValue.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-          }
-          else if (this.nxt_rvw_date >= this.todays_date)
-          {
-            this.liveReview = this.liveReview + 1;
-            this.liveReviewValue = this.liveReviewValue + this.oppoValues[i].value;
-            this.liveReviewValue1 = this.liveReviewValue.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-          }
-          else if(this.nxt_rvw_date == undefined )
-          {
-            this.reviewComplete = this.reviewComplete + 1;
-            this.reviewCompleteValue = this.reviewCompleteValue + this.oppoValues[i].value;
-            this.reviewCompleteValue1 = this.reviewCompleteValue.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-          }
-        }
-      }
-      this.isRegLoading = false;
+    for(let i=0; i< Object.keys(regionList).length; i++){
+      this.oppoRegionList = oppo.filter(u=> 
+        {return u.region == regionList[i]})
+      this.totalCountValueReg(this.oppoRegionList,regionList[i]);
+      //this.showRegReview(this.oppoRegionList);
+    }
   }
 
   unique(arr) {
@@ -375,14 +320,16 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
         created_at: this.created_at
       }
       this.firebaseservice.addReviews(reviewsObject, oppoid).then(success => {
+        this.reviews = '';
+        this.ratings = 0;
+        this.next_review_date = null;
         alert("Review submitted successfully");
-      });
+        this.cancelReviewModal();
+        this.isRegLoading = true;
+      }); 
 
-      this.reviews = '';
-      this.ratings = 0;
-      this.next_review_date = null;
+      
 
-      this.cancelReviewModal();
       if(this.role == "MASTER" 
             || this.title == "PRE-SALES HEAD"){
            this.initial_app();
@@ -419,10 +366,6 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
     console.log("reg123", this.executivelist)
 
     this.showtotalCountRExec(item, this.executivelist, this.opportunities);
-    
-
-    // this.totalCountValueReg(this.region_wiseopportunity);
-    // this.showRegReview(this.region_wiseopportunity);
 
   }
 
@@ -432,14 +375,17 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
 
     let oppokeys = Object.keys(execList).length
 
+
     for(let i=0; i< oppokeys; i++){
       this.oppoExecList = opporegion.filter(u=> 
         {return u.opportunity_assignedto == execList[i] &&
           u.region == region})
       console.log("oppo", this.oppoExecList , execList[i] )
+
       this.totalCountValueExec(this.oppoExecList,execList[i]);
-      //this.showRegReview(this.oppoRegionList);
+      //this.showRegReview(this.oppoRegionList); 
     }
+     this.isExecLoading = false;
   }
 
   totalCountValueExec(arr, exec){
@@ -471,9 +417,11 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
 
     arr.forEach(element => {
       this.execarrayvalue.push(element.value);
-      this.execarraylist.push(element);
+      this.oppoEValues.push(element);
     })
                   
+    console.log("opporeviewpp",  this.execarraylist) 
+
     this.execarraylist = this.execarrayvalue
     this.totalValueExec = this.execarraylist.reduce((a, b) => a + b, 0);
     if(this.totalValueExec == undefined || isNaN(this.totalValueExec)) {
@@ -484,8 +432,8 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
 
     //this.showReview(arr);
 
-    this.oppoEValues = Object.values(arr);
-    console.log("opporeview", this.oppoEValues)
+    //this.oppoEValues = Object.values(arr);
+    console.log("opporeview", this.oppoEValues, this.execarraylist, this.oppoEValues )
 
 
     for(let i= 0; i< this.totalCountExec; i++)
@@ -627,6 +575,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
     }
     //this.executivelist = this.unique(execlistall)
     console.log("exec",this.exec_wiseopportunity)
+    console.log("flag", this.isELoading, this.isExecLoading, this.isRegLoading)
     this.isELoading = false;
    
   }
@@ -644,12 +593,29 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
   totalCountValueAll(arr){
     this.arraylist = [];
     this.arrayvalue = [];
+    this.unReview = 0;
+    this.liveReview = 0;
+    this.reviewComplete = 0;
+    this.lapsedReview = 0;
+    this.reviewCompleteList =[];
+    this.unReviewValue = 0;
+    this.liveReviewValue = 0;
+    this.reviewCompleteValue = 0;
+    this.lapsedReviewValue = 0;
+    this.oppoValues = [];
+    this.oppoOValues = [];
+    this.oppoCount = 0;
+
+    this.unReviewValue1 = '';
+    this.liveReviewValue1 = '';
+    this.reviewCompleteValue1 = '';
+    this.lapsedReviewValue1 = '';
 
     this.totalCount = Object.keys(arr).length;
 
     arr.forEach(element => {
       this.arrayvalue.push(element.value);
-      this.arraylist.push(element);
+      this.oppoValues.push(element);
     })
                   
     this.arraylist = this.arrayvalue
@@ -660,6 +626,58 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
 
     this.totalValue = this.totalValue.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
     console.log("total",arr, this.totalValue)
+
+    //this.oppoValues = Object.values(oppo);
+    //console.log("opporeview", this.oppoValues, oppo)
+
+    for(let i= 0; i< this.totalCount; i++)
+    {
+      console.log("opporeview", this.oppoValues[i].reviews, i)
+      if(this.oppoValues[i].reviews == undefined )
+      {
+        this.unReview = this.unReview + 1;
+        this.unReviewValue = this.unReviewValue + this.oppoValues[i].value;
+        this.unReviewValue1 = this.unReviewValue.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      }
+      else if(this.oppoValues[i].reviews != undefined)
+      { 
+        //console.log("oppo678",this.oppoValues[i].reviews,this.oppoValues[i].$key, i )
+
+        this.oppoOValues = Object.values(this.oppoValues[i].reviews)
+
+         this.oppoCount = Object.keys(this.oppoOValues).length
+
+           if(this.oppoOValues[this.oppoCount - 1].next_review_date != undefined)
+          {
+            this.nxt_rvw_date = new Date(this.oppoOValues[this.oppoCount - 1].next_review_date)
+          }
+          else if(this.oppoOValues[this.oppoCount - 1].next_review_date == undefined)
+          {
+            this.nxt_rvw_date = this.oppoOValues[this.oppoCount - 1].next_review_date
+          }
+
+          console.log("oppo1234",this.nxt_rvw_date, this.nxt_rvw_date > this.todays_date,this.nxt_rvw_date <= this.todays_date );
+          if (this.nxt_rvw_date < this.todays_date)
+          {
+            this.lapsedReview = this.lapsedReview + 1;
+            this.lapsedReviewValue = this.lapsedReviewValue + this.oppoValues[i].value;
+            this.lapsedReviewValue1 = this.lapsedReviewValue.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+          }
+          else if (this.nxt_rvw_date >= this.todays_date)
+          {
+            this.liveReview = this.liveReview + 1;
+            this.liveReviewValue = this.liveReviewValue + this.oppoValues[i].value;
+            this.liveReviewValue1 = this.liveReviewValue.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+          }
+          else if(this.nxt_rvw_date == undefined )
+          {
+            this.reviewComplete = this.reviewComplete + 1;
+            this.reviewCompleteValue = this.reviewCompleteValue + this.oppoValues[i].value;
+            this.reviewCompleteValue1 = this.reviewCompleteValue.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+          }
+        }
+      }
+      this.isRegLoading = false;
   }
 
   returnruppeamount(value)
@@ -671,6 +689,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
       return value.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
     }
   }
+
 
   getReview(reviews, rflag){
       if (reviews == undefined)
@@ -727,17 +746,7 @@ toggle(){
   this.isRegLoading = !this.isRegLoading;
 }
 
-  showtotalCountReview(regionList, oppo){
-    this.oppoRegionList = [];
-    this.regList = [];
-
-    for(let i=0; i< Object.keys(regionList).length; i++){
-      this.oppoRegionList = oppo.filter(u=> 
-        {return u.region == regionList[i]})
-      this.totalCountValueReg(this.oppoRegionList,regionList[i]);
-      //this.showRegReview(this.oppoRegionList);
-    }
-  }
+  
 
   totalCountValueReg(arr, region){
     console.log("oppo123456", arr, region)
@@ -857,28 +866,7 @@ toggle(){
     console.log("oppo12345",this.regList)
   }
 
-  totalCountValue(arr){
-    this.execarraylist = [];
-    this.execarrayvalue = [];
 
-    this.totalCountExec = Object.keys(arr).length;
-    
-    arr.forEach(element => {
-      this.execarrayvalue.push(element.value);
-      this.execarraylist.push(element);
-    })
-                  
-    this.execarraylist = this.execarrayvalue
-    this.totalValueExec = this.execarraylist.reduce((a, b) => a + b, 0);
-    if(this.totalValueExec == undefined || isNaN(this.totalValueExec)) {
-      this.totalValueExec = 0;
-    }
-
-    this.totalValueExec = this.totalValueExec.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-
-    console.log("TVE",this.totalValueExec, this.exec_wiseopportunity);
-
-  }
 
   displayReview(opportunity){
     this.isLoading = false;
@@ -898,22 +886,13 @@ toggle(){
     this.oppo_key = '';
     this.leadsource = '';
 
-
-
     this.addReviewModal();
 
-    // if(opportunity.company_name == undefined){
-    //   this.company_name = '';
-    // }
-
     this.oppo_key = opportunity.$key;
-
     this.reviews_display = opportunity.reviews
-    // this.opportunity_display = opportunity;
     this.lead_title = opportunity.lead_title;
     this.company_name = opportunity.company_name;
-    this.oppo_created_at = opportunity.opportunity_created_at;
-    
+    this.oppo_created_at = opportunity.opportunity_created_at; 
     this.oppo_values = opportunity.value;
     this.oppo_status = opportunity.status;
     this.edc = opportunity.edc;
@@ -924,10 +903,6 @@ toggle(){
     this.quantity = opportunity.quantity;
     this.lead_presales_approved_to = opportunity.lead_presales_approved_to;
     this.leadsource = opportunity.leadsource;
-
-    
-
-
   }
 
   gettimeDiff(dateto , datefrom){
