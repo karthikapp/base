@@ -88,6 +88,7 @@ export class AllopportunitiesComponent implements OnInit, OnDestroy {
    sdate: any;
    edate: any;
 
+
   constructor(private firebaseservice : FirebaseService, 
     private router: Router, private afAuth: AngularFireAuth) {
   }
@@ -137,7 +138,8 @@ export class AllopportunitiesComponent implements OnInit, OnDestroy {
             this.report = v.report.toUpperCase();
             this.title = v.title.toUpperCase();
 
-            if (v.role.toUpperCase() == 'MASTER' || v.title.toUpperCase() == "PRE-SALES HEAD")
+            if (v.role.toUpperCase() == 'MASTER' || v.title.toUpperCase() == "PRE-SALES HEAD"
+              || v.role.toUpperCase() == 'ADMIN')
             {
               
               this.firebaseservice.getopportunities()

@@ -30,12 +30,16 @@ export class CasewonComponent implements OnInit, OnDestroy {
   startEDCDate: any;
   endEDCDate: any;
 
+  role: any;
+  values: any;
+
   constructor(private firebaseservice : FirebaseService,  private oppoService : OppoFilterAllTeamService,
     private route: Router, private afAuth: AngularFireAuth, private router: ActivatedRoute) { }
 
   ngOnInit() {
-
   	this.casewon = [];
+    this.values = '';
+    this.role = '';
 
     this.rflag = this.router.snapshot.params['rflag'];
     this.region = this.router.snapshot.params['regions'];
@@ -79,10 +83,13 @@ export class CasewonComponent implements OnInit, OnDestroy {
               v.title = '';
             }
 
+            this.role = v.role.toUpperCase();
+
             if (v.report.toUpperCase() == 'REPORTER'
               || v.report.toUpperCase() == 'RECIPIENT'
               || v.role.toUpperCase() == "MASTER" 
-              || v.title.toUpperCase() == "PRE-SALES HEAD")
+              || v.title.toUpperCase() == "PRE-SALES HEAD"
+              || v.role.toUpperCase() == "ADMIN")
             {
               if(this.rflag == 'me'){  
                 this.firebaseservice.getOpportunitiesByID(this.uid)
@@ -136,6 +143,7 @@ export class CasewonComponent implements OnInit, OnDestroy {
     });
   }
 
+
   returnruppeamount(value)
   {
   	return value.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
@@ -171,6 +179,10 @@ export class CasewonComponent implements OnInit, OnDestroy {
 
     return this.cwlabel
 
+  }
+
+  onValueChange(values){
+    console.log("values12345", values);
   }
 
   ngOnDestroy() {

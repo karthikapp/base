@@ -16,7 +16,7 @@ export class LeadoppoComponent implements OnInit, OnDestroy {
   activities:any;
   company_id: string;
   company_name: string;
-  acct: any[];
+  acct: any;
   cp: any[];
 
   uid: string;

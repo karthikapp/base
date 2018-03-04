@@ -81,7 +81,8 @@ export class CaselostComponent implements OnInit, OnDestroy {
             if (v.report.toUpperCase() == 'REPORTER'
               || v.report.toUpperCase() == 'RECIPIENT'
               || v.role.toUpperCase() == "MASTER"
-              || v.title.toUpperCase() == "PRE-SALES HEAD" )
+              || v.title.toUpperCase() == "PRE-SALES HEAD"
+              || v.role.toUpperCase() == "ADMIN")
             {
               if(this.rflag == 'me'){  
                 this.firebaseservice.getOpportunitiesByID(this.uid)

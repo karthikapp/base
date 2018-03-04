@@ -613,6 +613,19 @@ export class FirebaseService {
 		});
     }
 
+    updateOppoMoveTo(opportunity_state, movetolist:{
+      moved_time: any,
+      moved_to_stage: any
+    }, oppokey){
+    	var oppoMoveTo = '/opportunities/'+ oppokey ;
+    	var oppoMoveToData = this.af.object(oppoMoveTo).update({'opportunity_state': opportunity_state});
+    	var oppoMoveToo = oppoMoveTo + '/movetolist';
+    	var oppoMoveTooData = this.af.list(oppoMoveToo).push(movetolist);
+
+    	return oppoMoveTooData;
+
+    }
+
     //Opportunities Add Reviews
     addReviews(reviewsObject: {reviews_id : any,
         reviewsdtl : any,

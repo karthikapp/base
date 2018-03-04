@@ -81,11 +81,22 @@
               </div>
              
               <div class="column" >
-                <div class="ui tiny blue statistic">
+                <div class="ui tiny blue statistic" *ngIf="role!='ADMIN'">
                 <br>
                   <div class="value" style="font-size: 5px; font-weight: bold;">
                       &#8377;{{returnruppeamount(cw.value)}}
                   </div>
+                  <div class="label" style="color: black; font-size: 10px;text-align: center;">VALUE</div>
+                </div>
+
+                <div class="ui tiny blue statistic" *ngIf="role=='ADMIN'">
+                <br>
+                <div class = "ui input">
+                  &#8377; <input type="text"  name="values" placeholder="Value" [(ngModel)]="cw.value" (change)="onValueChange(cw.value)" style="padding-top:5px; padding-bottom: 5px">
+                </div>
+                  <!-- <div class="value" style="font-size: 5px; font-weight: bold;">
+                      &#8377;
+                  </div> -->
                   <div class="label" style="color: black; font-size: 10px;text-align: center;">VALUE</div>
                 </div>
               </div>
@@ -122,7 +133,7 @@
 
             <div class="ui divider"></div>  
             <!-- Presales Approved & Presales Assigned -->
-            <div class="ui stackable two column grid">
+            <div class="ui stackable two column grid" >
               <div class = "column">
                 <div class="ui teal labels" align="center">
                   <div class="labelspec" style="color: black; font-size: 10px;">PRESALES APPROVED:</div>

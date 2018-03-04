@@ -29,11 +29,15 @@ export class ViewpocComponent implements OnInit, OnDestroy {
   startEDCDate: any;
   endEDCDate: any;
 
+  role:any;
+  createdat: any;
+
   constructor(private firebaseservice : FirebaseService, private oppoService : OppoFilterAllTeamService,
     private route: Router, private afAuth: AngularFireAuth, private router: ActivatedRoute) { }
 
   ngOnInit() {
-
+    this.role = '';
+    this.createdat = this.firebaseservice.created_at;
   	this.poclist = [];
 
     this.rflag = this.router.snapshot.params['rflag'];
@@ -78,11 +82,14 @@ export class ViewpocComponent implements OnInit, OnDestroy {
               v.title = '';
             }
 
+            this.role = v.role.toUpperCase();
+
             if (v.report.toUpperCase() == 'REPORTER'
               || v.report.toUpperCase() == 'RECIPIENT'
               || v.role.toUpperCase() == "MASTER" 
               || v.role.toUpperCase() == "PRESALES"
-              || v.title.toUpperCase() == "PRE-SALES HEAD" )
+              || v.title.toUpperCase() == "PRE-SALES HEAD"
+              || v.role.toUpperCase() == "ADMIN")
             {
              if(this.rflag == 'me'){
             this.firebaseservice.getOpportunitiesByID(this.uid)
@@ -149,6 +156,17 @@ export class ViewpocComponent implements OnInit, OnDestroy {
             return this.ev=false;
        }
      });
+  }
+
+  onMoveTo(stage, oppokey){
+    let opportunity_state = stage;
+    let movetolist = {
+      moved_time: this.createdat,
+      moved_to_stage: stage
+    }
+
+    this.firebaseservice.updateOppoMoveTo(opportunity_state, movetolist, oppokey)
+    .then(success => alert ("Stage moved successfully to " + stage));
   }
 
   returnruppeamount(value)

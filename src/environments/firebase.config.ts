@@ -1,12 +1,12 @@
 import * as firebase from 'firebase';
 
 export const firebaseConfig = {
-    apiKey: "AIzaSyCVdEELI0k-idQW_S030NeER9Oe8L-FCfA",
-    authDomain: "raksha-db.firebaseapp.com",
-    databaseURL: "https://raksha-db.firebaseio.com",
-    projectId: "raksha-db",
-    storageBucket: "raksha-db.appspot.com",
-    messagingSenderId: "59012078689"
+        apiKey: "AIzaSyBJijVyCAcu20bLT6xZ3ElFJHF0No3JImU",
+    authDomain: "raksha-1abbb.firebaseapp.com",
+    databaseURL: "https://raksha-1abbb.firebaseio.com",
+    projectId: "raksha-1abbb",
+    storageBucket: "raksha-1abbb.appspot.com",
+    messagingSenderId: "261346734612"
 }
 export const secondaryApp = firebase.initializeApp(firebaseConfig, "Secondary");
 

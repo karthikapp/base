@@ -15,14 +15,14 @@
 
   <div class="column">
 
-   <form class="ui mini form">
-            <div class="form-group column" style="padding: 5px;">
-              <label style="font-weight: bold; font-size: 15px;color: white">EDC End Date: </label> 
-              <div class="ui input" style="width: 140px;">
-                <input [(ngModel)]="endDate" type="date" name="endDate" style="height: 29px;width: 135px;padding-left: 2px;padding-right: 2px;"/>
-              </div>
-            </div>
-          </form>
+    <form class="ui mini form">
+      <div class="form-group column" style="padding: 5px;">
+        <label style="font-weight: bold; font-size: 15px;color: white">EDC End Date: </label> 
+        <div class="ui input" style="width: 140px;">
+          <input [(ngModel)]="endDate" type="date" name="endDate" style="height: 29px;width: 135px;padding-left: 2px;padding-right: 2px;"/>
+        </div>
+      </div>
+    </form>
   </div>
 
 
@@ -84,7 +84,7 @@
                 <span style="font-weight: bold;">Created At: </span>{{oppo_created_at | date: 'mediumDate'}}
               </div>
               <div class="eight wide column">
-                <span style="font-weight: bold;">Assigned To: </span> <app-assignedtonameget name="{{oppo_assignedto}}"> </app-assignedtonameget>
+                <span style="font-weight: bold;">Assigned To: </span> <app-assignedtonameget name="{{oppo_assignedto}}">{{oppo_assignedto}} </app-assignedtonameget>
               </div>
             </div> 
             <div class="row">
@@ -101,7 +101,7 @@
                 <span style="font-weight: bold;">Product:</span> {{product_name}}, {{quantity}}
               </div>
               <div class="eight wide column">
-                <span style="font-weight: bold;">Presales Assigned:</span> <app-assignedtonameget name="{{lead_presales_approved_to}}"> </app-assignedtonameget>
+                <span style="font-weight: bold;">Presales Assigned:</span> <app-assignedtonameget name="{{lead_presales_approved_to}}">{{lead_presales_approved_to}} </app-assignedtonameget>
               </div>
             </div>
           </div>
