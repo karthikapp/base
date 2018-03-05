@@ -36,14 +36,33 @@ export class ViewqualifiedleadsComponent implements OnInit, OnDestroy {
   role:any;
 
   createdat: any;
+  submitModal_flag: boolean;
+  modalOptions: any;
+  stages: any;
+  oppokey: any;
+  stage: any;
+  deleteModal_flag: boolean;
+  deloppokey: any; 
+
 
   constructor(private firebaseservice : FirebaseService,  private oppoService : OppoFilterAllTeamService,
     private route: Router, private afAuth: AngularFireAuth, private router: ActivatedRoute) { }
 
   ngOnInit() {
     this.role = '';
+    this.deloppokey = '';
+    this.stage = '';
   	this.qleads = [];
     this.createdat = this.firebaseservice.created_at;
+    this.stages = '';
+    this.oppokey = '';
+
+     this.modalOptions = 
+    {
+      "size": "small",
+      "type": "default",
+      "closeable": true
+    }
 
     this.rflag = this.router.snapshot.params['rflag'];
     this.region = this.router.snapshot.params['regions'];
@@ -188,15 +207,37 @@ export class ViewqualifiedleadsComponent implements OnInit, OnDestroy {
     this.alive = false;
   }
 
-  onMoveTo(stage, oppokey){
-    let opportunity_state = stage;
+   onMoveTo(stage, oppokey){
+
+  //console.log("dropdown",stage,oppokey)
+if(stage != ''){
+  this.addModal();
+
+  this.stages = stage;
+  this.oppokey = oppokey;
+}
+  //  this.submitModal_flag = true;
+    
+    /*let opportunity_state = stage;
     let movetolist = {
       moved_time: this.createdat,
       moved_to_stage: stage
     }
 
     this.firebaseservice.updateOppoMoveTo(opportunity_state, movetolist, oppokey)
-    .then(success => alert ("Stage moved successfully to " + stage));
+    .then(success => alert ("Stage moved successfully to " + stage));*/
+  }
+
+  submit_stages(){
+   //console.log("submit1",stage,oppokey) 
+    let movetolist = {
+      moved_time: this.createdat,
+      moved_to_stage: this.stages
+    }
+
+    this.firebaseservice.updateOppoMoveTo(this.stages, movetolist, this.oppokey)
+    .then(success => alert ("Stage moved successfully"));
+    this.cancelModal();
   }
 
   showContentActivOppo(lead) {
@@ -297,5 +338,52 @@ export class ViewqualifiedleadsComponent implements OnInit, OnDestroy {
       return "On Site Visit"
     }
   }
+
+  deleteOppo(oppodelkey){
+    this.deloppokey = oppodelkey;
+    this.deleteModal();
+  }
+
+  deleteOpportunity(){
+    this.firebaseservice.delete_Oppo(this.deloppokey);
+    this.cancelModal();
+  }
+
+   //START MODALS
+  //Add Modal
+  addModal(): void {
+    console.log("MFlag", this.submitModal_flag)
+    this.submitModal_flag = true;
+
+  }
+
+  deleteModal():void{
+    this.deleteModal_flag = true;
+  }
+
+  //Cancel Modal
+  cancelModal(): void {
+    this.submitModal_flag = false;
+    this.deleteModal_flag = false;
+    this.stage = '';
+    this.stages = '';
+
+  }
+
+  //Type & Size of the Modal
+  setType(type: string): void {
+    this.modalOptions.type = type;
+    this.addModal();
+    this.deleteModal();
+  }
+
+  setSize(size: string): void {
+    this.modalOptions.size = size;
+    this.addModal();
+    this.deleteModal();
+
+  }
+//END MODALS
+
 
 }

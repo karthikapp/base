@@ -2,6 +2,33 @@
   <div id="" style="overflow-y: scroll;height: 100%; width:100%;">
 
     <div *ngIf="ev">
+
+      <lsu-modal [(ngModel)]="deleteModal_flag" [options]="modalOptions" align="center">
+              <div class="lsu-modal" style="padding: 10px">
+              <div class="header">
+                <!--Lead Title, Company Name, EDC-->
+                <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:2.0vw;font-weight: bold;">
+                Confirm</a> 
+              </div> 
+
+              <div class ="ui divider"> </div>
+
+              <div class="description">
+                <p style="font-size: 17px; font-family: 'Trebuchet MS', Helvetica, sans-serif; "> Do you confirm in deleting this opportunity??? </p>
+              </div>
+
+              <div class ="ui divider"> </div>
+
+              <div class="action">
+                <br>
+                <button class="ui black deny button" (click)="cancelModal()">Cancel</button>
+                <button class="ui positive right labeled icon button" (click)="deleteOpportunity()">Okay
+                  <i class="checkmark icon"></i>
+                </button>
+              </div>
+            </div>
+
+            </lsu-modal>
     
       <!--Search button with expandable holder-->
       <div appMzterialDesignLite style="float:right; color: white;">
@@ -19,6 +46,44 @@
       <br> 
       <br>
       <br>
+
+      <lsu-modal [(ngModel)]="changeModal_flag" [options]="modalOptions" align="center">
+
+  
+      <div class="header">
+      <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.6vw;font-weight: bold;">Change Value
+      </a>
+    </div>
+  
+      <div class="description">
+      <br>
+      
+        <form class="ui mini form">
+            <div class="field" style="padding: 20px;">
+              <label style="font-weight: bold; font-size: 15px;">Old Value</label>
+              <br>
+              <input type="text"  name="old_value" placeholder="Old Value" [(ngModel)]="old_value" readonly> 
+            </div>
+        </form>
+   
+          <form class="ui mini form">
+            <div class="field" style="padding: 20px;">
+              <label style="font-weight: bold; font-size: 15px;">New Value</label>
+              <br>
+              <input type="number"  name="new_value" placeholder="New Value" [(ngModel)]="new_value" /> 
+            </div>
+        </form>
+      </div>
+
+
+      <div class="actions">
+        <button class="ui black deny button" (click)="cancelModal()">Cancel</button>
+        <button class="ui positive right labeled icon button" (click)="onChangeValue(new_value)">Change
+            <i class="checkmark icon"></i>
+        </button>
+      </div>
+
+  </lsu-modal>
    
 
       <!-- Wide card with Edit and Delete button -->
@@ -31,6 +96,12 @@
             <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:1.6vw;font-weight: bold;" [routerLink]="['/dashboard/OppoDetail', cw.$key]">
               {{cw.lead_title}}  
             </a>
+             <div *ngIf="role=='ADMIN'">
+            &nbsp; &nbsp;
+          <button class="ui circular google plus icon button" (click)="deleteOppo(cw.$key)" >
+            <i class="material-icons"  style="font-size: 12pt;">delete</i>
+          </button>
+        </div>
           </div>
 
           <div class="ui stackable two column grid">
@@ -85,15 +156,27 @@
                 <br>
                   <div class="value" style="font-size: 5px; font-weight: bold;">
                       &#8377;{{returnruppeamount(cw.value)}}
+
                   </div>
                   <div class="label" style="color: black; font-size: 10px;text-align: center;">VALUE</div>
                 </div>
 
                 <div class="ui tiny blue statistic" *ngIf="role=='ADMIN'">
                 <br>
-                <div class = "ui input">
+                    <div class="value" style="font-size: 5px; font-weight: bold;">
+                      &#8377;{{returnruppeamount(cw.value)}}
+                      <a (click)="changeModals(cw.value, cw.$key)">
+                      <i class="material-icons" style="font-size: 12pt;" >edit</i>
+                    </a>
+                  </div> 
+
+
+
+
+
+                <!-- <div class = "ui input">
                   &#8377; <input type="text"  name="values" placeholder="Value" [(ngModel)]="cw.value" (change)="onValueChange(cw.value)" style="padding-top:5px; padding-bottom: 5px">
-                </div>
+                </div> -->
                   <!-- <div class="value" style="font-size: 5px; font-weight: bold;">
                       &#8377;
                   </div> -->

@@ -430,10 +430,12 @@ export class AllopportunitiesComponent implements OnInit, OnDestroy {
     // poc stage opportunities
     this.casewonarraylist = this.casewonarrayvalue
     this.casewonopportunitysum1 = this.casewonarraylist.reduce((a, b) => a + b, 0)
+    console.log("cw", this.casewonopportunitysum1, this.casewonarraylist, this.casewonarrayvalue);
     this.casewonopportunitysum = this.casewonopportunitysum1.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
     // poc stage opportunities
     this.caselostarraylist = this.caselostarrayvalue
     this.caselostopportunitysum1 = this.caselostarraylist.reduce((a, b) => a + b, 0)
+    console.log("cw", this.caselostopportunitysum1, this.caselostarraylist, this.caselostarrayvalue);
     this.caselostopportunitysum = this.caselostopportunitysum1.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
     this.totalCount = this.qualifiedleadlist.length + this.presalesarraylist.length + this.budgetaryarraylist.length + this.bomarraylist.length 

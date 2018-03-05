@@ -32,6 +32,14 @@ export class CasewonComponent implements OnInit, OnDestroy {
 
   role: any;
   values: any;
+  new_value: any;
+
+  modalOptions: any;
+  changeModal_flag: boolean;
+  old_value: any = '';
+  oppoid: any;
+    deleteModal_flag: boolean;
+  deloppokey: any; 
 
   constructor(private firebaseservice : FirebaseService,  private oppoService : OppoFilterAllTeamService,
     private route: Router, private afAuth: AngularFireAuth, private router: ActivatedRoute) { }
@@ -40,6 +48,15 @@ export class CasewonComponent implements OnInit, OnDestroy {
   	this.casewon = [];
     this.values = '';
     this.role = '';
+    this.oppoid = '';
+    this.deloppokey = '';
+
+    this.modalOptions = 
+    {
+      "size": "small",
+      "type": "default",
+      "closeable": true
+    }
 
     this.rflag = this.router.snapshot.params['rflag'];
     this.region = this.router.snapshot.params['regions'];
@@ -287,5 +304,65 @@ export class CasewonComponent implements OnInit, OnDestroy {
       return "On Site Visit"
     }
   }
+
+  onChangeValue(value){
+  console.log("changes",value);
+    if (value == ''){
+
+    value = 0;
+    }  
+    this.firebaseservice.changeValuesOppo(value, this.oppoid).then(success => {
+      alert("Value changed successfully");
+    })
+    
+    this.cancelModal();
+  }
+
+  deleteOppo(oppodelkey){
+    this.deloppokey = oppodelkey;
+    this.deleteModal();
+  }
+
+  deleteOpportunity(){
+    this.firebaseservice.delete_Oppo(this.deloppokey);
+    this.cancelModal();
+  }
+
+  //START MODALS
+  //Add Modal
+  changeModals(value, oppokey){
+    this.oppoid = oppokey;
+    this.old_value = value;
+    this.changeModal();
+  }
+
+  changeModal(): void {
+    this.new_value = '';
+    this.changeModal_flag = true;
+  }
+
+  deleteModal():void{
+    this.deleteModal_flag = true;
+  }
+
+  //Cancel Product Modal
+  cancelModal(): void {
+  this.deleteModal_flag = false;
+    this.changeModal_flag = false;
+  }
+
+  //Type & Size of the Modal
+  setType(type: string): void {
+    this.modalOptions.type = type;
+    this.changeModal();   
+    this.deleteModal();
+  }
+
+  setSize(size: string): void {
+    this.modalOptions.size = size;
+    this.changeModal();
+    this.deleteModal();
+  }
+//END MODALS
 
 }

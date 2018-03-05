@@ -626,6 +626,19 @@ export class FirebaseService {
 
     }
 
+    changeValuesOppo(value: number, oppokey){
+    	var oppoRemValue = '/opportunities/' + oppokey;
+    	var oppoRemValueD = this.af.object(oppoRemValue).update({'value': value});
+
+    	return oppoRemValueD;
+    }
+
+
+    delete_Oppo(deloppokey){
+    	var deloppo_URL = "/opportunities/" + deloppokey
+		this.af.list(deloppo_URL).remove();
+    }
+
     //Opportunities Add Reviews
     addReviews(reviewsObject: {reviews_id : any,
         reviewsdtl : any,
