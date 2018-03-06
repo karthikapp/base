@@ -40,6 +40,12 @@ export class ViewnegoComponent implements OnInit, OnDestroy {
     deleteModal_flag: boolean;
   deloppokey: any; 
 
+    old_assignedto: any;
+  new_assignedto: any;
+  oppoassgnkey: any;
+  assignedToModal_flag: boolean;
+  assignedto : any;
+
   constructor(private firebaseservice : FirebaseService, private oppoService : OppoFilterAllTeamService,
     private route: Router, private afAuth: AngularFireAuth, private router: ActivatedRoute) { }
 
@@ -49,6 +55,10 @@ export class ViewnegoComponent implements OnInit, OnDestroy {
     this.createdat = this.firebaseservice.created_at;
     this.stage = '';
     this.deloppokey = '';
+        this.old_assignedto = '';
+    this.new_assignedto = '';
+    this.assignedto = '';
+    this.oppoassgnkey = '';
 
     this.rflag = this.router.snapshot.params['rflag'];
     this.region = this.router.snapshot.params['regions'];
@@ -144,6 +154,7 @@ export class ViewnegoComponent implements OnInit, OnDestroy {
                 console.log("nego",this.negolist) 
                 this.negolist = this.oppoService.onChangeofRegionUser(this.negolist, this.region, this.userid, this.startEDCDate, this.endEDCDate)
                 })
+                this.firebaseservice.getUsers().subscribe(u=> this.assignedto = u);
               }
               return this.ev = true;
             }
@@ -178,7 +189,8 @@ export class ViewnegoComponent implements OnInit, OnDestroy {
     /*let opportunity_state = stage;
     let movetolist = {
       moved_time: this.createdat,
-      moved_to_stage: stage
+      moved_to_stage: stage,
+      moved_by: this.uid
     }
 
     this.firebaseservice.updateOppoMoveTo(opportunity_state, movetolist, oppokey)
@@ -189,7 +201,8 @@ export class ViewnegoComponent implements OnInit, OnDestroy {
    //console.log("submit1",stage,oppokey) 
     let movetolist = {
       moved_time: this.createdat,
-      moved_to_stage: this.stages
+      moved_to_stage: this.stages,
+      moved_by: this.uid
     }
 
     this.firebaseservice.updateOppoMoveTo(this.stages, movetolist, this.oppokey)
@@ -350,6 +363,23 @@ export class ViewnegoComponent implements OnInit, OnDestroy {
     this.cancelModal();
   }
 
+    changeAssignedTo(oppoassignedto, oppoassgnkey){
+    this.old_assignedto = oppoassignedto; 
+    this.oppoassgnkey = oppoassgnkey;
+    this.new_assignedto = '';
+    console.log("oldassgn", this.old_assignedto, oppoassignedto, oppoassgnkey)
+    this.changeAssignedToModal();
+  }
+
+  chngAssignedToName(new_assignedto){
+  console.log("assgnedto", new_assignedto)
+  if(new_assignedto != '' && new_assignedto != this.old_assignedto){
+    this.firebaseservice.change_assignedto(new_assignedto, this.oppoassgnkey);
+    }
+    this.old_assignedto = '';
+    this.cancelModal();
+  }
+
    //START MODALS
   //Add Modal
   addModal(): void {
@@ -362,10 +392,16 @@ export class ViewnegoComponent implements OnInit, OnDestroy {
     this.deleteModal_flag = true;
   }
 
+  changeAssignedToModal(): void{
+    console.log("krishna", this.old_assignedto)
+    this.assignedToModal_flag = true;
+  }
+
   //Cancel Modal
   cancelModal(): void {
     this.submitModal_flag = false;
     this.deleteModal_flag = false;
+        this.assignedToModal_flag = false;
     this.stage = '';
     this.stages = '';
 
@@ -376,12 +412,14 @@ export class ViewnegoComponent implements OnInit, OnDestroy {
     this.modalOptions.type = type;
     this.addModal();
     this.deleteModal();
+    this.changeAssignedToModal();
   }
 
   setSize(size: string): void {
     this.modalOptions.size = size;
     this.addModal();
     this.deleteModal();
+    this.changeAssignedToModal();
 
   }
 //END MODALS

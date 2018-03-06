@@ -613,9 +613,11 @@ export class FirebaseService {
 		});
     }
 
+    //Update Opportunity state and movetolist for all stages except case WON & Case LOST
     updateOppoMoveTo(opportunity_state, movetolist:{
       moved_time: any,
-      moved_to_stage: any
+      moved_to_stage: any,
+      moved_by: any
     }, oppokey){
     	var oppoMoveTo = '/opportunities/'+ oppokey ;
     	var oppoMoveToData = this.af.object(oppoMoveTo).update({'opportunity_state': opportunity_state});
@@ -623,9 +625,9 @@ export class FirebaseService {
     	var oppoMoveTooData = this.af.list(oppoMoveToo).push(movetolist);
 
     	return oppoMoveTooData;
-
     }
 
+    //Update Values for Case Won
     changeValuesOppo(value: number, oppokey){
     	var oppoRemValue = '/opportunities/' + oppokey;
     	var oppoRemValueD = this.af.object(oppoRemValue).update({'value': value});
@@ -633,10 +635,28 @@ export class FirebaseService {
     	return oppoRemValueD;
     }
 
-
+    //Delete Opportunity for all stages
     delete_Oppo(deloppokey){
     	var deloppo_URL = "/opportunities/" + deloppokey
 		this.af.list(deloppo_URL).remove();
+    }
+
+    //Update assigned to in all opportunity stages
+    change_assignedto(assignedto, assgnkey){
+    	var oppoassignValue = '/opportunities/' + assgnkey;
+    	var oppoassignValueD = this.af.object(oppoassignValue).update({'opportunity_assignedto': assignedto});
+
+    	return oppoassignValueD;
+
+    }
+
+        //Update presales assigned to in all opportunity stages
+    change_assignedpreto(assignedto, assgnkey){
+    	var oppoassignpreValue = '/opportunities/' + assgnkey;
+    	var oppoassignpreValueD = this.af.object(oppoassignpreValue).update({'lead_presales_approved_to': assignedto});
+
+    	return oppoassignpreValueD;
+
     }
 
     //Opportunities Add Reviews

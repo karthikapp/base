@@ -26,7 +26,7 @@ export class AssignedtonamegetComponent implements OnInit {
         if(this.text == undefined){
           this.text = "NO USER";
       }
-      //console.log("Hello",this.text);
+      console.log("Hello",this.text);
     })
   } 
 }
