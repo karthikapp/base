@@ -3,6 +3,8 @@ import { FirebaseService } from "../../services/firebase.service";
 import { Router } from '@angular/router'; 
 import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
 import "rxjs/add/operator/takeWhile";
+import { Angular2Csv } from 'angular2-csv/Angular2-csv';
+
 
 @Component({
   selector: 'app-list-companies',
@@ -24,8 +26,20 @@ export class ListCompaniesComponent implements OnInit, OnDestroy {
   p: number = 1;
 
   alive: boolean = true;
+  csvOptions: any;
+  accountsCSV: any[];
 
-  constructor(private firebaseservice : FirebaseService, private router: Router, private afAuth: AngularFireAuth) { 
+  constructor(private firebaseservice : FirebaseService, private router: Router, private afAuth: AngularFireAuth) {
+
+    this.csvOptions = { 
+    fieldSeparator: ',',
+    quoteStrings: '"',
+    decimalseparator: '.',
+    showLabels: true, 
+    showTitle: true,
+    headers: ['Company Id', 'Company Name'] 
+    };
+
   }
 
   ngOnInit() 
@@ -81,6 +95,19 @@ export class ListCompaniesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.alive = false;
+  }
+
+  download(){
+    this.accountsCSV = [];
+
+    this.accounts.map(item => {
+        return {
+            companyid: item.companyid,
+            companyname: item.companyname
+        }
+    }).forEach(item => this.accountsCSV.push(item));
+
+    new Angular2Csv(this.accountsCSV, 'Accounts_Report',this.csvOptions);
   }
 
   //Display the count of Contact Persons 

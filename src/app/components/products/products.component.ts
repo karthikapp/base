@@ -3,6 +3,8 @@ import { FirebaseService } from "../../services/firebase.service";
 import { Router } from '@angular/router';
 import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
 import "rxjs/add/operator/takeWhile";
+import { Angular2Csv } from 'angular2-csv/Angular2-csv';
+
 
 @Component({
   selector: 'app-products',
@@ -35,6 +37,9 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   //initializing p to one for pagination pipe
   p: number = 1;
+
+  csvOptions: any;
+  productsCSV: any[];
   
   constructor(private firebaseservice : FirebaseService, 
     private router: Router, private afAuth: AngularFireAuth) 
@@ -49,6 +54,15 @@ export class ProductsComponent implements OnInit, OnDestroy {
     this.Brand = '';
     this.product_key = '';
     this.created_at = firebaseservice.created_at;
+
+    this.csvOptions = { 
+    fieldSeparator: ',',
+    quoteStrings: '"',
+    decimalseparator: '.',
+    showLabels: true, 
+    showTitle: true,
+    headers: ['Product ID', 'Product_Name','Brand'] 
+    };
   }
 
   ngOnInit() 
@@ -101,6 +115,19 @@ export class ProductsComponent implements OnInit, OnDestroy {
             return this.ev=false;
        }
      });
+  }
+
+  download(){
+    this.productsCSV = [];
+
+    this.products.map(item => {
+        return {
+            productkey: item.productkey,
+            Product_name: item.Product_name,
+            Brand: item.Brand
+        }
+    }).forEach(item => this.productsCSV.push(item));
+    new Angular2Csv(this.productsCSV, 'Products_Report',this.csvOptions);
   }
 
   ngOnDestroy() {

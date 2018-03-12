@@ -3,6 +3,7 @@ import { FirebaseService } from "../../services/firebase.service";
 import { Router } from '@angular/router';
 import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
 import "rxjs/add/operator/takeWhile";
+import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 
 @Component({
   selector: 'app-distributors',
@@ -33,6 +34,9 @@ export class DistributorsComponent implements OnInit, OnDestroy {
   alive: boolean = true;
   alivepage: boolean = true;
 
+  csvOptions: any;
+  distributorsCSV: any[];
+
   //initializing p to one for pagination pipe
   p: number = 1;
   
@@ -48,6 +52,15 @@ export class DistributorsComponent implements OnInit, OnDestroy {
     this.distributor_name = '';
     this.distributor_id = '';
     this.created_at = firebaseservice.created_at;
+
+    this.csvOptions = { 
+    fieldSeparator: ',',
+    quoteStrings: '"',
+    decimalseparator: '.',
+    showLabels: true, 
+    showTitle: true,
+    headers: ['Distributor ID','Distributor Name'] 
+    };
   }
 
   ngOnInit() 
@@ -98,6 +111,20 @@ export class DistributorsComponent implements OnInit, OnDestroy {
        }
      });
   }
+
+  download(){
+    this.distributorsCSV = [];
+
+    this.distributors.map(item => {
+        return {
+            distributor_id: item.distributor_id,
+            distributor_name: item.distributor_name
+        }
+    }).forEach(item => this.distributorsCSV.push(item));
+
+    new Angular2Csv(this.distributorsCSV, 'Distributor_Report',this.csvOptions);
+  }
+
 
   ngOnDestroy() {
     this.alive = false;

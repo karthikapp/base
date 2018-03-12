@@ -3,6 +3,7 @@ import { FirebaseService } from "../../services/firebase.service";
 import { Router } from '@angular/router';
 import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
 import "rxjs/add/operator/takeWhile";
+import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 
 @Component({
   selector: 'app-suppliers',
@@ -35,6 +36,9 @@ export class SuppliersComponent implements OnInit, OnDestroy {
 
   //initializing p to one for pagination pipe
   p: number = 1;
+
+  csvOptions: any;
+  suppliersCSV: any [];
   
   constructor(private firebaseservice : FirebaseService, 
     private router: Router, private afAuth: AngularFireAuth) 
@@ -48,6 +52,15 @@ export class SuppliersComponent implements OnInit, OnDestroy {
     this.supplier_name = '';
     this.supplier_id = '';
     this.created_at = firebaseservice.created_at;
+
+    this.csvOptions = { 
+    fieldSeparator: ',',
+    quoteStrings: '"',
+    decimalseparator: '.',
+    showLabels: true, 
+    showTitle: true,
+    headers: ['Supplier_Id','Supplier_Name'] 
+    };
   }
 
   ngOnInit() 
@@ -103,6 +116,18 @@ export class SuppliersComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.alive = false;
     this.alivepage = false;
+  }
+
+  download(){
+    this.suppliersCSV = [];
+
+    this.suppliers.map(item => {
+        return {
+            supplier_id: item.supplier_id,
+            supplier_name: item.supplier_name
+        }
+    }).forEach(item => this.suppliersCSV.push(item));
+    new Angular2Csv(this.suppliersCSV, 'Suppliers_Report',this.csvOptions);
   }
 
   //Add a new Supplier

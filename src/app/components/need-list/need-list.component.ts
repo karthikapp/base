@@ -3,6 +3,8 @@ import { FirebaseService } from "../../services/firebase.service";
 import { Router } from '@angular/router';
 import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
 import "rxjs/add/operator/takeWhile";
+import { Angular2Csv } from 'angular2-csv/Angular2-csv';
+
 
 @Component({
   selector: 'app-need-list',
@@ -35,6 +37,10 @@ export class NeedListComponent implements OnInit, OnDestroy{
 
   //initializing p to one for pagination pipe
   p: number = 1;
+
+  csvOptions: any;
+  need_length: any;
+  needlistsCSV: any [];
   
   constructor(private firebaseservice : FirebaseService, 
     private router: Router, private afAuth: AngularFireAuth) 
@@ -48,6 +54,15 @@ export class NeedListComponent implements OnInit, OnDestroy{
     this.need_name = '';
     this.need_id = '';
     this.created_at = firebaseservice.created_at;
+
+    this.csvOptions = { 
+    fieldSeparator: ',',
+    quoteStrings: '"',
+    decimalseparator: '.',
+    showLabels: true, 
+    showTitle: true,
+    headers: ['NeedList_Id','NeedList_Name'] 
+    };
   }
 
   ngOnInit() 
@@ -104,6 +119,20 @@ export class NeedListComponent implements OnInit, OnDestroy{
   ngOnDestroy() {
     this.alive = false;
     this.alivepage = false;
+  }
+
+  download(){
+
+    this.needlistsCSV = [];
+
+    this.needlists.map(item => {
+        return {
+            need_id: item.need_id,
+            need_name: item.need_name
+        }
+    }).forEach(item => this.needlistsCSV.push(item));
+
+    new Angular2Csv(this.needlistsCSV, 'NeedList_Report',this.csvOptions);
   }
 
   //Add a new NeedList

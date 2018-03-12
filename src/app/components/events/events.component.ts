@@ -3,6 +3,8 @@ import { FirebaseService } from "../../services/firebase.service";
 import { Router } from '@angular/router';
 import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
 import "rxjs/add/operator/takeWhile";
+import { Angular2Csv } from 'angular2-csv/Angular2-csv';
+
 
 @Component({
   selector: 'app-events',
@@ -35,6 +37,9 @@ export class EventsComponent implements OnInit, OnDestroy {
 
   //initializing p to one for pagination pipe
   p: number = 1;
+
+  csvOptions: any;
+  eventsCSV: any[];
   
   constructor(private firebaseservice : FirebaseService, 
     private router: Router, private afAuth: AngularFireAuth) 
@@ -48,6 +53,15 @@ export class EventsComponent implements OnInit, OnDestroy {
     this.event_name = '';
     this.event_id = '';
     this.created_at = firebaseservice.created_at;
+
+    this.csvOptions = { 
+    fieldSeparator: ',',
+    quoteStrings: '"',
+    decimalseparator: '.',
+    showLabels: true, 
+    showTitle: true,
+    headers: ['Event ID','Event Name'] 
+    };
   }
 
   ngOnInit() 
@@ -97,6 +111,19 @@ export class EventsComponent implements OnInit, OnDestroy {
             return this.ev=false;
        }
      });
+  }
+
+  download(){
+    this.eventsCSV = [];
+
+    this.events.map(item => {
+        return {
+            event_id: item.event_id,
+            event_name: item.event_name
+        }
+    }).forEach(item => this.eventsCSV.push(item));
+
+    new Angular2Csv(this.eventsCSV, 'Events_Report',this.csvOptions);
   }
 
   ngOnDestroy() {

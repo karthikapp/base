@@ -3,6 +3,7 @@ import { FirebaseService } from "../../services/firebase.service";
 import { Router } from '@angular/router';
 import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
 import "rxjs/add/operator/takeWhile";
+import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 
 @Component({
   selector: 'app-list-oems',
@@ -36,6 +37,9 @@ export class ListOemsComponent implements OnInit, OnDestroy {
   alive: boolean = true;
   alivepage: boolean = true;
 
+  csvOptions: any;
+  oemsCSV: any [];
+
   constructor(private firebaseservice : FirebaseService, 
     private router: Router,
     private afAuth: AngularFireAuth) 
@@ -50,7 +54,14 @@ export class ListOemsComponent implements OnInit, OnDestroy {
       this.oem_id = '';
       this.created_at = firebaseservice.created_at;
 
-
+    this.csvOptions = { 
+    fieldSeparator: ',',
+    quoteStrings: '"',
+    decimalseparator: '.',
+    showLabels: true, 
+    showTitle: true,
+    headers: ['OEM_Id','OEM_Name'] 
+    };
     }
 
   ngOnInit() 
@@ -107,6 +118,19 @@ export class ListOemsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(){
     this.alive = false;
+  }
+
+  download(){
+    this.oemsCSV = [];
+
+    this.oems.map(item => {
+        return {
+            oem_id: item.oem_id,
+            oem_name: item.oem_name
+        }
+    }).forEach(item => this.oemsCSV.push(item));
+
+    new Angular2Csv(this.oemsCSV, 'OEM_Report',this.csvOptions);
   }
 
   //Add a new OEM
