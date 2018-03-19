@@ -24,20 +24,6 @@
       </div>
     </form>
   </div>
-
-
-  <!-- <div class="column">
-
-   <form class="ui mini form">
-    <div class="form-group column" style="padding: 5px;">
-      <label style="font-weight: bold; font-size: 15px;color: white">Value </label> 
-      <div class="ui input" style="width: 140px;">
-        <input [(ngModel)]="value" type="text" name="value" style="height: 29px;width: 135px;padding-left: 2px;padding-right: 2px;"/>
-      </div>
-    </div>
-  </form>
-  </div> -->
-
 </div>
     <br> 
 
@@ -47,7 +33,7 @@
       REGIONS
     </div>
 
-    <!--Modal for adding a new Product-->
+    <!--Modal for adding a new Review-->
     <lsu-modal [(ngModel)]="addReviewModal_flag" [options]="modalOptions" align="center">
       <div class="lsu-modal" style="overflow-y: scroll;width: 100%;height: 100%;padding: 10px;top:100px;height: 500px;">
         <div class="header">
@@ -113,6 +99,7 @@
             <thead>
               <tr>
                 <th>Review Dscr.</th>
+                <th>Review Ans</th>
                 <th>Next Review Date</th>
                 <th>Ratings</th>
                 <th>Created By</th>
@@ -123,6 +110,9 @@
               <tr *ngFor ="let rd of reviews_display | contactpersons | sortorder">
                 <td>
                   {{rd.reviewsdtl}}
+                </td>
+                <td>
+                  {{rd.reviewans}}
                 </td>
                 <td>
                   {{rd.next_review_date | date: 'mediumDate'}}
@@ -266,13 +256,48 @@
 
           <div class="ui divider"> </div>
 
-          <!-- Review-->
+          <!--Add  Review-->
           <div class="title"  style="color: purple; font-size: 15px; font-weight: bold"> REVIEW</div>
           <br>
           <label style="font-weight: bold; font-size: 15px;color: black; margin-bottom: 1px;" >Review Dtl: </label>
-          <div class="ui input" style =" width: 430px;">
+          <!-- <div class="ui input" style =" width: 430px;">
             <input type="text" name="reviews" placeholder="Review" [(ngModel)]="reviews" style="height: 34px;width: 400px;"> 
+          </div> -->
+
+          <div class="ui input" *ngIf="question_reviews_ql==''">
+              <input type="text" placeholder="Enter Text here" [(ngModel)]="roquestions">
           </div>
+
+
+           <div class="ui input" *ngIf="question_reviews_ql!=''">
+              <select (change)="getAnswersforRev()" [(ngModel)]="rquestionnarie">
+                
+                <option *ngFor="let qr of question_reviews_ql" [ngValue]="qr"> {{qr.question}}
+                </option>
+              </select>
+            </div>
+
+            <br>
+
+            <div class="ui input" *ngIf="(answer_reviews_ql== '#') || (rquestionnarie.question == 'Others')">
+              <input type="text" placeholder="Enter Text Here" [(ngModel)]="roanswers">
+          </div>
+
+          <div *ngIf="answer_reviews_ql !='#'">
+          <div *ngFor="let ans of answer_reviews_ql">
+            <div class="ui input">
+ 
+             <input type="checkbox" [(ngModel)]="ans.checked" (click)="selectAnswerforRev(ans.answer, ans.checked, ans.answerid)"> {{ans.answer}}
+
+            <div class="ui input" *ngIf="ans.answer=='Others'">
+              <input type="text" placeholder="Reason" [(ngModel)]="roanswers">
+            </div>
+
+            </div>
+
+          </div>
+        </div>
+
           <br>
           <br>
           <div class="ui stackable two column grid">
@@ -290,7 +315,7 @@
         <div class="actions">
           <br>
           <button class="ui black deny button" (click)="cancelReviewModal()">Cancel</button>
-          <button class="ui positive right labeled icon button" [disabled]="reviews=='' || ratings == 0" (click)="submit_reviews(reviews,oppo_key)">Submit Review
+          <button class="ui positive right labeled icon button" (click)="submit_reviews(oppo_key)">Submit Review
             <i class="checkmark icon"></i>
           </button>
         </div>
@@ -306,29 +331,6 @@
             TOTAL Of {{totalCount}} Cases (&#8377;{{totalValue}}) | Review Complete: {{reviewComplete}} (&#8377;{{reviewCompleteValue1}}) 
             | Live: {{liveReview}} (&#8377;{{liveReviewValue1}}) | Lapsed: {{lapsedReview}} (&#8377;{{lapsedReviewValue1}}) | Un-Reviewed: {{unReview}} (&#8377;{{unReviewValue1}}) 
             
-            <!-- <div class="ui  four column grid">
-
-                <div class="four wide column">
-                  <div class = "ui teal label">Completed </div>
-                  <span class="label_span">{{reviewComplete}} (&#8377;{{reviewCompleteValue1}})</span>
-                </div>
-                <div class="four wide column">
-                  <div class = "ui blue label">Live </div> 
-                  <span class="label_span">{{liveReview}} (&#8377;{{liveReviewValue1}})</span>
-                </div>
-
-                <div class="four wide column">
-                  <div class = "ui orange label">Lapsed </div> 
-                  <span class="label_span">{{lapsedReview}} (&#8377;{{lapsedReviewValue1}})</span>
-                </div>
-                <div class="four wide column">
-                  <div class = "ui red label">UnReviewed </div>  
-                  <span class="label_span">{{unReview}} (&#8377;{{unReviewValue1}})</span>
-                </div>
-
-              </div>
-            </div> -->
-
             
           </div>
       
@@ -343,31 +345,8 @@
             <i class="dropdown icon"></i>
             {{item.region | uppercase }} | {{item.totalCountReg}} Cases (&#8377;{{item.totalValueReg}}) | Review Complete: {{item.reviewCompleteR}} (&#8377;{{item.reviewCompleteRV1}}) 
             | Live: {{item.liveReviewR}} (&#8377;{{item.liveReviewRV1}}) | Lapsed: {{item.lapsedReviewR}} (&#8377;{{item.lapsedReviewRV1}}) | Un-Reviewed: {{item.unReviewR}} (&#8377;{{item.unReviewRV1}})
-            
-           <!--  <div class="ui  four column grid">
-                <div class="four wide column">
-                  <div class = "ui teal label">Completed </div>
-                  <span class="label_span">{{item.reviewCompleteR}} (&#8377;{{item.reviewCompleteRV1}}) </span>
-                </div>
-                <div class="four wide column">
-                  <div class = "ui blue label">Live </div> 
-                  <span class="label_span">{{item.liveReviewR}} (&#8377;{{item.liveReviewRV1}})</span>
-                </div>
-                <div class="four wide column">
-                  <div class = "ui orange label">Lapsed </div> 
-                  <span class="label_span">{{item.lapsedReviewR}} (&#8377;{{item.lapsedReviewRV1}})</span>
-                </div>
-                <div class="four wide column">
-                  <div class = "ui red label">UnReviewed </div>  
-                  <span class="label_span">{{item.unReviewR}} (&#8377;{{item.unReviewRV1}})</span>
-                </div>
-            </div> -->
-           
           </div>
-    
-
- 
-          
+      
           <div class="content"  style="padding-left: 12px;" >
         
             <div class="ui accordion">
@@ -384,26 +363,6 @@
                   </app-assignedtonameget>
                   | {{executive.totalCountExec}} Cases (&#8377;{{executive.totalValueExec}}) | Review Complete: {{executive.reviewCompleteE}} (&#8377;{{executive.reviewCompleteEV1}}) 
             | Live: {{executive.liveReviewE}} (&#8377;{{executive.liveReviewEV1}}) | Lapsed: {{executive.lapsedReviewE}} (&#8377;{{executive.lapsedReviewEV1}}) | Un-Reviewed: {{executive.unReviewE}} (&#8377;{{executive.unReviewEV1}})
-
-           <!--  <div class="ui  stackable four column grid">
-                <div class="column">
-                  <div class = "ui teal label">Completed </div>
-                  <span class="label_span">{{executive.reviewCompleteE}} (&#8377;{{executive.reviewCompleteEV1}}) </span>
-                <div class=" column">
-                  <div class = "ui blue label">Live </div> 
-                  <span class="label_span">{{executive.liveReviewE}} (&#8377;{{executive.liveReviewEV1}})</span>
-                </div>
-                <div class="column">
-                  <div class = "ui orange label">Lapsed </div> 
-                  <span class="label_span">{{executive.lapsedReviewE}} (&#8377;{{executive.lapsedReviewEV1}}) </span>
-                </div>
-                <div class=" column">
-                  <div class = "ui red label">UnReviewed </div>  
-                  <span class="label_span">{{executive.unReviewE}} (&#8377;{{executive.unReviewEV1}})</span>
-                </div>
-            </div>
-
-          </div> -->
                   
             </div>    
                 <div class="content" style="padding-left: 15px;">
@@ -411,10 +370,6 @@
                     <!-- List all opportunities for that executive and region with total count and value-->
                     <div *ngFor="let opportunity of exec_wiseopportunity | filterreviews: startDate : endDate">
 
-
-                      <!-- <div class="ui active dimmer" *ngIf="isELoading">
-        <div class="ui text loader">Calculating...</div>
-      </div> -->
                      
                       <div class="title" style="color: green" (click) = "displayReview(opportunity)">
                         {{opportunity.lead_title | uppercase }} | Value: &#8377;{{returnruppeamount(opportunity.value)}} | 

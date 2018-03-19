@@ -16,7 +16,8 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 
-import { OppoFilterAllTeamService } from './services/oppo-filter-all-team.service'
+import { OppoFilterAllTeamService } from './services/oppo-filter-all-team.service';
+import { ReviewquestionService } from './services/reviewquestion.service';
 
 //Common components for all USERS
 import { AppComponent } from './app.component';
@@ -245,6 +246,7 @@ export function highchartsFactory() {
   ],
   providers: [FirebaseService, 
     OppoFilterAllTeamService,
+    ReviewquestionService,
     {provide: HighchartsStatic,
       useFactory: highchartsFactory
     }],

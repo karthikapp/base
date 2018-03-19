@@ -662,10 +662,12 @@ export class FirebaseService {
     //Opportunities Add Reviews
     addReviews(reviewsObject: {reviews_id : any,
         reviewsdtl : any,
+        reviewans: any,
         next_review_date: any,
         ratings: any,
         created_by: any,
         created_at: any}, oppoid){
+
     	var opporemURL = '/opportunities/' + oppoid + "/reviews";
 		var opporemData = this.af.list(opporemURL).push(reviewsObject);
 		var opporemid = opporemData.key;
