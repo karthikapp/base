@@ -209,6 +209,9 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
     this.roanswers = '';
     this.roquestions = '';
     this.rquestionnarie = new revQuestion();
+    this.rquestionnarie.question = '';
+    this.rquestionnarie.stage = '';
+    this.rquestionnarie.questionid = '';
 
     this.afAuth.authState
     .takeWhile(() => this.alive)
@@ -1130,12 +1133,14 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
   //Cancel Product Modal
   cancelReviewModal(): void {
     this.addReviewModal_flag = false;
-    // this.rquestionnarie.question = '';
-    // this.rquestionnarie.questionid = '';
-    // this.rquestionnarie.stage = '';
+    this.rquestionnarie.question = '';
+    this.rquestionnarie.questionid = '';
+    this.rquestionnarie.stage = '';
     this.roquestions = '';
     this.roanswers = '';
     this.ranswers = '';
+    this.ratings = null;
+    this.next_review_date = null;
   }
 
   //Type & Size of the Modal

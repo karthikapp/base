@@ -263,7 +263,7 @@
           <!-- <div class="ui input" style =" width: 430px;">
             <input type="text" name="reviews" placeholder="Review" [(ngModel)]="reviews" style="height: 34px;width: 400px;"> 
           </div> -->
-
+          &nbsp;
           <div class="ui input" *ngIf="question_reviews_ql==''">
               <input type="text" placeholder="Enter Text here" [(ngModel)]="roquestions">
           </div>
@@ -278,35 +278,40 @@
             </div>
 
             <br>
+            <br>
 
             <div class="ui input" *ngIf="(answer_reviews_ql== '#') || (rquestionnarie.question == 'Others')">
               <input type="text" placeholder="Enter Text Here" [(ngModel)]="roanswers">
           </div>
 
           <div *ngIf="answer_reviews_ql !='#'">
-          <div *ngFor="let ans of answer_reviews_ql">
-            <div class="ui input">
- 
-             <input type="checkbox" [(ngModel)]="ans.checked" (click)="selectAnswerforRev(ans.answer, ans.checked, ans.answerid)"> {{ans.answer}}
-
-            <div class="ui input" *ngIf="ans.answer=='Others'">
-              <input type="text" placeholder="Reason" [(ngModel)]="roanswers">
+            <div *ngFor="let ans of answer_reviews_ql">
+              <div class="ui input">
+                <input type="checkbox" [(ngModel)]="ans.checked" (click)="selectAnswerforRev(ans.answer, ans.checked, ans.answerid)"> &nbsp; {{ans.answer}}
+                <div *ngIf="ans.answer=='Others'">
+                  &nbsp;
+                  <div class="ui input" style="bottom: 5px;">
+                    <input type="text" placeholder="Reason" [(ngModel)]="roanswers">
+                  </div>
+                </div>
+              </div>
             </div>
-
-            </div>
-
           </div>
-        </div>
 
           <br>
           <br>
+
           <div class="ui stackable two column grid">
             <div class="column">
               <label style="font-weight: bold; font-size: 15px;color: black; margin-bottom: 1px;" >Next Review Date: </label>
-              <input [(ngModel)]="next_review_date" type="datetime-local" name="next_review_date" style="height: 29px;width: 137px;padding-left: 2px;padding-right: 2px;"/>
+              &nbsp;
+              <div class="ui input">
+                <input [(ngModel)]="next_review_date" type="datetime-local" name="next_review_date" style="height: 29px;width: 137px;padding-left: 2px;padding-right: 2px;"/>
+              </div>
             </div>
-            <div class="column">
+            <div class="column" style="padding-top: 20px;">
               <label style="font-weight: bold; font-size: 15px;color: black; margin-bottom: 1px;" >Rating: </label>
+              &nbsp;
               <lsu-rating [(ngModel)]="ratings" [maxRating]="'5'" [type]="'star'" [size]="'large'"></lsu-rating>
             </div>
           </div>
@@ -315,6 +320,7 @@
         <div class="actions">
           <br>
           <button class="ui black deny button" (click)="cancelReviewModal()">Cancel</button>
+
           <button class="ui positive right labeled icon button" (click)="submit_reviews(oppo_key)">Submit Review
             <i class="checkmark icon"></i>
           </button>
