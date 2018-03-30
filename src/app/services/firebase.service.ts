@@ -60,6 +60,66 @@ export class FirebaseService {
 	}
 //End's here
 
+addinsideSalesinoneShot(insidesaleslist: {
+      quote_id: any,
+      quote_ref_no: any,
+      quote_date: any,
+      cpo_no: any,
+      cpo_date: any,
+      cpo_det_id: any,
+      indent_date: any,
+      customer_name: any,
+      product: any,
+      uom: any,
+      quantity: any,
+      sales_rate: any,
+      sales_amt: any,
+      purchase_rate: any,
+      purchase_amt: any,
+      supplier_po_no: any,
+      supplier_purchase_date: any,
+      supplier_invoice_date: any,
+      supplier: any,
+      supplier_rate: any,
+      supplier_invoice_no: any,
+      license_key: any,
+      license_upload_file_location: any,
+      license_from: any,
+      license_to: any,
+      invoice_no: any,
+      invoice_date: any,
+      invoice_amt: any,
+      status: any,
+      created_by: any,
+      assigned_to: any,
+      remarks: any,
+      region: any,
+      created_at: any
+    }){
+
+			//console.log('CP Object',contactpersonObject, contactpersonObject.contact_person_name);
+			let islCount = Object.keys(insidesaleslist).length
+			let isllist = Object.values(insidesaleslist)
+
+			//console.log(ndlist, ndCount)
+
+			for(let key1=0; key1 < islCount; key1++ )
+			{
+				
+				var islURL = '/insideSales/' ;
+				//console.log ("firebase add cp",contactpersonlist[key1] )
+				var islObject = this.af.list(islURL).push(insidesaleslist[key1]);
+				var islid = islObject.key;
+				var islid_URL1 = '/insideSales/' + islid;
+				var islData1 = this.af.object(islid_URL1).update({'insideSalesid': islid});
+				
+			}
+
+		console.log("fb",islData1);
+	return islData1
+
+}
+
 //START ACCOUNTS
    	//Fetch list of Accounts information
 	getAccounts()
@@ -661,10 +721,10 @@ export class FirebaseService {
 
     //Opportunities Add Reviews
     addReviews(reviewsObject: {reviews_id : any,
-        reviewsdtl : any,
-        reviewans: any,
+        reviewsdscr : any,
         next_review_date: any,
         ratings: any,
+        stage: any,
         created_by: any,
         created_at: any}, oppoid){
 
@@ -675,6 +735,7 @@ export class FirebaseService {
 		var opporemData1 = this.af.object(opporemid_URL1).update({'reviews_id': opporemid});
 
 		return opporemData1;
+
     }
 
     //Opportunities View Reviews
@@ -706,6 +767,12 @@ export class FirebaseService {
 			{orderByChild: 'assigned_to',
 			equalTo: String(uid)}});
 
+	}
+
+	//Get Inside Sales Opportunity information based on inside sales id
+	getInsideSaleID(insidesaleid){
+		var insURLs = '/insideSales/' + insidesaleid
+		return this.af.object(insURLs);
 	}
 
 	//Add a new inside sales Opportunity information
@@ -757,7 +824,46 @@ export class FirebaseService {
 	}
 
 	//Update inside sales Opportunity information
-	saveInsideSales(){
+	saveInsideSales(einsalesid, einsidesaleslist : {
+      quote_id: any,
+      quote_ref_no: any,
+      quote_date: any,
+      cpo_no: any,
+      cpo_date: any,
+      cpo_det_id: any,
+      indent_date: any,
+      customer_name: any,
+      product: any,
+      uom: any,
+      quantity: any,
+      sales_rate: any,
+      sales_amt: any,
+      purchase_rate: any,
+      purchase_amt: any,
+      supplier_po_no: any,
+      supplier_purchase_date: any,
+      supplier_invoice_date: any,
+      supplier: any,
+      supplier_rate: any,
+      supplier_invoice_no: any,
+      license_key: any,
+      license_upload_file_location: any,
+      license_from: any,
+      license_to: any,
+      invoice_no: any,
+      invoice_date: any,
+      invoice_amt: any,
+      status: any,
+      created_by: any,
+      assigned_to: any,
+      remarks: any,
+      region: any,
+      created_at: any
+    }){
+		var einsURL = '/insideSales/' + einsalesid
+		var einsData = this.af.object(einsURL).update(einsidesaleslist);
+
+		return einsData;
 
 	}
 

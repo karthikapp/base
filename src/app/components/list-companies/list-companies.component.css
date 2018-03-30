@@ -4,10 +4,12 @@
 
 .wide-card.mdl-card {
   width: 350px;
+  max-width: 400px;
 }
 .demo-card-wide > .mdl-card__title {
   color: #fff;
   height: 100px;
+  max-height: 100px;
 }
 .demo-card-wide > .mdl-card__menu {
   color: #fff;

@@ -3,6 +3,7 @@ import { FirebaseService } from "../../services/firebase.service";
 import { Router, ActivatedRoute } from '@angular/router';
 import { Users } from "../../models/users";
 import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
+import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import "rxjs/add/operator/takeWhile";
 
 @Component({
@@ -56,6 +57,9 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   //initializing p to one for pagination pipe
   p: number = 1;
+
+  csvOptions: any;
+  usersCSV: any[];
   
   constructor(private firebaseservice : FirebaseService, 
     private router: Router, private afAuth: AngularFireAuth) 
@@ -78,6 +82,15 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.region = '';
 
     this.created_at = firebaseservice.created_at;
+
+    this.csvOptions = { 
+    fieldSeparator: ',',
+    quoteStrings: '"',
+    decimalseparator: '.',
+    showLabels: true, 
+    showTitle: true,
+    headers: ['User ID', 'User_Name','Email','Region'] 
+    };
   }
 
   ngOnInit() 
@@ -127,6 +140,20 @@ export class UsersComponent implements OnInit, OnDestroy {
             return this.ev=false;
        }
      });
+  }
+
+  download(){
+    this.usersCSV = [];
+
+    this.users.map(item => {
+        return {
+            userid: item.userid,
+            name: item.name,
+            email: item.email,
+            region: item.region
+        }
+    }).forEach(item => this.usersCSV.push(item));
+    new Angular2Csv(this.usersCSV, 'Users_Report',this.csvOptions);
   }
 
   ngOnDestroy() {

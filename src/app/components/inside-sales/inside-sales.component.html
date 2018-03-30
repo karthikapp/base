@@ -6,10 +6,14 @@
         <!--Tabs of List and create new opportunities of Inside Sales -->
         <lsu-tabset type="'tabular'">
           <!--List Inside Sales Opportunities-->
-          <lsu-tab  [headerText]="'Opportunities'" [active]="'true'">
+          <lsu-tab  [headerText]="'Opportunities'" [active]="oppoFlag">
             <div class="ui stackable three column grid" style="margin-top: 14px; margin-bottom: 3px;">
               <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand" 
               *ngFor="let insales of in_sales | sortasc: {property: 'license_to', direction: 1 } | paginate: { itemsPerPage: 3, currentPage: p }">
+
+              <button class = "ui circular info icon button" (click)="on_edit_inssales(insales.insideSalesid)">
+                <i class="material-icons" style="font-size: 12pt;">edit</i>
+              </button>
 
                 <!--Customer Name , Product with uom & quantity, License From & to Date, Status -->
                 <div class="ui card" style="width: 100%;height: 100%;">
@@ -375,7 +379,7 @@
           </lsu-tab>
 
           <!--Create new Inside Sales Opportunities-->
-          <lsu-tab  [headerText]="'Create New'" [active]="'true'">
+          <lsu-tab  [headerText]="'Create New'">
             <div class="ui card" style="width: 100%;height: 100%;">
               <div class="content">
                 <div class="ui container">
@@ -673,7 +677,7 @@
                       <form class="ui form">
                         <div class="field"  class ="column">
                          <label style="font-weight: bold;">Created By</label>
-                         <input type="text"  class="form-control" name="created_by" placeholder="Created By" [(ngModel)]="created_by">
+                         <input type="text"  class="form-control" name="created_by" placeholder="Created By" [(ngModel)]="created_by" readonly>
                         </div>
                       </form>
 
@@ -700,6 +704,362 @@
               </div>
             </div>    
           </lsu-tab>
+
+          <!--Upload one time -->
+          <lsu-tab  [headerText]="'Upload'">
+            <div class="ui card" style="width: 100%;height: 100%;">
+              <div class="content">
+                <div class="ui container">
+                  
+                    <input type="file" class="upload" (change)="changeListener($event.target.files)" #myInput>
+                    <br>
+                    <br>
+                    <div class="ui button" style="padding: 0px;">
+                    <button type="reset" (click)="reset()">Clear File</button>
+                  </div>
+
+                
+                </div>
+              </div>
+            </div>    
+          </lsu-tab>
+
+
+
+          <!--Edit Inside Sales Opportunities-->
+          <lsu-tab  [headerText]="'Edit'" [active]="editFlag">
+            
+            <div class="ui card" style="width: 100%;height: 100%;">
+              <div class="content"  *ngIf="editFlag">
+                <div class="ui container" >
+                  <div class="ui segment">
+
+
+                    <div class="ui horizontal divider">Quote Info.</div>
+                    <br>
+
+                    <!-- Quote ID, Quote Reference No., Quote Date-->
+                    <div class="ui stackable three column grid">
+                      <form class="ui form">
+                        <div class="field"  class ="column">
+                         <label style="font-weight: bold;">Quote ID</label>
+                         <input type="text"  class="form-control" name="equote_id" placeholder="Quote ID" [(ngModel)]="equote_id">
+                        </div>
+                      </form>
+
+                      <form class="ui form">
+                        <div class="field"  class ="column">
+                         <label style="font-weight: bold;">Quote Ref. No.</label>
+                         <input type="text"  class="form-control" name="equote_ref_no" placeholder="Quote Ref" [(ngModel)]="equote_ref_no">
+                        </div>
+                      </form>
+
+                      <form class="ui form">
+                        <div class="field"  class ="column">
+                          <label style="font-weight: bold;">Quote Date</label>
+                          <input [ngModel]="equote_date | date:'yyyy-MM-dd'" (ngModelChange)="equote_date = $event" type="date" name="equote_date" />
+                        </div>
+                      </form>
+                    </div>
+                    
+                    <br>
+                    <div class="ui horizontal divider"> CPO Details</div>
+                    <br>
+
+                    <!-- CPO No., CPO Date, Indent Date, CPO DET ID-->
+                    <div class="ui stackable four column grid">
+                      <form class="ui form" >
+                        <div class="field"  class ="column">
+                         <label style="font-weight: bold;">CPO No.</label>
+                         <input type="text"  class="form-control" name="ecpo_no" placeholder="CPO No." [(ngModel)]="ecpo_no">
+                        </div>
+                      </form>
+
+                      <form class="ui form" >
+                        <div class="field"  class ="column">
+                          <label style="font-weight: bold;">CPO Date</label>
+                          <input [ngModel]="ecpo_date | date:'yyyy-MM-dd'"  (ngModelChange)="ecpo_date = $event" type="date" name="ecpo_date" />
+                        </div>
+                      </form>
+
+                      <form class="ui form" >
+                        <div class="field"  class ="column">
+                         <label style="font-weight: bold;">CPO DET ID</label>
+                         <input type="text"  class="form-control" name="ecpo_det_id" placeholder="CPO DET ID" [(ngModel)]="ecpo_det_id">
+                        </div>
+                      </form>
+
+                      <form class="ui form" >
+                        <div class="field"  class ="column">
+                          <label style="font-weight: bold;">Indent Date</label>
+                          <input [ngModel]="eindent_date | date:'yyyy-MM-dd'" (ngModelChange)="eindent_date = $event" type="date" name="eindent_date">
+                        </div>
+                      </form>
+
+                    </div>
+                    
+                    <br>
+                    <div class="ui horizontal divider"> Customer Info and Product</div>
+                    <br>
+
+                    <!-- Customer Name, Product, Unit of measurement and quantity-->
+                    <div class="ui stackable four column grid">
+                      <form class="ui form" >
+                        <div class="field"  class ="column">
+                          <label style="font-weight: bold;" for="exampleFormControlSelect1">Customer Name</label>
+                          <select class="form-control" id="exampleFormControlSelect1" name="ecompanyname" [(ngModel)]="ecompanyname" style="height: 29px;font-size: 1.2em">
+                            <option *ngFor="let cn of accounts" [value]="cn.companyid"> {{cn.companyname}} </option>
+                          </select>
+                        </div>
+                      </form>
+
+                      <form class="ui form" >
+                        <div class="field"  class ="column">
+                          <label style="font-weight: bold;" for="exampleFormControlSelect2">Product</label>
+                          <select class="form-control" id="exampleFormControlSelect2" name="eProduct_name" [(ngModel)]="eProduct_name" style="height: 29px;font-size: 1.2em">
+                            <option *ngFor="let pd of products" [value]="pd.productkey"> {{pd.Product_name}} </option>
+                          </select>
+                        </div>
+                      </form>
+
+                      <form class="ui form" >
+                        <div class="field"  class ="column">
+                          <label style="font-weight: bold;" for="exampleFormControlSelect3">Unit of Measurement</label>
+                          <select class="form-control" id="exampleFormControlSelect3" name="euom" [(ngModel)]="euom" style="height: 29px;font-size: 1.2em">
+                            <option>Lic</option>
+                            <option>Box</option>
+                            <option>Unit</option>
+                          </select>
+                        </div>
+                      </form>
+
+                      <form class="ui form" >
+                        <div class="field"  class ="column">
+                         <label style="font-weight: bold;">Quantity</label>
+                         <input type="number"  class="form-control" name="equantity" placeholder="Quantity" [(ngModel)]="equantity">
+                        </div>
+                      </form>
+
+                    </div>
+
+                    <br>
+                    <div class="ui horizontal divider"> Sales and Purchase</div>
+                    <br>
+
+                    <!-- Sales Rate, Sales amount, Purchase Rate and Purchase amount-->
+                    <div class="ui stackable four column grid">
+                      <form class="ui form" >
+                        <div class="field"  class ="column">
+                         <label style="font-weight: bold;">Sales Rate</label>
+                         <input type="number"  class="form-control" name="esales_rate" placeholder="Sales Rate" [(ngModel)]="esales_rate">
+                        </div>
+                      </form>
+
+                      <form class="ui form" >
+                        <div class="field"  class ="column">
+                          <label style="font-weight: bold;">Sales Amount</label>
+                          <input type="number"  class="form-control" name="esales_amt" placeholder="Sales Amount" [(ngModel)]="esales_amt">
+                        </div>
+                      </form>
+
+                      <form class="ui form" >
+                        <div class="field"  class ="column">
+                          <label style="font-weight: bold;">Purchase Rate</label>
+                          <input type="number"  class="form-control" name="epurchase_rate" placeholder="Purchase Rate" [(ngModel)]="epurchase_rate">
+                        </div>
+                      </form>
+
+                      <form class="ui form" >
+                        <div class="field"  class ="column">
+                          <label style="font-weight: bold;">Purchase Amount</label>
+                          <input type="number"  class="form-control" name="epurchase_amt" placeholder="Purchase Amount" [(ngModel)]="epurchase_amt">
+                        </div>
+                      </form>
+
+                    </div>
+                    
+                    <br>
+                    <div class="ui horizontal divider"> Supplier Details</div>
+                    <br>
+
+                    <!-- Supplier Purchase Order No, Supplier Purchase Date, Supplier-->
+                    <div class="ui stackable three column grid">
+                      <form class="ui form">
+                        <div class="field"  class ="column">
+                         <label style="font-weight: bold;">Supplier PO No.</label>
+                         <input type="text"  class="form-control" name="esupplier_po_no" placeholder="Supplier PO No." [(ngModel)]="esupplier_po_no">
+                        </div>
+                      </form>
+
+                      <form class="ui form">
+                        <div class="field"  class ="column">
+                         <label style="font-weight: bold;">Supplier Purchase Date</label>
+                          <input [ngModel]="esupplier_purchase_date | date:'yyyy-MM-dd'" (ngModelChange)="esupplier_purchase_date = $event" type="date" name="esupplier_purchase_date">
+                        </div>
+                      </form>
+
+                      <form class="ui form">
+                        <div class="field"  class ="column">
+                          <label style="font-weight: bold;" for="exampleFormControlSelect4">Supplier</label>
+                          <select class="form-control" id="exampleFormControlSelect4" name="esupplier_name" [(ngModel)]="esupplier_name" style="height: 29px;font-size: 1.2em">
+                            <option *ngFor="let sp of suppliers" [value]="sp.supplier_id">{{sp.supplier_name}}</option>
+                          </select>
+                        </div>
+                      </form>
+                    </div>
+                    <br>
+                    <br>
+
+                    <!-- Supplier Rate, Supplier Invoice No, Supplier Invoice Date-->
+                    <div class="ui stackable three column grid">
+                      <form class="ui form">
+                        <div class="field"  class ="column">
+                         <label style="font-weight: bold;"> Supplier Rate</label>
+                         <input type="number"  class="form-control" name="esupplier_rate" placeholder="Supplier Rate" [(ngModel)]="esupplier_rate">
+                        </div>
+                      </form>
+
+                      <form class="ui form">
+                        <div class="field"  class ="column">
+                         <label style="font-weight: bold;">Supplier Invoice No.</label>
+                         <input type="text"  class="form-control" name="esupplier_invoice_no" placeholder="supplier invoice no" [(ngModel)]="esupplier_invoice_no">
+                        </div>
+                      </form>
+
+                      <form class="ui form">
+                        <div class="field"  class ="column">
+                          <label style="font-weight: bold;">Supplier Invoice Date</label>
+                          <input [ngModel]="esupplier_invoice_date | date:'yyyy-MM-dd'" (ngModelChange)="esupplier_invoice_date = $event" type="date" name="esupplier_invoice_date">
+                        </div>
+                      </form>
+                    </div>
+
+                    <br>
+                    <div class="ui horizontal divider"> License Information</div>
+                    <br>
+
+                    <!-- License Key, License Upload File Location, License From and License To-->
+                    <div class="ui stackable four column grid">
+                      <form class="ui form" >
+                        <div class="field"  class ="column">
+                         <label style="font-weight: bold;">License Key</label>
+                         <input type="text"  class="form-control" name="elicense_key" placeholder="License Key" [(ngModel)]="elicense_key">
+                        </div>
+                      </form>
+
+                      <form class="ui form" >
+                        <div class="field"  class ="column">
+                          <label style="font-weight: bold;">License Upload File Location</label>
+                          <input type="text"  class="form-control" name="elic_upload_file_loc" placeholder="lic upload file loc" [(ngModel)]="elic_upload_file_loc">
+                        </div>
+                      </form>
+
+                      <form class="ui form" >
+                        <div class="field"  class ="column">
+                          <label style="font-weight: bold;">License From</label>
+                          <input [ngModel]="elicense_from | date:'yyyy-MM-dd'" (ngModelChange)="elicense_from = $event" type="date" name="elicense_from" />
+                        </div>
+                      </form>
+
+                      <form class="ui form" >
+                        <div class="field"  class ="column">
+                          <label style="font-weight: bold;">License To</label>
+                          <input [ngModel]="elicense_to | date:'yyyy-MM-dd'" (ngModelChange)="elicense_to = $event" type="date" name="elicense_to" />
+                        </div>
+                      </form>
+
+                    </div>
+                    
+                    <br>
+                    <div class="ui horizontal divider"> Invoice Information</div>
+                    <br>
+
+                    <!-- Invoice No, Invoice Date and Invoice Amount-->
+                    <div class="ui stackable three column grid">
+                      <form class="ui form">
+                        <div class="field"  class ="column">
+                         <label style="font-weight: bold;">Invoice No.</label>
+                         <input type="text"  class="form-control" name="einvoice_no" placeholder="Invoice No" [(ngModel)]="einvoice_no">
+                        </div>
+                      </form>
+
+                      <form class="ui form">
+                        <div class="field"  class ="column">
+                         <label style="font-weight: bold;">Invoice Date</label>
+                         <input [ngModel]="einvoice_date | date:'yyyy-MM-dd'" (ngModelChange)="einvoice_date = $event" type="date" name="einvoice_date">
+                        </div>
+                      </form>
+
+                      <form class="ui form">
+                        <div class="field"  class ="column">
+                         <label style="font-weight: bold;">Invoice Amount</label>
+                         <input type="number"  class="form-control" name="einvoice_amt" placeholder="Invoice Amount" [(ngModel)]="einvoice_amt">
+                        </div>
+                      </form>
+                    </div>
+
+                    <br>
+                    <div class="ui divider"></div>
+                    <br>
+
+                    <!--Remarks & Region, Created By and Assigned To-->
+                    <div class="ui stackable four column grid">
+                      <form class="ui form">
+                        <div class="field"  class ="column">
+                         <label style="font-weight: bold;">Remarks</label>
+                         <input type="text"  class="form-control" name="eremarks" placeholder="Remarks" [(ngModel)]="eremarks">
+                        </div>
+                      </form>
+
+                      <form class="ui form">
+                        <div class="field"  class ="column">
+                          <label style="font-weight: bold;" for="exampleFormControlSelect7">Region</label>
+                          <select class="form-control" id="exampleFormControlSelect7" name="eregion" [(ngModel)]="eregion" style="height: 29px;font-size: 1.2em">
+                            <option [value]="'chennai'">Chennai</option>
+                            <option [value]="'hyderabad'">Hyderabad</option>
+                            <option [value]="'mumbai'">Mumbai</option>
+                            <option [value]="'coimbatore'">Coimbatore</option>
+                            <option [value]="'bangalore'">Bangalore</option>
+                          </select>
+                        </div>
+                      </form>
+
+                      <form class="ui form">
+                        <div class="field"  class ="column">
+                         <label style="font-weight: bold;">Created By</label>
+                         <!-- <input type="text"  class="form-control" name="ecreated_by" placeholder="Created By" [(ngModel)]="ecreated_by" readonly> -->
+                          <div class="value" style="font-size: 15px;padding-top: 5px;">
+                            <app-assignedtonameget [name]="ecreated_by"></app-assignedtonameget>
+                          </div>
+                        </div>
+                      </form>
+
+                      <form class="ui form">
+                        <div class="field"  class ="column">
+                         <label style="font-weight: bold;">Assigned To</label>
+                          <select class="form-control" id="exampleFormControlSelect4" name="eassigned_to" [(ngModel)]="eassigned_to" style="height: 29px;font-size: 1.2em">
+                            <option *ngFor="let ato of usersbyinsales" [value]="ato.userid">{{ato.name}} </option>
+                          </select>
+                        </div>
+                      </form>
+                    </div>
+                    <br>
+                    <br>
+
+                    <div align=center>
+                      <button class="ui teal button" (click)="edit_insales_oppo()">Edit </button>
+                      &nbsp;
+                      <button class="ui red button" (click)="cancel_insales_oppo()">Cancel</button>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>    
+
+          </lsu-tab>
+
+
         </lsu-tabset>
       </div>
 

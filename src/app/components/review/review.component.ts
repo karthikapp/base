@@ -154,10 +154,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
   oppo_key: any;
   leadsource: any;
 
-  isLoading: boolean = true;
   isRegLoading: boolean = true;
-  isExecLoading: boolean = true;
-  isELoading: boolean = true;
 
   rate: any;
   role: any;
@@ -172,6 +169,14 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
   ranswers: any;
   roanswers: any;
   roquestions: any;
+
+  avgReviewslist: any;
+  avgReviewsvalue: any;
+  totalavgRevValue: any;
+  isOpen : boolean = false;
+  answers: any;
+  ansindex: any;
+  ansfilter: any;
  
   constructor(private firebaseservice : FirebaseService, 
     private router: Router, private afAuth: AngularFireAuth,
@@ -212,6 +217,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
     this.rquestionnarie.question = '';
     this.rquestionnarie.stage = '';
     this.rquestionnarie.questionid = '';
+    this.answers = [];
 
     this.afAuth.authState
     .takeWhile(() => this.alive)
@@ -263,8 +269,6 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
       }
     });  	 
   }
-
-  
 
   initial_app(){
     this.question_reviews_ql = [];
@@ -332,33 +336,160 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
     return a;
   }
 
-  getAnswersforRev(){
-    console.log("pp12",this.rquestionnarie, this.rquestionnarie.questionid, this.rquestionnarie.question);
+  // getAnswersforRev(qr){
+  //   console.log("pp12",this.rquestionnarie, this.rquestionnarie.questionid, this.rquestionnarie.question);
     
-    this.answer_reviews_ql = [];
-    this.answer_reviews_ql = this.rqservice.getAnswers().filter(i => { return i.questionid == this.rquestionnarie.questionid;
-    });
+  //   this.rquestionnarie = qr;
 
-    if(this.answer_reviews_ql == ''){
-      this.answer_reviews_ql = '#';
-      console.log("pp123",this.answer_reviews_ql)
+  //   console.log("pp123", this.rquestionnarie, this.rquestionnarie.questionid, this.rquestionnarie.question)
+
+  //   this.answer_reviews_ql = [];
+  //   this.answer_reviews_ql = this.rqservice.getAnswers().filter(i => { return i.questionid == this.rquestionnarie.questionid;
+  //   });
+
+  //   // if(this.answer_reviews_ql == ''){
+  //   //   this.answer_reviews_ql = '#';
+  //   //   console.log("pp123",this.answer_reviews_ql)
+  //   // }
+  //   // else if (this.answer_reviews_ql != '#'){
+      
+  //   //   //this.showContentReview(this.rquestionnarie);
+  //   // }
+  //   console.log("pp12", this.answer_reviews_ql);
+  //   //this.rquestionnarie = question;
+
+  // }
+
+  selectAnswerforRev(question, qid, answers, answer,  answerid , checked){
+    console.log("pp1234", question, answer, answers, qid, answerid);
+    // this.answer_reviews_ql.forEach( x => {
+    //   if(x.answerid != answerid){
+    //     x.checked = false;
+    //   }
+    //   else
+    //   {
+    //     x.checked = true;
+    //   }
+    //   console.log("check", x.checked);
+    // })
+
+    //Single select for multi question
+      // answers.forEach( x => {
+      //   if(x.answerid != answerid){
+      //     x.checked = false;
+      //   }  
+      // })
+
+    //   this.ansindex = null;
+
+    //   let element: any = { question: question,
+    //       answer: answer, qid: qid, ansid: answerid};
+    
+    //   if (this.answers.length > 0)
+    //   {
+    //     this.ansindex = this.answers.findIndex(p => p.qid === qid);
+
+    //     if(this.ansindex != -1){
+    //       this.answer_reviews_ql.splice(this.ansindex, 1)
+    //     }
+    //     //console.log("asn", this.answers, this.answer_reviews_ql, this.ansindex);
+    //   }
+
+    //   if(checked == false){
+    //     this.answer_reviews_ql.push(element);
+    //     this.answers = this.answer_reviews_ql;
+    //   }
+    
+    // console.log("final", this.answer_reviews_ql);
+
+
+    this.ansindex = null;
+    this.ansfilter = [];
+
+    let element: any = { question: question, qid:qid, answers: {
+      answer: answer, 
+      ansid: answerid }};
+
+      console.log("qi", element);
+
+    let qanswers: any = { answer: answer, ansid: answerid}
+
+    console.log("qi",qanswers);
+
+    if(this.answers.length > 0)
+    {
+      this.ansindex = this.answers.findIndex(p => p.qid === qid);
+      this.ansfilter = this.answers.filter(p => p.qid === qid)
+                  .map(a => a.answers);
+
+      var flattened = this.ansfilter.reduce(
+  ( accumulator, currentValue ) => accumulator.concat([currentValue]),[]);
+
+
+      //let ansfilters = Object.values(this.ansfilter);
+
+      console.log("qiiiiiiippppp", this.ansindex, this.ansfilter, flattened);
+
+
+
+      if(this.ansindex != -1){
+      // var ansind = this.ansindex
+        if(checked ==false){
+
+          //this.ansfilters.push({answers: this.ansfilter});
+
+          //let ansfilters : any = this.ansfilter
+
+          flattened.push(qanswers);
+          //this.ansfilter = Object.values(this.ansfilter);
+          console.log("pq", this.ansfilter, flattened);
+        }
+        else if (checked == true){
+          //this.ansindex = this.answers.findIndex(p => p.qid === rqid);
+        }
+
+        element = { question: question, qid: qid, answers: this.ansfilter};
+        console.log("pqqq", element);
+        this.answer_reviews_ql.splice(this.ansindex,1);
+      }
     }
-    console.log("pp12", this.answer_reviews_ql);
-    //this.rquestionnarie = question;
+
+    if(checked == false)
+    {
+      this.answer_reviews_ql.push(element);
+      this.answers = this.answer_reviews_ql;
+    }
+
+    console.log("qiiiiiii", this.answers, this.answer_reviews_ql)
   }
 
-  selectAnswerforRev(answer, checked, answerid){
-    console.log("pp12", answer, checked);
-    this.answer_reviews_ql.forEach( x => {
-      if(x.answerid != answerid){
-        x.checked = false;
-      }
-    })
+  onkey(value, rquestion, rqid, ranswerid, rchecked){
+    console.log("keytup", value, rquestion, rqid, ranswerid, rchecked);
 
-    if(answer!= 'Others'){
-      this.roanswers = '';
-      this.ranswers = answer;
+    this.ansindex = null;
+
+    console.log("this", this.answer_reviews_ql, this.answers)
+
+    let data: any = {question: rquestion,
+          answer: value, qid: rqid, ansid: ranswerid }
+
+    if(this.answers.length > 0){
+      this.ansindex = this.answers.findIndex(p => p.qid === rqid);
+
+      if(this.ansindex != -1){
+          this.answer_reviews_ql.splice(this.ansindex, 1)
+          console.log("krishna", this.answer_reviews_ql);
+        }
+
     }
+
+    if(rchecked == true){
+        this.answer_reviews_ql.push(data);
+        this.answers = this.answer_reviews_ql;
+      }
+
+      console.log("final", this.answer_reviews_ql, this.answers);
+
   }
 
   submit_reviews( oppoid: any){
@@ -366,25 +497,27 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
       console.log("hello", this.ratings);
       
       if(this.question_reviews_ql == '' && this.roquestions != ''){
-        this.rquestionnarie.question = this.roquestions
+        console.log("krishna")
+
+        let value: any = {question: this.roquestions,
+          answer: '', qid: '', ansid:''} 
+
+          this.answers = value;        
       }
 
-      if(this.roanswers != ''){
-        this.ranswers = this.roanswers;
-      }
-
+      if( this.ratings > 0)
+      {
       let reviewsObject ={
         reviews_id : '',
-        reviewsdtl : this.rquestionnarie.question,
-        reviewans : this.ranswers,
+        reviewsdscr : this.answers,
         next_review_date: this.next_review_date,
         ratings: this.ratings,
+        stage: this.oppo_status,
         created_by: this.uid,
         created_at: this.created_at
       }
 
       console.log("pp12", reviewsObject);
-
 
         this.firebaseservice.addReviews(reviewsObject, oppoid).then(success => {
           this.rquestionnarie.question = '';
@@ -398,21 +531,21 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
           alert("Review submitted successfully");
           this.cancelReviewModal();  
         }); 
-      
-  
-
 
       if(this.role == "MASTER" 
             || this.title == "PRE-SALES HEAD"){
-
-      this.isRegLoading = true;
+           this.isRegLoading = true;
            this.initial_app();
           }
           else if(this.report == 'RECIPIENT'){
-
-      this.isRegLoading = true;
+            this.isRegLoading = true;
             this.initial_app_recip();
-        }
+          }
+
+         }
+      else{
+        alert("Review is not inserted since ratings is NULL");
+      } 
   }
 
   ngAfterViewInit() 
@@ -461,7 +594,6 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
       this.totalCountValueExec(this.oppoExecList,execList[i]);
       //this.showRegReview(this.oppoRegionList); 
     }
-     this.isExecLoading = false;
   }
 
   totalCountValueExec(arr, exec){
@@ -650,7 +782,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
     }
     //this.executivelist = this.unique(execlistall)
     console.log("exec",this.exec_wiseopportunity)
-    console.log("flag", this.isELoading, this.isExecLoading, this.isRegLoading)
+    console.log("flag", this.isRegLoading)
    
   }
 
@@ -766,6 +898,10 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
 
 
   getReview(reviews, rflag){
+    this.avgReviewslist = [];
+    this.avgReviewsvalue = [];
+    this.totalavgRevValue = 0;
+
       if (reviews == undefined)
       {
         //this.rate = 0;
@@ -784,7 +920,20 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
         this.review = Object.values(reviews);
         this.reviewCount = Object.keys(reviews).length;
 
-        //this.rate = this.review[this.reviewCount - 1].ratings;
+        //console.log("AvgRev", this.review);
+
+    //     this.review.forEach(element => {
+    //   this.avgReviewsvalue.push(element.ratings);
+    // })
+                  
+    // this.avgReviewsvalue = this.avgReviewslist
+    // this.totalavgRevValue = this.arraylist.reduce((a, b) => a + b, 0);
+    // if(this.totalavgRevValue == undefined || isNaN(this.totalavgRevValue)) {
+    //   this.totalavgRevValue = 0;
+    // }
+
+    // console.log("AvgRev", this.totalavgRevValue)
+        this.rate = this.review[this.reviewCount - 1].ratings;
 
         if (rflag == 's'){
           if(this.review[this.reviewCount - 1].next_review_date != undefined){
@@ -938,7 +1087,6 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
 
 
   displayReview(opportunity){
-    this.isLoading = false;
     this.lead_title = '';
     this.company_name = '';
     this.oppo_created_at = null;
@@ -1139,6 +1287,8 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
     this.roquestions = '';
     this.roanswers = '';
     this.ranswers = '';
+    this.answers = [];
+    this.answer_reviews_ql = [];
     this.ratings = null;
     this.next_review_date = null;
   }
@@ -1156,6 +1306,20 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
 
   }
 //END MODALS
+
+//Accordion - show and hide for opportunities
+  closeAlloppo(): void {
+    this.question_reviews_ql.forEach((qr) => {
+      qr.isOpen = false;
+    });
+  }
+
+  showContentReview(qr) {
+    if (!qr.isOpen) {
+      this.closeAlloppo();
+    }
+    qr.isOpen = true;
+  }
 
 
 

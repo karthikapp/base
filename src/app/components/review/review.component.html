@@ -98,8 +98,8 @@
           <table class="ui padded table">
             <thead>
               <tr>
+                <th>Stage</th>
                 <th>Review Dscr.</th>
-                <th>Review Ans</th>
                 <th>Next Review Date</th>
                 <th>Ratings</th>
                 <th>Created By</th>
@@ -109,11 +109,27 @@
             <tbody>
               <tr *ngFor ="let rd of reviews_display | contactpersons | sortorder">
                 <td>
-                  {{rd.reviewsdtl}}
+                  {{returnopportunitystate(rd.stage)}}
                 </td>
-                <td>
-                  {{rd.reviewans}}
-                </td>
+                <div *ngIf = "rd.reviewsdscr != ''">
+                  <div *ngFor="let qa of rd.reviewsdscr | contactpersons">
+                    <td>
+                      {{qa.question}} 
+                    </td>
+                    <td>
+                      {{qa.answer}}
+                    </td>
+                  </div>
+                </div>
+                <div *ngIf = "rd.reviewsdtl != ''">
+                  <td>
+                    {{rd.reviewsdtl}} 
+                  </td>
+                  <td>
+                    {{rd.reviewans}}
+                  </td>
+                </div>
+
                 <td>
                   {{rd.next_review_date | date: 'mediumDate'}}
                 </td>
@@ -264,27 +280,84 @@
             <input type="text" name="reviews" placeholder="Review" [(ngModel)]="reviews" style="height: 34px;width: 400px;"> 
           </div> -->
           &nbsp;
-          <div class="ui input" *ngIf="question_reviews_ql==''">
+          <!-- <div class="ui input" *ngIf="question_reviews_ql==''">
               <input type="text" placeholder="Enter Text here" [(ngModel)]="roquestions">
-          </div>
+          </div> -->
 
 
-           <div class="ui input" *ngIf="question_reviews_ql!=''">
+           <!-- <div class="ui input" *ngIf="question_reviews_ql!=''">
               <select (change)="getAnswersforRev()" [(ngModel)]="rquestionnarie">
                 
                 <option *ngFor="let qr of question_reviews_ql" [ngValue]="qr"> {{qr.question}}
                 </option>
               </select>
-            </div>
+            </div> -->
 
-            <br>
-            <br>
+          <!-- <div *ngIf="question_reviews_ql!=''">
+            <div class="ui accordion">
+              <div class="title"  (click) = "getAnswersforRev(qr)" style="color: #B71C1C;" *ngFor="let qr of question_reviews_ql">
+                <i class="dropdown icon"></i>
+                {{qr.question}}
+                  <div class="content" style="padding-left: 12px;" *ngIf="qr.isOpen">
+                    <div *ngIf="(answer_reviews_ql== '#') || (qr.question == 'Others')">
+                      <div class="ui input" >
+                        <input type="text" placeholder="Enter Text Here" [(ngModel)]="roanswers">
+                      </div>
+                    </div>
 
-            <div class="ui input" *ngIf="(answer_reviews_ql== '#') || (rquestionnarie.question == 'Others')">
-              <input type="text" placeholder="Enter Text Here" [(ngModel)]="roanswers">
+                    <div *ngIf="answer_reviews_ql !='#' && qr.question != 'Others'">
+                      <div *ngFor="let ans of answer_reviews_ql">
+                        <div class="ui input" style="color: green" (click)="selectAnswerforRev(ans.answer, ans.checked, ans.answerid)">
+                          <input type="checkbox" [(ngModel)]="ans.checked"> &nbsp; {{ans.answer}}
+                          <div *ngIf="ans.answer=='Others'">
+                          &nbsp;
+                            <div class="ui input" style="bottom: 5px;">
+                              <input type="text" placeholder="Reason" [(ngModel)]="roanswers">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+
+
+
+          <div class="ui input" *ngIf="question_reviews_ql==''">
+            <input type="text" placeholder="Enter Text here" [(ngModel)]="roquestions">
           </div>
 
-          <div *ngIf="answer_reviews_ql !='#'">
+          <div *ngIf="question_reviews_ql!=''">
+            <ol>
+              <li *ngFor="let qr of question_reviews_ql">
+                {{qr.question}}
+                <div *ngFor="let ans of qr.answers">
+                  <div class="ui input">
+                    <input type="checkbox" [(ngModel)]="ans.checked" (click)="selectAnswerforRev(qr.question, qr.questionid, qr.answers, ans.answer, ans.answerid, ans.checked)"> &nbsp; {{ans.answer}}
+                    <div *ngIf="ans.answer=='Others' || ans.answer == ''">
+                    &nbsp;
+                      <div class="ui input" style="bottom: 5px;">
+                        <input #newValue type="text" placeholder="Enter Text Here" (keyup.enter)= "onkey($event.target.value, qr.question, qr.questionid, ans.answerid, ans.checked)" [disabled]="!ans.checked" />
+                        Press ENTER!!!!
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+                
+            </ol>                
+          </div>
+         
+            <br>
+            <br>
+
+      <!--       <div class="ui input" *ngIf="(answer_reviews_ql== '#') || (rquestionnarie.question == 'Others')">
+              <input type="text" placeholder="Enter Text Here" [(ngModel)]="roanswers">
+          </div>
+ -->
+          <!-- <div *ngIf="answer_reviews_ql !='#'">
             <div *ngFor="let ans of answer_reviews_ql">
               <div class="ui input">
                 <input type="checkbox" [(ngModel)]="ans.checked" (click)="selectAnswerforRev(ans.answer, ans.checked, ans.answerid)"> &nbsp; {{ans.answer}}
@@ -296,7 +369,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
 
           <br>
           <br>

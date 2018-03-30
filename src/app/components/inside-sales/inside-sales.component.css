@@ -113,4 +113,8 @@ font-family: 'Marvel', sans-serif; text-transform: capitalize;
   margin-bottom: -14px;
 }
 
+.ui.form select{
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
 
