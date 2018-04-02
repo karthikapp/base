@@ -202,7 +202,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
     this.totalCountReg = 0;
     this.totalValueReg = 0;
     this.next_review_date = null;
-    this.ratings = null;
+    this.ratings = 0;
     this.nxt_rvw_reg_date = null;
     this.nxt_rvw_date = null;
     this.todays_date = new Date();
@@ -474,9 +474,6 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
 
   //   console.log("qiiiiiii", this.answers, this.answer_reviews_ql)
   // }
-
-  onClean(){
-  }
 
   selectAnswerforRev(question, qid, answers, answer,  answerid , checked)
   {
@@ -1145,23 +1142,11 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
       } 
       else if (reviews != undefined)
       {
+
         this.review = Object.values(reviews);
         this.reviewCount = Object.keys(reviews).length;
 
-        //console.log("AvgRev", this.review);
-
-    //     this.review.forEach(element => {
-    //   this.avgReviewsvalue.push(element.ratings);
-    // })
-                  
-    // this.avgReviewsvalue = this.avgReviewslist
-    // this.totalavgRevValue = this.arraylist.reduce((a, b) => a + b, 0);
-    // if(this.totalavgRevValue == undefined || isNaN(this.totalavgRevValue)) {
-    //   this.totalavgRevValue = 0;
-    // }
-
-    // console.log("AvgRev", this.totalavgRevValue)
-        this.rate = this.review[this.reviewCount - 1].ratings;
+        //this.rate = this.review[this.reviewCount - 1].ratings;
 
         if (rflag == 's'){
           if(this.review[this.reviewCount - 1].next_review_date != undefined){
@@ -1188,7 +1173,26 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
           }
         }
         else if(rflag == 'r'){
-          return this.rate = this.review[this.reviewCount - 1].ratings;
+          Object.keys(reviews).forEach(key => {
+            if(reviews[key].ratings != undefined){
+              this.avgReviewsvalue.push(reviews[key].ratings);
+              this.avgReviewslist.push(reviews[key]);
+            }
+          })
+
+          this.avgReviewslist = this.avgReviewsvalue;
+          this.totalavgRevValue = this.avgReviewslist.reduce((a, b) => a + b, 0);
+          
+          if(this.totalavgRevValue == undefined || isNaN(this.totalavgRevValue)) 
+          {
+            this.totalavgRevValue = 0;
+          }
+
+          this.rate = this.totalavgRevValue/this.reviewCount;   
+
+          //console.log("rate", this.rate, this.totalavgRevValue,this.reviewCount);
+
+          return this.rate;
         }
       }    
   }
@@ -1517,7 +1521,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
     this.ranswers = '';
     this.answers = [];
     this.answer_reviews_ql = [];
-    this.ratings = null;
+    this.ratings = 0;
     this.next_review_date = null;
   }
 
