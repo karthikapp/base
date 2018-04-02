@@ -30,7 +30,7 @@
     <!-- REGIONS -->
     <div class="ui card" style="width: 100%;height: 100%;padding: 10px;">
     <div class="title" style="color: #B71C1C;font-size: 17px;font-weight: bold; font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;" *ngIf="ev">
-      REGIONS
+      TOTAL
     </div>
 
     <!--Modal for adding a new Review-->
@@ -414,58 +414,246 @@
       <div class="ui active dimmer" *ngIf="isRegLoading">
         <div class="ui text loader">Calculating...</div>
       </div>
-      <div class="title" style="color: blue;font-size: 13px;font-weight: bold; font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;" >
-            TOTAL Of {{totalCount}} Cases (&#8377;{{totalValue}}) | Review Complete: {{reviewComplete}} (&#8377;{{reviewCompleteValue1}}) 
-            | Live: {{liveReview}} (&#8377;{{liveReviewValue1}}) | Lapsed: {{lapsedReview}} (&#8377;{{lapsedReviewValue1}}) | Un-Reviewed: {{unReview}} (&#8377;{{unReviewValue1}}) 
-            
-            
+      <div class="title" style="color: blue;font-size: 13px;font-weight: bold; font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;">
+
+        <div class="ui five inverted segment">
+        <div class="ui small blue inverted statistic" style="width: 17%;">
+          <div class="value">
+           {{totalCount}} 
+            <p>
+            &#8377;{{totalValue}}
+          </p>
           </div>
-      
-    
-      
+         
+          <div class="label" style="padding-top: 8px; ">
+            Total
+          </div>
+        </div>
+        <div class="ui small orange inverted statistic" style="width: 17%;">
+          <div class="value">
+           {{reviewComplete}}
+              <p>
+            &#8377;{{reviewCompleteValue1}}
+          </p>
+          </div>
+          <div class="label" style="padding-top: 8px; ">
+            Complete
+          </div>
+        </div>
+          <div class="ui small green inverted statistic" style="width: 17%;">
+          <div class="value">
+           {{liveReview}}
+              <p>
+           &#8377;{{liveReviewValue1}}
+          </p>
+          </div>
+          <div class="label" style="padding-top: 8px; ">
+            Live
+          </div>
+        </div>
+        <div class="ui small yellow inverted statistic" style="width: 17%;">
+          <div class="value">
+           {{lapsedReview}}
+              <p>
+           &#8377;{{lapsedReviewValue1}}
+          </p>
+          </div>
+          <div class="label" style="padding-top: 8px; ">
+            Lapsed
+          </div>
+        </div>
+           <div class="ui small teal inverted statistic" style="width: 17%;">
+          <div class="value">
+           {{unReview}}
+              <p>
+           &#8377;{{unReviewValue1}}
+          </p>
+          </div>
+          <div class="label" style="padding-top: 8px; ">
+           Un-reviewed
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+
+     <div class="title" style="color: #B71C1C;font-size: 17px;font-weight: bold; font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;">
+      REGIONWISE
+      <br>
+    </div>
       <div class="ui accordion">
-        
-        <!-- List all regions with total count and value-->
-        <div *ngFor="let item of regList">
-          
-          <div class="title"  (click) = "selectRegion(item.region)" style="color: #B71C1C;">
-            <i class="dropdown icon"></i>
-            {{item.region | uppercase }} | {{item.totalCountReg}} Cases (&#8377;{{item.totalValueReg}}) | Review Complete: {{item.reviewCompleteR}} (&#8377;{{item.reviewCompleteRV1}}) 
-            | Live: {{item.liveReviewR}} (&#8377;{{item.liveReviewRV1}}) | Lapsed: {{item.lapsedReviewR}} (&#8377;{{item.lapsedReviewRV1}}) | Un-Reviewed: {{item.unReviewR}} (&#8377;{{item.unReviewRV1}})
+        <br>
+        <div *ngFor="let item of regList" style="padding-left: 20px;">
+          <div class="title ui stacked segment "  (click) = "selectRegion(item.region)" style="color: #B71C1C;">
+            <div class="ui six  horizontal divided list">
+               <div class="item four wide column">
+              <!-- <img class="ui avatar image" src="/images/avatar/small/tom.jpg"> -->
+              <div class="content" align="center">
+                <div class="header" style="vertical-align: center; align-content: center">
+                {{item.region | uppercase }}
+              </div>
+              <br>
+            <i class="fas fa-map-marker"></i>
+              </div>
+            </div>
+            <div class="item" style="padding-left: 22px;">
+              <!-- <img class="ui avatar image" src="/images/avatar/small/tom.jpg"> -->
+              <div class="content">
+                <div class="header">
+                {{item.totalCountReg}}
+                <p>
+                  &#8377;{{item.totalValueReg}}
+                </p>
+              </div>
+                Total
+              </div>
+            </div>
+            <div class="item" style="padding-left: 22px;">
+              <!-- <img class="ui avatar image" src="/images/avatar/small/christian.jpg"> -->
+              <div class="content">
+                <div class="header">{{item.reviewCompleteR}}
+                  <p>
+                    &#8377;{{item.reviewCompleteRV1}}
+                  </p>
+                </div>
+                Complete
+              </div>
+            </div>
+            <div class="item" style="padding-left: 22px;">
+              <!-- <img class="ui avatar image" src="/images/avatar/small/matt.jpg"> -->
+              <div class="content">
+                <div class="header">{{item.liveReviewR}}
+                  <p>&#8377;{{item.liveReviewRV1}}
+                  </p></div>
+               Live
+              </div>
+            </div>
+             <div class="item" style="padding-left: 22px;">
+              <!-- <img class="ui avatar image" src="/images/avatar/small/matt.jpg"> -->
+              <div class="content">
+                <div class="header">{{item.lapsedReviewR}}
+                  <p>&#8377;{{item.lapsedReviewRV1}}
+                  </p></div>
+               Lapsed
+              </div>
+            </div>
+             <div class="item" style="padding-left: 22px;">
+              <!-- <img class="ui avatar image" src="/images/avatar/small/matt.jpg"> -->
+              <div class="content">
+                <div class="header">{{item.unReviewR}}
+                  <p>&#8377;{{item.unReviewRV1}}
+                  </p></div>
+               Un-Reviewed
+              </div>
+            </div>
           </div>
-      
-          <div class="content"  style="padding-left: 12px;" >
-        
+          </div>
+          
+          
+       
+     
+          <div class="content"  style="padding-left: 22px;">    
             <div class="ui accordion">
-
-              
-              <!-- List all exceutive with region wise count and value for that particular region-->
               <div *ngFor="let executive of execList">
-                
-                <div class="title" (click) = "selectedexec(executive.id,item.region)">
-                  <i class="dropdown icon"></i>
-
-
-                  <app-assignedtonameget name="{{executive.id}}"> 
+                <div class="title">
+                  <div class="title ui stacked secondary segment "  (click) = "selectedexec(executive.id,item.region)" style="color: #B71C1C;">
+            <div class="ui six  horizontal divided list">
+               <div class="item four wide column">
+              <!-- <img class="ui avatar image" src="/images/avatar/small/tom.jpg"> -->
+              <div class="content" align="center">
+                <div class="header" style="vertical-align: center; align-content: center">
+                <app-assignedtonameget name="{{executive.id}}"> 
                   </app-assignedtonameget>
-                  | {{executive.totalCountExec}} Cases (&#8377;{{executive.totalValueExec}}) | Review Complete: {{executive.reviewCompleteE}} (&#8377;{{executive.reviewCompleteEV1}}) 
-            | Live: {{executive.liveReviewE}} (&#8377;{{executive.liveReviewEV1}}) | Lapsed: {{executive.lapsedReviewE}} (&#8377;{{executive.lapsedReviewEV1}}) | Un-Reviewed: {{executive.unReviewE}} (&#8377;{{executive.unReviewEV1}})
+              </div>
+              <br>
+            <i class="fas fa-user-circle"></i>
+              </div>
+            </div>
+            <div class="item" style="padding-left: 22px;">
+              <!-- <img class="ui avatar image" src="/images/avatar/small/tom.jpg"> -->
+              <div class="content">
+                <div class="header">
+               {{executive.totalCountExec}}
+                <p>
+                 &#8377;{{executive.totalValueExec}}
+                </p>
+              </div>
+                Total
+              </div>
+            </div>
+            <div class="item" style="padding-left: 22px;">
+              <!-- <img class="ui avatar image" src="/images/avatar/small/christian.jpg"> -->
+              <div class="content">
+                <div class="header">{{executive.reviewCompleteE}}
+                  <p>
+                    &#8377;{{executive.reviewCompleteEV1}}
+                  </p>
+                </div>
+                Complete
+              </div>
+            </div>
+            <div class="item" style="padding-left: 22px;">
+              <!-- <img class="ui avatar image" src="/images/avatar/small/matt.jpg"> -->
+              <div class="content">
+                <div class="header">{{executive.liveReviewE}} 
+                  <p>&#8377;{{executive.liveReviewEV1}}
+                  </p></div>
+               Live
+              </div>
+            </div>
+             <div class="item" style="padding-left: 22px;">
+              <!-- <img class="ui avatar image" src="/images/avatar/small/matt.jpg"> -->
+              <div class="content">
+                <div class="header">{{executive.lapsedReviewE}}
+                  <p>&#8377;{{executive.lapsedReviewEV1}}
+                  </p></div>
+               Lapsed
+              </div>
+            </div>
+             <div class="item" style="padding-left: 22px;">
+              <!-- <img class="ui avatar image" src="/images/avatar/small/matt.jpg"> -->
+              <div class="content">
+                <div class="header">{{executive.unReviewE}}
+                  <p>&#8377;{{executive.unReviewEV1}}
+                  </p></div>
+               Un-Reviewed
+              </div>
+            </div>
+          </div>
+          </div>
+
                   
             </div>    
                 <div class="content" style="padding-left: 15px;">
-                  
-                    <!-- List all opportunities for that executive and region with total count and value-->
                     <div *ngFor="let opportunity of exec_wiseopportunity | filterreviews: startDate : endDate">
 
-                     
-                      <div class="title" style="color: green" (click) = "displayReview(opportunity)">
-                        {{opportunity.lead_title | uppercase }} | Value: &#8377;{{returnruppeamount(opportunity.value)}} | 
-                        Status: {{getReview( opportunity.reviews, 's') }}|Next Review Date: {{getReview( opportunity.reviews, 'd') | date: 'medium'}}|Account: {{opportunity.company_name}} | EDC: {{opportunity.edc | amTimeAgo}}|Status: {{getstatus(opportunity.opportunity_state)}} | 
-                        <lsu-rating [ngStyle]="{'width': getReview(opportunity.reviews,'r')}" [(ngModel)]="rate" [maxRating]="'5'" [type]="'star'" [size]="'large'"></lsu-rating> 
+                     <div class="ui blue segment">
+                      <div (click) = "displayReview(opportunity)">
+                        <div class="ui four column grid">
+                          <div class="row">
+                            <div class="column" style="font-weight: bold;">
+                            <i class="fas fa-bookmark"></i> &nbsp; {{opportunity.lead_title | uppercase }}
+                            <p style="color: blue;">
+                            {{opportunity.company_name}}
+                            </p>
+                          </div>
+                            <div class="column" style="font-weight: bold; font-size: 18px;"> &#8377;&nbsp; {{returnruppeamount(opportunity.value)}} </div>
+                            <div class="column"> <lsu-rating [ngStyle]="{'width': getReview(opportunity.reviews,'r')}" [(ngModel)]="rate" [maxRating]="'5'" [type]="'star'" [size]="'large'"></lsu-rating> </div>
+                            <div class="column"> Opportunity Status: <p style="color: #00695C;font-weight: bold;">{{getstatus(opportunity.opportunity_state)}}</p> </div>
+                          </div>
+                          <div class="column"> Review Status: {{getReview( opportunity.reviews, 's') }} </div>
+                          <div class="column"> Next Review Date: {{getReview( opportunity.reviews, 'd') | date: 'medium'}} </div>
+                          <div class="column"> EDC: {{opportunity.edc | amTimeAgo}} </div>
+
+                        </div>
+                    
+                       
+                         </div>
                       </div>
                       
                 </div>
               </div>
+              <br>
             </div>
             </div>
           </div>
