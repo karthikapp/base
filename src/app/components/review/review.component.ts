@@ -360,156 +360,384 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
 
   // }
 
-  selectAnswerforRev(question, qid, answers, answer,  answerid , checked){
-    console.log("pp1234", question, answer, answers, qid, answerid);
-    // this.answer_reviews_ql.forEach( x => {
-    //   if(x.answerid != answerid){
-    //     x.checked = false;
-    //   }
-    //   else
-    //   {
-    //     x.checked = true;
-    //   }
-    //   console.log("check", x.checked);
-    // })
 
-    //Single select for multi question
-      // answers.forEach( x => {
-      //   if(x.answerid != answerid){
-      //     x.checked = false;
-      //   }  
+
+  // selectAnswerforRev(question, qid, answers, answer,  answerid , checked){
+  //   console.log("pp1234", question, answer, answers, qid, answerid);
+  //   // this.answer_reviews_ql.forEach( x => {
+  //   //   if(x.answerid != answerid){
+  //   //     x.checked = false;
+  //   //   }
+  //   //   else
+  //   //   {
+  //   //     x.checked = true;
+  //   //   }
+  //   //   console.log("check", x.checked);
+  //   // })
+
+  //   //Single select for multi question
+  //     // answers.forEach( x => {
+  //     //   if(x.answerid != answerid){
+  //     //     x.checked = false;
+  //     //   }  
+  //     // })
+
+  //   //   this.ansindex = null;
+
+  //   //   let element: any = { question: question,
+  //   //       answer: answer, qid: qid, ansid: answerid};
+    
+  //   //   if (this.answers.length > 0)
+  //   //   {
+  //   //     this.ansindex = this.answers.findIndex(p => p.qid === qid);
+
+  //   //     if(this.ansindex != -1){
+  //   //       this.answer_reviews_ql.splice(this.ansindex, 1)
+  //   //     }
+  //   //     //console.log("asn", this.answers, this.answer_reviews_ql, this.ansindex);
+  //   //   }
+
+  //   //   if(checked == false){
+  //   //     this.answer_reviews_ql.push(element);
+  //   //     this.answers = this.answer_reviews_ql;
+  //   //   }
+    
+  //   // console.log("final", this.answer_reviews_ql);
+
+  //   //Multi Select 
+  //   // this.ansindex = null;
+
+  //   //   let element: any = { question: question,
+  //   //       answer: answer, qid: qid, ansid: answerid};
+    
+  //   //   if(checked == false){
+  //   //     this.answer_reviews_ql.push(element);
+  //   //     this.answers = this.answer_reviews_ql;
+  //   //   }
+  //   //   else if(checked == true){
+  //   //     this.ansindex = this.answers.findIndex(p => p.ansid === answerid);
+  //   //     this.answer_reviews_ql.splice(this.ansindex,1)
+  //   //     this.answers = this.answer_reviews_ql
+  //   //   }
+    
+  //   // console.log("final", this.answer_reviews_ql);
+
+
+
+
+  //   this.ansindex = null;
+  //   this.ansfilter = [];
+
+  //   let element: any = { question: question, qid:qid, 
+  //     answers: [{ answer: answer, ansid: answerid }]};
+  //     console.log("qi", element);
+
+  //   let qanswers: any = { answer: answer, ansid: answerid}
+
+  //   console.log("qi",qanswers);
+
+  //   if(this.answers.length > 0)
+  //   {
+  //     this.ansindex = this.answers.findIndex(p => p.qid === qid);
+  //     this.ansfilter = this.answers.filter(p => p.qid === qid)
+  //                 .map(a => a.answers);
+
+  //   //   var flattened = this.ansfilter.reduce(
+  //   // ( accumulator, currentValue ) => accumulator.concat([currentValue]),[]);
+
+  //     //let ansfilters = Object.values(this.ansfilter);
+  //     console.log("qiiiiiiippppp", this.ansindex, this.ansfilter);
+
+  //     if(this.ansindex != -1){
+  //     // var ansind = this.ansindex
+  //       if(checked ==false){
+  //         //this.ansfilters.push({answers: this.ansfilter});
+  //         //let ansfilters : any = this.ansfilter
+  //         this.ansfilter.push([qanswers]);
+  //         //this.ansfilter = Object.values(this.ansfilter);
+  //         console.log("pq", this.ansfilter);
+  //       }
+  //       else if (checked == true){
+  //         //this.ansindex = this.answers.findIndex(p => p.qid === rqid);
+  //       }
+  //       element = { question: question, qid: qid, answers: this.ansfilter};
+  //       console.log("pqqq", element);
+  //       this.answer_reviews_ql.splice(this.ansindex,1);
+  //     }
+  //   }
+
+  //   if(checked == false)
+  //   {
+  //     this.answer_reviews_ql.push(element);
+  //     this.answers = this.answer_reviews_ql;
+  //   }
+
+  //   console.log("qiiiiiii", this.answers, this.answer_reviews_ql)
+  // }
+
+  onClean(){
+  }
+
+  selectAnswerforRev(question, qid, answers, answer,  answerid , checked)
+  {
+    this.ansindex = null;
+    if (this.answer_reviews_ql.length == 0 )
+    {
+      var answerslist = []
+      let answertopush: any = {answer: answer, ansid: answerid}
+      answerslist.push(answertopush)
+      let element: any = {question: question, qid:qid, answers: answerslist};
+      this.answer_reviews_ql.push(element)
+      console.log("no answers till now")
+      console.log("review",this.answer_reviews_ql)
+    }
+
+    else
+    {
+      console.log("found answers")
+      // this.answer_reviews_ql = this.answer_reviews_ql.filter(function(el)
+      // {
+      //   return el.qid == qid;
       // })
 
-    //   this.ansindex = null;
+      // console.log("after filtering ", this.answer_reviews_ql)
 
-    //   let element: any = { question: question,
-    //       answer: answer, qid: qid, ansid: answerid};
-    
-    //   if (this.answers.length > 0)
-    //   {
-    //     this.ansindex = this.answers.findIndex(p => p.qid === qid);
+      this.ansindex = this.answer_reviews_ql.findIndex(p => p.qid === qid);
 
-    //     if(this.ansindex != -1){
-    //       this.answer_reviews_ql.splice(this.ansindex, 1)
-    //     }
-    //     //console.log("asn", this.answers, this.answer_reviews_ql, this.ansindex);
-    //   }
-
-    //   if(checked == false){
-    //     this.answer_reviews_ql.push(element);
-    //     this.answers = this.answer_reviews_ql;
-    //   }
-    
-    // console.log("final", this.answer_reviews_ql);
-
-
-    this.ansindex = null;
-    this.ansfilter = [];
-
-    let element: any = { question: question, qid:qid, answers: {
-      answer: answer, 
-      ansid: answerid }};
-
-      console.log("qi", element);
-
-    let qanswers: any = { answer: answer, ansid: answerid}
-
-    console.log("qi",qanswers);
-
-    if(this.answers.length > 0)
-    {
-      this.ansindex = this.answers.findIndex(p => p.qid === qid);
-      this.ansfilter = this.answers.filter(p => p.qid === qid)
-                  .map(a => a.answers);
-
-      var flattened = this.ansfilter.reduce(
-  ( accumulator, currentValue ) => accumulator.concat([currentValue]),[]);
-
-
-      //let ansfilters = Object.values(this.ansfilter);
-
-      console.log("qiiiiiiippppp", this.ansindex, this.ansfilter, flattened);
-
-
-
+      console.log("kri", this.ansindex);
+      
       if(this.ansindex != -1){
-      // var ansind = this.ansindex
-        if(checked ==false){
+      this.answer_reviews_ql.forEach(element => 
+      {
+        if (element.qid == qid)
+        {
+          console.log("question already answered")
+          var answerspresent = element.answers
+          console.log("answerspresent", answerspresent, element.answers);
+          answerspresent.forEach(loopanswer => 
+          {
+            console.log("answerspresent", loopanswer);
+            if (loopanswer.ansid == answerid && checked == true)
+            {
+             console.log(answerid, "already selected")
+             answerspresent = answerspresent.filter(function(el) {
+                   return el.ansid !== answerid;
+             });
+             
+             this.answer_reviews_ql = this.answer_reviews_ql.filter(function(el) {
+                   return el.qid !== qid;
+             });
 
-          //this.ansfilters.push({answers: this.ansfilter});
+             console.log("ap", answerspresent, this.answer_reviews_ql);
 
-          //let ansfilters : any = this.ansfilter
 
-          flattened.push(qanswers);
-          //this.ansfilter = Object.values(this.ansfilter);
-          console.log("pq", this.ansfilter, flattened);
+             if(answerspresent.length > 0){
+
+               let element: any = {question: question, qid:qid, answers: answerspresent};
+               this.answer_reviews_ql.push(element)
+               console.log("review",this.answer_reviews_ql)
+             }
+
+             else if(answerspresent == 0){
+               this.answer_reviews_ql.splice(this.ansindex,1);
+               console.log("review", this.answer_reviews_ql);
+             }
+            }
+
+            // else if (loopanswer.ansid != answerid && checked == false)
+            // {
+            //   let answertopush: any = {answer: answer, ansid: answerid}
+            //   console.log("answertopush", answertopush, checked, loopanswer.ansid, answerid)
+            //   answerspresent.push(answertopush)
+            //   console.log("new answer pushed",answerspresent)
+            //   console.log("review",this.answer_reviews_ql)
+            // }
+
+          })
+
+          if(checked == false)
+          {
+            let answertopush: any = {answer: answer, ansid: answerid}
+            answerspresent.push(answertopush)
+            console.log("new answer pushed",answerspresent)
+            console.log("review",this.answer_reviews_ql)
+          }
         }
-        else if (checked == true){
-          //this.ansindex = this.answers.findIndex(p => p.qid === rqid);
-        }
 
-        element = { question: question, qid: qid, answers: this.ansfilter};
-        console.log("pqqq", element);
-        this.answer_reviews_ql.splice(this.ansindex,1);
+        // else
+        // {
+        //   console.log("question not answered previously")
+        //   var answerslist = []
+        //   let answertopush: any = {answer: answer, ansid: answerid}
+        //   answerslist.push(answertopush)
+        //   let element: any = {question: question, qid:qid, answers: answerslist};
+        //   this.answer_reviews_ql.push(element)
+        //   console.log("review",this.answer_reviews_ql)
+        // }
+
+   })
+    }
+
+      else if(checked == false &&  this.ansindex == -1)
+      {
+        console.log("question not answered previously")
+        var answerslist = []
+        let answertopush: any = {answer: answer, ansid: answerid}
+        answerslist.push(answertopush)
+        let element: any = {question: question, qid:qid, answers: answerslist};
+        this.answer_reviews_ql.push(element)
+        console.log("review",this.answer_reviews_ql)
       }
-    }
 
-    if(checked == false)
-    {
-      this.answer_reviews_ql.push(element);
-      this.answers = this.answer_reviews_ql;
-    }
-
-    console.log("qiiiiiii", this.answers, this.answer_reviews_ql)
   }
+}
 
   onkey(value, rquestion, rqid, ranswerid, rchecked){
     console.log("keytup", value, rquestion, rqid, ranswerid, rchecked);
 
     this.ansindex = null;
 
-    console.log("this", this.answer_reviews_ql, this.answers)
+    // console.log("this", this.answer_reviews_ql, this.answers)
 
-    let data: any = {question: rquestion,
-          answer: value, qid: rqid, ansid: ranswerid }
+    // let data: any = {question: rquestion,
+    //       answer: value, qid: rqid, ansid: ranswerid }
 
-    if(this.answers.length > 0){
-      this.ansindex = this.answers.findIndex(p => p.qid === rqid);
+    // if(this.answers.length > 0){
+    //   this.ansindex = this.answers.findIndex(p => p.qid === rqid);
 
-      if(this.ansindex != -1){
-          this.answer_reviews_ql.splice(this.ansindex, 1)
-          console.log("krishna", this.answer_reviews_ql);
-        }
+    //   if(this.ansindex != -1){
+    //       this.answer_reviews_ql.splice(this.ansindex, 1)
+    //       console.log("krishna", this.answer_reviews_ql);
+    //     }
 
+    // }
+
+    // if(rchecked == true){
+    //     this.answer_reviews_ql.push(data);
+    //     this.answers = this.answer_reviews_ql;
+    //   }
+
+    //   console.log("final", this.answer_reviews_ql, this.answers);
+
+    if (this.answer_reviews_ql.length == 0 )
+    {
+      var answerslist = []
+      let answertopush: any = {answer: value, ansid: ranswerid}
+      answerslist.push(answertopush)
+      let element: any = {question: rquestion, qid:rqid, answers: answerslist};
+      this.answer_reviews_ql.push(element)
+      console.log("no answers till now")
+      console.log("review",this.answer_reviews_ql)
     }
 
-    if(rchecked == true){
-        this.answer_reviews_ql.push(data);
-        this.answers = this.answer_reviews_ql;
+    else
+    {
+      console.log("found answers")
+      // this.answer_reviews_ql = this.answer_reviews_ql.filter(function(el)
+      // {
+      //   return el.qid == qid;
+      // })
+
+      // console.log("after filtering ", this.answer_reviews_ql)
+
+      this.ansindex = this.answer_reviews_ql.findIndex(p => p.qid === rqid);
+
+      console.log("kri onkey", this.ansindex);
+      
+      if(this.ansindex != -1){
+      this.answer_reviews_ql.forEach(element => 
+      {
+        if (element.qid == rqid)
+        {
+          console.log("question already answered")
+          var answerspresent = element.answers
+          // console.log("answerspresent", answerspresent, element.answers);
+          answerspresent.forEach(loopanswer => 
+          {
+            console.log("answerspresent", loopanswer);
+            if ((loopanswer.ansid == ranswerid && rchecked == false) || (loopanswer.ansid == ranswerid && value != ''))
+            {
+             console.log(ranswerid, "already selected")
+             answerspresent = answerspresent.filter(function(el) {
+                   return el.ansid !== ranswerid;
+             });
+             
+             this.answer_reviews_ql = this.answer_reviews_ql.filter(function(el) {
+                   return el.qid !== rqid;
+             });
+
+             let element: any = {question: rquestion, qid:rqid, answers: answerspresent};
+             this.answer_reviews_ql.push(element)
+             console.log("review",this.answer_reviews_ql)
+            }
+
+            // else if (loopanswer.ansid != answerid && checked == false)
+            // {
+            //   let answertopush: any = {answer: answer, ansid: answerid}
+            //   console.log("answertopush", answertopush, checked, loopanswer.ansid, answerid)
+            //   answerspresent.push(answertopush)
+            //   console.log("new answer pushed",answerspresent)
+            //   console.log("review",this.answer_reviews_ql)
+            // }
+
+          })
+
+          if(rchecked == true)
+          {
+            let answertopush: any = {answer: value, ansid: ranswerid}
+            answerspresent.push(answertopush)
+            console.log("new answer pushed",answerspresent)
+            console.log("review",this.answer_reviews_ql)
+          }
+        }
+
+        // else
+        // {
+        //   console.log("question not answered previously")
+        //   var answerslist = []
+        //   let answertopush: any = {answer: answer, ansid: answerid}
+        //   answerslist.push(answertopush)
+        //   let element: any = {question: question, qid:qid, answers: answerslist};
+        //   this.answer_reviews_ql.push(element)
+        //   console.log("review",this.answer_reviews_ql)
+        // }
+
+   })
+    }
+
+      else if(rchecked == true &&  this.ansindex == -1)
+      {
+        console.log("question not answered previously")
+        var answerslist = []
+        let answertopush: any = {answer: value, ansid: ranswerid}
+        answerslist.push(answertopush)
+        let element: any = {question: rquestion, qid: rqid, answers: answerslist};
+        this.answer_reviews_ql.push(element)
+        console.log("review",this.answer_reviews_ql)
       }
 
-      console.log("final", this.answer_reviews_ql, this.answers);
+    }
 
   }
 
   submit_reviews( oppoid: any){
     console.log("pp12", oppoid, this.ranswers, this.rquestionnarie.question)
       console.log("hello", this.ratings);
-      
+
       if(this.question_reviews_ql == '' && this.roquestions != ''){
         console.log("krishna")
 
         let value: any = {question: this.roquestions,
           answer: '', qid: '', ansid:''} 
 
-          this.answers = value;        
+          this.answer_reviews_ql = value;        
       }
 
       if( this.ratings > 0)
       {
       let reviewsObject ={
         reviews_id : '',
-        reviewsdscr : this.answers,
+        reviewsdscr : this.answer_reviews_ql,
         next_review_date: this.next_review_date,
         ratings: this.ratings,
         stage: this.oppo_status,

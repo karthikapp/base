@@ -116,9 +116,13 @@
                     <td>
                       {{qa.question}} 
                     </td>
-                    <td>
-                      {{qa.answer}}
-                    </td>
+                    <div *ngFor="let ans of qa.answers | contactpersons">
+                      <ul>
+                      <li>
+                        {{ans.answer}}
+                      </li>
+                    </ul>
+                    </div>
                   </div>
                 </div>
                 <div *ngIf = "rd.reviewsdtl != ''">
@@ -333,14 +337,19 @@
             <ol>
               <li *ngFor="let qr of question_reviews_ql">
                 {{qr.question}}
-                <div *ngFor="let ans of qr.answers">
+                <div *ngFor="let ans of qr.answers; let i = index">
                   <div class="ui input">
-                    <input type="checkbox" [(ngModel)]="ans.checked" (click)="selectAnswerforRev(qr.question, qr.questionid, qr.answers, ans.answer, ans.answerid, ans.checked)"> &nbsp; {{ans.answer}}
+                    <input type="checkbox" [(ngModel)]="ans.checked" (click)="selectAnswerforRev(qr.question, qr.questionid, qr.answers, ans.answer, ans.answerid, ans.checked); "> &nbsp; {{ans.answer}}
                     <div *ngIf="ans.answer=='Others' || ans.answer == ''">
                     &nbsp;
                       <div class="ui input" style="bottom: 5px;">
-                        <input #newValue type="text" placeholder="Enter Text Here" (keyup.enter)= "onkey($event.target.value, qr.question, qr.questionid, ans.answerid, ans.checked)" [disabled]="!ans.checked" />
-                        Press ENTER!!!!
+                        <input #newValue type="text" placeholder="Enter Text Here" [disabled]="!ans.checked" />
+                        &nbsp; &nbsp;
+                          <button class="ui black deny button" style="padding-top: 5px;" (click)="newValue.value=''">Clear</button>
+
+                          <button #btn class="ui positive right labeled icon button" style="padding-top: 5px;" (click)="onkey(newValue.value, qr.question, qr.questionid, ans.answerid, ans.checked); btn.value=true;">Add
+                            <i class="checkmark icon" [hidden]="!(btn.value && ans.checked)"></i>
+                          </button>
                       </div>
                     </div>
                   </div>
@@ -395,7 +404,6 @@
           <button class="ui black deny button" (click)="cancelReviewModal()">Cancel</button>
 
           <button class="ui positive right labeled icon button" (click)="submit_reviews(oppo_key)">Submit Review
-            <i class="checkmark icon"></i>
           </button>
         </div>
       </div>
