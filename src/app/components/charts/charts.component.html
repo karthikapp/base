@@ -1,11 +1,36 @@
-<div class = "container" align="center">
-   <app-funnelcharts></app-funnelcharts>
-	<br>
+<div class="main">
 
-	<app-funnelteamcharts></app-funnelteamcharts>
-	<br>
+	<div id="" style="overflow-y: scroll;height: 100%; width:100%;">
+          
 
-	<app-funnelallcharts></app-funnelallcharts>
-	<br>
-	<app-funnelallregioncharts></app-funnelallregioncharts>
+        <div class="card" style=" background-color: #e8eaf6; border-radius: 5px;">
+            
+          <!--Tabs of Charts -->
+          <lsu-tabset type="'tabular'">
+            <!-- Funnel Charts-->
+            <lsu-tab  [headerText]="'Funnel'" [active]="'true'">
+
+	<div class = "container" align="center">
+	   <app-funnelcharts></app-funnelcharts>
+		<br>
+
+		<app-funnelteamcharts></app-funnelteamcharts>
+		<br>
+
+		<app-funnelallcharts></app-funnelallcharts>
+		<br>
+		<app-funnelallregioncharts></app-funnelallregioncharts>
+	</div>
+</lsu-tab>
+
+<lsu-tab  [headerText]="'Revenue'" [active]="'true'">
+	<app-revenuecharts></app-revenuecharts>
+</lsu-tab>
+	
+
+
+</lsu-tabset>
+</div>
+</div>
+
 </div>

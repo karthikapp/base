@@ -673,6 +673,15 @@ addinsideSalesinoneShot(insidesaleslist: {
 		});
     }
 
+    getopportunitiesbycw(){
+    	return this.af.list('/opportunities',{query:
+		{
+			orderByChild: 'opportunity_state',
+			equalTo: String('Case_won')
+		}
+		});
+    }
+
     //Update Opportunity state and movetolist for all stages except case WON & Case LOST
     updateOppoMoveTo(opportunity_state, movetolist:{
       moved_time: any,

@@ -183,7 +183,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
     private rqservice: ReviewquestionService ) {
         this.modalOptions = 
     {
-      "size": "small",
+      "size": "large",
       "type": "default",
       "closeable": true
     }     
