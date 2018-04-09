@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
 import "rxjs/add/operator/takeWhile";
 import * as moment from 'moment';
+import { AnalyticsService } from '../../services/analytics.service';
 
 @Component({
   selector: 'app-revenuecharts',
@@ -21,25 +22,9 @@ export class RevenuechartsComponent implements OnInit, OnDestroy {
 
    opportunities: any;
 
-   chnregionlist: any;
-   chnregionvalue: any;
-   bglrregionlist: any;
-   bglrregionvalue: any;
-   cmbtregionlist: any;
-   cmbtregionvalue: any;
-   mumbregionlist: any;
-   mumbregionvalue: any;
-   hydregionlist: any;
-   hydregionvalue: any;
-
-   movetolist: any;
-   value: any;
-   final_revenue: any;
-   lead_title: any;
-   final_revenueval: any;
-
-  constructor(private firebaseservice : FirebaseService, 
-    private router: Router, private afAuth: AngularFireAuth) { }
+ constructor(private firebaseservice : FirebaseService, 
+    private router: Router, private afAuth: AngularFireAuth,
+    private analyticsservice : AnalyticsService) { }
 
   ngOnInit() {
   	this.opportunities = [];
@@ -75,128 +60,108 @@ export class RevenuechartsComponent implements OnInit, OnDestroy {
               || v.role.toUpperCase() == "MASTER")
             {
               
-              this.chnregionlist = [];
-              this.bglrregionlist = [];
-              this.cmbtregionlist = [];
-              this.mumbregionlist = [];
-              this.hydregionlist = [];
-              this.movetolist = [];
-
-              this.final_revenue = [];
-              this.final_revenueval = [];
-
-            	this.firebaseservice.getopportunitiesbycw().subscribe(
-            		v => { this.opportunities = v;
-            			console.log ("v",this.opportunities)
-
-            			this.opportunities.forEach( item =>
-            			{
-            				if (item.region == 'chennai')
-            				{
-            					this.chnregionlist.push(item);
-            				}
-            				else
-            				{
-            					console.log("no chennai region")
-            				}
-
-            				if(item.region =='hyderabad')
-            				{
-            					//this.hydregionvalue.push(item.value);
-            					this.hydregionlist.push(item);
-            				}
-            				else
-            				{
-            					console.log("no hyderabad region")
-            				}
-
-            				if(item.region == 'mumbai')
-            				{
-            					//this.mumbregionvalue.push(item.value);
-            					this.mumbregionlist.push(item);
-            				}
-            				else
-            				{
-            					console.log("no mumbai region")
-            				}
-
-            				if(item.region == 'bangalore')
-            				{
-            					//this.bglrregionvalue.push(item.value);
-            					this.bglrregionlist.push(item);
-            				}
-            				else
-            				{
-            					console.log("no bangalore region")
-            				}
-
-            				if(item.region == 'coimbatore')
-            				{
-            					//this.cmbtregionvalue.push(item.value);
-            					this.cmbtregionlist.push(item);
-            				}
-            				else
-            				{
-            					console.log("no coimbatore region");
-            				}
 
 
-            			})
+            	// this.firebaseservice.getopportunitiesbycw().subscribe(
+            	// 	v => { this.opportunities = v;
+            	// 		console.log ("v",this.opportunities)
 
-            			console.log("valuechn",this.chnregionlist)
+            			// this.opportunities.forEach( item =>
+            			// {
+            			// 	if (item.region == 'chennai')
+            			// 	{
+            			// 		this.chnregionlist.push(item);
+            			// 	}
+            			// 	else
+            			// 	{
+            			// 		console.log("no chennai region")
+            			// 	}
 
-            			this.chnregionlist.forEach( i => {
+            			// 	if(item.region =='hyderabad')
+            			// 	{
+            			// 		//this.hydregionvalue.push(item.value);
+            			// 		this.hydregionlist.push(item);
+            			// 	}
+            			// 	else
+            			// 	{
+            			// 		console.log("no hyderabad region")
+            			// 	}
+
+            			// 	if(item.region == 'mumbai')
+            			// 	{
+            			// 		//this.mumbregionvalue.push(item.value);
+            			// 		this.mumbregionlist.push(item);
+            			// 	}
+            			// 	else
+            			// 	{
+            			// 		console.log("no mumbai region")
+            			// 	}
+
+            			// 	if(item.region == 'bangalore')
+            			// 	{
+            			// 		//this.bglrregionvalue.push(item.value);
+            			// 		this.bglrregionlist.push(item);
+            			// 	}
+            			// 	else
+            			// 	{
+            			// 		console.log("no bangalore region")
+            			// 	}
+
+            			// 	if(item.region == 'coimbatore')
+            			// 	{
+            			// 		//this.cmbtregionvalue.push(item.value);
+            			// 		this.cmbtregionlist.push(item);
+            			// 	}
+            			// 	else
+            			// 	{
+            			// 		console.log("no coimbatore region");
+            			// 	}
+
+
+            			// })
+
+            	// 		console.log("valuechn",this.chnregionlist)
+
+            	// 		this.chnregionlist.forEach( i => {
             				
-            				this.movetolist = Object.values(i.movetolist);
-            				console.log("mv", i.movetolist, this.movetolist);
-            				this.value = i.value;
-            				this.lead_title = i.lead_title;
+            	// 			this.movetolist = Object.values(i.movetolist);
+            	// 			console.log("mv", i.movetolist, this.movetolist);
+            	// 			this.value = i.value;
+            	// 			this.lead_title = i.lead_title;
             				
-            				this.movetolist.forEach(j => {
-            					if(j.moved_to_stage == 'Case_won')
-            					{
-            						var moved_time = new Date(j.moved_time)
-                                	var month = moved_time.getMonth();
-                                	var year = moved_time.getFullYear();
-                                	var date = moved_time.getDate();
-            						console.log("kp", j.moved_time, month, year, date, typeof month, typeof year, typeof date);
+            	// 			this.movetolist.forEach(j => {
+            	// 				if(j.moved_to_stage == 'Case_won')
+            	// 				{
+            	// 					var moved_time = new Date(j.moved_time)
+             //                    	var month = moved_time.getMonth();
+             //                    	var year = moved_time.getFullYear();
+             //                    	var date = moved_time.getDate();
+            	// 					console.log("kp", j.moved_time, month, year, date, typeof month, typeof year, typeof date);
 
-            						// let element: any = {
-            						// lead_title: this.lead_title, 
-            						// value: this.value, 
-            						// date_month: month, 
-            						// date_year: year,
-            						// date: date,
-            						// fulldate: moved_time,
-            						// dateUTC: j.moved_time
-            						// }
 
-            						let element: any = {
-            							dateUTC: j.moved_time,
-            							value: this.value
-            						}
-
-            						this.final_revenue.push([element.dateUTC, element.value])
-            						console.log("fr", this.final_revenue, 
-            							Date.UTC(this.final_revenue.date_year, this.final_revenue.date_month, this.final_revenue.date), 
-            							this.final_revenue.value, typeof this.final_revenue.value);
-            					}
-            					else
-            					{
-            						console.log("no case won");
-            					}
+            	// 					this.final_revenue.push([j.moved_time, this.value]);
+            						
+            	// 				}
+            	// 				else
+            	// 				{
+            	// 					console.log("no case won");
+            	// 				}
 
             					
-            				})
+            	// 			})
 
-            				//this.final_revenueval = Object.values(this.final_revenue)
-            			})
+            	// 		})
 
+            	// 		this.dolineCharts();
+            	// 	})
 
-            		})
-            
-         		 console.log("pv", this.final_revenue, this.final_revenueval);
-   				this.dolineCharts();
+            	this.analyticsservice.getOpportunitiesforrv().subscribe( 
+            		u => {this.opportunities = u;
+            			console.log("up", this.opportunities, u)
+            		this.dolineCharts();
+            	})
+
+   				
               	return this.ev = true;
             }
             
@@ -223,9 +188,98 @@ export class RevenuechartsComponent implements OnInit, OnDestroy {
 
   dolineCharts(){
 
-  	var data = this.final_revenue
 
-  	console.log("pspr", data)
+  	var series =  [{
+		'name': 'Chennai',
+		'data': []
+	},
+	{
+		'name': 'Bangalore',
+		'data': []
+	},
+	{
+		'name': 'Coimbatore',
+		'data': []
+	},
+	{
+		'name': 'Mumbai',
+		'data': []
+	},
+	{
+		'name': 'Hyderabad',
+		'data': []
+	}], cur = this.opportunities;
+
+	console.log("srpcur", cur);
+
+	// cur.forEach( i =>
+	// 	{
+	// 	console.log("srpi",i);
+	// 	series[0].data.push(i);
+	// 	console.log("srpcur", series[0].data.push(i));
+	// });
+
+
+	cur.forEach( item => {
+		if (item.region == 'chennai')
+		{
+			//this.chnregionlist.push([item.casewontime, item.valueofdeal]);
+			series[0].data.push([item.casewontime, item.valueofdeal]);
+		}
+		else
+		{
+			console.log("no chennai region")
+		}
+
+		if(item.region =='hyderabad')
+		{
+			//this.hydregionlist.push([item.casewontime, item.valueofdeal]);
+			series[1].data.push([item.casewontime, item.valueofdeal]);
+		}
+		else
+		{
+			console.log("no hyderabad region")
+		}
+
+		if(item.region == 'mumbai')
+		{
+
+			//this.mumbregionlist.push([item.casewontime, item.valueofdeal]);
+			series[2].data.push([item.casewontime, item.valueofdeal]);
+		}
+		else
+		{
+			console.log("no mumbai region")
+		}
+
+		if(item.region == 'bangalore')
+		{
+
+			//this.bglrregionlist.push([item.casewontime, item.valueofdeal]);
+			series[3].data.push([item.casewontime, item.valueofdeal]);
+		}
+		else
+		{
+			console.log("no bangalore region")
+		}
+
+		if(item.region == 'coimbatore')
+		{
+
+			//this.cmbtregionlist.push([item.casewontime, item.valueofdeal]);
+			series[4].data.push([item.casewontime, item.valueofdeal]);
+		}
+		else
+		{
+			console.log("no coimbatore region");
+		}
+
+	})
+
+console.log("srp",series);
+
+
+
 
   	this.options = {
   	chart: {
@@ -236,18 +290,19 @@ export class RevenuechartsComponent implements OnInit, OnDestroy {
     },
     xAxis: {
         type: 'datetime',
-        title: {
+       title: {
             text: 'Date'
         }
     },
     yAxis: {
         title: {
             text: 'Revenue'
-        }
+        },
+        min: 0
     },
     tooltip: {
         headerFormat: '<b>{series.name}</b><br>',
-        pointFormat: '{point.x:%e. %b}: {point.y:.2f} m'
+        pointFormat: '{point.x:%e. %b}: ${point.y:.2f} '
     },
 
     plotOptions: {
@@ -258,15 +313,11 @@ export class RevenuechartsComponent implements OnInit, OnDestroy {
         }
     },
 
-    series: 
-     [{
-        name: 'Winter 2012-2013',
-        // Define the data points. All series have a dummy year
-        // of 1970/71 in order to be compared on the same x axis. Note
-        // that in JavaScript, months start at 0 for January, 1 for February etc.
-        data: data	
-        
-    }]
+    series: series
+    //  [{
+    //     name: 'Chennai',
+    //     data: [ this.chnregionlist ]
+    // }]
 }
 
 
