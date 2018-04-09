@@ -155,7 +155,9 @@ export class RevenuechartsComponent implements OnInit, OnDestroy {
             	// 		this.dolineCharts();
             	// 	})
 
-            	this.analyticsservice.getOpportunitiesforrv().subscribe( 
+            	this.analyticsservice.getOpportunitiesforrv()
+            	.takeWhile(() => this.alive)
+            	.subscribe( 
             		u => {this.opportunities = u;
             			console.log("up", this.opportunities, u)
             		this.dolineCharts();
@@ -183,7 +185,7 @@ export class RevenuechartsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-
+  	this.alive = false;
   }
 
   dolineCharts(){

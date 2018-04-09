@@ -105,6 +105,7 @@ import { OppodetailComponent } from './components/oppodetail/oppodetail.componen
 import { OppoReviewDetailComponent } from './components/oppo-review-detail/oppo-review-detail.component';
 import { FilterreviewsPipe } from './pipes/filterreviews.pipe';
 import { RevenuechartsComponent } from './components/revenuecharts/revenuecharts.component';
+import { RevenuechartsProductComponent } from './components/revenuecharts-product/revenuecharts-product.component';
 
 
 
@@ -229,7 +230,8 @@ export function highchartsFactory() {
     OppodetailComponent,
     OppoReviewDetailComponent,
     FilterreviewsPipe,
-    RevenuechartsComponent
+    RevenuechartsComponent,
+    RevenuechartsProductComponent
   ],
   imports: [
     BrowserModule ,
