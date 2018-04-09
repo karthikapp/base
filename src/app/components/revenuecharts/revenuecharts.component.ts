@@ -283,10 +283,10 @@ console.log("srp",series);
 
   	this.options = {
   	chart: {
-        type: 'spline'
+        type: 'column'
     },
     title: {
-        text: 'Revenue trend over Time'
+        text: 'Revenue Trend Over Time'
     },
     xAxis: {
         type: 'datetime',
@@ -298,18 +298,20 @@ console.log("srp",series);
         title: {
             text: 'Revenue'
         },
+        labels:
+        {
+          format: '{value} Rs'
+        },
         min: 0
     },
     tooltip: {
         headerFormat: '<b>{series.name}</b><br>',
-        pointFormat: '{point.x:%e. %b}: ${point.y:.2f} '
+        pointFormat: '{point.x:%e. %b}: Rs. {point.y:.2f} '
     },
 
     plotOptions: {
-        spline: {
-            marker: {
-                enabled: true
-            }
+     series: {
+            pointWidth: 4
         }
     },
 

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+declare var jQuery: any;
 
 @Component({
   selector: 'app-charts',
@@ -10,6 +11,13 @@ export class ChartsComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+
+    ngAfterViewInit() 
+  {
+    jQuery('.menu .item').tab();
+
+    //jQuery('.ui.rating').rating();
   }
 
 }

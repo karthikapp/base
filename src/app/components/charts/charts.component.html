@@ -1,36 +1,39 @@
 <div class="main">
-
-	<div id="" style="overflow-y: scroll;height: 100%; width:100%;">
-          
-
-        <div class="card" style=" background-color: #e8eaf6; border-radius: 5px;">
-            
-          <!--Tabs of Charts -->
-          <lsu-tabset type="'tabular'">
-            <!-- Funnel Charts-->
-            <lsu-tab  [headerText]="'Funnel'">
-
-	<div class = "container" align="center">
-	   <app-funnelcharts></app-funnelcharts>
-		<br>
-
-		<app-funnelteamcharts></app-funnelteamcharts>
-		<br>
-
-		<app-funnelallcharts></app-funnelallcharts>
-		<br>
-		<app-funnelallregioncharts></app-funnelallregioncharts>
+	<div class="ui top attached tabular menu" style="background-color: #CFD8DC; ">
+		<a class="item active" data-tab="first">Funnel</a>
+		<a class="item" data-tab="second">Revenue</a>
+		<a class="item" data-tab="third">Third</a>
 	</div>
-</lsu-tab>
+	<div class="ui bottom attached tab segment active" data-tab="first" style="background-color: #424242; ">
+		<div class = "container" align="center">
+			<app-funnelcharts></app-funnelcharts>
+			<br>
 
-<lsu-tab  [headerText]="'Revenue'" [active]="'true'">
-	<app-revenuecharts></app-revenuecharts>
-</lsu-tab>
+			<app-funnelteamcharts></app-funnelteamcharts>
+			<br>
+
+			<app-funnelallcharts></app-funnelallcharts>
+			<br>
+			<app-funnelallregioncharts></app-funnelallregioncharts>
+		</div>
+	</div>
+	<div class="ui bottom attached tab segment" data-tab="second" style="background-color: #424242; ">
+		
+			<div class="eight wide column">
+
+				<app-revenuecharts></app-revenuecharts>
+
+			</div>
+			<div class="eight wide column">
+				
+			</div>
+
 	
 
 
-</lsu-tabset>
-</div>
-</div>
+	</div>
+	<div class="ui bottom attached tab segment" data-tab="third" style="background-color: #424242 ">
+		Third
+	</div>
 
 </div>
