@@ -106,6 +106,10 @@ import { OppoReviewDetailComponent } from './components/oppo-review-detail/oppo-
 import { FilterreviewsPipe } from './pipes/filterreviews.pipe';
 import { RevenuechartsComponent } from './components/revenuecharts/revenuecharts.component';
 import { RevenuechartsProductComponent } from './components/revenuecharts-product/revenuecharts-product.component';
+import { RevenuechartsCustomerComponent } from './components/revenuecharts-customer/revenuecharts-customer.component';
+import { RevenueProdComponent } from './components/revenue-prod/revenue-prod.component';
+import { RevenueRegionComponent } from './components/revenue-region/revenue-region.component';
+import { RevenueAssignedtoComponent } from './components/revenue-assignedto/revenue-assignedto.component';
 
 
 
@@ -231,7 +235,11 @@ export function highchartsFactory() {
     OppoReviewDetailComponent,
     FilterreviewsPipe,
     RevenuechartsComponent,
-    RevenuechartsProductComponent
+    RevenuechartsProductComponent,
+    RevenuechartsCustomerComponent,
+    RevenueProdComponent,
+    RevenueRegionComponent,
+    RevenueAssignedtoComponent
   ],
   imports: [
     BrowserModule ,

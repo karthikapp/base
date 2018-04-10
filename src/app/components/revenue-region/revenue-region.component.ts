@@ -1,46 +1,45 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FirebaseService } from "../../services/firebase.service";
-import { Router, ActivatedRoute } from '@angular/router';
 import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
+import { Router, ActivatedRoute } from '@angular/router';
 import "rxjs/add/operator/takeWhile";
 import * as moment from 'moment';
 import { AnalyticsService } from '../../services/analytics.service';
 
-
 @Component({
-  selector: 'app-revenuecharts-product',
-  templateUrl: './revenuecharts-product.component.html',
-  styleUrls: ['./revenuecharts-product.component.css']
+  selector: 'app-revenue-region',
+  templateUrl: './revenue-region.component.html',
+  styleUrls: ['./revenue-region.component.css']
 })
-export class RevenuechartsProductComponent implements OnInit, OnDestroy {
+export class RevenueRegionComponent implements OnInit, OnDestroy {
+
 	options: Object;
 
   	uid: string;
    	ev: boolean = false;
 
    	alive: boolean = true;
+   	opportunities_region: any;
 
-   	opportunities: any;
-   	oppoTotalValues: any;
-   	oppoProdValues: any;
-   	pieProdRevenue: any;
-   	dataProd: any;
+   	oppoRegionTotalValues: any;
+   	oppoRegionValues: any;
+   	pieRegionRevenue: any;
+   	dataRegion: any;
 
-   	oppoTV: any;
-   	oppoPV: any;
-
+   	oppoTRV: any;
+   	oppoRV: any;
   constructor(private firebaseservice : FirebaseService, 
-    private router: Router, private afAuth: AngularFireAuth,
+    private router: Router,private afAuth: AngularFireAuth,
     private analyticsservice : AnalyticsService) { }
 
   ngOnInit() {
-  	this.opportunities = [];
-  	this.oppoTotalValues = [];
-  	this.oppoProdValues = [];
-  	this.dataProd = [];
-  	this.pieProdRevenue = [];
-  	this.oppoTV = 0;
-  	this.oppoPV = 0;
+  	this.opportunities_region = [];
+  	this.oppoRegionTotalValues = [];
+  	this.oppoRegionValues = [];
+  	this.dataRegion = [];
+  	this.pieRegionRevenue = [];
+  	this.oppoTRV = 0;
+  	this.oppoRV = 0;
 
   	this.afAuth.authState
     .takeWhile(() => this.alive)
@@ -76,19 +75,19 @@ export class RevenuechartsProductComponent implements OnInit, OnDestroy {
             	.takeWhile(() => this.alive)
             	.subscribe( 
             		u => {
-            				this.opportunities = u;
-            				this.opportunities.forEach( i => {
+            				this.opportunities_region = u;
+            				this.opportunities_region.forEach( i => {
             					if(i.valueofdeal != undefined){
-            						this.oppoTotalValues.push(i.valueofdeal)
+            						this.oppoRegionTotalValues.push(i.valueofdeal)
             					}
             				})
-            				this.oppoTV = this.oppoTotalValues.reduce((a, b) => a + b, 0);
+            				this.oppoTRV = this.oppoRegionTotalValues.reduce((a, b) => a + b, 0);
 
-            				const groupedObj = this.opportunities.reduce((prev, cur)=> {
-            					if(!prev[cur['brand']]) {
-            						prev[cur['brand']] = [cur];
+            				const groupedObj = this.opportunities_region.reduce((prev, cur)=> {
+            					if(!prev[cur['region']]) {
+            						prev[cur['region']] = [cur];
             					} else {
-            						prev[cur['brand']].push(cur);
+            						prev[cur['region']].push(cur);
             					}
             				console.log("prev", prev);
             				return prev;
@@ -96,21 +95,21 @@ export class RevenuechartsProductComponent implements OnInit, OnDestroy {
 
 
 
-            			this.dataProd = Object.keys(groupedObj).map(key => { return { key, value: groupedObj[key] }});
-            			this.dataProd.forEach( i => {
-            				this.oppoProdValues = [];
+            			this.dataRegion = Object.keys(groupedObj).map(key => { return { key, value: groupedObj[key] }});
+            			this.dataRegion.forEach( i => {
+            				this.oppoRegionValues = [];
 							i.value.forEach( j => {
-							this.oppoProdValues.push(j.valueofdeal)
-							console.log("j", this.oppoProdValues);
+							this.oppoRegionValues.push(j.valueofdeal)
+							console.log("j", this.oppoRegionValues);
 							})
-							this.oppoPV = 0;
-							this.oppoPV = this.oppoProdValues.reduce((a,b) => a+b, 0);
-							var valuePercent = (this.oppoPV/ this.oppoTV)*100;
-							console.log("PVTV", this.oppoPV, this.oppoTV, valuePercent )
-							this.pieProdRevenue.push({name: i.key, y:valuePercent});
+							this.oppoRV = 0;
+							this.oppoRV = this.oppoRegionValues.reduce((a,b) => a+b, 0);
+							var valuePercent = (this.oppoRV/ this.oppoTRV)*100;
+							console.log("PVTV", this.oppoRV, this.oppoTRV, valuePercent )
+							this.pieRegionRevenue.push({name: i.key, y:valuePercent});
 						})
-						console.log("dp", this.pieProdRevenue);
-            			this.dopieBrandCharts();
+						console.log("dp", this.pieRegionRevenue);
+            			this.dopieRegionCharts();
             		})
 
    				
@@ -131,21 +130,24 @@ export class RevenuechartsProductComponent implements OnInit, OnDestroy {
             return this.ev=false;
        }
      });
+
+
+
   }
 
   ngOnDestroy(){
-  	    this.alive = false;
+  	this.alive =false;
   }
 
-  dopieBrandCharts(){
+  dopieRegionCharts(){
 
 
 
   	  	var series =  [{
-		'name': 'Brands',
+		'name': 'Region',
 		'colorByPoint': true,
 		'data': []
-	}], cur = this.pieProdRevenue;
+	}], cur = this.pieRegionRevenue;
 
 	console.log("srpcur", cur);
 
@@ -165,7 +167,7 @@ export class RevenuechartsProductComponent implements OnInit, OnDestroy {
         type: 'pie'
     },
     title: {
-        text: 'Revenue By Brand'
+        text: 'Revenue By Region'
     },
     tooltip: {
         pointFormat: '<b>{point.percentage:.1f}%</b>'

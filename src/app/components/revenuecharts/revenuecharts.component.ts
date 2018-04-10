@@ -19,6 +19,7 @@ export class RevenuechartsComponent implements OnInit, OnDestroy {
    ev: boolean = false;
 
    alive: boolean = true;
+   rv_last_updt_dt: any;
 
    opportunities: any;
 
@@ -154,6 +155,8 @@ export class RevenuechartsComponent implements OnInit, OnDestroy {
 
             	// 		this.dolineCharts();
             	// 	})
+
+              this.rv_last_updt_dt = this.analyticsservice.rv_last_updt_dt;
 
             	this.analyticsservice.getOpportunitiesforrv()
             	.takeWhile(() => this.alive)

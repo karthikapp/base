@@ -7,10 +7,12 @@ export class AnalyticsService {
 	created_at: any;
 	fireAuth: any;
 	rvcharts: FirebaseListObservable<any[]>;
+	rv_last_updt_dt: any;
 
   constructor(private ap: AngularFireDatabase) { 
   this.created_at = firebase.database.ServerValue.TIMESTAMP;
   	this.fireAuth = firebase.auth();
+  	this.rv_last_updt_dt = this.ap.object('/analytics/casewon/last_updated');
   }
 
   getOpportunitiesforrv(){
