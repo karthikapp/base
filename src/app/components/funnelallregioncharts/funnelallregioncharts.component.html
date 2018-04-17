@@ -1,25 +1,22 @@
 <div class = "container" align = "center" class = "main">
 	<div *ngIf="ev">
 		<div class="ui card" style="width: 65%;height: 100%;">
-			<br>
-			<label style="font-family: Lucida Grande, Lucida Sans Unicode, Arial, Helvetica, sans-serif; font-size: 18px;"> Sales All funnel (Region Wise)</label>
-		<!--Name & Region-->
-        <form class="ui mini form">
-            <div class="form-group column" style="padding: 30px;">
-              <label style="font-weight: bold; font-size: 15px;" for="exampleFormControlSelect18">Region: </label>
-              <select class="form-control" id="exampleFormControlSelect18" name="region" [(ngModel)]="region" (change)="onRegionChange($event.target.value)">
-                <option>All</option>
-				<option>chennai</option>
-				<option>hyderabad</option>
-                <option>mumbai</option>
-                <option>coimbatore</option>
-                <option>bangalore</option>
-              </select>
-            </div>
-        </form>
-
-		<chart [options] = "options"></chart>
-	</div>
+		  <!--Region-->
+      <form class="ui mini form">
+        <div class="form-group column" style="padding: 30px;">
+          <label style="font-weight: bold; font-size: 15px;" for="exampleFormControlSelect18">Region: </label>
+          <select class="form-control" id="exampleFormControlSelect18" name="region" [(ngModel)]="region" (change)="onRegionChange($event.target.value)">
+            <option>All</option>
+            <option>chennai</option>
+            <option>hyderabad</option>
+            <option>mumbai</option>
+            <option>coimbatore</option>
+            <option>bangalore</option>
+          </select>
+        </div>
+      </form>
+		  <chart [options] = "options"></chart>
+	  </div>
 	</div>
 </div>
 

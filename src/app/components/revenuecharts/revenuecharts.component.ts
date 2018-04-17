@@ -62,106 +62,14 @@ export class RevenuechartsComponent implements OnInit, OnDestroy {
             {
               
 
-
-            	// this.firebaseservice.getopportunitiesbycw().subscribe(
-            	// 	v => { this.opportunities = v;
-            	// 		console.log ("v",this.opportunities)
-
-            			// this.opportunities.forEach( item =>
-            			// {
-            			// 	if (item.region == 'chennai')
-            			// 	{
-            			// 		this.chnregionlist.push(item);
-            			// 	}
-            			// 	else
-            			// 	{
-            			// 		console.log("no chennai region")
-            			// 	}
-
-            			// 	if(item.region =='hyderabad')
-            			// 	{
-            			// 		//this.hydregionvalue.push(item.value);
-            			// 		this.hydregionlist.push(item);
-            			// 	}
-            			// 	else
-            			// 	{
-            			// 		console.log("no hyderabad region")
-            			// 	}
-
-            			// 	if(item.region == 'mumbai')
-            			// 	{
-            			// 		//this.mumbregionvalue.push(item.value);
-            			// 		this.mumbregionlist.push(item);
-            			// 	}
-            			// 	else
-            			// 	{
-            			// 		console.log("no mumbai region")
-            			// 	}
-
-            			// 	if(item.region == 'bangalore')
-            			// 	{
-            			// 		//this.bglrregionvalue.push(item.value);
-            			// 		this.bglrregionlist.push(item);
-            			// 	}
-            			// 	else
-            			// 	{
-            			// 		console.log("no bangalore region")
-            			// 	}
-
-            			// 	if(item.region == 'coimbatore')
-            			// 	{
-            			// 		//this.cmbtregionvalue.push(item.value);
-            			// 		this.cmbtregionlist.push(item);
-            			// 	}
-            			// 	else
-            			// 	{
-            			// 		console.log("no coimbatore region");
-            			// 	}
-
-
-            			// })
-
-            	// 		console.log("valuechn",this.chnregionlist)
-
-            	// 		this.chnregionlist.forEach( i => {
-            				
-            	// 			this.movetolist = Object.values(i.movetolist);
-            	// 			console.log("mv", i.movetolist, this.movetolist);
-            	// 			this.value = i.value;
-            	// 			this.lead_title = i.lead_title;
-            				
-            	// 			this.movetolist.forEach(j => {
-            	// 				if(j.moved_to_stage == 'Case_won')
-            	// 				{
-            	// 					var moved_time = new Date(j.moved_time)
-             //                    	var month = moved_time.getMonth();
-             //                    	var year = moved_time.getFullYear();
-             //                    	var date = moved_time.getDate();
-            	// 					console.log("kp", j.moved_time, month, year, date, typeof month, typeof year, typeof date);
-
-
-            	// 					this.final_revenue.push([j.moved_time, this.value]);
-            						
-            	// 				}
-            	// 				else
-            	// 				{
-            	// 					console.log("no case won");
-            	// 				}
-
-            					
-            	// 			})
-
-            	// 		})
-
-            	// 		this.dolineCharts();
-            	// 	})
-
               this.rv_last_updt_dt = this.analyticsservice.rv_last_updt_dt;
 
             	this.analyticsservice.getOpportunitiesforrv()
             	.takeWhile(() => this.alive)
             	.subscribe( 
-            		u => {this.opportunities = u;
+            		u => {
+                  this.opportunities = [];
+                  this.opportunities = u;
             			console.log("up", this.opportunities, u)
             		this.dolineCharts();
             	})
@@ -236,32 +144,10 @@ export class RevenuechartsComponent implements OnInit, OnDestroy {
 			console.log("no chennai region")
 		}
 
-		if(item.region =='hyderabad')
+		if(item.region =='bangalore')
 		{
 			//this.hydregionlist.push([item.casewontime, item.valueofdeal]);
 			series[1].data.push([item.casewontime, item.valueofdeal]);
-		}
-		else
-		{
-			console.log("no hyderabad region")
-		}
-
-		if(item.region == 'mumbai')
-		{
-
-			//this.mumbregionlist.push([item.casewontime, item.valueofdeal]);
-			series[2].data.push([item.casewontime, item.valueofdeal]);
-		}
-		else
-		{
-			console.log("no mumbai region")
-		}
-
-		if(item.region == 'bangalore')
-		{
-
-			//this.bglrregionlist.push([item.casewontime, item.valueofdeal]);
-			series[3].data.push([item.casewontime, item.valueofdeal]);
 		}
 		else
 		{
@@ -271,12 +157,34 @@ export class RevenuechartsComponent implements OnInit, OnDestroy {
 		if(item.region == 'coimbatore')
 		{
 
+			//this.mumbregionlist.push([item.casewontime, item.valueofdeal]);
+			series[2].data.push([item.casewontime, item.valueofdeal]);
+		}
+		else
+		{
+			console.log("no coimbatore region")
+		}
+
+		if(item.region == 'mumbai')
+		{
+
+			//this.bglrregionlist.push([item.casewontime, item.valueofdeal]);
+			series[3].data.push([item.casewontime, item.valueofdeal]);
+		}
+		else
+		{
+			console.log("no mumbai region")
+		}
+
+		if(item.region == 'hyderabad')
+		{
+
 			//this.cmbtregionlist.push([item.casewontime, item.valueofdeal]);
 			series[4].data.push([item.casewontime, item.valueofdeal]);
 		}
 		else
 		{
-			console.log("no coimbatore region");
+			console.log("no hyderabad region");
 		}
 
 	})

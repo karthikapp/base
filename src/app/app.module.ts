@@ -110,6 +110,9 @@ import { RevenuechartsCustomerComponent } from './components/revenuecharts-custo
 import { RevenueProdComponent } from './components/revenue-prod/revenue-prod.component';
 import { RevenueRegionComponent } from './components/revenue-region/revenue-region.component';
 import { RevenueAssignedtoComponent } from './components/revenue-assignedto/revenue-assignedto.component';
+import { BarchartsRegionComponent } from './components/barcharts-region/barcharts-region.component';
+import { StackedRegionComponent } from './components/stacked-region/stacked-region.component';
+import { BarchartscustRegionComponent } from './components/barchartscust-region/barchartscust-region.component';
 
 
 
@@ -239,7 +242,10 @@ export function highchartsFactory() {
     RevenuechartsCustomerComponent,
     RevenueProdComponent,
     RevenueRegionComponent,
-    RevenueAssignedtoComponent
+    RevenueAssignedtoComponent,
+    BarchartsRegionComponent,
+    StackedRegionComponent,
+    BarchartscustRegionComponent
   ],
   imports: [
     BrowserModule ,

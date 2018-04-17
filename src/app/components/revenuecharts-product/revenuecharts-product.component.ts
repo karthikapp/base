@@ -29,6 +29,9 @@ export class RevenuechartsProductComponent implements OnInit, OnDestroy {
    	oppoTV: any;
    	oppoPV: any;
 
+     valuePercent:any;
+    colValue: any;
+
   constructor(private firebaseservice : FirebaseService, 
     private router: Router, private afAuth: AngularFireAuth,
     private analyticsservice : AnalyticsService) { }
@@ -41,6 +44,7 @@ export class RevenuechartsProductComponent implements OnInit, OnDestroy {
   	this.pieProdRevenue = [];
   	this.oppoTV = 0;
   	this.oppoPV = 0;
+    this.colValue = '';
 
   	this.afAuth.authState
     .takeWhile(() => this.alive)
@@ -76,6 +80,10 @@ export class RevenuechartsProductComponent implements OnInit, OnDestroy {
             	.takeWhile(() => this.alive)
             	.subscribe( 
             		u => {
+                  this.opportunities = [];
+                  this.dataProd = [];
+                  this.pieProdRevenue = [];
+                  
             				this.opportunities = u;
             				this.opportunities.forEach( i => {
             					if(i.valueofdeal != undefined){
@@ -104,16 +112,21 @@ export class RevenuechartsProductComponent implements OnInit, OnDestroy {
 							console.log("j", this.oppoProdValues);
 							})
 							this.oppoPV = 0;
+              this.valuePercent = null;
 							this.oppoPV = this.oppoProdValues.reduce((a,b) => a+b, 0);
-							var valuePercent = (this.oppoPV/ this.oppoTV)*100;
-							console.log("PVTV", this.oppoPV, this.oppoTV, valuePercent )
-							this.pieProdRevenue.push({name: i.key, y:valuePercent});
+							this.valuePercent = (this.oppoPV/ this.oppoTV)*100;
+							console.log("PVTV", this.oppoPV, this.oppoTV, this.valuePercent )
+							this.pieProdRevenue.push({name: i.key, y:this.valuePercent});
 						})
 						console.log("dp", this.pieProdRevenue);
             			this.dopieBrandCharts();
             		})
 
-   				
+   				      // this.colValue = 'brand'
+             //  this.analyticsservice.getOppoforProd(this.colValue).subscribe( u => {this.pieProdRevenue = u;
+             //    //console.log("PiePro", this.pieProRevenue);
+             //    this.dopieBrandCharts();})
+
               	return this.ev = true;
             }
             

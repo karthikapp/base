@@ -28,6 +28,8 @@ export class RevenuechartsCustomerComponent implements OnInit, OnDestroy {
 
    	oppoTCV: any;
    	oppoCV: any;
+     valuePercent: any;
+    colValue: any;
 
   constructor(private firebaseservice : FirebaseService, 
     private router: Router,private afAuth: AngularFireAuth,
@@ -41,6 +43,7 @@ export class RevenuechartsCustomerComponent implements OnInit, OnDestroy {
   	this.pieCustRevenue = [];
   	this.oppoTCV = 0;
   	this.oppoCV = 0;
+    this.colValue = '';
 
   	this.afAuth.authState
     .takeWhile(() => this.alive)
@@ -76,6 +79,10 @@ export class RevenuechartsCustomerComponent implements OnInit, OnDestroy {
             	.takeWhile(() => this.alive)
             	.subscribe( 
             		u => {
+                  this.opportunities_cust = [];
+                  this.dataCust = [];
+                  this.pieCustRevenue = [];
+                  
             				this.opportunities_cust = u;
             				this.opportunities_cust.forEach( i => {
             					if(i.valueofdeal != undefined){
@@ -104,16 +111,21 @@ export class RevenuechartsCustomerComponent implements OnInit, OnDestroy {
 							console.log("j", this.oppoCustValues);
 							})
 							this.oppoCV = 0;
+              this.valuePercent = null
 							this.oppoCV = this.oppoCustValues.reduce((a,b) => a+b, 0);
-							var valuePercent = (this.oppoCV/ this.oppoTCV)*100;
-							console.log("PVTV", this.oppoCV, this.oppoTCV, valuePercent )
-							this.pieCustRevenue.push({name: i.key, y:valuePercent});
+							this.valuePercent = (this.oppoCV/ this.oppoTCV)*100;
+							console.log("PVTV", this.oppoCV, this.oppoTCV, this.valuePercent )
+							this.pieCustRevenue.push({name: i.key, y:this.valuePercent});
 						})
 						console.log("dp", this.pieCustRevenue);
             			this.dopieCustomerCharts();
             		})
 
-   				
+   				// this.colValue = 'company_id'
+       //        this.analyticsservice.getOppoforCust(this.colValue).subscribe( u => {this.pieCustRevenue = u;
+       //          console.log("PiePro", this.pieCustRevenue);
+       //          this.dopieCustomerCharts();})
+
               	return this.ev = true;
             }
             

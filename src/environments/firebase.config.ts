@@ -1,7 +1,7 @@
 import * as firebase from 'firebase';
 
 export const firebaseConfig = {
-    apiKey: "AIzaSyCVdEELI0k-idQW_S030NeER9Oe8L-FCfA",
+     apiKey: "AIzaSyCVdEELI0k-idQW_S030NeER9Oe8L-FCfA",
     authDomain: "raksha-db.firebaseapp.com",
     databaseURL: "https://raksha-db.firebaseio.com",
     projectId: "raksha-db",

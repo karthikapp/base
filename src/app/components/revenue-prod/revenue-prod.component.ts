@@ -28,6 +28,8 @@ export class RevenueProdComponent implements OnInit, OnDestroy {
 
    	oppoTPV: any;
    	oppoPRV: any;
+     colValue: any; 
+     valuePercent: any
 
   constructor(private firebaseservice : FirebaseService, 
     private router: Router,private afAuth: AngularFireAuth,
@@ -41,6 +43,7 @@ export class RevenueProdComponent implements OnInit, OnDestroy {
   	this.pieProRevenue = [];
   	this.oppoTPV = 0;
   	this.oppoPRV = 0;
+    this.colValue = '';
 
   	this.afAuth.authState
     .takeWhile(() => this.alive)
@@ -76,6 +79,10 @@ export class RevenueProdComponent implements OnInit, OnDestroy {
             	.takeWhile(() => this.alive)
             	.subscribe( 
             		u => {
+                  this.opportunities_pro = [];
+                  this.dataPro = [];
+                  this.pieProRevenue = [];
+                  
             				this.opportunities_pro = u;
             				this.opportunities_pro.forEach( i => {
             					if(i.valueofdeal != undefined){
@@ -104,16 +111,21 @@ export class RevenueProdComponent implements OnInit, OnDestroy {
 							console.log("j", this.oppoProValues);
 							})
 							this.oppoPRV = 0;
+           this.valuePercent = null;
 							this.oppoPRV = this.oppoProValues.reduce((a,b) => a+b, 0);
-							var valuePercent = (this.oppoPRV/ this.oppoTPV)*100;
-							console.log("PVTV", this.oppoPRV, this.oppoTPV, valuePercent )
-							this.pieProRevenue.push({name: i.key, y:valuePercent});
+							this.valuePercent = (this.oppoPRV/ this.oppoTPV)*100;
+							console.log("PVTV", this.oppoPRV, this.oppoTPV, this.valuePercent )
+							this.pieProRevenue.push({name: i.key, y:this.valuePercent});
 						})
 						console.log("dp", this.pieProRevenue);
             			this.dopieProductsCharts();
             		})
 
-   				
+           //    this.colValue = 'product'
+      			  // this.analyticsservice.getOppoforProd(this.colValue).subscribe( u => {this.pieProRevenue = u;
+           //      //console.log("PiePro", this.pieProRevenue);
+           //      this.dopieProductsCharts();})
+               				
               	return this.ev = true;
             }
             
@@ -154,8 +166,6 @@ export class RevenueProdComponent implements OnInit, OnDestroy {
 		cur.forEach( i => {
 			series[0].data.push(i);
 		})
-		
-	
 
 // console.log("srp",series);
 
@@ -184,14 +194,6 @@ export class RevenueProdComponent implements OnInit, OnDestroy {
     },
 
     series: series
-    //  [{
-    //     name: 'Brands',
-    //     colorByPoint: true,
-    //     data: [{
-    //         name: this.pieProdRevenue.name,
-    //         y: this.pieProdRevenue.y
-    //     }]
-    // }]
    
 }
 

@@ -65,6 +65,7 @@ export class AllopportunitiesComponent implements OnInit, OnDestroy {
    finalnegoarrayvalue: any;
    casewonarrayvalue: any;
    caselostarrayvalue: any;
+   
 
    rflag: string = 'all';
    person_list: Object[];
@@ -87,6 +88,9 @@ export class AllopportunitiesComponent implements OnInit, OnDestroy {
    userid: string;
    sdate: any;
    edate: any;
+
+   // movetolistval: any
+   // movetolist: any;
 
 
   constructor(private firebaseservice : FirebaseService, 
@@ -146,6 +150,7 @@ export class AllopportunitiesComponent implements OnInit, OnDestroy {
               .takeWhile(() => this.alive)
               .subscribe(v => {
               this.opportunities = v;
+              console.log("pp234oppo",this.opportunities)
               this.teamList('All');
               this.onChangeofBoth();
             })  
@@ -189,7 +194,7 @@ export class AllopportunitiesComponent implements OnInit, OnDestroy {
       .map(item => item.opportunity_assignedto)
       .filter((value, index, self) => { return self.indexOf(value) === index })
 
-      //console.log("pp234oppo", this.filteredData, this.opportunities)
+      console.log("pp234oppo", this.filteredData, this.opportunities)
     } else if (region != 'All'){
     
       this.oppo_list = this.opportunities.filter(i => { return i.region == region})
@@ -198,7 +203,7 @@ export class AllopportunitiesComponent implements OnInit, OnDestroy {
       .map(item => item.opportunity_assignedto)
       .filter((value, index, self) => { return self.indexOf(value) === index })
 
-      //console.log("pp234oppo", this.filteredData, this.oppo_list)
+     console.log("pp234oppo", this.filteredData, this.oppo_list)
     }
   }
 
@@ -244,7 +249,7 @@ export class AllopportunitiesComponent implements OnInit, OnDestroy {
         this.oppo_list = this.opportunities.filter (u =>  {
           return (u.region == this.region)
       })
-      //console.log("pp234oppo", this.user, this.region, this.opportunities,this.oppo_list)
+      console.log("pp234oppo", this.user, this.region, this.opportunities,this.oppo_list)
     }
 
     this.oppo_list_dates = this.oppo_list;
@@ -376,6 +381,25 @@ export class AllopportunitiesComponent implements OnInit, OnDestroy {
       //Case Won
       if (item.opportunity_state == 'Case_won')
       {
+        //this.movetolist = [];
+        //  this.movetolist = item.movetolist
+        // console.log("time", this.movetolist, Object.keys(this.movetolist).length);
+          
+        // this.movetolistval = Object.values(this.movetolist)
+        // for(let i =0; i< Object.keys(this.movetolist).length ; i++){
+        //   console.log("timehii")
+          
+        //   if(this.movetolistval[i].moved_to_stage == 'Case_won'){
+        //     console.log("timehi");
+        
+        //       var moved_time = new Date(this.movetolistval[i].moved_time);
+        //                     var month = moved_time.getMonth();
+        //                     var year = moved_time.getFullYear();
+        //                     var date = moved_time.getDate();
+        //       console.log("time", month,year,date,moved_time )
+        //   }
+        // }
+
         this.casewonarrayvalue.push(item.value)
         this.casewonopportunitylist.push(item)
         console.log("found case won")
