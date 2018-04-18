@@ -7,41 +7,43 @@ import * as moment from 'moment';
 import { AnalyticsService } from '../../services/analytics.service';
 
 @Component({
-  selector: 'app-stacked-region',
-  templateUrl: './stacked-region.component.html',
-  styleUrls: ['./stacked-region.component.css']
+  selector: 'app-stacked-leadsource',
+  templateUrl: './stacked-leadsource.component.html',
+  styleUrls: ['./stacked-leadsource.component.css']
 })
-export class StackedRegionComponent implements OnInit, OnDestroy {
+export class StackedLeadsourceComponent implements OnInit, OnDestroy {
 
-	options: Object;
+  options: Object;
 
   uid: string;
    ev: boolean = false;
 
    alive: boolean = true;
-   opportunities_stkreg: any;
-   opportunities_stkregL: any;
+   opportunities_stkls: any;
+   opportunities_stklsL: any;
    rv_last_updt_dt: any;
-   opportunities_reg: any;
-   datastckReg: any;
-   dataSP: any;
+   opportunities_ls: any;
+   datastckLS: any;
+   dataLS: any;
    dataFinalList: any;
 
 
    datamonth: any;
-   dataregion: any;
+   dataleadsrce: any;
 
-   chnList: any;
-   hydList: any;
-   bglrList: any;
-   cmbtList: any;
-   mumList:any;
+   inbdList: any;
+   eventList: any;
+   distList: any;
+   oemList: any;
+   outbndList: any;
+   onsiteList: any;
 
-   datachnvalue: any;
-   databglrvalue: any;
-   datahydvalue: any;
-   datacmbtvalue : any;
-   datamumvalue: any;
+   datainbdvalue: any;
+   dataeventvalue: any;
+   datadistvalue: any;
+   dataoemvalue : any;
+   dataoutbndvalue: any;
+   dataonsitevalue: any;
 
    yearSelect: any;
    currentYear: any;
@@ -52,7 +54,7 @@ export class StackedRegionComponent implements OnInit, OnDestroy {
     private analyticsservice : AnalyticsService) { }
 
   ngOnInit() {
-  	this.opportunities_stkreg = [];
+  	this.opportunities_stkls = [];
     
 
   	this.afAuth.authState
@@ -95,8 +97,8 @@ export class StackedRegionComponent implements OnInit, OnDestroy {
             	.takeWhile(() => this.alive)
             	.subscribe( 
             		u => {
-                  this.opportunities_stkreg = [];
-                  this.opportunities_stkreg = u;
+                  this.opportunities_stkls = [];
+                  this.opportunities_stkls = u;
 
                   this.yearList();
 
@@ -128,33 +130,33 @@ export class StackedRegionComponent implements OnInit, OnDestroy {
   }
 
   yearList(){
-    this.year_list = this.opportunities_stkreg
+    this.year_list = this.opportunities_stkls
       .map(item => item.year)
       .filter((value, index, self) => { return self.indexOf(value) === index })
   }
 
   onSelectYear(){
-    this.opportunities_stkregL = [];
-    this.datastckReg = [];
-    this.opportunities_reg = [];
-    this.dataSP = [];
+    this.opportunities_stklsL = [];
+    this.dataLS = [];
+    this.opportunities_ls = [];
+    this.datastckLS = [];
     this.dataFinalList = [];
 
-    this.opportunities_stkregL = this.opportunities_stkreg.filter( i => {
+    this.opportunities_stklsL = this.opportunities_stkls.filter( i => {
       return i.year == this.yearSelect;
     })
 
-    this.opportunities_stkregL.forEach( i=> {
+    this.opportunities_stklsL.forEach( i=> {
       // var moved_time = new Date(i.casewontime);
       // var month = moved_time.getMonth();
       // var year = moved_time.getFullYear();
       // var date = moved_time.getDate();
-      var regionmonth = i.region + ""+ i.month;
-      this.opportunities_reg.push({pkey:regionmonth, region: i.region, month: i.month,valueofdeal: i.valueofdeal})  
-      console.log("up", this.opportunities_reg);  
+      var lsmonth = i.leadsource + ""+ i.month;
+      this.opportunities_ls.push({pkey:lsmonth, leadsource: i.leadsource, month: i.month,valueofdeal: i.valueofdeal})  
+      console.log("up", this.opportunities_ls);  
     })
     
-    const groupedObj = this.opportunities_reg.reduce((prev, cur)=> {
+    const groupedObj = this.opportunities_ls.reduce((prev, cur)=> {
       if(!prev[cur['pkey']]) {
         prev[cur['pkey']] = [cur];
       } else {
@@ -164,78 +166,90 @@ export class StackedRegionComponent implements OnInit, OnDestroy {
       return prev;
     }, {});
 
-    this.datastckReg = Object.keys(groupedObj).map(key => { return { key, value: groupedObj[key]}});
+    this.datastckLS = Object.keys(groupedObj).map(key => { return { key, value: groupedObj[key]}});
 
-    console.log("up", this.datastckReg);
+    console.log("up", this.datastckLS);
 
-    this.datastckReg.forEach ( i => {
+    this.datastckLS.forEach ( i => {
       this.datamonth = null;
-      this.dataregion = '';
-      this.dataSP = [];
+      this.dataleadsrce = '';
+      this.dataLS = [];
 
       i.value.forEach( j =>
       {
-        this.dataSP.push(j.valueofdeal);
+        this.dataLS.push(j.valueofdeal);
         this.datamonth = j.month;
-        this.dataregion = j.region;
+        this.dataleadsrce = j.leadsource;
       })
 
-      var dataValues = this.dataSP.reduce((a,b) => a+b ,0);
+      var dataValues = this.dataLS.reduce((a,b) => a+b ,0);
 
-      this.dataFinalList.push({ymr: i.key, region: this.dataregion,
+      this.dataFinalList.push({ymr: i.key, leadsource: this.dataleadsrce,
         month: this.datamonth, monthlyRev: dataValues })
       console.log("up", this.dataFinalList);
     })
 
-    this.chnList = this.dataFinalList.filter(i => {return i.region == 'chennai'})
+    this.inbdList = this.dataFinalList.filter(i => {return i.leadsource == 'inbound-landline'})
 
-    console.log("chnList", this.chnList);
-    this.datachnvalue = ['','','','','','','','','','','','']
+    console.log("chnList", this.inbdList);
+    this.datainbdvalue = ['','','','','','','','','','','','']
 
-    for(let i=0; i< this.chnList.length; i++){
-      this.datachnvalue.splice(this.chnList[i].month,1,this.chnList[i].monthlyRev);
+    for(let i=0; i< this.inbdList.length; i++){
+      this.datainbdvalue.splice(this.inbdList[i].month,1,this.inbdList[i].monthlyRev);
     }
 
-    this.bglrList = this.dataFinalList.filter(i => {return i.region == 'bangalore'})
+    this.eventList = this.dataFinalList.filter(i => {return i.leadsource == 'event'})
 
-    this.databglrvalue = ['','','','','','','','','','','','']
+    this.dataeventvalue = ['','','','','','','','','','','','']
 
-    for(let i=0; i< this.bglrList.length; i++){
-      this.databglrvalue.splice(this.bglrList[i].month,1,this.bglrList[i].monthlyRev);
+    for(let i=0; i< this.eventList.length; i++){
+      this.dataeventvalue.splice(this.eventList[i].month,1,this.eventList[i].monthlyRev);
     }
 
-    this.cmbtList = this.dataFinalList.filter(i => {return i.region == 'coimbatore'})
+    this.distList = this.dataFinalList.filter(i => {return i.leadsource == 'distributor'})
 
-    console.log("chnList", this.cmbtList);
-    this.datacmbtvalue = ['','','','','','','','','','','','']
+    console.log("chnList", this.distList);
+    this.datadistvalue = ['','','','','','','','','','','','']
 
-    for(let i=0; i< this.cmbtList.length; i++){
-      this.datacmbtvalue.splice(this.cmbtList[i].month,1,this.cmbtList[i].monthlyRev);
+    for(let i=0; i< this.distList.length; i++){
+      this.datadistvalue.splice(this.distList[i].month,1,this.distList[i].monthlyRev);
     }
 
-    console.log ("chnList", this.datacmbtvalue);
+    console.log ("chnList", this.datadistvalue);
 
-    this.hydList = this.dataFinalList.filter(i => {return i.region == 'hyderabad'})
+    this.oemList = this.dataFinalList.filter(i => {return i.leadsource == 'oem'})
 
-    console.log("chnList", this.hydList);
-    this.datahydvalue = ['','','','','','','','','','','','']
+    console.log("chnList", this.oemList);
+    this.dataoemvalue = ['','','','','','','','','','','','']
 
-    for(let i=0; i< this.hydList.length; i++){
-      this.datahydvalue.splice(this.hydList[i].month,1,this.hydList[i].monthlyRev);
+    for(let i=0; i< this.oemList.length; i++){
+      this.dataoemvalue.splice(this.oemList[i].month,1,this.oemList[i].monthlyRev);
     }
 
-    console.log ("chnList", this.datahydvalue);
+    console.log ("chnList", this.dataoemvalue);
 
-    this.mumList = this.dataFinalList.filter(i => {return i.region == 'mumbai'})
+    this.outbndList = this.dataFinalList.filter(i => {return i.leadsource == 'outboundcall'})
 
-    console.log("chnList", this.mumList);
-    this.datamumvalue = ['','','','','','','','','','','','']
+    console.log("chnList", this.outbndList);
+    this.dataoutbndvalue = ['','','','','','','','','','','','']
 
-    for(let i=0; i< this.mumList.length; i++){
-      this.datamumvalue.splice(this.mumList[i].month,1,this.mumList[i].monthlyRev);
+    for(let i=0; i< this.outbndList.length; i++){
+      this.dataoutbndvalue.splice(this.outbndList[i].month,1,this.outbndList[i].monthlyRev);
     }
 
-    console.log ("chnList", this.datamumvalue);
+    console.log ("chnList", this.dataoutbndvalue);
+
+    this.onsiteList = this.dataFinalList.filter(i => {return i.leadsource == 'onsite'})
+
+    console.log("chnList", this.onsiteList);
+    this.dataonsitevalue = ['','','','','','','','','','','','']
+
+    for(let i=0; i< this.onsiteList.length; i++){
+      this.dataonsitevalue.splice(this.onsiteList[i].month,1,this.onsiteList[i].monthlyRev);
+    }
+
+    console.log ("chnList", this.dataonsitevalue);
+
 
     this.dostackedRegioncharts();
 
@@ -249,37 +263,43 @@ export class StackedRegionComponent implements OnInit, OnDestroy {
   dostackedRegioncharts(){
 
 	var series =  [{
-		'name': 'Chennai',
+		'name': 'INBOUND LANDLINE',
 		'data': []
 	},
 	{
-		'name': 'Bangalore',
+		'name': 'EVENT',
 		'data': []
 	},
 	{
-		'name': 'Coimbatore',
+		'name': 'DISTRIBUTOR',
 		'data': []
 	},
 	{
-		'name': 'Mumbai',
+		'name': 'OEM',
 		'data': []
 	},
 	{
-		'name': 'Hyderabad',
+		'name': 'OUTBOUND CALL',
 		'data': []
-	}], chn = this.datachnvalue,
-	bglr = this.databglrvalue,
-	cmbt = this.datacmbtvalue,
-	mumb = this.datamumvalue,
-	hyd = this.datahydvalue;
+	},
+	{
+		'name': 'ON SITE VISIT',
+		'data': []
+	}], inbd = this.datainbdvalue,
+	evnt = this.dataeventvalue,
+	dist = this.datadistvalue,
+	oem = this.dataoemvalue,
+	outbnd = this.dataoutbndvalue,
+	onsite = this.dataonsitevalue;
 
 	for( let i =1 ; i <= 12; i++)
 	{
-		series[0].data.push(chn[i]);
-		series[1].data.push(bglr[i]);
-		series[2].data.push(cmbt[i]);
-		series[3].data.push(mumb[i]);
-		series[4].data.push(hyd[i]);
+		series[0].data.push(inbd[i]);
+		series[1].data.push(evnt[i]);
+		series[2].data.push(dist[i]);
+		series[3].data.push(oem[i]);
+		series[4].data.push(outbnd[i]);
+		series[5].data.push(onsite[i]);
 	}
   	
 
@@ -289,7 +309,7 @@ export class StackedRegionComponent implements OnInit, OnDestroy {
         type: 'column'
     },
     title: {
-        text: 'Stacked Column Region Chart'
+        text: 'Stacked Column LeadSource Chart'
     },
     xAxis: {
         categories:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],

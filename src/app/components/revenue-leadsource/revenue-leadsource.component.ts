@@ -7,13 +7,12 @@ import * as moment from 'moment';
 import { AnalyticsService } from '../../services/analytics.service';
 
 @Component({
-  selector: 'app-revenue-assignedto',
-  templateUrl: './revenue-assignedto.component.html',
-  styleUrls: ['./revenue-assignedto.component.css']
+  selector: 'app-revenue-leadsource',
+  templateUrl: './revenue-leadsource.component.html',
+  styleUrls: ['./revenue-leadsource.component.css']
 })
-export class RevenueAssignedtoComponent implements OnInit, OnDestroy {
- 
-  //Variables
+export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
+	//Variables
   //Common for All for accessing Users
   uid: string;
   ev: boolean = false;
@@ -21,13 +20,13 @@ export class RevenueAssignedtoComponent implements OnInit, OnDestroy {
 
   //Charts - Rev for assigned To
   options: Object;
-  opportunities_assgnto: any;
-  oppoAssgnToTotalValues: any;
-  oppoAssgnToValues: any;
-  pieAssgnToRevenue: any;
-  dataAssgnTo: any;
-  oppoTAV: any;
-  oppoAV: any;
+  opportunities_LS: any;
+  oppoLSTotalValues: any;
+  oppoLSValues: any;
+  pieLSRevenue: any;
+  dataLS: any;
+  oppoTLSV: any;
+  oppoLSV: any;
   valuePercent: any;
   name: any;
 
@@ -36,9 +35,8 @@ export class RevenueAssignedtoComponent implements OnInit, OnDestroy {
     currentYear: any;
    year_list:any;
    month_list: any;
-   oppoasgnTolist:any;
-   opportunities_assgntoL: any;
-
+   oppoLSlist:any;
+   opportunities_LSL: any;
    monthName: any;
 
   constructor(private firebaseservice : FirebaseService, 
@@ -46,8 +44,8 @@ export class RevenueAssignedtoComponent implements OnInit, OnDestroy {
     private analyticsservice : AnalyticsService) { }
 
   ngOnInit() {
-    //Initializing the objects
-  	this.opportunities_assgnto = [];
+  	//Initializing the objects
+  	this.opportunities_LS = [];
     this.monthName = '';
   	
 
@@ -90,13 +88,13 @@ export class RevenueAssignedtoComponent implements OnInit, OnDestroy {
             .takeWhile(() => this.alive)
             .subscribe( 
             u => {
-              this.opportunities_assgnto = [];
+              this.opportunities_LS = [];
              
-              this.opportunities_assgnto = u;
-              this.yearAssgntoList();
-              this.monthAssgntoList();
+              this.opportunities_LS = u;
+              this.yearLSList();
+              this.monthLSList();
 
-              this.selectAssgnToList();
+              this.selectLSList();
 
               
             })
@@ -121,29 +119,29 @@ export class RevenueAssignedtoComponent implements OnInit, OnDestroy {
   	this.alive = false
   }
 
-  yearAssgntoList(){
-    this.year_list = this.opportunities_assgnto
+  yearLSList(){
+    this.year_list = this.opportunities_LS
       .map(item => item.year)
       .filter((value, index, self) => { return self.indexOf(value) === index })
   }
 
-  monthAssgntoList(){
-    this.oppoasgnTolist = [];
-    this.oppoasgnTolist = this.opportunities_assgnto.filter(i => { return i.year == this.yearSelect})
-    this.month_list = this.oppoasgnTolist
+  monthLSList(){
+    this.oppoLSlist = [];
+    this.oppoLSlist = this.opportunities_LS.filter(i => { return i.year == this.yearSelect})
+    this.month_list = this.oppoLSlist
                       .map(item => item.month)
                       .filter((value, index, self) => { return self.indexOf(value) === index })
   }
 
   onYearChange(year){
     this.yearSelect = year;
-    this.monthAssgntoList();
-    this.selectAssgnToList();
+    this.monthLSList();
+    this.selectLSList();
   }
 
   onMonthChange(month){
     this.monthSelect = month;
-    this.selectAssgnToList();
+    this.selectLSList();
   }
 
   getMonth(val){
@@ -192,77 +190,78 @@ export class RevenueAssignedtoComponent implements OnInit, OnDestroy {
 
   }
 
-  selectAssgnToList(){
-    this.oppoAssgnToTotalValues = [];
-    this.oppoAssgnToValues = [];
-    this.dataAssgnTo = [];
-    this.pieAssgnToRevenue = [];
-    this.oppoTAV = 0;
-    this.oppoAV = 0;
-    this.opportunities_assgntoL = [];
+
+  selectLSList(){
+    this.oppoLSTotalValues = [];
+    this.oppoLSValues = [];
+    this.dataLS = [];
+    this.pieLSRevenue = [];
+    this.oppoTLSV = 0;
+    this.oppoLSV = 0;
+    this.opportunities_LSL = [];
 
     if(this.monthSelect != ''){
-      this.opportunities_assgntoL = this.opportunities_assgnto.filter( i => {
+      this.opportunities_LSL = this.opportunities_LS.filter( i => {
         return i.year == this.yearSelect &&
             i.month == this.monthSelect
       })
     }
     else if(this.monthSelect == ''){
-      this.opportunities_assgntoL = this.opportunities_assgnto.filter( i => {
+      this.opportunities_LSL = this.opportunities_LS.filter( i => {
         return i.year == this.yearSelect
       })
     }
 
     //Total Values of All Opportunities
-              this.opportunities_assgntoL.forEach( 
+              this.opportunities_LSL.forEach( 
               i => {
                 if(i.valueofdeal != undefined)
                 {
-                  this.oppoAssgnToTotalValues.push(i.valueofdeal)
+                  this.oppoLSTotalValues.push(i.valueofdeal)
                 }
               })
-              this.oppoTAV = this.oppoAssgnToTotalValues.reduce((a, b) => a + b, 0);
+              this.oppoTLSV = this.oppoLSTotalValues.reduce((a, b) => a + b, 0);
 
               //Grouping by Assigned To
-              const groupedObj = this.opportunities_assgntoL.reduce((prev, cur)=> {
-                if(!prev[cur['assigned_to']]) {
-                  prev[cur['assigned_to']] = [cur];
+              const groupedObj = this.opportunities_LSL.reduce((prev, cur)=> {
+                if(!prev[cur['leadsource']]) {
+                  prev[cur['leadsource']] = [cur];
                 } else {
-                  prev[cur['assigned_to']].push(cur);
+                  prev[cur['leadsource']].push(cur);
                 }
                 return prev;
               }, {});
-              this.dataAssgnTo = Object.keys(groupedObj).map(key => { return { key, value: groupedObj[key] }});
+              this.dataLS = Object.keys(groupedObj).map(key => { return { key, value: groupedObj[key] }});
 
               //Looping thro' and finding percentage for each Employees
-              this.dataAssgnTo.forEach( i => {
-                this.oppoAssgnToValues = [];
+              this.dataLS.forEach( i => {
+                this.oppoLSValues = [];
                 this.name = '';
                 i.value.forEach( j => {
-                  this.oppoAssgnToValues.push(j.valueofdeal)
-                  this.name = j.assignedto_name
+                  this.oppoLSValues.push(j.valueofdeal)
+                  this.name = j.leadsource
                 })
-                this.oppoAV = 0;
+                this.oppoLSV = 0;
                 this.valuePercent = null;
-                this.oppoAV = this.oppoAssgnToValues.reduce((a,b) => a+b, 0);
-                this.valuePercent = (this.oppoAV/ this.oppoTAV)*100;
-                this.pieAssgnToRevenue.push({name: this.name, y:this.valuePercent});
+                this.oppoLSV = this.oppoLSValues.reduce((a,b) => a+b, 0);
+                this.valuePercent = (this.oppoLSV/ this.oppoTLSV)*100;
+                this.pieLSRevenue.push({name: this.name, y:this.valuePercent});
               })
 
               //Paasing the value to Pie Chart - Rev by Employees
-              this.dopieAssgnToCharts();
+              this.dopieLSCharts();
 
 
 
   }
 
-  dopieAssgnToCharts(){
+  dopieLSCharts(){
     //Series is separately defined to loop thro' the data
     var series =  [{
-  		'name': 'Products',
+  		'name': 'LeadSource',
   		'colorByPoint': true,
   		'data': []
-  	}], cur = this.pieAssgnToRevenue;
+  	}], cur = this.pieLSRevenue;
 
   	cur.forEach( i => {
   		series[0].data.push(i);
@@ -276,7 +275,7 @@ export class RevenueAssignedtoComponent implements OnInit, OnDestroy {
         type: 'pie'
       },
       title: {
-        text: 'Revenue By Employees'
+        text: 'Revenue By LeadSource'
       },
       tooltip: {
         pointFormat: '<b>{point.percentage:.1f}%</b>'
@@ -294,5 +293,6 @@ export class RevenueAssignedtoComponent implements OnInit, OnDestroy {
       series: series
     }
   }
+
 
 }

@@ -29,7 +29,16 @@ export class RevenueRegionComponent implements OnInit, OnDestroy {
    	oppoTRV: any;
    	oppoRV: any;
      valuePercent: any;
-    colValue: any;
+
+     yearSelect: any;
+    monthSelect: any;
+    currentYear: any;
+   year_list:any;
+   month_list: any;
+   opporeglist:any;
+   opportunities_regL: any;
+   monthName: any;
+
 
   constructor(private firebaseservice : FirebaseService, 
     private router: Router,private afAuth: AngularFireAuth,
@@ -37,13 +46,8 @@ export class RevenueRegionComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
   	this.opportunities_region = [];
-  	this.oppoRegionTotalValues = [];
-  	this.oppoRegionValues = [];
-  	this.dataRegion = [];
-  	this.pieRegionRevenue = [];
-  	this.oppoTRV = 0;
-  	this.oppoRV = 0;
-    this.colValue = '';
+  	this.monthName = '';
+
 
 
   	this.afAuth.authState
@@ -76,17 +80,148 @@ export class RevenueRegionComponent implements OnInit, OnDestroy {
               || v.role.toUpperCase() == "PRESALES"
               || v.role.toUpperCase() == "MASTER")
             {
+               this.currentYear = (new Date()).getFullYear();
+              this.yearSelect = this.currentYear;
+              this.monthSelect = '';
+              
               this.analyticsservice.getOpportunitiesforrv()
               .takeWhile(() => this.alive)
               .subscribe( 
                 u => {
                   console.log("hi Region")
                  this.opportunities_region = [];
-                 this.pieRegionRevenue = [];
-                 this.dataRegion = [];
+                 
 
                  this.opportunities_region = u;
-                this.opportunities_region.forEach( i => {
+
+                 this.yearRegList();
+                 this.monthRegList();
+                 this.selectRegList();
+                
+            })
+
+
+              
+            return this.ev = true;
+          }
+          else
+          {
+            //console.log('No access to this page choco');
+            alert('No access to this page');
+            return this.ev=false;
+          }
+        })
+      }
+      else
+      {
+        //console.log('No access to this page m&m');
+        this.router.navigate(['login']);
+        return this.ev=false;
+      }
+    });
+  }
+
+  ngOnDestroy()
+  {
+  	this.alive =false;
+  }
+
+  getMonth(val){
+     if (val == 1){
+        this.monthName = "January"
+    }
+
+    else if (val == 2){
+      this.monthName = "February"
+    }
+    else if (val == 3){
+      this.monthName = "March"
+    }
+
+    else if (val == 4){
+      this.monthName = "April"
+    }
+    else if (val == 5){
+      this.monthName = "May"
+    }
+    else if (val == 6){
+      this.monthName = "June"
+    }
+    else if (val == 7){
+      this.monthName = "July"
+    }
+
+    else if (val == 8){
+      this.monthName = "August"
+    }
+    else if (val == 9){
+      this.monthName = "September"
+    }
+    else if (val == 10){
+      this.monthName = "October"
+    }
+
+    else if (val == 11){
+      this.monthName = "November"
+    }
+    else if (val == 12){
+      this.monthName = "December"
+    }
+    
+    return this.monthName
+
+  }
+
+  yearRegList(){
+    this.year_list = this.opportunities_region
+      .map(item => item.year)
+      .filter((value, index, self) => { return self.indexOf(value) === index })
+  }
+
+  monthRegList(){
+    this.opporeglist = [];
+    this.opporeglist = this.opportunities_region.filter(i => { return i.year == this.yearSelect})
+    this.month_list = this.opporeglist
+                      .map(item => item.month)
+                      .filter((value, index, self) => { return self.indexOf(value) === index })
+  }
+
+  onYearChange(year){
+    this.yearSelect = year;
+    this.monthRegList();
+    this.selectRegList();
+  }
+
+  onMonthChange(month){
+    this.monthSelect = month;
+    this.selectRegList();
+  }
+
+
+  selectRegList(){
+    this.oppoRegionTotalValues = [];
+    this.oppoRegionValues = [];
+    this.dataRegion = [];
+    this.pieRegionRevenue = [];
+    this.oppoTRV = 0;
+    this.oppoRV = 0;
+    this.pieRegionRevenue = [];
+    this.dataRegion = [];
+    this.opportunities_regL = [];
+
+    if(this.monthSelect != ''){
+      this.opportunities_regL = this.opportunities_region.filter( i => {
+        return i.year == this.yearSelect &&
+            i.month == this.monthSelect
+      })
+    }
+    else if(this.monthSelect == ''){
+      this.opportunities_regL = this.opportunities_region.filter( i => {
+        return i.year == this.yearSelect
+      })
+    }
+
+    this.opportunities_regL.forEach( i => {
                   console.log("hi Region1")
                   if(i.valueofdeal != undefined)
                   {
@@ -96,7 +231,7 @@ export class RevenueRegionComponent implements OnInit, OnDestroy {
                 
                 this.oppoTRV = this.oppoRegionTotalValues.reduce((a, b) => a + b, 0);
 
-                const groupedObj = this.opportunities_region.reduce((prev, cur)=> {
+                const groupedObj = this.opportunities_regL.reduce((prev, cur)=> {
                   if(!prev[cur['region']]) 
                   {
                     prev[cur['region']] = [cur];
@@ -128,35 +263,8 @@ export class RevenueRegionComponent implements OnInit, OnDestroy {
                 console.log("hi Region3", this.pieRegionRevenue)
               })
               this.dopieRegionCharts();
-            })
 
-            // this.colValue = 'region'
-            //   this.analyticsservice.getOppoforProd(this.colValue).subscribe( u => {this.pieRegionRevenue = u;
-            //     //console.log("PiePro", this.pieProRevenue);
-            //     this.dopieRegionCharts();})
-              
-            return this.ev = true;
-          }
-          else
-          {
-            //console.log('No access to this page choco');
-            alert('No access to this page');
-            return this.ev=false;
-          }
-        })
-      }
-      else
-      {
-        //console.log('No access to this page m&m');
-        this.router.navigate(['login']);
-        return this.ev=false;
-      }
-    });
-  }
 
-  ngOnDestroy()
-  {
-  	this.alive =false;
   }
 
   dopieRegionCharts(){

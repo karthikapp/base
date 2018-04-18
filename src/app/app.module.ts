@@ -113,6 +113,8 @@ import { RevenueAssignedtoComponent } from './components/revenue-assignedto/reve
 import { BarchartsRegionComponent } from './components/barcharts-region/barcharts-region.component';
 import { StackedRegionComponent } from './components/stacked-region/stacked-region.component';
 import { BarchartscustRegionComponent } from './components/barchartscust-region/barchartscust-region.component';
+import { RevenueLeadsourceComponent } from './components/revenue-leadsource/revenue-leadsource.component';
+import { StackedLeadsourceComponent } from './components/stacked-leadsource/stacked-leadsource.component';
 
 
 
@@ -245,7 +247,9 @@ export function highchartsFactory() {
     RevenueAssignedtoComponent,
     BarchartsRegionComponent,
     StackedRegionComponent,
-    BarchartscustRegionComponent
+    BarchartscustRegionComponent,
+    RevenueLeadsourceComponent,
+    StackedLeadsourceComponent
   ],
   imports: [
     BrowserModule ,

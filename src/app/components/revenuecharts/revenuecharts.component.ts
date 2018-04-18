@@ -22,6 +22,7 @@ export class RevenuechartsComponent implements OnInit, OnDestroy {
    rv_last_updt_dt: any;
 
    opportunities: any;
+   oppolist: any;
 
  constructor(private firebaseservice : FirebaseService, 
     private router: Router, private afAuth: AngularFireAuth,
@@ -70,7 +71,17 @@ export class RevenuechartsComponent implements OnInit, OnDestroy {
             		u => {
                   this.opportunities = [];
                   this.opportunities = u;
-            			console.log("up", this.opportunities, u)
+                  // this.opportunities.map( i => {
+                  //   this.oppolist = {
+                  //     rg: i.region,
+                  //     mn: i.month,
+                  //     year: i.year,
+                  //     vd: i.valueofdeal,
+                  //     date: new Date(i.casewontime).getDate()
+                  //   }
+                  //   console.log("up", this.oppolist)
+                  // })
+            			
             		this.dolineCharts();
             	})
 
@@ -178,7 +189,7 @@ export class RevenuechartsComponent implements OnInit, OnDestroy {
 
 		if(item.region == 'hyderabad')
 		{
-
+      //console.log("uppp", typeof(item.casewontime))
 			//this.cmbtregionlist.push([item.casewontime, item.valueofdeal]);
 			series[4].data.push([item.casewontime, item.valueofdeal]);
 		}
@@ -224,15 +235,17 @@ console.log("srp",series);
 
     plotOptions: {
      series: {
-            pointWidth: 4
+            pointWidth: 2,
+            
+        },
+        column: {
+          dataLabels: {
+            enabled: true
         }
+      }
     },
 
     series: series
-    //  [{
-    //     name: 'Chennai',
-    //     data: [ this.chnregionlist ]
-    // }]
 }
 
 
