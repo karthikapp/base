@@ -38,6 +38,19 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
    oppoLSlist:any;
    opportunities_LSL: any;
    monthName: any;
+   opportunities_LSLV: any;
+   dataRegLS: any;
+   pieLSRegRevenue: any;
+   dataLSL: any;
+   pieLSLRevenue: any;
+
+   p: any;
+   q: any;
+   pvalue: any;
+   qvalue: any;
+   region: any;
+   leadsource: any;
+   rdata: any;
 
   constructor(private firebaseservice : FirebaseService, 
     private router: Router,private afAuth: AngularFireAuth,
@@ -145,17 +158,15 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
   }
 
   getMonth(val){
-     if (val == 1){
-        this.monthName = "January"
+    if (val == 1){
+      this.monthName = "January"
     }
-
     else if (val == 2){
       this.monthName = "February"
     }
     else if (val == 3){
       this.monthName = "March"
     }
-
     else if (val == 4){
       this.monthName = "April"
     }
@@ -168,7 +179,6 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
     else if (val == 7){
       this.monthName = "July"
     }
-
     else if (val == 8){
       this.monthName = "August"
     }
@@ -178,7 +188,6 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
     else if (val == 10){
       this.monthName = "October"
     }
-
     else if (val == 11){
       this.monthName = "November"
     }
@@ -195,10 +204,18 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
     this.oppoLSTotalValues = [];
     this.oppoLSValues = [];
     this.dataLS = [];
+    this.dataLSL = [];
     this.pieLSRevenue = [];
     this.oppoTLSV = 0;
     this.oppoLSV = 0;
     this.opportunities_LSL = [];
+    this.opportunities_LSLV = [];
+    this.dataRegLS = [];
+    this.pieLSRegRevenue = [];
+    this.pieLSLRevenue = [];
+
+    this.p = 1;
+    this.q = 1;
 
     if(this.monthSelect != ''){
       this.opportunities_LSL = this.opportunities_LS.filter( i => {
@@ -219,35 +236,148 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
                 {
                   this.oppoLSTotalValues.push(i.valueofdeal)
                 }
+
+                var prmkey = i.region + i.leadsource
+
+                if(i.leadsource == 'oem' )
+                {
+                  var prmkeyl1 = i.region + i.leadsource + i.oemid
+                } 
+                else if( i.leadsource == 'distributor' )
+                {
+                  var prmkeyl1 = i.region + i.leadsource + i.distributorid
+                }
+                else if(i.leadsource == 'event')
+                {
+                  var prmkeyl1 = i.region + i.leadsource + i.eventid
+                }
+                else
+                {
+                  var prmkeyl1 = null
+                }
+
+                this.opportunities_LSLV.push({prmkey: prmkey, prmkeyl1: prmkeyl1, region: i.region, leadsource: i.leadsource,
+                 oemid: i.oemid, oemname: i.oemname, eventid: i.eventid, eventname: i.eventname, distributorid: i.distributorid,
+                 distributorname: i.distributorname, valueofdeal: i.valueofdeal})
+
+                console.log("opplsv", this.opportunities_LSLV)
               })
               this.oppoTLSV = this.oppoLSTotalValues.reduce((a, b) => a + b, 0);
 
-              //Grouping by Assigned To
-              const groupedObj = this.opportunities_LSL.reduce((prev, cur)=> {
-                if(!prev[cur['leadsource']]) {
-                  prev[cur['leadsource']] = [cur];
+              //Grouping by Region
+              const groupedRegObj = this.opportunities_LSLV.reduce((prev, cur)=> {
+                if(!prev[cur['region']]) {
+                  prev[cur['region']] = [cur];
                 } else {
-                  prev[cur['leadsource']].push(cur);
+                  prev[cur['region']].push(cur);
                 }
                 return prev;
               }, {});
-              this.dataLS = Object.keys(groupedObj).map(key => { return { key, value: groupedObj[key] }});
+              this.dataRegLS = Object.keys(groupedRegObj).map(key => { return { key, value: groupedRegObj[key] }});
 
-              //Looping thro' and finding percentage for each Employees
-              this.dataLS.forEach( i => {
+              //Looping thro' and finding percentage for each Region
+              this.dataRegLS.forEach( i => {
                 this.oppoLSValues = [];
                 this.name = '';
                 i.value.forEach( j => {
                   this.oppoLSValues.push(j.valueofdeal)
-                  this.name = j.leadsource
+                  this.name = j.region
                 })
                 this.oppoLSV = 0;
                 this.valuePercent = null;
                 this.oppoLSV = this.oppoLSValues.reduce((a,b) => a+b, 0);
                 this.valuePercent = (this.oppoLSV/ this.oppoTLSV)*100;
-                this.pieLSRevenue.push({name: this.name, y:this.valuePercent});
+                this.pvalue = '';
+                this.pvalue = 'level'+ '' + this.p ;
+                this.pieLSRegRevenue.push({name: this.name, y:this.valuePercent, drilldown: this.pvalue});
+                console.log("psReg", this.pieLSRegRevenue);
+                this.p++;
+
               })
 
+
+              //Grouping by Lead Source
+              const groupedObj = this.opportunities_LSLV.reduce((prev, cur)=> {
+                if(!prev[cur['prmkey']]) {
+                  prev[cur['prmkey']] = [cur];
+                } else {
+                  prev[cur['prmkey']].push(cur);
+                }
+                return prev;
+              }, {});
+              this.dataLS = Object.keys(groupedObj).map(key => { return { key, value: groupedObj[key] }});
+
+              //Looping thro' and finding percentage for each Leadsource
+              this.dataLS.forEach( i => {
+                this.oppoLSValues = [];
+                this.name = '';
+                this.region = '';
+                i.value.forEach( j => {
+                  this.oppoLSValues.push(j.valueofdeal)
+                  this.name = j.leadsource
+                  this.region = j.region
+                })
+                this.oppoLSV = 0;
+                this.valuePercent = null;
+                this.oppoLSV = this.oppoLSValues.reduce((a,b) => a+b, 0);
+                this.valuePercent = (this.oppoLSV/ this.oppoTLSV)*100;
+                this.qvalue = '';
+                this.qvalue = 'rlevel' + '' + this.q;
+
+                if(this.name == 'oem' || this.name == 'distributor' || this.name == 'event'){
+                  this.pieLSRevenue.push({region: this.region, name: this.name, y:this.valuePercent, drilldown: this.qvalue});
+                  this.q++;
+                }
+                else{
+                  this.pieLSRevenue.push({region: this.region, name: this.name, y:this.valuePercent});
+                }
+
+                 console.log("psReg", this.pieLSRevenue)
+              })
+
+
+              //Grouping by OEM/ Distributor/ Event
+              const groupedLSLObj = this.opportunities_LSLV.reduce((prev, cur)=> {
+                if(cur.prmkeyl1 != null || prev.prmkeyl1 != null) {
+                  if(!prev[cur['prmkeyl1']]) {
+                    prev[cur['prmkeyl1']] = [cur];
+                  } else {
+                    prev[cur['prmkeyl1']].push(cur);
+                  }
+                }
+                return prev;
+              }, {});
+              this.dataLSL = Object.keys(groupedLSLObj).map(key => { return { key, value: groupedLSLObj[key] }});
+              console.log("psReg", this.dataLSL);
+
+              //Looping thro' and finding percentage for each Leadsource
+              this.dataLSL.forEach( i => {
+                this.oppoLSValues = [];
+                this.name = '';
+                this.region = '';
+                this.leadsource = '';
+                i.value.forEach( j => {
+                  this.oppoLSValues.push(j.valueofdeal)
+                  if(j.oemid != ''){
+                    this.name = j.oemname
+                  } else if(j.distributorid != ''){
+                    this.name = j.distributorname
+                  } else if(j.eventid != ''){
+                    this.name = j.eventname
+                  }
+                  this.region = j.region;
+                  this.leadsource = j.leadsource;
+                })
+                this.oppoLSV = 0;
+                this.valuePercent = null;
+                this.oppoLSV = this.oppoLSValues.reduce((a,b) => a+b, 0);
+                this.valuePercent = (this.oppoLSV/ this.oppoTLSV)*100;
+                //this.rvalue = '';
+                //this.rvalue = 'rqlevel' + '' + this.r
+                this.pieLSLRevenue.push({region: this.region, leadsource: this.leadsource, name: this.name, y:this.valuePercent});
+                console.log("psReg", this.pieLSLRevenue)
+                //this.r++;
+              })
               //Paasing the value to Pie Chart - Rev by Employees
               this.dopieLSCharts();
 
@@ -257,42 +387,128 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
 
   dopieLSCharts(){
     //Series is separately defined to loop thro' the data
-    var series =  [{
-  		'name': 'LeadSource',
-  		'colorByPoint': true,
-  		'data': []
-  	}], cur = this.pieLSRevenue;
+  //   var series =  [{
+  // 		'name': 'LeadSource',
+  // 		'colorByPoint': true,
+  // 		'data': []
+  // 	}], cur = this.pieLSRevenue;
 
-  	cur.forEach( i => {
-  		series[0].data.push(i);
-  	})
+  // 	cur.forEach( i => {
+  // 		series[0].data.push(i);
+  // 	})
 
-  	this.options = {
-      chart: {
-        plotBackgroundColor: null,
-        plotBorderWidth: null,
-        plotShadow: false,
-        type: 'pie'
-      },
-      title: {
-        text: 'Revenue By LeadSource'
-      },
-      tooltip: {
-        pointFormat: '<b>{point.percentage:.1f}%</b>'
-      },
-      plotOptions: {
-        pie: {
-          allowPointSelect: true,
-          cursor: 'pointer',
-          dataLabels: {
-            enabled: true,
-            format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-          }
+  // 	this.options = {
+  //     chart: {
+  //       plotBackgroundColor: null,
+  //       plotBorderWidth: null,
+  //       plotShadow: false,
+  //       type: 'pie'
+  //     },
+  //     title: {
+  //       text: 'Revenue By LeadSource'
+  //     },
+  //     tooltip: {
+  //       pointFormat: '<b>{point.percentage:.1f}%</b>'
+  //     },
+  //     plotOptions: {
+  //       pie: {
+  //         allowPointSelect: true,
+  //         cursor: 'pointer',
+  //         dataLabels: {
+  //           enabled: true,
+  //           format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+  //         }
+  //       }
+  //     },
+  //     series: series
+  //   }
+  
+
+  var series = [{
+      'id': 'regions',
+      'name': 'Region',
+      'data': []
+    }],  
+    prev = this.pieLSRegRevenue
+    
+    var drilldown = {
+    'series': []
+    }, cur = this.pieLSRevenue,
+    fut = this.pieLSLRevenue;
+
+
+   prev.forEach( i => {
+     this.rdata = [];
+     series[0].data.push(i);
+     this.region = '';
+     this.region = i.name;
+     cur.forEach(j => {
+      if(this.region == j.region){
+        if(j.drilldown != ''){
+        this.rdata.push({name: j.name, y:j.y, drilldown: j.drilldown})
+      }
+      else
+      {
+       this.rdata.push({name: j.name, y:j.y}) 
+      }
+      }
+    })
+     console.log("psReg", this.rdata);
+     drilldown.series.push({id: i.drilldown, name: i.name, data: this.rdata})
+   })
+
+   cur.forEach( k => {
+     this.rdata = [];
+     this.region = '';
+     this.leadsource = '';
+     this.region = k.region;
+     this.leadsource = k.name;
+     fut.forEach(l => {
+       if(this.region == l.region && this.leadsource == l.leadsource){
+         this.rdata.push({name: l.name, y: l.y})
+       }
+     })
+     if(k.drilldown != ''){
+     drilldown.series.push({ id: k.drilldown, name: k.name, data: this.rdata})
+     }
+   })
+
+   console.log("psReg", series, drilldown);
+
+    
+  
+  this.options = {
+    chart: {
+      type: 'pie'
+    },
+    title: {
+      text: 'Revenue By Lead Source'
+    },
+    xAxis: {
+      type: 'category'
+    },
+    
+    plotOptions: {
+        series: {
+          borderWidth: 1,
+            dataLabels: {
+                enabled: true,
+                format: '{point.name}: {point.y:.1f}%'
+            }
         }
-      },
-      series: series
+    },
+
+    tooltip: {
+        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+    },
+    series: series,
+    drilldown: drilldown
     }
   }
+
+
+  
 
 
 }

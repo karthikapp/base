@@ -169,7 +169,9 @@ declare var require: any;
 export function highchartsFactory() {
   var hc = require('highcharts');
   var hcm = require('highcharts/modules/funnel');
+  var hcd = require('highcharts/modules/drilldown');
 
+  hcd(hc);
   hcm(hc);
   return hc;
 
