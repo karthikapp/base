@@ -284,7 +284,7 @@ export class RevenueProdComponent implements OnInit, OnDestroy {
         type: 'pie'
     },
     title: {
-        text: 'Revenue By Product'
+        text: 'REVENUE BY PRODUCT'
     },
     tooltip: {
         pointFormat: '<b>{point.percentage:.1f}%</b>'

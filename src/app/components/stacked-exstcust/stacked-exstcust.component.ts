@@ -7,41 +7,34 @@ import * as moment from 'moment';
 import { AnalyticsService } from '../../services/analytics.service';
 
 @Component({
-  selector: 'app-stacked-region',
-  templateUrl: './stacked-region.component.html',
-  styleUrls: ['./stacked-region.component.css']
+  selector: 'app-stacked-exstcust',
+  templateUrl: './stacked-exstcust.component.html',
+  styleUrls: ['./stacked-exstcust.component.css']
 })
-export class StackedRegionComponent implements OnInit, OnDestroy {
+export class StackedExstcustComponent implements OnInit, OnDestroy {
 
 	options: Object;
 
-  uid: string;
-   ev: boolean = false;
+  	uid: string;
+   	ev: boolean = false;
+   	alive: boolean = true;
 
-   alive: boolean = true;
-   opportunities_stkreg: any;
-   opportunities_stkregL: any;
+   opportunities_stkexc: any;
+   opportunities_stkexcL: any;
    rv_last_updt_dt: any;
-   opportunities_reg: any;
-   datastckReg: any;
-   dataSP: any;
+   opportunities_exc: any;
+   datastckexc: any;
+   dataexc: any;
    dataFinalList: any;
 
-
    datamonth: any;
-   dataregion: any;
+   dataexcust: any;
 
-   chnList: any;
-   hydList: any;
-   bglrList: any;
-   cmbtList: any;
-   mumList:any;
+   excustList: any;
+   noexcustList: any;
 
-   datachnvalue: any;
-   databglrvalue: any;
-   datahydvalue: any;
-   datacmbtvalue : any;
-   datamumvalue: any;
+   dataexcustvalue: any;
+   datanoexcustvalue: any;
 
    yearSelect: any;
    currentYear: any;
@@ -52,9 +45,8 @@ export class StackedRegionComponent implements OnInit, OnDestroy {
     private analyticsservice : AnalyticsService) { }
 
   ngOnInit() {
-  	this.opportunities_stkreg = [];
+  	this.opportunities_stkexc = [];
     
-
   	this.afAuth.authState
     .takeWhile(() => this.alive)
     .subscribe(data => {
@@ -95,12 +87,12 @@ export class StackedRegionComponent implements OnInit, OnDestroy {
             	.takeWhile(() => this.alive)
             	.subscribe( 
             		u => {
-                  this.opportunities_stkreg = [];
-                  this.opportunities_stkreg = u;
+                  this.opportunities_stkexc = [];
+                  this.opportunities_stkexc = u;
 
-                  this.yearList();
-
+                  	this.yearList();
               		this.onSelectYear();
+
             	})
               return this.ev = true;
             }
@@ -119,8 +111,6 @@ export class StackedRegionComponent implements OnInit, OnDestroy {
             return this.ev=false;
        }
      });
-  	
-
   }
 
   ngOnDestroy(){
@@ -128,33 +118,30 @@ export class StackedRegionComponent implements OnInit, OnDestroy {
   }
 
   yearList(){
-    this.year_list = this.opportunities_stkreg
+    this.year_list = this.opportunities_stkexc
       .map(item => item.year)
       .filter((value, index, self) => { return self.indexOf(value) === index })
   }
 
   onSelectYear(){
-    this.opportunities_stkregL = [];
-    this.datastckReg = [];
-    this.opportunities_reg = [];
-    this.dataSP = [];
+    this.opportunities_stkexcL = [];
+    this.dataexc = [];
+    this.opportunities_exc = [];
+    this.datastckexc = [];
     this.dataFinalList = [];
 
-    this.opportunities_stkregL = this.opportunities_stkreg.filter( i => {
+    this.opportunities_stkexcL = this.opportunities_stkexc.filter( i => {
       return i.year == this.yearSelect;
     })
 
-    this.opportunities_stkregL.forEach( i=> {
-      // var moved_time = new Date(i.casewontime);
-      // var month = moved_time.getMonth();
-      // var year = moved_time.getFullYear();
-      // var date = moved_time.getDate();
-      var regionmonth = i.region + ""+ i.month;
-      this.opportunities_reg.push({pkey:regionmonth, region: i.region, month: i.month,valueofdeal: i.valueofdeal})  
-      console.log("up", this.opportunities_reg);  
+    this.opportunities_stkexcL.forEach( i=> {
+      var lsmonth = i.existing_customer + ""+ i.month;
+      this.opportunities_exc.push({pkey:lsmonth, existing_customer: i.existing_customer, 
+      	month: i.month,valueofdeal: i.valueofdeal})  
+      console.log("up", this.opportunities_exc);  
     })
     
-    const groupedObj = this.opportunities_reg.reduce((prev, cur)=> {
+    const groupedObj = this.opportunities_exc.reduce((prev, cur)=> {
       if(!prev[cur['pkey']]) {
         prev[cur['pkey']] = [cur];
       } else {
@@ -164,80 +151,47 @@ export class StackedRegionComponent implements OnInit, OnDestroy {
       return prev;
     }, {});
 
-    this.datastckReg = Object.keys(groupedObj).map(key => { return { key, value: groupedObj[key]}});
+    this.datastckexc = Object.keys(groupedObj).map(key => { return { key, value: groupedObj[key]}});
 
-    console.log("up", this.datastckReg);
+    console.log("up", this.datastckexc);
 
-    this.datastckReg.forEach ( i => {
+    this.datastckexc.forEach ( i => {
       this.datamonth = null;
-      this.dataregion = '';
-      this.dataSP = [];
+      this.dataexcust = '';
+      this.dataexc = [];
 
       i.value.forEach( j =>
       {
-        this.dataSP.push(j.valueofdeal);
+        this.dataexc.push(j.valueofdeal);
         this.datamonth = j.month;
-        this.dataregion = j.region;
+        this.dataexcust = j.existing_customer;
       })
 
-      var dataValues = this.dataSP.reduce((a,b) => a+b ,0);
+      var dataValues = this.dataexc.reduce((a,b) => a+b ,0);
 
-      this.dataFinalList.push({ymr: i.key, region: this.dataregion,
+      this.dataFinalList.push({ymr: i.key, existing_customer: this.dataexcust,
         month: this.datamonth, monthlyRev: dataValues })
       console.log("up", this.dataFinalList);
     })
 
-    this.chnList = this.dataFinalList.filter(i => {return i.region == 'chennai'})
+    this.excustList = this.dataFinalList.filter(i => {return i.existing_customer == true})
 
-    console.log("chnList", this.chnList);
-    this.datachnvalue = ['','','','','','','','','','','','']
+    console.log("chnList", this.excustList);
+    this.dataexcustvalue = ['','','','','','','','','','','','']
 
-    for(let i=0; i< this.chnList.length; i++){
-      this.datachnvalue.splice(this.chnList[i].month,1,this.chnList[i].monthlyRev);
+    for(let i=0; i< this.excustList.length; i++){
+      this.dataexcustvalue.splice(this.excustList[i].month,1,this.excustList[i].monthlyRev);
     }
 
-    this.bglrList = this.dataFinalList.filter(i => {return i.region == 'bangalore'})
+    this.noexcustList = this.dataFinalList.filter(i => {return i.existing_customer == false})
 
-    this.databglrvalue = ['','','','','','','','','','','','']
+    this.datanoexcustvalue = ['','','','','','','','','','','','']
 
-    for(let i=0; i< this.bglrList.length; i++){
-      this.databglrvalue.splice(this.bglrList[i].month,1,this.bglrList[i].monthlyRev);
+    for(let i=0; i< this.noexcustList.length; i++){
+      this.datanoexcustvalue.splice(this.noexcustList[i].month,1,this.noexcustList[i].monthlyRev);
     }
 
-    this.cmbtList = this.dataFinalList.filter(i => {return i.region == 'coimbatore'})
-
-    console.log("chnList", this.cmbtList);
-    this.datacmbtvalue = ['','','','','','','','','','','','']
-
-    for(let i=0; i< this.cmbtList.length; i++){
-      this.datacmbtvalue.splice(this.cmbtList[i].month,1,this.cmbtList[i].monthlyRev);
-    }
-
-    console.log ("chnList", this.datacmbtvalue);
-
-    this.hydList = this.dataFinalList.filter(i => {return i.region == 'hyderabad'})
-
-    console.log("chnList", this.hydList);
-    this.datahydvalue = ['','','','','','','','','','','','']
-
-    for(let i=0; i< this.hydList.length; i++){
-      this.datahydvalue.splice(this.hydList[i].month,1,this.hydList[i].monthlyRev);
-    }
-
-    console.log ("chnList", this.datahydvalue);
-
-    this.mumList = this.dataFinalList.filter(i => {return i.region == 'mumbai'})
-
-    console.log("chnList", this.mumList);
-    this.datamumvalue = ['','','','','','','','','','','','']
-
-    for(let i=0; i< this.mumList.length; i++){
-      this.datamumvalue.splice(this.mumList[i].month,1,this.mumList[i].monthlyRev);
-    }
-
-    console.log ("chnList", this.datamumvalue);
-
-    this.dostackedRegioncharts();
+    this.dostackedExCustcharts();
 
   }
 
@@ -246,40 +200,22 @@ export class StackedRegionComponent implements OnInit, OnDestroy {
     this.onSelectYear();
   }
 
-  dostackedRegioncharts(){
+  dostackedExCustcharts(){
 
 	var series =  [{
-		'name': 'Chennai',
+		'name': 'Existing Customer',
 		'data': []
 	},
 	{
-		'name': 'Bangalore',
+		'name': 'No Existing Customer',
 		'data': []
-	},
-	{
-		'name': 'Coimbatore',
-		'data': []
-	},
-	{
-		'name': 'Mumbai',
-		'data': []
-	},
-	{
-		'name': 'Hyderabad',
-		'data': []
-	}], chn = this.datachnvalue,
-	bglr = this.databglrvalue,
-	cmbt = this.datacmbtvalue,
-	mumb = this.datamumvalue,
-	hyd = this.datahydvalue;
+	}], excust = this.dataexcustvalue,
+	noexcust = this.datanoexcustvalue;
 
 	for( let i =1 ; i <= 12; i++)
 	{
-		series[0].data.push(chn[i]);
-		series[1].data.push(bglr[i]);
-		series[2].data.push(cmbt[i]);
-		series[3].data.push(mumb[i]);
-		series[4].data.push(hyd[i]);
+		series[0].data.push(excust[i]);
+		series[1].data.push(noexcust[i]);
 	}
   	
 
@@ -289,7 +225,7 @@ export class StackedRegionComponent implements OnInit, OnDestroy {
         type: 'column'
     },
     title: {
-        text: 'REVENUE BY REGION'
+        text: 'REVENUE BY EXISTING CUSTOMER OR NOT'
     },
     xAxis: {
         categories:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
@@ -339,5 +275,6 @@ export class StackedRegionComponent implements OnInit, OnDestroy {
     series: series
   	}
   }
+
 
 }

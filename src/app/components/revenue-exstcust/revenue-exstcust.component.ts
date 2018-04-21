@@ -7,12 +7,13 @@ import * as moment from 'moment';
 import { AnalyticsService } from '../../services/analytics.service';
 
 @Component({
-  selector: 'app-revenue-leadsource',
-  templateUrl: './revenue-leadsource.component.html',
-  styleUrls: ['./revenue-leadsource.component.css']
+  selector: 'app-revenue-exstcust',
+  templateUrl: './revenue-exstcust.component.html',
+  styleUrls: ['./revenue-exstcust.component.css']
 })
-export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
-	//Variables
+export class RevenueExstcustComponent implements OnInit, OnDestroy {
+
+//Variables
   //Common for All for accessing Users
   uid: string;
   ev: boolean = false;
@@ -20,13 +21,13 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
 
   //Charts - Rev for assigned To
   options: Object;
-  opportunities_LS: any;
-  oppoLSTotalValues: any;
-  oppoLSValues: any;
-  pieLSRevenue: any;
-  dataLS: any;
-  oppoTLSV: any;
-  oppoLSV: any;
+  opportunities_EC: any;
+  oppoECTotalValues: any;
+  oppoECValues: any;
+  pieECRevenue: any;
+  dataEC: any;
+  oppoTECV: any;
+  oppoECV: any;
   valuePercent: any;
   name: any;
 
@@ -35,22 +36,23 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
     currentYear: any;
    year_list:any;
    month_list: any;
-   oppoLSlist:any;
-   opportunities_LSL: any;
+   oppoEClist:any;
+   opportunities_ECL: any;
    monthName: any;
-   opportunities_LSLV: any;
-   dataRegLS: any;
-   pieLSRegRevenue: any;
-   dataLSL: any;
-   pieLSLRevenue: any;
+   opportunities_ECLV: any;
+   dataRegEC: any;
+   pieECRegRevenue: any;
+   dataECL: any;
+   pieECLRevenue: any;
 
    p: any;
    q: any;
    pvalue: any;
    qvalue: any;
    region: any;
-   leadsource: any;
+   existing_customer: any;
    rdata: any;
+   ename: any;
 
   constructor(private firebaseservice : FirebaseService, 
     private router: Router,private afAuth: AngularFireAuth,
@@ -58,7 +60,7 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
   	//Initializing the objects
-  	this.opportunities_LS = [];
+  	this.opportunities_EC = [];
     this.monthName = '';
   	
 
@@ -101,13 +103,13 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
             .takeWhile(() => this.alive)
             .subscribe( 
             u => {
-              this.opportunities_LS = [];
+              this.opportunities_EC = [];
              
-              this.opportunities_LS = u;
-              this.yearLSList();
-              this.monthLSList();
+              this.opportunities_EC = u;
+              this.yearECList();
+              this.monthECList();
 
-              this.selectLSList();
+              this.selectECList();
 
               
             })
@@ -132,29 +134,29 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
   	this.alive = false
   }
 
-  yearLSList(){
-    this.year_list = this.opportunities_LS
+  yearECList(){
+    this.year_list = this.opportunities_EC
       .map(item => item.year)
       .filter((value, index, self) => { return self.indexOf(value) === index })
   }
 
-  monthLSList(){
-    this.oppoLSlist = [];
-    this.oppoLSlist = this.opportunities_LS.filter(i => { return i.year == this.yearSelect})
-    this.month_list = this.oppoLSlist
+  monthECList(){
+    this.oppoEClist = [];
+    this.oppoEClist = this.opportunities_EC.filter(i => { return i.year == this.yearSelect})
+    this.month_list = this.oppoEClist
                       .map(item => item.month)
                       .filter((value, index, self) => { return self.indexOf(value) === index })
   }
 
   onYearChange(year){
     this.yearSelect = year;
-    this.monthLSList();
-    this.selectLSList();
+    this.monthECList();
+    this.selectECList();
   }
 
   onMonthChange(month){
     this.monthSelect = month;
-    this.selectLSList();
+    this.selectECList();
   }
 
   getMonth(val){
@@ -200,72 +202,57 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
   }
 
 
-  selectLSList(){
-    this.oppoLSTotalValues = [];
-    this.oppoLSValues = [];
-    this.dataLS = [];
-    this.dataLSL = [];
-    this.pieLSRevenue = [];
-    this.oppoTLSV = 0;
-    this.oppoLSV = 0;
-    this.opportunities_LSL = [];
-    this.opportunities_LSLV = [];
-    this.dataRegLS = [];
-    this.pieLSRegRevenue = [];
-    this.pieLSLRevenue = [];
+  selectECList(){
+    this.oppoECTotalValues = [];
+    this.oppoECValues = [];
+    this.dataEC = [];
+    this.dataECL = [];
+    this.pieECRevenue = [];
+    this.oppoTECV = 0;
+    this.oppoECV = 0;
+    this.opportunities_ECL = [];
+    this.opportunities_ECLV = [];
+    this.dataRegEC = [];
+    this.pieECRegRevenue = [];
+    this.pieECLRevenue = [];
 
     this.p = 1;
     this.q = 1;
 
     if(this.monthSelect != ''){
-      this.opportunities_LSL = this.opportunities_LS.filter( i => {
+      this.opportunities_ECL = this.opportunities_EC.filter( i => {
         return i.year == this.yearSelect &&
             i.month == this.monthSelect
       })
     }
     else if(this.monthSelect == ''){
-      this.opportunities_LSL = this.opportunities_LS.filter( i => {
+      this.opportunities_ECL = this.opportunities_EC.filter( i => {
         return i.year == this.yearSelect
       })
     }
 
     //Total Values of All Opportunities
-              this.opportunities_LSL.forEach( 
+              this.opportunities_ECL.forEach( 
               i => {
                 if(i.valueofdeal != undefined)
                 {
-                  this.oppoLSTotalValues.push(i.valueofdeal)
+                  this.oppoECTotalValues.push(i.valueofdeal)
                 }
 
-                var prmkey = i.region + i.leadsource
+                var prmkey = i.region + i.existing_customer
+                var prmkeyl1 = i.region + i.existing_customer + i.company_id
 
-                if(i.leadsource == 'oem' )
-                {
-                  var prmkeyl1 = i.region + i.leadsource + i.oemid
-                } 
-                else if( i.leadsource == 'distributor' )
-                {
-                  var prmkeyl1 = i.region + i.leadsource + i.distributorid
-                }
-                else if(i.leadsource == 'event')
-                {
-                  var prmkeyl1 = i.region + i.leadsource + i.eventid
-                }
-                else
-                {
-                  var prmkeyl1 = null
-                }
+               
+                this.opportunities_ECLV.push({prmkey: prmkey, prmkeyl1: prmkeyl1, region: i.region, 
+                 existing_customer: i.existing_customer, company_id: i.company_id, companyname: i.companyname, 
+                 valueofdeal: i.valueofdeal})
 
-                this.opportunities_LSLV.push({prmkey: prmkey, prmkeyl1: prmkeyl1, region: i.region, leadsource: i.leadsource,
-                 oemid: i.oemid, oemname: i.oemname, eventid: i.eventid, eventname: i.eventname, distributorid: i.distributorid,
-                 distributorname: i.distributorname, valueofdeal: i.valueofdeal})
-
-                console.log("opplsv", this.opportunities_LSLV)
+                console.log("opplsv", this.opportunities_ECLV)
               })
-              this.oppoTLSV = this.oppoLSTotalValues.reduce((a, b) => a + b, 0);
+              this.oppoTECV = this.oppoECTotalValues.reduce((a, b) => a + b, 0);
 
               //Grouping by Region
-              const groupedRegObj = this.opportunities_LSLV.reduce((prev, cur)=> {
+              const groupedRegObj = this.opportunities_ECLV.reduce((prev, cur)=> {
                 if(!prev[cur['region']]) {
                   prev[cur['region']] = [cur];
                 } else {
@@ -273,31 +260,31 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
                 }
                 return prev;
               }, {});
-              this.dataRegLS = Object.keys(groupedRegObj).map(key => { return { key, value: groupedRegObj[key] }});
+              this.dataRegEC = Object.keys(groupedRegObj).map(key => { return { key, value: groupedRegObj[key] }});
 
               //Looping thro' and finding percentage for each Region
-              this.dataRegLS.forEach( i => {
-                this.oppoLSValues = [];
+              this.dataRegEC.forEach( i => {
+                this.oppoECValues = [];
                 this.name = '';
                 i.value.forEach( j => {
-                  this.oppoLSValues.push(j.valueofdeal)
+                  this.oppoECValues.push(j.valueofdeal)
                   this.name = j.region
                 })
-                this.oppoLSV = 0;
+                this.oppoECV = 0;
                 this.valuePercent = null;
-                this.oppoLSV = this.oppoLSValues.reduce((a,b) => a+b, 0);
-                this.valuePercent = (this.oppoLSV/ this.oppoTLSV)*100;
+                this.oppoECV = this.oppoECValues.reduce((a,b) => a+b, 0);
+                this.valuePercent = (this.oppoECV/ this.oppoTECV)*100;
                 this.pvalue = '';
                 this.pvalue = 'level'+ '' + this.p ;
-                this.pieLSRegRevenue.push({name: this.name, y:this.valuePercent, drilldown: this.pvalue});
-                console.log("psReg", this.pieLSRegRevenue);
+                this.pieECRegRevenue.push({name: this.name, y:this.valuePercent, drilldown: this.pvalue});
+                console.log("psReg", this.pieECRegRevenue);
                 this.p++;
 
               })
 
 
-              //Grouping by Lead Source
-              const groupedObj = this.opportunities_LSLV.reduce((prev, cur)=> {
+              //Grouping by Existing Customer
+              const groupedObj = this.opportunities_ECLV.reduce((prev, cur)=> {
                 if(!prev[cur['prmkey']]) {
                   prev[cur['prmkey']] = [cur];
                 } else {
@@ -305,39 +292,36 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
                 }
                 return prev;
               }, {});
-              this.dataLS = Object.keys(groupedObj).map(key => { return { key, value: groupedObj[key] }});
+              this.dataEC = Object.keys(groupedObj).map(key => { return { key, value: groupedObj[key] }});
 
-              //Looping thro' and finding percentage for each Leadsource
-              this.dataLS.forEach( i => {
-                this.oppoLSValues = [];
+              //Looping thro' and finding percentage for each Existing Customer
+              this.dataEC.forEach( i => {
+                this.oppoECValues = [];
                 this.name = '';
                 this.region = '';
                 i.value.forEach( j => {
-                  this.oppoLSValues.push(j.valueofdeal)
-                  this.name = j.leadsource
+                  this.oppoECValues.push(j.valueofdeal)
+                  this.name = j.existing_customer
                   this.region = j.region
                 })
-                this.oppoLSV = 0;
+                this.oppoECV = 0;
                 this.valuePercent = null;
-                this.oppoLSV = this.oppoLSValues.reduce((a,b) => a+b, 0);
-                this.valuePercent = (this.oppoLSV/ this.oppoTLSV)*100;
+                this.oppoECV = this.oppoECValues.reduce((a,b) => a+b, 0);
+                this.valuePercent = (this.oppoECV/ this.oppoTECV)*100;
                 this.qvalue = '';
                 this.qvalue = 'rlevel' + '' + this.q;
 
-                if(this.name == 'oem' || this.name == 'distributor' || this.name == 'event'){
-                  this.pieLSRevenue.push({region: this.region, name: this.name, y:this.valuePercent, drilldown: this.qvalue});
-                  this.q++;
-                }
-                else{
-                  this.pieLSRevenue.push({region: this.region, name: this.name, y:this.valuePercent});
-                }
 
-                 console.log("psReg", this.pieLSRevenue)
+                  this.pieECRevenue.push({region: this.region, name: this.name, y:this.valuePercent, drilldown: this.qvalue});
+                  this.q++;
+
+
+                 console.log("psReg", this.pieECRevenue)
               })
 
 
-              //Grouping by OEM/ Distributor/ Event
-              const groupedLSLObj = this.opportunities_LSLV.reduce((prev, cur)=> {
+              //Grouping by companyid
+              const groupedLSLObj = this.opportunities_ECLV.reduce((prev, cur)=> {
                 if(cur.prmkeyl1 != null || prev.prmkeyl1 != null) {
                   if(!prev[cur['prmkeyl1']]) {
                     prev[cur['prmkeyl1']] = [cur];
@@ -347,81 +331,39 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
                 }
                 return prev;
               }, {});
-              this.dataLSL = Object.keys(groupedLSLObj).map(key => { return { key, value: groupedLSLObj[key] }});
-              console.log("psReg", this.dataLSL);
+              this.dataECL = Object.keys(groupedLSLObj).map(key => { return { key, value: groupedLSLObj[key] }});
+              console.log("psReg", this.dataECL);
 
               //Looping thro' and finding percentage for each Leadsource
-              this.dataLSL.forEach( i => {
-                this.oppoLSValues = [];
+              this.dataECL.forEach( i => {
+                this.oppoECValues = [];
                 this.name = '';
                 this.region = '';
-                this.leadsource = '';
+                this.existing_customer = '';
                 i.value.forEach( j => {
-                  this.oppoLSValues.push(j.valueofdeal)
-                  if(j.oemid != ''){
-                    this.name = j.oemname
-                  } else if(j.distributorid != ''){
-                    this.name = j.distributorname
-                  } else if(j.eventid != ''){
-                    this.name = j.eventname
-                  }
+                  this.oppoECValues.push(j.valueofdeal)
+                  this.name = j.companyname
                   this.region = j.region;
-                  this.leadsource = j.leadsource;
+                  this.existing_customer = j.existing_customer;
                 })
-                this.oppoLSV = 0;
+                this.oppoECV = 0;
                 this.valuePercent = null;
-                this.oppoLSV = this.oppoLSValues.reduce((a,b) => a+b, 0);
-                this.valuePercent = (this.oppoLSV/ this.oppoTLSV)*100;
+                this.oppoECV = this.oppoECValues.reduce((a,b) => a+b, 0);
+                this.valuePercent = (this.oppoECV/ this.oppoTECV)*100;
                 //this.rvalue = '';
                 //this.rvalue = 'rqlevel' + '' + this.r
-                this.pieLSLRevenue.push({region: this.region, leadsource: this.leadsource, name: this.name, y:this.valuePercent});
-                console.log("psReg", this.pieLSLRevenue)
+                this.pieECLRevenue.push({region: this.region, existing_customer: this.existing_customer, name: this.name, y:this.valuePercent});
+                console.log("psReg", this.pieECLRevenue)
                 //this.r++;
               })
               //Paasing the value to Pie Chart - Rev by Employees
-              this.dopieLSCharts();
+              this.dopieECCharts();
 
 
 
   }
 
-  dopieLSCharts(){
-    //Series is separately defined to loop thro' the data
-  //   var series =  [{
-  // 		'name': 'LeadSource',
-  // 		'colorByPoint': true,
-  // 		'data': []
-  // 	}], cur = this.pieLSRevenue;
-
-  // 	cur.forEach( i => {
-  // 		series[0].data.push(i);
-  // 	})
-
-  // 	this.options = {
-  //     chart: {
-  //       plotBackgroundColor: null,
-  //       plotBorderWidth: null,
-  //       plotShadow: false,
-  //       type: 'pie'
-  //     },
-  //     title: {
-  //       text: 'Revenue By LeadSource'
-  //     },
-  //     tooltip: {
-  //       pointFormat: '<b>{point.percentage:.1f}%</b>'
-  //     },
-  //     plotOptions: {
-  //       pie: {
-  //         allowPointSelect: true,
-  //         cursor: 'pointer',
-  //         dataLabels: {
-  //           enabled: true,
-  //           format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-  //         }
-  //       }
-  //     },
-  //     series: series
-  //   }
+  dopieECCharts(){
   
 
   var series = [{
@@ -429,12 +371,12 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
       'name': 'Region',
       'data': []
     }],  
-    prev = this.pieLSRegRevenue
+    prev = this.pieECRegRevenue
     
     var drilldown = {
     'series': []
-    }, cur = this.pieLSRevenue,
-    fut = this.pieLSLRevenue;
+    }, cur = this.pieECRevenue,
+    fut = this.pieECLRevenue;
 
 
    prev.forEach( i => {
@@ -444,13 +386,15 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
      this.region = i.name;
      cur.forEach(j => {
       if(this.region == j.region){
-        if(j.drilldown != ''){
-        this.rdata.push({name: j.name, y:j.y, drilldown: j.drilldown})
-      }
-      else
-      {
-       this.rdata.push({name: j.name, y:j.y}) 
-      }
+        if(j.name == true){
+          this.ename = 'EXISTING'
+        }
+        else if( j.name == false){
+          this.ename = 'NON-EXISTING'
+        }
+
+        this.rdata.push({name: this.ename, y:j.y, drilldown: j.drilldown})
+
       }
     })
      console.log("psReg", this.rdata);
@@ -460,11 +404,11 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
    cur.forEach( k => {
      this.rdata = [];
      this.region = '';
-     this.leadsource = '';
+     this.existing_customer = '';
      this.region = k.region;
-     this.leadsource = k.name;
+     this.existing_customer = k.name;
      fut.forEach(l => {
-       if(this.region == l.region && this.leadsource == l.leadsource){
+       if(this.region == l.region && this.existing_customer == l.existing_customer){
          this.rdata.push({name: l.name, y: l.y})
        }
      })
@@ -482,7 +426,7 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
       type: 'pie'
     },
     title: {
-      text: 'REVENUE BY LEAD SOURCE'
+      text: 'REVENUE BY EXISTING CUSTOMER OR NOT'
     },
     xAxis: {
       type: 'category'
@@ -509,6 +453,5 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
 
 
   
-
 
 }

@@ -24,6 +24,14 @@ export class RevenuechartsComponent implements OnInit, OnDestroy {
    opportunities: any;
    oppolist: any;
 
+yearSelect: any;
+
+    currentYear: any;
+   year_list:any;
+
+   opportunities_L: any;
+
+
  constructor(private firebaseservice : FirebaseService, 
     private router: Router, private afAuth: AngularFireAuth,
     private analyticsservice : AnalyticsService) { }
@@ -64,6 +72,8 @@ export class RevenuechartsComponent implements OnInit, OnDestroy {
               
 
               this.rv_last_updt_dt = this.analyticsservice.rv_last_updt_dt;
+              this.currentYear = (new Date()).getFullYear();
+              this.yearSelect = this.currentYear;
 
             	this.analyticsservice.getOpportunitiesforrv()
             	.takeWhile(() => this.alive)
@@ -71,17 +81,10 @@ export class RevenuechartsComponent implements OnInit, OnDestroy {
             		u => {
                   this.opportunities = [];
                   this.opportunities = u;
-                  // this.opportunities.map( i => {
-                  //   this.oppolist = {
-                  //     rg: i.region,
-                  //     mn: i.month,
-                  //     year: i.year,
-                  //     vd: i.valueofdeal,
-                  //     date: new Date(i.casewontime).getDate()
-                  //   }
-                  //   console.log("up", this.oppolist)
-                  // })
-            			
+                  this.yearList();
+                 
+                 this.selectChartList();
+
             		this.dolineCharts();
             	})
 
@@ -110,6 +113,25 @@ export class RevenuechartsComponent implements OnInit, OnDestroy {
   	this.alive = false;
   }
 
+    onYearChange(year){
+    this.yearSelect = year;
+    this.selectChartList();
+  }
+
+  selectChartList(){
+    this.opportunities_L = this.opportunities.filter( i => {
+        return i.year == this.yearSelect 
+      })
+  }
+
+   yearList(){
+    this.year_list = this.opportunities
+      .map(item => item.year)
+      .filter((value, index, self) => { return self.indexOf(value) === index })
+  }
+
+
+
   dolineCharts(){
 
 
@@ -132,7 +154,7 @@ export class RevenuechartsComponent implements OnInit, OnDestroy {
 	{
 		'name': 'Hyderabad',
 		'data': []
-	}], cur = this.opportunities;
+	}], cur = this.opportunities_L;
 
 	console.log("srpcur", cur);
 
@@ -210,7 +232,7 @@ console.log("srp",series);
         type: 'column'
     },
     title: {
-        text: 'Revenue Trend Over Time'
+        text: 'REVENUE TREND OVER TIME'
     },
     xAxis: {
         type: 'datetime',

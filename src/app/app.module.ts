@@ -115,6 +115,9 @@ import { StackedRegionComponent } from './components/stacked-region/stacked-regi
 import { BarchartscustRegionComponent } from './components/barchartscust-region/barchartscust-region.component';
 import { RevenueLeadsourceComponent } from './components/revenue-leadsource/revenue-leadsource.component';
 import { StackedLeadsourceComponent } from './components/stacked-leadsource/stacked-leadsource.component';
+import { SunburstEmpComponent } from './components/sunburst-emp/sunburst-emp.component';
+import { RevenueExstcustComponent } from './components/revenue-exstcust/revenue-exstcust.component';
+import { StackedExstcustComponent } from './components/stacked-exstcust/stacked-exstcust.component';
 
 
 
@@ -170,9 +173,13 @@ export function highchartsFactory() {
   var hc = require('highcharts');
   var hcm = require('highcharts/modules/funnel');
   var hcd = require('highcharts/modules/drilldown');
+  var hcs = require('highcharts/modules/sunburst');
+  var dd = require('highcharts/modules/exporting');
 
+  hcs(hc);
   hcd(hc);
   hcm(hc);
+  dd(hc);
   return hc;
 
 }
@@ -251,7 +258,10 @@ export function highchartsFactory() {
     StackedRegionComponent,
     BarchartscustRegionComponent,
     RevenueLeadsourceComponent,
-    StackedLeadsourceComponent
+    StackedLeadsourceComponent,
+    SunburstEmpComponent,
+    RevenueExstcustComponent,
+    StackedExstcustComponent
   ],
   imports: [
     BrowserModule ,

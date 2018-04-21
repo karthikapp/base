@@ -286,7 +286,7 @@ export class RevenuechartsProductComponent implements OnInit, OnDestroy {
         type: 'pie'
     },
     title: {
-        text: 'Revenue By Brand'
+        text: 'REVENUE BY BRAND'
     },
     tooltip: {
         pointFormat: '<b>{point.percentage:.1f}%</b>'

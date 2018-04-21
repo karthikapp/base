@@ -56,7 +56,6 @@ export class StackedLeadsourceComponent implements OnInit, OnDestroy {
   ngOnInit() {
   	this.opportunities_stkls = [];
     
-
   	this.afAuth.authState
     .takeWhile(() => this.alive)
     .subscribe(data => {
@@ -339,6 +338,7 @@ export class StackedLeadsourceComponent implements OnInit, OnDestroy {
         verticalAlign: 'top',
         y: 25,
         floating: true,
+        backgroundColor: 'white',
         borderColor: '#CCC',
         borderWidth: 1,
         shadow: false

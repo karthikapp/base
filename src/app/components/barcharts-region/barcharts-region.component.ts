@@ -289,7 +289,7 @@ getMonth(val){
         type: 'bar'
     },
     title: {
-        text: 'Top 10 Products by Revenue'
+        text: 'TOP 10 PRODUCTS BY REVENUE'
     },
 
     xAxis: xAxis,

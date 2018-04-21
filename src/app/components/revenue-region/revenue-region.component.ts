@@ -289,7 +289,7 @@ export class RevenueRegionComponent implements OnInit, OnDestroy {
         type: 'pie'
       },
       title: {
-        text: 'Revenue By Region'
+        text: 'REVENUE BY REGION'
       },
       tooltip: {
         pointFormat: '<b>{point.percentage:.1f}%</b>'

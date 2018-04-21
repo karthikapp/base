@@ -269,10 +269,6 @@ export class RevenuechartsCustomerComponent implements OnInit, OnDestroy {
 			series[0].data.push(i);
 		})
 		
-	
-
-// console.log("srp",series);
-
   	this.options = {
   	chart: {
         plotBackgroundColor: null,
@@ -281,7 +277,7 @@ export class RevenuechartsCustomerComponent implements OnInit, OnDestroy {
         type: 'pie'
     },
     title: {
-        text: 'Revenue By Customer'
+        text: 'REVENUE BY CUSTOMER'
     },
     tooltip: {
         pointFormat: '<b>{point.percentage:.1f}%</b>'
@@ -298,15 +294,7 @@ export class RevenuechartsCustomerComponent implements OnInit, OnDestroy {
     },
 
     series: series
-    //  [{
-    //     name: 'Brands',
-    //     colorByPoint: true,
-    //     data: [{
-    //         name: this.pieProdRevenue.name,
-    //         y: this.pieProdRevenue.y
-    //     }]
-    // }]
-   
+      
 }
 
   }

@@ -214,46 +214,43 @@ export class RevenueAssignedtoComponent implements OnInit, OnDestroy {
     }
 
     //Total Values of All Opportunities
-              this.opportunities_assgntoL.forEach( 
-              i => {
-                if(i.valueofdeal != undefined)
-                {
-                  this.oppoAssgnToTotalValues.push(i.valueofdeal)
-                }
-              })
-              this.oppoTAV = this.oppoAssgnToTotalValues.reduce((a, b) => a + b, 0);
+    this.opportunities_assgntoL.forEach( 
+      i => {
+        if(i.valueofdeal != undefined)
+        {
+          this.oppoAssgnToTotalValues.push(i.valueofdeal)
+        }
+      })
+    this.oppoTAV = this.oppoAssgnToTotalValues.reduce((a, b) => a + b, 0);
 
-              //Grouping by Assigned To
-              const groupedObj = this.opportunities_assgntoL.reduce((prev, cur)=> {
-                if(!prev[cur['assigned_to']]) {
-                  prev[cur['assigned_to']] = [cur];
-                } else {
-                  prev[cur['assigned_to']].push(cur);
-                }
-                return prev;
-              }, {});
-              this.dataAssgnTo = Object.keys(groupedObj).map(key => { return { key, value: groupedObj[key] }});
+    //Grouping by Assigned To
+    const groupedObj = this.opportunities_assgntoL.reduce((prev, cur)=> {
+      if(!prev[cur['assigned_to']]) {
+        prev[cur['assigned_to']] = [cur];
+      } else {
+        prev[cur['assigned_to']].push(cur);
+      }
+      return prev;
+    }, {});
+    this.dataAssgnTo = Object.keys(groupedObj).map(key => { return { key, value: groupedObj[key] }});
 
-              //Looping thro' and finding percentage for each Employees
-              this.dataAssgnTo.forEach( i => {
-                this.oppoAssgnToValues = [];
-                this.name = '';
-                i.value.forEach( j => {
-                  this.oppoAssgnToValues.push(j.valueofdeal)
-                  this.name = j.assignedto_name
-                })
-                this.oppoAV = 0;
-                this.valuePercent = null;
-                this.oppoAV = this.oppoAssgnToValues.reduce((a,b) => a+b, 0);
-                this.valuePercent = (this.oppoAV/ this.oppoTAV)*100;
-                this.pieAssgnToRevenue.push({name: this.name, y:this.valuePercent});
-              })
+    //Looping thro' and finding percentage for each Employees
+    this.dataAssgnTo.forEach( i => {
+      this.oppoAssgnToValues = [];
+      this.name = '';
+      i.value.forEach( j => {
+        this.oppoAssgnToValues.push(j.valueofdeal)
+        this.name = j.assignedto_name
+      })
+      this.oppoAV = 0;
+      this.valuePercent = null;
+      this.oppoAV = this.oppoAssgnToValues.reduce((a,b) => a+b, 0);
+      this.valuePercent = (this.oppoAV/ this.oppoTAV)*100;
+      this.pieAssgnToRevenue.push({name: this.name, y:this.valuePercent});
+    })
 
-              //Paasing the value to Pie Chart - Rev by Employees
-              this.dopieAssgnToCharts();
-
-
-
+    //Paasing the value to Pie Chart - Rev by Employees
+    this.dopieAssgnToCharts();
   }
 
   dopieAssgnToCharts(){
@@ -276,7 +273,7 @@ export class RevenueAssignedtoComponent implements OnInit, OnDestroy {
         type: 'pie'
       },
       title: {
-        text: 'Revenue By Employees'
+        text: 'REVENUE BY EMPLOYEES'
       },
       tooltip: {
         pointFormat: '<b>{point.percentage:.1f}%</b>'

@@ -290,7 +290,7 @@ options: Object;
         type: 'bar'
     },
     title: {
-        text: 'Top 10 Customers by Revenue'
+        text: 'TOP 10 CUSTOMERS BY REVENUE'
     },
 
     xAxis: xAxis,
