@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { FirebaseService } from "../../services/firebase.service";
 import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -12,6 +12,9 @@ import { AnalyticsService } from '../../services/analytics.service';
   styleUrls: ['./revenuecharts-customer.component.css']
 })
 export class RevenuechartsCustomerComponent implements OnInit, OnDestroy {
+
+     @Input()
+   yflag: any;
 
 	options: Object;
 
@@ -31,14 +34,27 @@ export class RevenuechartsCustomerComponent implements OnInit, OnDestroy {
      valuePercent: any;
     name: any;
 
-    yearSelect: any;
-    monthSelect: any;
-    currentYear: any;
-   year_list:any;
-   month_list: any;
+   yearSelect: any;
+  monthSelect: any;
+  quarterSelect: any;
+  fyearSelect: any;
+   
+  currentYear: any;
+  previousYear: any;
+
+  year_list:any;
+  month_list: any;
+  fyear_list: any;
+  quarter_list: any;
+
    oppocustlist:any;
+   oppocustfylist: any;
+
    opportunities_custL: any;
    monthName: any;
+
+     yrflag: boolean = false;
+  fyflag: boolean = false;
 
   constructor(private firebaseservice : FirebaseService, 
     private router: Router,private afAuth: AngularFireAuth,
@@ -47,6 +63,14 @@ export class RevenuechartsCustomerComponent implements OnInit, OnDestroy {
   ngOnInit() {
   	this.opportunities_cust = [];
   	this.monthName = '';
+
+        if(this.yflag == 1){
+      this.fyflag = true;
+    }
+    else if( this.yflag == 2)
+    {
+      this.yrflag = true;
+    }
 
   	this.afAuth.authState
     .takeWhile(() => this.alive)
@@ -78,9 +102,13 @@ export class RevenuechartsCustomerComponent implements OnInit, OnDestroy {
               || v.role.toUpperCase() == "PRESALES"
               || v.role.toUpperCase() == "MASTER")
             {
-              this.currentYear = (new Date()).getFullYear();
+               this.currentYear = (new Date()).getFullYear();
+             this.previousYear = this.currentYear - 1;
               this.yearSelect = this.currentYear;
               this.monthSelect = '';
+              this.quarterSelect = '';
+              this.fyearSelect = this.previousYear + '-' + this.currentYear;
+              console.log("fyear", this.fyearSelect)
 
               this.analyticsservice.getOpportunitiesforrv()
             	.takeWhile(() => this.alive)
@@ -89,9 +117,17 @@ export class RevenuechartsCustomerComponent implements OnInit, OnDestroy {
                   this.opportunities_cust = [];
                 
             			this.opportunities_cust = u;
-                  this.yearCustList();
+
+                     if(this.yrflag == false){
+                this.yearCustList();
                   this.monthCustList();
-                  this.selectCustList();
+                  this.selectCustYList();
+              } else if (this.fyflag == false){
+                this.fyearCustList();
+              this.quarterCustList();
+              this.selectCustFYList();
+            }
+                  
             		})
 
               	return this.ev = true;
@@ -178,7 +214,24 @@ export class RevenuechartsCustomerComponent implements OnInit, OnDestroy {
                       .filter((value, index, self) => { return self.indexOf(value) === index })
   }
 
-  selectCustList(){
+  fyearCustList(){
+    this.fyear_list = this.opportunities_cust
+      .map(item => item.financial_year)
+      .filter((value, index, self) => { return self.indexOf(value) === index })
+      console.log("fyear", this.fyear_list)
+
+  }
+
+  quarterCustList(){
+    this.oppocustfylist = [];
+    this.oppocustfylist = this.opportunities_cust.filter(i => { return i.financial_year == this.fyearSelect})
+    this.quarter_list = this.oppocustfylist
+                      .map(item => item.quarter)
+                      .filter((value, index, self) => { return self.indexOf(value) === index })
+                      console.log("fyear", this.quarter_list);
+  }
+
+  selectCustYList(){
 
     this.dataCust = [];
     this.pieCustRevenue = [];
@@ -244,15 +297,94 @@ export class RevenuechartsCustomerComponent implements OnInit, OnDestroy {
     this.dopieCustomerCharts();
   }
 
+selectCustFYList(){
+
+    this.dataCust = [];
+    this.pieCustRevenue = [];
+    this.opportunities_custL = [];
+    this.oppoCustTotalValues = [];
+    this.oppoCustValues = [];
+    this.dataCust = [];
+    this.pieCustRevenue = [];
+    this.oppoTCV = 0;
+    this.oppoCV = 0;
+
+    //console.log("up", this.monthSelect, this.yearSelect);
+
+    if(this.quarterSelect != ''){
+      this.opportunities_custL = this.opportunities_cust.filter( i => {
+        return i.financial_year == this.fyearSelect && 
+              i.quarter == this.quarterSelect
+      })
+    }
+    else if(this.quarterSelect == ''){
+      this.opportunities_custL = this.opportunities_cust.filter( i => {
+        return i.financial_year == this.fyearSelect 
+      })
+    }
+
+    //console.log("up", this.opportunities_custL);
+
+    this.opportunities_custL.forEach( i => {
+      if(i.valueofdeal != undefined){
+        this.oppoCustTotalValues.push(i.valueofdeal)
+      }
+    })
+
+    this.oppoTCV = this.oppoCustTotalValues.reduce((a, b) => a + b, 0);
+
+    const groupedObj = this.opportunities_custL.reduce((prev, cur)=> {
+      if(!prev[cur['company_id']]) {
+        prev[cur['company_id']] = [cur];
+      } else {
+        prev[cur['company_id']].push(cur);
+      }
+      //console.log("prev", prev);
+      return prev;
+    }, {});
+
+    this.dataCust = Object.keys(groupedObj).map(key => { return { key, value: groupedObj[key] }});
+    this.dataCust.forEach( i => {
+      this.oppoCustValues = [];
+      this.name = '';
+      i.value.forEach( j => {
+        this.oppoCustValues.push(j.valueofdeal)
+        this.name = j.companyname;
+        //console.log("j", this.oppoCustValues);
+      })
+      this.oppoCV = 0;
+      this.valuePercent = null
+      this.oppoCV = this.oppoCustValues.reduce((a,b) => a+b, 0);
+      this.valuePercent = (this.oppoCV/ this.oppoTCV)*100;
+      //console.log("PVTV", this.oppoCV, this.oppoTCV, this.valuePercent )
+      this.pieCustRevenue.push({name: this.name, y:this.valuePercent});
+    })
+
+    this.dopieCustomerCharts();
+  }
+
   onYearChange(year){
     this.yearSelect = year;
+    this.monthSelect = '';
     this.monthCustList();
-    this.selectCustList();
+    this.selectCustYList();
   }
 
   onMonthChange(month){
     this.monthSelect = month;
-    this.selectCustList();
+    this.selectCustYList();
+  }
+
+    onFYearChange(fyear){
+    this.fyearSelect = fyear;
+    this.quarterSelect = '';
+    this.quarterCustList();
+    this.selectCustFYList();
+  }
+
+  onQuarterChange(quarter){
+    this.quarterSelect = quarter;
+    this.selectCustFYList();
   }
 
   dopieCustomerCharts(){

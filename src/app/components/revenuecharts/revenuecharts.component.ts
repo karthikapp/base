@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input} from '@angular/core';
 import { FirebaseService } from "../../services/firebase.service";
 import { Router, ActivatedRoute } from '@angular/router';
 import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
@@ -12,6 +12,8 @@ import { AnalyticsService } from '../../services/analytics.service';
   styleUrls: ['./revenuecharts.component.css']
 })
 export class RevenuechartsComponent implements OnInit, OnDestroy {
+       @Input()
+   yflag: any;
 
 	options: Object;
 
@@ -26,10 +28,18 @@ export class RevenuechartsComponent implements OnInit, OnDestroy {
 
 yearSelect: any;
 
-    currentYear: any;
-   year_list:any;
+    fyearSelect: any;
+   
+  currentYear: any;
+  previousYear: any;
+
+  year_list:any;
+  fyear_list: any;
 
    opportunities_L: any;
+
+      yrflag: boolean = false;
+  fyflag: boolean = false;
 
 
  constructor(private firebaseservice : FirebaseService, 
@@ -38,6 +48,15 @@ yearSelect: any;
 
   ngOnInit() {
   	this.opportunities = [];
+
+     if(this.yflag == 1){
+      this.fyflag = true;
+    }
+    else if( this.yflag == 2)
+    {
+      this.yrflag = true;
+    }
+
 
   	this.afAuth.authState
     .takeWhile(() => this.alive)
@@ -74,6 +93,8 @@ yearSelect: any;
               this.rv_last_updt_dt = this.analyticsservice.rv_last_updt_dt;
               this.currentYear = (new Date()).getFullYear();
               this.yearSelect = this.currentYear;
+               this.previousYear = this.currentYear - 1;
+              this.fyearSelect = this.previousYear + '-' + this.currentYear;
 
             	this.analyticsservice.getOpportunitiesforrv()
             	.takeWhile(() => this.alive)
@@ -81,11 +102,21 @@ yearSelect: any;
             		u => {
                   this.opportunities = [];
                   this.opportunities = u;
-                  this.yearList();
-                 
-                 this.selectChartList();
 
-            		this.dolineCharts();
+                  if(this.yrflag == false){
+                this.yearList();
+                 this.selectChartYList();
+                
+              } else if (this.fyflag == false){
+                this.fyearList();
+        
+              this.selectChartFYList();
+            }
+      
+                 
+                 
+
+            		
             	})
 
    				
@@ -115,13 +146,31 @@ yearSelect: any;
 
     onYearChange(year){
     this.yearSelect = year;
-    this.selectChartList();
+    this.selectChartYList();
   }
 
-  selectChartList(){
+      onFYearChange(fyear){
+    this.fyearSelect = fyear;
+    console.log("ssssssss", this.fyearSelect);
+
+    this.selectChartFYList();
+  }
+
+  selectChartYList(){
+    this.opportunities_L = [];
     this.opportunities_L = this.opportunities.filter( i => {
         return i.year == this.yearSelect 
       })
+    this.dolineCharts();
+  }
+
+    selectChartFYList(){
+      this.opportunities_L = [];
+    this.opportunities_L = this.opportunities.filter( i => {
+        return i.financial_year == this.fyearSelect 
+      })
+    console.log("ssssssss", this.opportunities_L)
+    this.dolineCharts();
   }
 
    yearList(){
@@ -130,6 +179,13 @@ yearSelect: any;
       .filter((value, index, self) => { return self.indexOf(value) === index })
   }
 
+    fyearList(){
+    this.fyear_list = this.opportunities
+      .map(item => item.financial_year)
+      .filter((value, index, self) => { return self.indexOf(value) === index })
+      console.log("fyear", this.fyear_list)
+
+  }
 
 
   dolineCharts(){
@@ -156,7 +212,7 @@ yearSelect: any;
 		'data': []
 	}], cur = this.opportunities_L;
 
-	console.log("srpcur", cur);
+	console.log("ssssssss", cur);
 
 	// cur.forEach( i =>
 	// 	{
@@ -222,7 +278,7 @@ yearSelect: any;
 
 	})
 
-console.log("srp",series);
+console.log("ssssssss",series);
 
 
 

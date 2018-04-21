@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { FirebaseService } from "../../services/firebase.service";
 import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -13,6 +13,8 @@ import { AnalyticsService } from '../../services/analytics.service';
 })
 export class RevenueAssignedtoComponent implements OnInit, OnDestroy {
  
+   @Input()
+   yflag: any;
   //Variables
   //Common for All for accessing Users
   uid: string;
@@ -32,14 +34,27 @@ export class RevenueAssignedtoComponent implements OnInit, OnDestroy {
   name: any;
 
   yearSelect: any;
-    monthSelect: any;
-    currentYear: any;
-   year_list:any;
-   month_list: any;
-   oppoasgnTolist:any;
-   opportunities_assgntoL: any;
+  monthSelect: any;
+  quarterSelect: any;
+  fyearSelect: any;
+   
+  currentYear: any;
+  previousYear: any;
 
-   monthName: any;
+  year_list:any;
+  month_list: any;
+  fyear_list: any;
+  quarter_list: any;
+
+  oppoasgnTolist:any;
+  oppoasgnTofylist:any;
+
+  opportunities_assgntoL: any;
+
+  yrflag: boolean = false;
+  fyflag: boolean = false;
+
+  monthName: any;
 
   constructor(private firebaseservice : FirebaseService, 
     private router: Router,private afAuth: AngularFireAuth,
@@ -49,7 +64,14 @@ export class RevenueAssignedtoComponent implements OnInit, OnDestroy {
     //Initializing the objects
   	this.opportunities_assgnto = [];
     this.monthName = '';
-  	
+
+    if(this.yflag == 1){
+      this.fyflag = true;
+    }
+    else if( this.yflag == 2)
+    {
+      this.yrflag = true;
+    }
 
     this.afAuth.authState
     .takeWhile(() => this.alive)
@@ -82,8 +104,12 @@ export class RevenueAssignedtoComponent implements OnInit, OnDestroy {
             || v.role.toUpperCase() == "MASTER")
           {
              this.currentYear = (new Date()).getFullYear();
+             this.previousYear = this.currentYear - 1;
               this.yearSelect = this.currentYear;
               this.monthSelect = '';
+              this.quarterSelect = '';
+              this.fyearSelect = this.previousYear + '-' + this.currentYear;
+              console.log("fyear", this.fyearSelect)
               
             //Fetching Values from Analytics
             this.analyticsservice.getOpportunitiesforrv()
@@ -93,11 +119,17 @@ export class RevenueAssignedtoComponent implements OnInit, OnDestroy {
               this.opportunities_assgnto = [];
              
               this.opportunities_assgnto = u;
-              this.yearAssgntoList();
+
+
+              if(this.yrflag == false){
+                this.yearAssgntoList();
               this.monthAssgntoList();
-
-              this.selectAssgnToList();
-
+              this.selectAssgnToYList();
+              } else if (this.fyflag == false){
+                this.fyearAssgntoList();
+              this.quarterAssgntoList();
+              this.selectAssgnToFYList();
+            }
               
             })
             return this.ev = true;
@@ -135,15 +167,46 @@ export class RevenueAssignedtoComponent implements OnInit, OnDestroy {
                       .filter((value, index, self) => { return self.indexOf(value) === index })
   }
 
+  fyearAssgntoList(){
+    this.fyear_list = this.opportunities_assgnto
+      .map(item => item.financial_year)
+      .filter((value, index, self) => { return self.indexOf(value) === index })
+      console.log("fyear", this.fyear_list)
+
+  }
+
+  quarterAssgntoList(){
+    this.oppoasgnTofylist = [];
+    this.oppoasgnTofylist = this.opportunities_assgnto.filter(i => { return i.financial_year == this.fyearSelect})
+    this.quarter_list = this.oppoasgnTofylist
+                      .map(item => item.quarter)
+                      .filter((value, index, self) => { return self.indexOf(value) === index })
+                      console.log("fyear", this.quarter_list);
+  }
+
   onYearChange(year){
     this.yearSelect = year;
+    this.monthSelect = '';
     this.monthAssgntoList();
-    this.selectAssgnToList();
+    this.selectAssgnToYList();
   }
 
   onMonthChange(month){
     this.monthSelect = month;
-    this.selectAssgnToList();
+    console.log("month", month);
+    this.selectAssgnToYList();
+  }
+
+  onFYearChange(fyear){
+    this.fyearSelect = fyear;
+    this.quarterSelect = '';
+    this.quarterAssgntoList();
+    this.selectAssgnToFYList();
+  }
+
+  onQuarterChange(quarter){
+    this.quarterSelect = quarter;
+    this.selectAssgnToFYList();
   }
 
   getMonth(val){
@@ -192,7 +255,7 @@ export class RevenueAssignedtoComponent implements OnInit, OnDestroy {
 
   }
 
-  selectAssgnToList(){
+  selectAssgnToFYList(){
     this.oppoAssgnToTotalValues = [];
     this.oppoAssgnToValues = [];
     this.dataAssgnTo = [];
@@ -201,6 +264,71 @@ export class RevenueAssignedtoComponent implements OnInit, OnDestroy {
     this.oppoAV = 0;
     this.opportunities_assgntoL = [];
 
+    console.log("ssss", this.monthSelect, this.opportunities_assgntoL)
+
+    if(this.quarterSelect != ''){
+      this.opportunities_assgntoL = this.opportunities_assgnto.filter( i => {
+        return i.financial_year == this.fyearSelect && 
+              i.quarter == this.quarterSelect
+      })
+    }
+    else if(this.quarterSelect == ''){
+      this.opportunities_assgntoL = this.opportunities_assgnto.filter( i => {
+        return i.financial_year == this.fyearSelect
+      })
+    }
+
+    console.log("sssss", this.opportunities_assgntoL);
+    //Total Values of All Opportunities
+    this.opportunities_assgntoL.forEach( 
+      i => {
+        if(i.valueofdeal != undefined)
+        {
+          this.oppoAssgnToTotalValues.push(i.valueofdeal)
+        }
+      })
+    this.oppoTAV = this.oppoAssgnToTotalValues.reduce((a, b) => a + b, 0);
+
+    //Grouping by Assigned To
+    const groupedObj = this.opportunities_assgntoL.reduce((prev, cur)=> {
+      if(!prev[cur['assigned_to']]) {
+        prev[cur['assigned_to']] = [cur];
+      } else {
+        prev[cur['assigned_to']].push(cur);
+      }
+      return prev;
+    }, {});
+    this.dataAssgnTo = Object.keys(groupedObj).map(key => { return { key, value: groupedObj[key] }});
+
+    //Looping thro' and finding percentage for each Employees
+    this.dataAssgnTo.forEach( i => {
+      this.oppoAssgnToValues = [];
+      this.name = '';
+      i.value.forEach( j => {
+        this.oppoAssgnToValues.push(j.valueofdeal)
+        this.name = j.assignedto_name
+      })
+      this.oppoAV = 0;
+      this.valuePercent = null;
+      this.oppoAV = this.oppoAssgnToValues.reduce((a,b) => a+b, 0);
+      this.valuePercent = (this.oppoAV/ this.oppoTAV)*100;
+      this.pieAssgnToRevenue.push({name: this.name, y:this.valuePercent});
+    })
+
+    //Paasing the value to Pie Chart - Rev by Employees
+    this.dopieAssgnToCharts();
+  }
+
+  selectAssgnToYList(){
+    this.oppoAssgnToTotalValues = [];
+    this.oppoAssgnToValues = [];
+    this.dataAssgnTo = [];
+    this.pieAssgnToRevenue = [];
+    this.oppoTAV = 0;
+    this.oppoAV = 0;
+    this.opportunities_assgntoL = [];
+
+    
     if(this.monthSelect != ''){
       this.opportunities_assgntoL = this.opportunities_assgnto.filter( i => {
         return i.year == this.yearSelect &&
@@ -212,6 +340,11 @@ export class RevenueAssignedtoComponent implements OnInit, OnDestroy {
         return i.year == this.yearSelect
       })
     }
+
+    console.log("ssss", this.monthSelect, this.opportunities_assgntoL)
+
+   
+
 
     //Total Values of All Opportunities
     this.opportunities_assgntoL.forEach( 

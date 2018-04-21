@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { FirebaseService } from "../../services/firebase.service";
 import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -13,6 +13,8 @@ import { AnalyticsService } from '../../services/analytics.service';
   styleUrls: ['./barcharts-region.component.css']
 })
 export class BarchartsRegionComponent implements OnInit {
+     @Input()
+   yflag: any;
 
 	options: Object;
 
@@ -36,13 +38,26 @@ export class BarchartsRegionComponent implements OnInit {
      name: any;
 
      yearSelect: any;
-    monthSelect: any;
-    currentYear: any;
-   year_list:any;
-   month_list: any;
+  monthSelect: any;
+  quarterSelect: any;
+  fyearSelect: any;
+   
+  currentYear: any;
+  previousYear: any;
+
+  year_list:any;
+  month_list: any;
+  fyear_list: any;
+  quarter_list: any;
+
    oppobreglist:any;
+   oppobregfylist: any;
+
    opportunities_proL: any;
    monthName: any;
+
+     yrflag: boolean = false;
+  fyflag: boolean = false;
    	
 
   constructor(private firebaseservice : FirebaseService, 
@@ -53,6 +68,14 @@ export class BarchartsRegionComponent implements OnInit {
 
     this.opportunities_pro = [];
     this.monthName = '';
+
+  if(this.yflag == 1){
+      this.fyflag = true;
+    }
+    else if( this.yflag == 2)
+    {
+      this.yrflag = true;
+    }
 
   	this.afAuth.authState
     .takeWhile(() => this.alive)
@@ -85,9 +108,13 @@ export class BarchartsRegionComponent implements OnInit {
               || v.role.toUpperCase() == "MASTER")
             {
               
-              this.currentYear = (new Date()).getFullYear();
+               this.currentYear = (new Date()).getFullYear();
+             this.previousYear = this.currentYear - 1;
               this.yearSelect = this.currentYear;
               this.monthSelect = '';
+              this.quarterSelect = '';
+              this.fyearSelect = this.previousYear + '-' + this.currentYear;
+              console.log("fyear", this.fyearSelect)
               
 
              this.analyticsservice.getOpportunitiesforrv()
@@ -96,9 +123,18 @@ export class BarchartsRegionComponent implements OnInit {
                 u => {
                     this.opportunities_pro = [];
                     this.opportunities_pro = u;
-                    this.yearProList();
+
+                     if(this.yrflag == false){
+              this.yearProList();
                     this.monthProList();
-                    this.selectProList();
+                    this.selectProYList();
+              } else if (this.fyflag == false){
+                this.fyearProList();
+              this.quarterProList();
+              this.selectProFYList();
+            }
+
+                    
                     
                 })
  				
@@ -184,18 +220,116 @@ getMonth(val){
                       .filter((value, index, self) => { return self.indexOf(value) === index })
   }
 
+  fyearProList(){
+    this.fyear_list = this.opportunities_pro
+      .map(item => item.financial_year)
+      .filter((value, index, self) => { return self.indexOf(value) === index })
+      console.log("fyear", this.fyear_list)
+
+  }
+
+  quarterProList(){
+    this.oppobregfylist = [];
+    this.oppobregfylist = this.opportunities_pro.filter(i => { return i.financial_year == this.fyearSelect})
+    this.quarter_list = this.oppobregfylist
+                      .map(item => item.quarter)
+                      .filter((value, index, self) => { return self.indexOf(value) === index })
+                      console.log("fyear", this.quarter_list);
+  }
+
+
+
   onYearChange(year){
     this.yearSelect = year;
+    this.monthSelect = '';
     this.monthProList();
-    this.selectProList();
+    this.selectProYList();
   }
 
   onMonthChange(month){
     this.monthSelect = month;
-    this.selectProList();
+    this.selectProYList();
   }
 
-  selectProList(){
+   onFYearChange(fyear){
+    this.fyearSelect = fyear;
+    this.quarterSelect = '';
+    this.quarterProList();
+    this.selectProFYList();
+  }
+
+  onQuarterChange(quarter){
+    this.quarterSelect = quarter;
+    this.selectProFYList();
+  }
+
+  selectProFYList(){
+    this.oppoProTotalValues = [];
+    this.oppoProValues = [];
+    this.dataPro = [];
+    this.barProdRevenue = [];
+    this.oppoTPV = 0;
+    this.oppoPRV = 0;
+    this.opportunities_proL = [];
+
+    if(this.monthSelect != ''){
+      this.opportunities_proL = this.opportunities_pro.filter( i => {
+        return i.financial_year == this.fyearSelect && 
+              i.quarter == this.quarterSelect
+      })
+    }
+    else if(this.monthSelect == ''){
+      this.opportunities_proL = this.opportunities_pro.filter( i => {
+        return i.financial_year == this.fyearSelect 
+      })
+    }
+
+    this.opportunities_proL.forEach( i => {
+      if(i.valueofdeal != undefined){
+        this.oppoProTotalValues.push(i.valueofdeal)
+      }
+    })
+    this.oppoTPV = this.oppoProTotalValues.reduce((a, b) => a + b, 0);
+
+    const groupedObj = this.opportunities_proL.reduce((prev, cur)=> {
+      if(!prev[cur['product']]) {
+        prev[cur['product']] = [cur];
+      } else {
+        prev[cur['product']].push(cur);
+      }
+      console.log("prev", prev);
+      return prev;
+    }, {});
+
+
+
+    this.dataPro = Object.keys(groupedObj).map(key => { return { key, value: groupedObj[key] }});
+    this.dataPro.forEach( i => {
+      this.oppoProValues = [];
+      this.name = '';
+      i.value.forEach( j => {
+        this.oppoProValues.push(j.valueofdeal)
+        this.name = j.productname
+        console.log("j", this.oppoProValues);
+      })
+      this.oppoPRV = 0;
+      this.oppoPRV = this.oppoProValues.reduce((a,b) => a+b, 0);
+      this.barProdRevenue.push({name: this.name, y:this.oppoPRV});
+    })
+
+    console.log("barPro", this.barProdRevenue);
+    this.barProdRevenue.sort((a,b) => b.y - a.y);
+
+    this.barProdRevenue.splice(10);
+
+    console.log("barPro", this.barProdRevenue);
+
+
+
+    this.dobarProductCharts();
+  }
+
+  selectProYList(){
     this.oppoProTotalValues = [];
     this.oppoProValues = [];
     this.dataPro = [];

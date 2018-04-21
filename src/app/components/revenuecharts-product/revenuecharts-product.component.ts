@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { FirebaseService } from "../../services/firebase.service";
 import { Router, ActivatedRoute } from '@angular/router';
 import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
@@ -13,6 +13,9 @@ import { AnalyticsService } from '../../services/analytics.service';
   styleUrls: ['./revenuecharts-product.component.css']
 })
 export class RevenuechartsProductComponent implements OnInit, OnDestroy {
+     @Input()
+   yflag: any;
+
 	options: Object;
 
   	uid: string;
@@ -31,15 +34,27 @@ export class RevenuechartsProductComponent implements OnInit, OnDestroy {
 
      valuePercent:any;
 
-     yearSelect: any;
-    monthSelect: any;
-    currentYear: any;
-   year_list:any;
-   month_list: any;
+      yearSelect: any;
+  monthSelect: any;
+  quarterSelect: any;
+  fyearSelect: any;
+   
+  currentYear: any;
+  previousYear: any;
+
+  year_list:any;
+  month_list: any;
+  fyear_list: any;
+  quarter_list: any;
+
    oppolist:any;
+   oppofylist: any;
+
    opportunities_L: any;
    monthName: any;
 
+  yrflag: boolean = false;
+  fyflag: boolean = false;
 
   constructor(private firebaseservice : FirebaseService, 
     private router: Router, private afAuth: AngularFireAuth,
@@ -49,6 +64,13 @@ export class RevenuechartsProductComponent implements OnInit, OnDestroy {
   	this.opportunities = [];
     this.monthName = '';  	
 
+  if(this.yflag == 1){
+      this.fyflag = true;
+    }
+    else if( this.yflag == 2)
+    {
+      this.yrflag = true;
+    }
 
   	this.afAuth.authState
     .takeWhile(() => this.alive)
@@ -80,9 +102,13 @@ export class RevenuechartsProductComponent implements OnInit, OnDestroy {
               || v.role.toUpperCase() == "PRESALES"
               || v.role.toUpperCase() == "MASTER")
             {
-               this.currentYear = (new Date()).getFullYear();
+                this.currentYear = (new Date()).getFullYear();
+             this.previousYear = this.currentYear - 1;
               this.yearSelect = this.currentYear;
               this.monthSelect = '';
+              this.quarterSelect = '';
+              this.fyearSelect = this.previousYear + '-' + this.currentYear;
+              console.log("fyear", this.fyearSelect)
 
            this.analyticsservice.getOpportunitiesforrv()
             	.takeWhile(() => this.alive)
@@ -93,9 +119,16 @@ export class RevenuechartsProductComponent implements OnInit, OnDestroy {
                   
             				this.opportunities = u;
 
-                    this.yearBrandList();
+               if(this.yrflag == false){
+                 this.yearBrandList();
                     this.monthBrandList();
-                    this.selectBrandList();
+                    this.selectBrandYList();
+              } else if (this.fyflag == false){
+                this.fyearBrandList();
+              this.quarterBrandList();
+              this.selectBrandFYList();
+            }
+                   
             				
             		})
 
@@ -184,19 +217,111 @@ export class RevenuechartsProductComponent implements OnInit, OnDestroy {
                       .filter((value, index, self) => { return self.indexOf(value) === index })
   }
 
+  fyearBrandList(){
+    this.fyear_list = this.opportunities
+      .map(item => item.financial_year)
+      .filter((value, index, self) => { return self.indexOf(value) === index })
+      console.log("fyear", this.fyear_list)
+
+  }
+
+  quarterBrandList(){
+    this.oppofylist = [];
+    this.oppofylist = this.opportunities.filter(i => { return i.financial_year == this.fyearSelect})
+    this.quarter_list = this.oppofylist
+                      .map(item => item.quarter)
+                      .filter((value, index, self) => { return self.indexOf(value) === index })
+                      console.log("fyear", this.quarter_list);
+  }
+
   onYearChange(year){
     this.yearSelect = year;
+    this.monthSelect = '';
     this.monthBrandList();
-    this.selectBrandList();
+    this.selectBrandYList();
   }
 
   onMonthChange(month){
     this.monthSelect = month;
-    this.selectBrandList();
+    this.selectBrandYList();
   }
 
+   onFYearChange(fyear){
+    this.fyearSelect = fyear;
+    this.quarterSelect = '';
+    this.quarterBrandList();
+    this.selectBrandFYList();
+  }
 
-  selectBrandList(){
+  onQuarterChange(quarter){
+    this.quarterSelect = quarter;
+    this.selectBrandFYList();
+  }
+
+  selectBrandFYList(){
+    this.dataProd = [];
+    this.pieProdRevenue = [];
+
+    this.oppoTotalValues = [];
+    this.oppoProdValues = [];
+    this.dataProd = [];
+    this.pieProdRevenue = [];
+    this.oppoTV = 0;
+    this.oppoPV = 0;
+    this.opportunities_L = [];
+
+    if(this.quarterSelect != ''){
+      this.opportunities_L = this.opportunities.filter( i => {
+        return i.financial_year == this.fyearSelect && 
+              i.quarter == this.quarterSelect
+      })
+    }
+    else if(this.quarterSelect == ''){
+      this.opportunities_L = this.opportunities.filter( i => {
+        return i.financial_year == this.fyearSelect 
+      })
+    }
+
+    this.opportunities_L.forEach( i => {
+                      if(i.valueofdeal != undefined){
+                        this.oppoTotalValues.push(i.valueofdeal)
+                      }
+                    })
+                    this.oppoTV = this.oppoTotalValues.reduce((a, b) => a + b, 0);
+
+                    const groupedObj = this.opportunities_L.reduce((prev, cur)=> {
+                      if(!prev[cur['brand']]) {
+                        prev[cur['brand']] = [cur];
+                      } else {
+                        prev[cur['brand']].push(cur);
+                      }
+                    console.log("prev", prev);
+                    return prev;
+                  }, {});
+
+
+
+                  this.dataProd = Object.keys(groupedObj).map(key => { return { key, value: groupedObj[key] }});
+                  this.dataProd.forEach( i => {
+                    this.oppoProdValues = [];
+              i.value.forEach( j => {
+              this.oppoProdValues.push(j.valueofdeal)
+              console.log("j", this.oppoProdValues);
+              })
+              this.oppoPV = 0;
+              this.valuePercent = null;
+              this.oppoPV = this.oppoProdValues.reduce((a,b) => a+b, 0);
+              this.valuePercent = (this.oppoPV/ this.oppoTV)*100;
+              console.log("PVTV", this.oppoPV, this.oppoTV, this.valuePercent )
+              this.pieProdRevenue.push({name: i.key, y:this.valuePercent});
+            })
+            console.log("dp", this.pieProdRevenue);
+                  this.dopieBrandCharts();
+
+   }
+
+
+  selectBrandYList(){
     this.dataProd = [];
     this.pieProdRevenue = [];
 

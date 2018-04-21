@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { FirebaseService } from "../../services/firebase.service";
 import { Router, ActivatedRoute } from '@angular/router';
 import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
@@ -12,6 +12,10 @@ import { AnalyticsService } from '../../services/analytics.service';
   styleUrls: ['./stacked-exstcust.component.css']
 })
 export class StackedExstcustComponent implements OnInit, OnDestroy {
+
+
+       @Input()
+   yflag: any;
 
 	options: Object;
 
@@ -36,9 +40,22 @@ export class StackedExstcustComponent implements OnInit, OnDestroy {
    dataexcustvalue: any;
    datanoexcustvalue: any;
 
+
+
    yearSelect: any;
-   currentYear: any;
-   year_list:any;
+
+    fyearSelect: any;
+   
+  currentYear: any;
+  previousYear: any;
+
+  year_list:any;
+  fyear_list: any;
+
+
+
+      yrflag: boolean = false;
+  fyflag: boolean = false;
 
   constructor(private firebaseservice : FirebaseService, 
     private router: Router, private afAuth: AngularFireAuth,
@@ -46,6 +63,15 @@ export class StackedExstcustComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
   	this.opportunities_stkexc = [];
+
+         if(this.yflag == 1){
+      this.fyflag = true;
+    }
+    else if( this.yflag == 2)
+    {
+      this.yrflag = true;
+    }
+
     
   	this.afAuth.authState
     .takeWhile(() => this.alive)
@@ -82,6 +108,8 @@ export class StackedExstcustComponent implements OnInit, OnDestroy {
 
               this.currentYear = (new Date()).getFullYear();
               this.yearSelect = this.currentYear;
+               this.previousYear = this.currentYear - 1;
+              this.fyearSelect = this.previousYear + '-' + this.currentYear;
 
             	this.analyticsservice.getOpportunitiesforrv()
             	.takeWhile(() => this.alive)
@@ -90,8 +118,17 @@ export class StackedExstcustComponent implements OnInit, OnDestroy {
                   this.opportunities_stkexc = [];
                   this.opportunities_stkexc = u;
 
-                  	this.yearList();
-              		this.onSelectYear();
+                   if(this.yrflag == false){
+                this.yearList();
+                  this.onSelectYear();
+                
+              } else if (this.fyflag == false){
+                this.fyearList();
+        
+              this.onSelectFY();
+            }
+
+                  	
 
             	})
               return this.ev = true;
@@ -122,6 +159,87 @@ export class StackedExstcustComponent implements OnInit, OnDestroy {
       .map(item => item.year)
       .filter((value, index, self) => { return self.indexOf(value) === index })
   }
+
+      fyearList(){
+    this.fyear_list = this.opportunities_stkexc
+      .map(item => item.financial_year)
+      .filter((value, index, self) => { return self.indexOf(value) === index })
+      console.log("fyear", this.fyear_list)
+
+  }
+
+  onSelectFY(){
+    this.opportunities_stkexcL = [];
+    this.dataexc = [];
+    this.opportunities_exc = [];
+    this.datastckexc = [];
+    this.dataFinalList = [];
+
+    this.opportunities_stkexcL = this.opportunities_stkexc.filter( i => {
+      return i.financial_year == this.fyearSelect;
+    })
+
+    this.opportunities_stkexcL.forEach( i=> {
+      var lsmonth = i.existing_customer + ""+ i.month;
+      this.opportunities_exc.push({pkey:lsmonth, existing_customer: i.existing_customer, 
+        month: i.month,valueofdeal: i.valueofdeal})  
+      console.log("up", this.opportunities_exc);  
+    })
+    
+    const groupedObj = this.opportunities_exc.reduce((prev, cur)=> {
+      if(!prev[cur['pkey']]) {
+        prev[cur['pkey']] = [cur];
+      } else {
+        prev[cur['pkey']].push(cur);
+      }
+      console.log("prev", prev);
+      return prev;
+    }, {});
+
+    this.datastckexc = Object.keys(groupedObj).map(key => { return { key, value: groupedObj[key]}});
+
+    console.log("up", this.datastckexc);
+
+    this.datastckexc.forEach ( i => {
+      this.datamonth = null;
+      this.dataexcust = '';
+      this.dataexc = [];
+
+      i.value.forEach( j =>
+      {
+        this.dataexc.push(j.valueofdeal);
+        this.datamonth = j.month;
+        this.dataexcust = j.existing_customer;
+      })
+
+      var dataValues = this.dataexc.reduce((a,b) => a+b ,0);
+
+      this.dataFinalList.push({ymr: i.key, existing_customer: this.dataexcust,
+        month: this.datamonth, monthlyRev: dataValues })
+      console.log("up", this.dataFinalList);
+    })
+
+    this.excustList = this.dataFinalList.filter(i => {return i.existing_customer == true})
+
+    console.log("chnList", this.excustList);
+    this.dataexcustvalue = ['','','','','','','','','','','','']
+
+    for(let i=0; i< this.excustList.length; i++){
+      this.dataexcustvalue.splice(this.excustList[i].month,1,this.excustList[i].monthlyRev);
+    }
+
+    this.noexcustList = this.dataFinalList.filter(i => {return i.existing_customer == false})
+
+    this.datanoexcustvalue = ['','','','','','','','','','','','']
+
+    for(let i=0; i< this.noexcustList.length; i++){
+      this.datanoexcustvalue.splice(this.noexcustList[i].month,1,this.noexcustList[i].monthlyRev);
+    }
+
+    this.dostackedExCustcharts();
+
+  }
+
 
   onSelectYear(){
     this.opportunities_stkexcL = [];
@@ -200,14 +318,20 @@ export class StackedExstcustComponent implements OnInit, OnDestroy {
     this.onSelectYear();
   }
 
+        onFYearChange(fyear){
+    this.fyearSelect = fyear;
+
+    this.onSelectFY();
+  }
+
   dostackedExCustcharts(){
 
 	var series =  [{
-		'name': 'Existing Customer',
+		'name': 'EXISTING CUSTOMER',
 		'data': []
 	},
 	{
-		'name': 'No Existing Customer',
+		'name': 'NEW CUSTOMER',
 		'data': []
 	}], excust = this.dataexcustvalue,
 	noexcust = this.datanoexcustvalue;
@@ -225,7 +349,7 @@ export class StackedExstcustComponent implements OnInit, OnDestroy {
         type: 'column'
     },
     title: {
-        text: 'REVENUE BY EXISTING CUSTOMER OR NOT'
+        text: 'REVENUE BY EXISTING/NEW CUSTOMER'
     },
     xAxis: {
         categories:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { FirebaseService } from "../../services/firebase.service";
 import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -12,6 +12,9 @@ import { AnalyticsService } from '../../services/analytics.service';
   styleUrls: ['./barchartscust-region.component.css']
 })
 export class BarchartscustRegionComponent implements OnInit, OnDestroy {
+
+     @Input()
+   yflag: any;
 
 options: Object;
 
@@ -31,14 +34,27 @@ options: Object;
      valuePercent: any;
     name: any;
 
-    yearSelect: any;
-    monthSelect: any;
-    currentYear: any;
-   year_list:any;
-   month_list: any;
+     yearSelect: any;
+  monthSelect: any;
+  quarterSelect: any;
+  fyearSelect: any;
+   
+  currentYear: any;
+  previousYear: any;
+
+  year_list:any;
+  month_list: any;
+  fyear_list: any;
+  quarter_list: any;
+
    oppobcustlist:any;
+   oppobcustfylist: any;
+
    opportunities_custL: any;
    monthName:any;
+
+     yrflag: boolean = false;
+  fyflag: boolean = false;
 
     
   constructor(private firebaseservice : FirebaseService, 
@@ -49,6 +65,14 @@ options: Object;
     this.opportunities_cust = [];
     
     this.monthName = '';
+
+      if(this.yflag == 1){
+      this.fyflag = true;
+    }
+    else if( this.yflag == 2)
+    {
+      this.yrflag = true;
+    }
 
     this.afAuth.authState
     .takeWhile(() => this.alive)
@@ -81,9 +105,13 @@ options: Object;
               || v.role.toUpperCase() == "MASTER")
             {
 
-              this.currentYear = (new Date()).getFullYear();
+               this.currentYear = (new Date()).getFullYear();
+             this.previousYear = this.currentYear - 1;
               this.yearSelect = this.currentYear;
               this.monthSelect = '';
+              this.quarterSelect = '';
+              this.fyearSelect = this.previousYear + '-' + this.currentYear;
+              console.log("fyear", this.fyearSelect)
 
                this.analyticsservice.getOpportunitiesforrv()
               .takeWhile(() => this.alive)
@@ -92,9 +120,17 @@ options: Object;
                   this.opportunities_cust = [];
                     this.opportunities_cust = u;
 
-                    this.yearbCustList();
+                     if(this.yrflag == false){
+                this.yearbCustList();
                     this.monthbCustList();
-                    this.selectbCustList();
+                    this.selectbCustYList();
+              } else if (this.fyflag == false){
+                this.fyearCustList();
+              this.quarterCustList();
+              this.selectbCustFYList();
+            }
+
+                   
 
                     
                 })
@@ -136,6 +172,23 @@ options: Object;
     this.month_list = this.oppobcustlist
                       .map(item => item.month)
                       .filter((value, index, self) => { return self.indexOf(value) === index })
+  }
+
+  fyearCustList(){
+    this.fyear_list = this.opportunities_cust
+      .map(item => item.financial_year)
+      .filter((value, index, self) => { return self.indexOf(value) === index })
+      console.log("fyear", this.fyear_list)
+
+  }
+
+  quarterCustList(){
+    this.oppobcustfylist = [];
+    this.oppobcustfylist = this.opportunities_cust.filter(i => { return i.financial_year == this.fyearSelect})
+    this.quarter_list = this.oppobcustfylist
+                      .map(item => item.quarter)
+                      .filter((value, index, self) => { return self.indexOf(value) === index })
+                      console.log("fyear", this.quarter_list);
   }
 
   getMonth(val){
@@ -186,16 +239,95 @@ options: Object;
 
   onYearChange(year){
     this.yearSelect = year;
+    this.monthSelect = '';
     this.monthbCustList();
-    this.selectbCustList();
+    this.selectbCustYList();
   }
 
   onMonthChange(month){
     this.monthSelect = month;
-    this.selectbCustList();
+    this.selectbCustYList();
   }
 
-  selectbCustList(){
+   onFYearChange(fyear){
+    this.fyearSelect = fyear;
+    this.quarterSelect = '';
+    this.quarterCustList();
+    this.selectbCustFYList();
+  }
+
+  onQuarterChange(quarter){
+    this.quarterSelect = quarter;
+    this.selectbCustFYList();
+  }
+
+  selectbCustFYList(){
+    this.oppoCustTotalValues = [];
+    this.oppoCustValues = [];
+    this.dataCust = [];
+    this.barCustRevenue = [];
+    this.oppoTCV = 0;
+    this.oppoCV = 0;
+    this.opportunities_custL = [];
+
+    if(this.monthSelect != ''){
+      this.opportunities_custL = this.opportunities_cust.filter( i => {
+       return i.financial_year == this.fyearSelect && 
+              i.quarter == this.quarterSelect
+      })
+    }
+    else if(this.monthSelect == ''){
+      this.opportunities_custL = this.opportunities_cust.filter( i => {
+       return i.financial_year == this.fyearSelect 
+      })
+    }
+
+
+    this.opportunities_custL.forEach( i => {
+                      if(i.valueofdeal != undefined){
+                        this.oppoCustTotalValues.push(i.valueofdeal)
+                      }
+                    })
+                    this.oppoTCV = this.oppoCustTotalValues.reduce((a, b) => a + b, 0);
+
+                    const groupedObj = this.opportunities_custL.reduce((prev, cur)=> {
+                      if(!prev[cur['company_id']]) {
+                        prev[cur['company_id']] = [cur];
+                      } else {
+                        prev[cur['company_id']].push(cur);
+                      }
+                    console.log("prev", prev);
+                    return prev;
+                  }, {});
+
+
+
+                  this.dataCust = Object.keys(groupedObj).map(key => { return { key, value: groupedObj[key] }});
+                  this.dataCust.forEach( i => {
+                    this.oppoCustValues = [];
+                    this.name = '';
+              i.value.forEach( j => {
+
+                  this.oppoCustValues.push(j.valueofdeal);
+                  this.name = j.companyname;
+                
+              console.log("j", this.oppoCustValues);
+              })
+              this.oppoCV = 0;
+              this.valuePercent = null
+              this.oppoCV = this.oppoCustValues.reduce((a,b) => a+b, 0);
+              this.barCustRevenue.push({name: this.name, y:this.oppoCV});
+            })
+                  this.barCustRevenue.sort((a,b) => b.y - a.y);
+
+                 this.barCustRevenue.splice(10);
+
+              console.log("barPro", this.barCustRevenue);
+                
+                this.dobarCustomerCharts();
+  }
+
+  selectbCustYList(){
     this.oppoCustTotalValues = [];
     this.oppoCustValues = [];
     this.dataCust = [];

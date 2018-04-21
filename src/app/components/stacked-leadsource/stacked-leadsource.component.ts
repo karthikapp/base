@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy , Input} from '@angular/core';
 import { FirebaseService } from "../../services/firebase.service";
 import { Router, ActivatedRoute } from '@angular/router';
 import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
@@ -12,6 +12,10 @@ import { AnalyticsService } from '../../services/analytics.service';
   styleUrls: ['./stacked-leadsource.component.css']
 })
 export class StackedLeadsourceComponent implements OnInit, OnDestroy {
+
+
+       @Input()
+   yflag: any;
 
   options: Object;
 
@@ -45,9 +49,21 @@ export class StackedLeadsourceComponent implements OnInit, OnDestroy {
    dataoutbndvalue: any;
    dataonsitevalue: any;
 
+
    yearSelect: any;
-   currentYear: any;
-   year_list:any;
+
+    fyearSelect: any;
+   
+  currentYear: any;
+  previousYear: any;
+
+  year_list:any;
+  fyear_list: any;
+
+
+
+      yrflag: boolean = false;
+  fyflag: boolean = false;
 
   constructor(private firebaseservice : FirebaseService, 
     private router: Router, private afAuth: AngularFireAuth,
@@ -55,6 +71,15 @@ export class StackedLeadsourceComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
   	this.opportunities_stkls = [];
+
+         if(this.yflag == 1){
+      this.fyflag = true;
+    }
+    else if( this.yflag == 2)
+    {
+      this.yrflag = true;
+    }
+
     
   	this.afAuth.authState
     .takeWhile(() => this.alive)
@@ -89,8 +114,10 @@ export class StackedLeadsourceComponent implements OnInit, OnDestroy {
               
               this.rv_last_updt_dt = this.analyticsservice.rv_last_updt_dt;
 
-              this.currentYear = (new Date()).getFullYear();
+          this.currentYear = (new Date()).getFullYear();
               this.yearSelect = this.currentYear;
+               this.previousYear = this.currentYear - 1;
+              this.fyearSelect = this.previousYear + '-' + this.currentYear;
 
             	this.analyticsservice.getOpportunitiesforrv()
             	.takeWhile(() => this.alive)
@@ -99,9 +126,16 @@ export class StackedLeadsourceComponent implements OnInit, OnDestroy {
                   this.opportunities_stkls = [];
                   this.opportunities_stkls = u;
 
-                  this.yearList();
+                    if(this.yrflag == false){
+                this.yearList();
+                  this.onSelectYear();
+                
+              } else if (this.fyflag == false){
+                this.fyearList();
+        
+              this.onSelectFY();
+            }
 
-              		this.onSelectYear();
             	})
               return this.ev = true;
             }
@@ -132,6 +166,14 @@ export class StackedLeadsourceComponent implements OnInit, OnDestroy {
     this.year_list = this.opportunities_stkls
       .map(item => item.year)
       .filter((value, index, self) => { return self.indexOf(value) === index })
+  }
+
+      fyearList(){
+    this.fyear_list = this.opportunities_stkls
+      .map(item => item.financial_year)
+      .filter((value, index, self) => { return self.indexOf(value) === index })
+      console.log("fyear", this.fyear_list)
+
   }
 
   onSelectYear(){
@@ -254,10 +296,137 @@ export class StackedLeadsourceComponent implements OnInit, OnDestroy {
 
   }
 
+  onSelectFY(){
+    this.opportunities_stklsL = [];
+    this.dataLS = [];
+    this.opportunities_ls = [];
+    this.datastckLS = [];
+    this.dataFinalList = [];
+
+    this.opportunities_stklsL = this.opportunities_stkls.filter( i => {
+      return i.financial_year == this.fyearSelect;
+    })
+
+    this.opportunities_stklsL.forEach( i=> {
+      // var moved_time = new Date(i.casewontime);
+      // var month = moved_time.getMonth();
+      // var year = moved_time.getFullYear();
+      // var date = moved_time.getDate();
+      var lsmonth = i.leadsource + ""+ i.month;
+      this.opportunities_ls.push({pkey:lsmonth, leadsource: i.leadsource, month: i.month,valueofdeal: i.valueofdeal})  
+      console.log("up", this.opportunities_ls);  
+    })
+    
+    const groupedObj = this.opportunities_ls.reduce((prev, cur)=> {
+      if(!prev[cur['pkey']]) {
+        prev[cur['pkey']] = [cur];
+      } else {
+        prev[cur['pkey']].push(cur);
+      }
+      console.log("prev", prev);
+      return prev;
+    }, {});
+
+    this.datastckLS = Object.keys(groupedObj).map(key => { return { key, value: groupedObj[key]}});
+
+    console.log("up", this.datastckLS);
+
+    this.datastckLS.forEach ( i => {
+      this.datamonth = null;
+      this.dataleadsrce = '';
+      this.dataLS = [];
+
+      i.value.forEach( j =>
+      {
+        this.dataLS.push(j.valueofdeal);
+        this.datamonth = j.month;
+        this.dataleadsrce = j.leadsource;
+      })
+
+      var dataValues = this.dataLS.reduce((a,b) => a+b ,0);
+
+      this.dataFinalList.push({ymr: i.key, leadsource: this.dataleadsrce,
+        month: this.datamonth, monthlyRev: dataValues })
+      console.log("up", this.dataFinalList);
+    })
+
+    this.inbdList = this.dataFinalList.filter(i => {return i.leadsource == 'inbound-landline'})
+
+    console.log("chnList", this.inbdList);
+    this.datainbdvalue = ['','','','','','','','','','','','']
+
+    for(let i=0; i< this.inbdList.length; i++){
+      this.datainbdvalue.splice(this.inbdList[i].month,1,this.inbdList[i].monthlyRev);
+    }
+
+    this.eventList = this.dataFinalList.filter(i => {return i.leadsource == 'event'})
+
+    this.dataeventvalue = ['','','','','','','','','','','','']
+
+    for(let i=0; i< this.eventList.length; i++){
+      this.dataeventvalue.splice(this.eventList[i].month,1,this.eventList[i].monthlyRev);
+    }
+
+    this.distList = this.dataFinalList.filter(i => {return i.leadsource == 'distributor'})
+
+    console.log("chnList", this.distList);
+    this.datadistvalue = ['','','','','','','','','','','','']
+
+    for(let i=0; i< this.distList.length; i++){
+      this.datadistvalue.splice(this.distList[i].month,1,this.distList[i].monthlyRev);
+    }
+
+    console.log ("chnList", this.datadistvalue);
+
+    this.oemList = this.dataFinalList.filter(i => {return i.leadsource == 'oem'})
+
+    console.log("chnList", this.oemList);
+    this.dataoemvalue = ['','','','','','','','','','','','']
+
+    for(let i=0; i< this.oemList.length; i++){
+      this.dataoemvalue.splice(this.oemList[i].month,1,this.oemList[i].monthlyRev);
+    }
+
+    console.log ("chnList", this.dataoemvalue);
+
+    this.outbndList = this.dataFinalList.filter(i => {return i.leadsource == 'outboundcall'})
+
+    console.log("chnList", this.outbndList);
+    this.dataoutbndvalue = ['','','','','','','','','','','','']
+
+    for(let i=0; i< this.outbndList.length; i++){
+      this.dataoutbndvalue.splice(this.outbndList[i].month,1,this.outbndList[i].monthlyRev);
+    }
+
+    console.log ("chnList", this.dataoutbndvalue);
+
+    this.onsiteList = this.dataFinalList.filter(i => {return i.leadsource == 'onsite'})
+
+    console.log("chnList", this.onsiteList);
+    this.dataonsitevalue = ['','','','','','','','','','','','']
+
+    for(let i=0; i< this.onsiteList.length; i++){
+      this.dataonsitevalue.splice(this.onsiteList[i].month,1,this.onsiteList[i].monthlyRev);
+    }
+
+    console.log ("chnList", this.dataonsitevalue);
+
+
+    this.dostackedRegioncharts();
+
+  }
+
   onYearChange(value){
     this.yearSelect = value;
     this.onSelectYear();
   }
+
+        onFYearChange(fyear){
+    this.fyearSelect = fyear;
+
+    this.onSelectFY();
+  }
+
 
   dostackedRegioncharts(){
 

@@ -8,9 +8,13 @@ declare var jQuery: any;
 })
 export class ChartsComponent implements OnInit {
 
+  yflag: number = 1;
+  rflag: number = 2;
+
   constructor() { }
 
   ngOnInit() {
+
   }
 
     ngAfterViewInit() 
