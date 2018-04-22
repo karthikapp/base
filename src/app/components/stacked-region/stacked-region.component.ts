@@ -168,7 +168,7 @@ export class StackedRegionComponent implements OnInit, OnDestroy {
     this.fyear_list = this.opportunities_stkreg
       .map(item => item.financial_year)
       .filter((value, index, self) => { return self.indexOf(value) === index })
-      console.log("fyear", this.fyear_list)
+      // console.log("fyear", this.fyear_list)
 
   }
 
@@ -190,7 +190,7 @@ export class StackedRegionComponent implements OnInit, OnDestroy {
       // var date = moved_time.getDate();
       var regionmonth = i.region + ""+ i.month;
       this.opportunities_reg.push({pkey:regionmonth, region: i.region, month: i.month,valueofdeal: i.valueofdeal})  
-      console.log("up", this.opportunities_reg);  
+      // console.log("up", this.opportunities_reg);  
     })
     
     const groupedObj = this.opportunities_reg.reduce((prev, cur)=> {
@@ -199,13 +199,13 @@ export class StackedRegionComponent implements OnInit, OnDestroy {
       } else {
         prev[cur['pkey']].push(cur);
       }
-      console.log("prev", prev);
+      // console.log("prev", prev);
       return prev;
     }, {});
 
     this.datastckReg = Object.keys(groupedObj).map(key => { return { key, value: groupedObj[key]}});
 
-    console.log("up", this.datastckReg);
+    // console.log("up", this.datastckReg);
 
     this.datastckReg.forEach ( i => {
       this.datamonth = null;
@@ -223,12 +223,12 @@ export class StackedRegionComponent implements OnInit, OnDestroy {
 
       this.dataFinalList.push({ymr: i.key, region: this.dataregion,
         month: this.datamonth, monthlyRev: dataValues })
-      console.log("up", this.dataFinalList);
+      // console.log("up", this.dataFinalList);
     })
 
     this.chnList = this.dataFinalList.filter(i => {return i.region == 'chennai'})
 
-    console.log("chnList", this.chnList);
+    // console.log("chnList", this.chnList);
     this.datachnvalue = ['','','','','','','','','','','','']
 
     for(let i=0; i< this.chnList.length; i++){
@@ -245,36 +245,36 @@ export class StackedRegionComponent implements OnInit, OnDestroy {
 
     this.cmbtList = this.dataFinalList.filter(i => {return i.region == 'coimbatore'})
 
-    console.log("chnList", this.cmbtList);
+    // console.log("chnList", this.cmbtList);
     this.datacmbtvalue = ['','','','','','','','','','','','']
 
     for(let i=0; i< this.cmbtList.length; i++){
       this.datacmbtvalue.splice(this.cmbtList[i].month,1,this.cmbtList[i].monthlyRev);
     }
 
-    console.log ("chnList", this.datacmbtvalue);
+    // console.log ("chnList", this.datacmbtvalue);
 
     this.hydList = this.dataFinalList.filter(i => {return i.region == 'hyderabad'})
 
-    console.log("chnList", this.hydList);
+    // console.log("chnList", this.hydList);
     this.datahydvalue = ['','','','','','','','','','','','']
 
     for(let i=0; i< this.hydList.length; i++){
       this.datahydvalue.splice(this.hydList[i].month,1,this.hydList[i].monthlyRev);
     }
 
-    console.log ("chnList", this.datahydvalue);
+    // console.log ("chnList", this.datahydvalue);
 
     this.mumList = this.dataFinalList.filter(i => {return i.region == 'mumbai'})
 
-    console.log("chnList", this.mumList);
+    // console.log("chnList", this.mumList);
     this.datamumvalue = ['','','','','','','','','','','','']
 
     for(let i=0; i< this.mumList.length; i++){
       this.datamumvalue.splice(this.mumList[i].month,1,this.mumList[i].monthlyRev);
     }
 
-    console.log ("chnList", this.datamumvalue);
+    // console.log ("chnList", this.datamumvalue);
 
     this.dostackedRegioncharts();
 
@@ -298,7 +298,7 @@ export class StackedRegionComponent implements OnInit, OnDestroy {
       // var date = moved_time.getDate();
       var regionmonth = i.region + ""+ i.month;
       this.opportunities_reg.push({pkey:regionmonth, region: i.region, month: i.month,valueofdeal: i.valueofdeal})  
-      console.log("up", this.opportunities_reg);  
+      // console.log("up", this.opportunities_reg);  
     })
     
     const groupedObj = this.opportunities_reg.reduce((prev, cur)=> {
@@ -307,13 +307,13 @@ export class StackedRegionComponent implements OnInit, OnDestroy {
       } else {
         prev[cur['pkey']].push(cur);
       }
-      console.log("prev", prev);
+      // console.log("prev", prev);
       return prev;
     }, {});
 
     this.datastckReg = Object.keys(groupedObj).map(key => { return { key, value: groupedObj[key]}});
 
-    console.log("up", this.datastckReg);
+    // console.log("up", this.datastckReg);
 
     this.datastckReg.forEach ( i => {
       this.datamonth = null;
@@ -331,12 +331,12 @@ export class StackedRegionComponent implements OnInit, OnDestroy {
 
       this.dataFinalList.push({ymr: i.key, region: this.dataregion,
         month: this.datamonth, monthlyRev: dataValues })
-      console.log("up", this.dataFinalList);
+      // console.log("up", this.dataFinalList);
     })
 
     this.chnList = this.dataFinalList.filter(i => {return i.region == 'chennai'})
 
-    console.log("chnList", this.chnList);
+    // console.log("chnList", this.chnList);
     this.datachnvalue = ['','','','','','','','','','','','']
 
     for(let i=0; i< this.chnList.length; i++){
@@ -353,36 +353,36 @@ export class StackedRegionComponent implements OnInit, OnDestroy {
 
     this.cmbtList = this.dataFinalList.filter(i => {return i.region == 'coimbatore'})
 
-    console.log("chnList", this.cmbtList);
+    // console.log("chnList", this.cmbtList);
     this.datacmbtvalue = ['','','','','','','','','','','','']
 
     for(let i=0; i< this.cmbtList.length; i++){
       this.datacmbtvalue.splice(this.cmbtList[i].month,1,this.cmbtList[i].monthlyRev);
     }
 
-    console.log ("chnList", this.datacmbtvalue);
+    // console.log ("chnList", this.datacmbtvalue);
 
     this.hydList = this.dataFinalList.filter(i => {return i.region == 'hyderabad'})
 
-    console.log("chnList", this.hydList);
+    // console.log("chnList", this.hydList);
     this.datahydvalue = ['','','','','','','','','','','','']
 
     for(let i=0; i< this.hydList.length; i++){
       this.datahydvalue.splice(this.hydList[i].month,1,this.hydList[i].monthlyRev);
     }
 
-    console.log ("chnList", this.datahydvalue);
+    // console.log ("chnList", this.datahydvalue);
 
     this.mumList = this.dataFinalList.filter(i => {return i.region == 'mumbai'})
 
-    console.log("chnList", this.mumList);
+    // console.log("chnList", this.mumList);
     this.datamumvalue = ['','','','','','','','','','','','']
 
     for(let i=0; i< this.mumList.length; i++){
       this.datamumvalue.splice(this.mumList[i].month,1,this.mumList[i].monthlyRev);
     }
 
-    console.log ("chnList", this.datamumvalue);
+    // console.log ("chnList", this.datamumvalue);
 
     this.dostackedRegioncharts();
 

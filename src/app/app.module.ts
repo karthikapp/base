@@ -118,6 +118,8 @@ import { StackedLeadsourceComponent } from './components/stacked-leadsource/stac
 import { SunburstEmpComponent } from './components/sunburst-emp/sunburst-emp.component';
 import { RevenueExstcustComponent } from './components/revenue-exstcust/revenue-exstcust.component';
 import { StackedExstcustComponent } from './components/stacked-exstcust/stacked-exstcust.component';
+import { TargetaddComponent } from './targetadd/targetadd.component';
+import { TargetdashytdComponent } from './targetdashytd/targetdashytd.component';
 
 
 
@@ -163,7 +165,8 @@ const appRoutes: Routes = [
                {path:'Suppliers', component: SuppliersComponent},
                {path:'Reports', component: ReportsComponent},
                {path:'Review', component: ReviewComponent},
-               {path:'OppoReviewDetail', component: OppoReviewDetailComponent}
+               {path:'OppoReviewDetail', component: OppoReviewDetailComponent},
+               {path:'AddTarget', component: TargetaddComponent}
               ]}
 ];
 
@@ -261,7 +264,9 @@ export function highchartsFactory() {
     StackedLeadsourceComponent,
     SunburstEmpComponent,
     RevenueExstcustComponent,
-    StackedExstcustComponent
+    StackedExstcustComponent,
+    TargetaddComponent,
+    TargetdashytdComponent
   ],
   imports: [
     BrowserModule ,

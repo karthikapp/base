@@ -136,14 +136,14 @@ export class StackedExstcustComponent implements OnInit, OnDestroy {
             
             else
             {
-              console.log('No access to this page choco');
+              // console.log('No access to this page choco');
               alert('No access to this page');
               return this.ev=false;
             }
          })
        }
        else{
-            console.log('No access to this page m&m');
+            // console.log('No access to this page m&m');
             this.router.navigate(['login']);
             return this.ev=false;
        }
@@ -164,7 +164,7 @@ export class StackedExstcustComponent implements OnInit, OnDestroy {
     this.fyear_list = this.opportunities_stkexc
       .map(item => item.financial_year)
       .filter((value, index, self) => { return self.indexOf(value) === index })
-      console.log("fyear", this.fyear_list)
+      // console.log("fyear", this.fyear_list)
 
   }
 
@@ -183,7 +183,7 @@ export class StackedExstcustComponent implements OnInit, OnDestroy {
       var lsmonth = i.existing_customer + ""+ i.month;
       this.opportunities_exc.push({pkey:lsmonth, existing_customer: i.existing_customer, 
         month: i.month,valueofdeal: i.valueofdeal})  
-      console.log("up", this.opportunities_exc);  
+      // console.log("up", this.opportunities_exc);  
     })
     
     const groupedObj = this.opportunities_exc.reduce((prev, cur)=> {
@@ -192,13 +192,13 @@ export class StackedExstcustComponent implements OnInit, OnDestroy {
       } else {
         prev[cur['pkey']].push(cur);
       }
-      console.log("prev", prev);
+      // console.log("prev", prev);
       return prev;
     }, {});
 
     this.datastckexc = Object.keys(groupedObj).map(key => { return { key, value: groupedObj[key]}});
 
-    console.log("up", this.datastckexc);
+    // console.log("up", this.datastckexc);
 
     this.datastckexc.forEach ( i => {
       this.datamonth = null;
@@ -216,12 +216,12 @@ export class StackedExstcustComponent implements OnInit, OnDestroy {
 
       this.dataFinalList.push({ymr: i.key, existing_customer: this.dataexcust,
         month: this.datamonth, monthlyRev: dataValues })
-      console.log("up", this.dataFinalList);
+      // console.log("up", this.dataFinalList);
     })
 
     this.excustList = this.dataFinalList.filter(i => {return i.existing_customer == true})
 
-    console.log("chnList", this.excustList);
+    // console.log("chnList", this.excustList);
     this.dataexcustvalue = ['','','','','','','','','','','','']
 
     for(let i=0; i< this.excustList.length; i++){
@@ -256,7 +256,7 @@ export class StackedExstcustComponent implements OnInit, OnDestroy {
       var lsmonth = i.existing_customer + ""+ i.month;
       this.opportunities_exc.push({pkey:lsmonth, existing_customer: i.existing_customer, 
       	month: i.month,valueofdeal: i.valueofdeal})  
-      console.log("up", this.opportunities_exc);  
+      // console.log("up", this.opportunities_exc);  
     })
     
     const groupedObj = this.opportunities_exc.reduce((prev, cur)=> {
@@ -265,13 +265,13 @@ export class StackedExstcustComponent implements OnInit, OnDestroy {
       } else {
         prev[cur['pkey']].push(cur);
       }
-      console.log("prev", prev);
+      // console.log("prev", prev);
       return prev;
     }, {});
 
     this.datastckexc = Object.keys(groupedObj).map(key => { return { key, value: groupedObj[key]}});
 
-    console.log("up", this.datastckexc);
+    // console.log("up", this.datastckexc);
 
     this.datastckexc.forEach ( i => {
       this.datamonth = null;
@@ -289,12 +289,12 @@ export class StackedExstcustComponent implements OnInit, OnDestroy {
 
       this.dataFinalList.push({ymr: i.key, existing_customer: this.dataexcust,
         month: this.datamonth, monthlyRev: dataValues })
-      console.log("up", this.dataFinalList);
+      // console.log("up", this.dataFinalList);
     })
 
     this.excustList = this.dataFinalList.filter(i => {return i.existing_customer == true})
 
-    console.log("chnList", this.excustList);
+    // console.log("chnList", this.excustList);
     this.dataexcustvalue = ['','','','','','','','','','','','']
 
     for(let i=0; i< this.excustList.length; i++){

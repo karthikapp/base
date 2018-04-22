@@ -618,6 +618,35 @@ addinsideSalesinoneShot(insidesaleslist: {
 		return this.af.object(oppoURL);
 	}
 
+
+	// get target by financial year
+	gettargets(financialyear: string)
+	{
+		let targetURL = '/targets/' + financialyear + '/values';
+		return this.af.list(targetURL);
+
+	}
+	// add targets or update targets
+	addtargets(financialyear:string,targetlist:any)
+	{
+		let targetURL = '/targets/' + financialyear;
+		this.af.object(targetURL).update({'values':targetlist});
+	}
+
+
+
+	// get analytics 
+	getcasewon()
+	{
+		 return this.af.list('/analytics/casewon/deals',
+			{query:
+				{
+				orderByChild: 'casewontime'
+				}
+			});
+
+	}
+
 	//Get Opportunities based on user id
 	getOpportunitiesByID(userid: string){
 		return this.af.list('/opportunities', 

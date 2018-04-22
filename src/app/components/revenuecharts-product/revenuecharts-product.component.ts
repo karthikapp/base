@@ -108,7 +108,7 @@ export class RevenuechartsProductComponent implements OnInit, OnDestroy {
               this.monthSelect = '';
               this.quarterSelect = '';
               this.fyearSelect = this.previousYear + '-' + this.currentYear;
-              console.log("fyear", this.fyearSelect)
+              // console.log("fyear", this.fyearSelect)
 
            this.analyticsservice.getOpportunitiesforrv()
             	.takeWhile(() => this.alive)
@@ -139,14 +139,14 @@ export class RevenuechartsProductComponent implements OnInit, OnDestroy {
             
             else
             {
-              console.log('No access to this page choco');
+              // console.log('No access to this page choco');
               alert('No access to this page');
               return this.ev=false;
             }
          })
        }
        else{
-            console.log('No access to this page m&m');
+            // console.log('No access to this page m&m');
             this.router.navigate(['login']);
             return this.ev=false;
        }
@@ -221,7 +221,7 @@ export class RevenuechartsProductComponent implements OnInit, OnDestroy {
     this.fyear_list = this.opportunities
       .map(item => item.financial_year)
       .filter((value, index, self) => { return self.indexOf(value) === index })
-      console.log("fyear", this.fyear_list)
+      // console.log("fyear", this.fyear_list)
 
   }
 
@@ -231,7 +231,7 @@ export class RevenuechartsProductComponent implements OnInit, OnDestroy {
     this.quarter_list = this.oppofylist
                       .map(item => item.quarter)
                       .filter((value, index, self) => { return self.indexOf(value) === index })
-                      console.log("fyear", this.quarter_list);
+                      // console.log("fyear", this.quarter_list);
   }
 
   onYearChange(year){
@@ -295,7 +295,7 @@ export class RevenuechartsProductComponent implements OnInit, OnDestroy {
                       } else {
                         prev[cur['brand']].push(cur);
                       }
-                    console.log("prev", prev);
+                    // console.log("prev", prev);
                     return prev;
                   }, {});
 
@@ -306,16 +306,16 @@ export class RevenuechartsProductComponent implements OnInit, OnDestroy {
                     this.oppoProdValues = [];
               i.value.forEach( j => {
               this.oppoProdValues.push(j.valueofdeal)
-              console.log("j", this.oppoProdValues);
+              // console.log("j", this.oppoProdValues);
               })
               this.oppoPV = 0;
               this.valuePercent = null;
               this.oppoPV = this.oppoProdValues.reduce((a,b) => a+b, 0);
               this.valuePercent = (this.oppoPV/ this.oppoTV)*100;
-              console.log("PVTV", this.oppoPV, this.oppoTV, this.valuePercent )
+              // console.log("PVTV", this.oppoPV, this.oppoTV, this.valuePercent )
               this.pieProdRevenue.push({name: i.key, y:this.valuePercent});
             })
-            console.log("dp", this.pieProdRevenue);
+            // console.log("dp", this.pieProdRevenue);
                   this.dopieBrandCharts();
 
    }
@@ -358,7 +358,7 @@ export class RevenuechartsProductComponent implements OnInit, OnDestroy {
                       } else {
                         prev[cur['brand']].push(cur);
                       }
-                    console.log("prev", prev);
+                    // console.log("prev", prev);
                     return prev;
                   }, {});
 
@@ -369,16 +369,16 @@ export class RevenuechartsProductComponent implements OnInit, OnDestroy {
                     this.oppoProdValues = [];
               i.value.forEach( j => {
               this.oppoProdValues.push(j.valueofdeal)
-              console.log("j", this.oppoProdValues);
+              // console.log("j", this.oppoProdValues);
               })
               this.oppoPV = 0;
               this.valuePercent = null;
               this.oppoPV = this.oppoProdValues.reduce((a,b) => a+b, 0);
               this.valuePercent = (this.oppoPV/ this.oppoTV)*100;
-              console.log("PVTV", this.oppoPV, this.oppoTV, this.valuePercent )
+              // console.log("PVTV", this.oppoPV, this.oppoTV, this.valuePercent )
               this.pieProdRevenue.push({name: i.key, y:this.valuePercent});
             })
-            console.log("dp", this.pieProdRevenue);
+            // console.log("dp", this.pieProdRevenue);
                   this.dopieBrandCharts();
 
    }
@@ -393,7 +393,7 @@ export class RevenuechartsProductComponent implements OnInit, OnDestroy {
 		'data': []
 	}], cur = this.pieProdRevenue;
 
-	console.log("srpcur", cur);
+	// console.log("srpcur", cur);
 
 		cur.forEach( i => {
 			series[0].data.push(i);

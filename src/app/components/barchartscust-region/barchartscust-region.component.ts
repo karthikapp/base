@@ -111,7 +111,7 @@ options: Object;
               this.monthSelect = '';
               this.quarterSelect = '';
               this.fyearSelect = this.previousYear + '-' + this.currentYear;
-              console.log("fyear", this.fyearSelect)
+              // console.log("fyear", this.fyearSelect)
 
                this.analyticsservice.getOpportunitiesforrv()
               .takeWhile(() => this.alive)
@@ -141,14 +141,14 @@ options: Object;
             
             else
             {
-              console.log('No access to this page choco');
+              // console.log('No access to this page choco');
               alert('No access to this page');
               return this.ev=false;
             }
          })
        }
        else{
-            console.log('No access to this page m&m');
+            // console.log('No access to this page m&m');
             this.router.navigate(['login']);
             return this.ev=false;
        }
@@ -178,7 +178,7 @@ options: Object;
     this.fyear_list = this.opportunities_cust
       .map(item => item.financial_year)
       .filter((value, index, self) => { return self.indexOf(value) === index })
-      console.log("fyear", this.fyear_list)
+      // console.log("fyear", this.fyear_list)
 
   }
 
@@ -188,7 +188,7 @@ options: Object;
     this.quarter_list = this.oppobcustfylist
                       .map(item => item.quarter)
                       .filter((value, index, self) => { return self.indexOf(value) === index })
-                      console.log("fyear", this.quarter_list);
+                      // console.log("fyear", this.quarter_list);
   }
 
   getMonth(val){
@@ -296,7 +296,7 @@ options: Object;
                       } else {
                         prev[cur['company_id']].push(cur);
                       }
-                    console.log("prev", prev);
+                    // console.log("prev", prev);
                     return prev;
                   }, {});
 
@@ -311,7 +311,7 @@ options: Object;
                   this.oppoCustValues.push(j.valueofdeal);
                   this.name = j.companyname;
                 
-              console.log("j", this.oppoCustValues);
+              // console.log("j", this.oppoCustValues);
               })
               this.oppoCV = 0;
               this.valuePercent = null
@@ -322,7 +322,7 @@ options: Object;
 
                  this.barCustRevenue.splice(10);
 
-              console.log("barPro", this.barCustRevenue);
+              // console.log("barPro", this.barCustRevenue);
                 
                 this.dobarCustomerCharts();
   }
@@ -362,7 +362,7 @@ options: Object;
                       } else {
                         prev[cur['company_id']].push(cur);
                       }
-                    console.log("prev", prev);
+                    // console.log("prev", prev);
                     return prev;
                   }, {});
 
@@ -377,7 +377,7 @@ options: Object;
                   this.oppoCustValues.push(j.valueofdeal);
                   this.name = j.companyname;
                 
-              console.log("j", this.oppoCustValues);
+              // console.log("j", this.oppoCustValues);
               })
               this.oppoCV = 0;
               this.valuePercent = null
@@ -388,7 +388,7 @@ options: Object;
 
                  this.barCustRevenue.splice(10);
 
-              console.log("barPro", this.barCustRevenue);
+              // console.log("barPro", this.barCustRevenue);
                 
                 this.dobarCustomerCharts();
   }

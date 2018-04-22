@@ -182,7 +182,7 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
     this.fyear_list = this.opportunities_LS
       .map(item => item.financial_year)
       .filter((value, index, self) => { return self.indexOf(value) === index })
-      console.log("fyear", this.fyear_list)
+      // console.log("fyear", this.fyear_list)
 
   }
 
@@ -192,7 +192,7 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
     this.quarter_list = this.oppoLSfylist
                       .map(item => item.quarter)
                       .filter((value, index, self) => { return self.indexOf(value) === index })
-                      console.log("fyear", this.quarter_list);
+                      // console.log("fyear", this.quarter_list);
   }
 
   onYearChange(year){
@@ -321,7 +321,7 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
                  oemid: i.oemid, oemname: i.oemname, eventid: i.eventid, eventname: i.eventname, distributorid: i.distributorid,
                  distributorname: i.distributorname, valueofdeal: i.valueofdeal})
 
-                console.log("opplsv", this.opportunities_LSLV)
+                // console.log("opplsv", this.opportunities_LSLV)
               })
               this.oppoTLSV = this.oppoLSTotalValues.reduce((a, b) => a + b, 0);
 
@@ -351,7 +351,7 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
                 this.pvalue = '';
                 this.pvalue = 'level'+ '' + this.p ;
                 this.pieLSRegRevenue.push({name: this.name, y:this.valuePercent, drilldown: this.pvalue});
-                console.log("psReg", this.pieLSRegRevenue);
+                // console.log("psReg", this.pieLSRegRevenue);
                 this.p++;
 
               })
@@ -393,7 +393,7 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
                   this.pieLSRevenue.push({region: this.region, name: this.name, y:this.valuePercent});
                 }
 
-                 console.log("psReg", this.pieLSRevenue)
+                 // console.log("psReg", this.pieLSRevenue)
               })
 
 
@@ -409,7 +409,7 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
                 return prev;
               }, {});
               this.dataLSL = Object.keys(groupedLSLObj).map(key => { return { key, value: groupedLSLObj[key] }});
-              console.log("psReg", this.dataLSL);
+              // console.log("psReg", this.dataLSL);
 
               //Looping thro' and finding percentage for each Leadsource
               this.dataLSL.forEach( i => {
@@ -436,7 +436,7 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
                 //this.rvalue = '';
                 //this.rvalue = 'rqlevel' + '' + this.r
                 this.pieLSLRevenue.push({region: this.region, leadsource: this.leadsource, name: this.name, y:this.valuePercent});
-                console.log("psReg", this.pieLSLRevenue)
+                // console.log("psReg", this.pieLSLRevenue)
                 //this.r++;
               })
               //Paasing the value to Pie Chart - Rev by Employees
@@ -507,7 +507,7 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
                  oemid: i.oemid, oemname: i.oemname, eventid: i.eventid, eventname: i.eventname, distributorid: i.distributorid,
                  distributorname: i.distributorname, valueofdeal: i.valueofdeal})
 
-                console.log("opplsv", this.opportunities_LSLV)
+                // console.log("opplsv", this.opportunities_LSLV)
               })
               this.oppoTLSV = this.oppoLSTotalValues.reduce((a, b) => a + b, 0);
 
@@ -537,7 +537,7 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
                 this.pvalue = '';
                 this.pvalue = 'level'+ '' + this.p ;
                 this.pieLSRegRevenue.push({name: this.name, y:this.valuePercent, drilldown: this.pvalue});
-                console.log("psReg", this.pieLSRegRevenue);
+                // console.log("psReg", this.pieLSRegRevenue);
                 this.p++;
 
               })
@@ -579,7 +579,7 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
                   this.pieLSRevenue.push({region: this.region, name: this.name, y:this.valuePercent});
                 }
 
-                 console.log("psReg", this.pieLSRevenue)
+                 // console.log("psReg", this.pieLSRevenue)
               })
 
 
@@ -595,7 +595,7 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
                 return prev;
               }, {});
               this.dataLSL = Object.keys(groupedLSLObj).map(key => { return { key, value: groupedLSLObj[key] }});
-              console.log("psReg", this.dataLSL);
+              // console.log("psReg", this.dataLSL);
 
               //Looping thro' and finding percentage for each Leadsource
               this.dataLSL.forEach( i => {
@@ -622,7 +622,7 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
                 //this.rvalue = '';
                 //this.rvalue = 'rqlevel' + '' + this.r
                 this.pieLSLRevenue.push({region: this.region, leadsource: this.leadsource, name: this.name, y:this.valuePercent});
-                console.log("psReg", this.pieLSLRevenue)
+                // console.log("psReg", this.pieLSLRevenue)
                 //this.r++;
               })
               //Paasing the value to Pie Chart - Rev by Employees
@@ -700,7 +700,7 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
       }
       }
     })
-     console.log("psReg", this.rdata);
+     // console.log("psReg", this.rdata);
      drilldown.series.push({id: i.drilldown, name: i.name, data: this.rdata})
    })
 
@@ -720,7 +720,7 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
      }
    })
 
-   console.log("psReg", series, drilldown);
+   // console.log("psReg", series, drilldown);
 
     
   

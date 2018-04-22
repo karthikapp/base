@@ -109,7 +109,7 @@ export class RevenueAssignedtoComponent implements OnInit, OnDestroy {
               this.monthSelect = '';
               this.quarterSelect = '';
               this.fyearSelect = this.previousYear + '-' + this.currentYear;
-              console.log("fyear", this.fyearSelect)
+              // console.log("fyear", this.fyearSelect)
               
             //Fetching Values from Analytics
             this.analyticsservice.getOpportunitiesforrv()
@@ -181,7 +181,7 @@ export class RevenueAssignedtoComponent implements OnInit, OnDestroy {
     this.quarter_list = this.oppoasgnTofylist
                       .map(item => item.quarter)
                       .filter((value, index, self) => { return self.indexOf(value) === index })
-                      console.log("fyear", this.quarter_list);
+                      // console.log("fyear", this.quarter_list);
   }
 
   onYearChange(year){
@@ -193,7 +193,7 @@ export class RevenueAssignedtoComponent implements OnInit, OnDestroy {
 
   onMonthChange(month){
     this.monthSelect = month;
-    console.log("month", month);
+    // console.log("month", month);
     this.selectAssgnToYList();
   }
 
@@ -264,7 +264,7 @@ export class RevenueAssignedtoComponent implements OnInit, OnDestroy {
     this.oppoAV = 0;
     this.opportunities_assgntoL = [];
 
-    console.log("ssss", this.monthSelect, this.opportunities_assgntoL)
+    // console.log("ssss", this.monthSelect, this.opportunities_assgntoL)
 
     if(this.quarterSelect != ''){
       this.opportunities_assgntoL = this.opportunities_assgnto.filter( i => {
@@ -278,7 +278,7 @@ export class RevenueAssignedtoComponent implements OnInit, OnDestroy {
       })
     }
 
-    console.log("sssss", this.opportunities_assgntoL);
+    // console.log("sssss", this.opportunities_assgntoL);
     //Total Values of All Opportunities
     this.opportunities_assgntoL.forEach( 
       i => {
@@ -341,7 +341,7 @@ export class RevenueAssignedtoComponent implements OnInit, OnDestroy {
       })
     }
 
-    console.log("ssss", this.monthSelect, this.opportunities_assgntoL)
+    // console.log("ssss", this.monthSelect, this.opportunities_assgntoL)
 
    
 

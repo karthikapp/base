@@ -108,7 +108,7 @@ export class RevenuechartsCustomerComponent implements OnInit, OnDestroy {
               this.monthSelect = '';
               this.quarterSelect = '';
               this.fyearSelect = this.previousYear + '-' + this.currentYear;
-              console.log("fyear", this.fyearSelect)
+              // console.log("fyear", this.fyearSelect)
 
               this.analyticsservice.getOpportunitiesforrv()
             	.takeWhile(() => this.alive)
@@ -135,14 +135,14 @@ export class RevenuechartsCustomerComponent implements OnInit, OnDestroy {
             
             else
             {
-              console.log('No access to this page choco');
+              // console.log('No access to this page choco');
               alert('No access to this page');
               return this.ev=false;
             }
          })
        }
        else{
-            console.log('No access to this page m&m');
+            // console.log('No access to this page m&m');
             this.router.navigate(['login']);
             return this.ev=false;
        }
@@ -218,7 +218,7 @@ export class RevenuechartsCustomerComponent implements OnInit, OnDestroy {
     this.fyear_list = this.opportunities_cust
       .map(item => item.financial_year)
       .filter((value, index, self) => { return self.indexOf(value) === index })
-      console.log("fyear", this.fyear_list)
+      // console.log("fyear", this.fyear_list)
 
   }
 
@@ -228,7 +228,7 @@ export class RevenuechartsCustomerComponent implements OnInit, OnDestroy {
     this.quarter_list = this.oppocustfylist
                       .map(item => item.quarter)
                       .filter((value, index, self) => { return self.indexOf(value) === index })
-                      console.log("fyear", this.quarter_list);
+                      // console.log("fyear", this.quarter_list);
   }
 
   selectCustYList(){
@@ -395,7 +395,7 @@ selectCustFYList(){
 		'data': []
 	}], cur = this.pieCustRevenue;
 
-	console.log("srpcur", cur);
+	// console.log("srpcur", cur);
 
 		cur.forEach( i => {
 			series[0].data.push(i);

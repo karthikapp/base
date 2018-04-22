@@ -114,7 +114,7 @@ export class BarchartsRegionComponent implements OnInit {
               this.monthSelect = '';
               this.quarterSelect = '';
               this.fyearSelect = this.previousYear + '-' + this.currentYear;
-              console.log("fyear", this.fyearSelect)
+              // console.log("fyear", this.fyearSelect)
               
 
              this.analyticsservice.getOpportunitiesforrv()
@@ -224,7 +224,7 @@ getMonth(val){
     this.fyear_list = this.opportunities_pro
       .map(item => item.financial_year)
       .filter((value, index, self) => { return self.indexOf(value) === index })
-      console.log("fyear", this.fyear_list)
+      // console.log("fyear", this.fyear_list)
 
   }
 
@@ -234,7 +234,7 @@ getMonth(val){
     this.quarter_list = this.oppobregfylist
                       .map(item => item.quarter)
                       .filter((value, index, self) => { return self.indexOf(value) === index })
-                      console.log("fyear", this.quarter_list);
+                      // console.log("fyear", this.quarter_list);
   }
 
 
@@ -297,7 +297,7 @@ getMonth(val){
       } else {
         prev[cur['product']].push(cur);
       }
-      console.log("prev", prev);
+      // console.log("prev", prev);
       return prev;
     }, {});
 
@@ -310,19 +310,19 @@ getMonth(val){
       i.value.forEach( j => {
         this.oppoProValues.push(j.valueofdeal)
         this.name = j.productname
-        console.log("j", this.oppoProValues);
+        // console.log("j", this.oppoProValues);
       })
       this.oppoPRV = 0;
       this.oppoPRV = this.oppoProValues.reduce((a,b) => a+b, 0);
       this.barProdRevenue.push({name: this.name, y:this.oppoPRV});
     })
 
-    console.log("barPro", this.barProdRevenue);
+    // console.log("barPro", this.barProdRevenue);
     this.barProdRevenue.sort((a,b) => b.y - a.y);
 
     this.barProdRevenue.splice(10);
 
-    console.log("barPro", this.barProdRevenue);
+    // console.log("barPro", this.barProdRevenue);
 
 
 
@@ -363,7 +363,7 @@ getMonth(val){
       } else {
         prev[cur['product']].push(cur);
       }
-      console.log("prev", prev);
+      // console.log("prev", prev);
       return prev;
     }, {});
 
@@ -376,19 +376,19 @@ getMonth(val){
       i.value.forEach( j => {
         this.oppoProValues.push(j.valueofdeal)
         this.name = j.productname
-        console.log("j", this.oppoProValues);
+        // console.log("j", this.oppoProValues);
       })
       this.oppoPRV = 0;
       this.oppoPRV = this.oppoProValues.reduce((a,b) => a+b, 0);
       this.barProdRevenue.push({name: this.name, y:this.oppoPRV});
     })
 
-    console.log("barPro", this.barProdRevenue);
+    // console.log("barPro", this.barProdRevenue);
     this.barProdRevenue.sort((a,b) => b.y - a.y);
 
     this.barProdRevenue.splice(10);
 
-    console.log("barPro", this.barProdRevenue);
+    // console.log("barPro", this.barProdRevenue);
 
 
 

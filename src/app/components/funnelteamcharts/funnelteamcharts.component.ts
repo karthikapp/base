@@ -165,11 +165,11 @@ onChangeofBoth() {
 
 
 
-  console.log("ppi", this.user, this.report, this.role)
+  // console.log("ppi", this.user, this.report, this.role)
   if (this.report == 'RECIPIENT') 
   {
       this.firebaseservice.getUsersByReportsTo(this.uid).subscribe(u => {
-    console.log(u);
+    // console.log(u);
     this.person_list = u;
   }) 
 
@@ -226,13 +226,13 @@ onChangeofBoth() {
   this.firebaseservice.getopportunitiesbyreporttoid(this.uid)       
   .subscribe(v => {
       if (this.user == 'All' ){
-        console.log("pp234oppo", this.user)
+        // console.log("pp234oppo", this.user)
         this.opportunities = v;
       } 
 
 
       else if (this.user != '' && this.user != undefined) {
-        console.log("pp234oppo", this.user)
+        // console.log("pp234oppo", this.user)
         this.opportunities = v.filter (u =>  {
           return (u.opportunity_assignedto == this.user 
            )
@@ -273,19 +273,19 @@ onChangeofBoth() {
 
                else 
                {
-                 console.log("not found qualified lead")
+                 // console.log("not found qualified lead")
                }
                // presales stage 
                if (item.opportunity_state == 'Presales_Presentation')
                {
                  this.presalsesarrayvalue.push(item.value)
                  this.presalesopportunitylist.push(item)
-                 console.log("found presales")
+                 // console.log("found presales")
                  // budgetary price 
                }
                else
                {
-                 console.log("not found presales")
+                 // console.log("not found presales")
                }
 
                if (item.opportunity_state == 'Budgetary_Price_Shared')
@@ -293,74 +293,74 @@ onChangeofBoth() {
 
                  this.budgetaryarrayvalue.push(item.value)
                  this.budgetaryopportunitylist.push(item)
-                 console.log("entering")
-                 console.log("found budgetary")
+                 // console.log("entering")
+                 // console.log("found budgetary")
                }
                else
                {
-                 console.log("not found budgetary")
+                 // console.log("not found budgetary")
                }
                // finalising bom
                if (item.opportunity_state == 'Finalising_BOM')
                {
                  this.bomarrayvalue.push(item.value)
                  this.bomopportunitylist.push(item)
-                 console.log("found finalising bom")
+                 // console.log("found finalising bom")
                }
                else
                {
-                 console.log("not found finalising bom")
+                 // console.log("not found finalising bom")
                }
                if (item.opportunity_state == 'POC/Demo')
                {
                  this.pocarrayvalue.push(item.value)
                  this.pocopportunitylist.push(item)
-                 console.log("found poc")
+                 // console.log("found poc")
                }
                else
                {
-                 console.log("not found poc")
+                 // console.log("not found poc")
                }
                if (item.opportunity_state == 'Final_Proposal')
                {
                  this.finalproposalarrayvalue.push(item.value)
                  this.finalproposalopportunitylist .push(item)
-                 console.log("found final proposal")
+                 // console.log("found final proposal")
                }
                else
                {
-                 console.log("not found final proposal")
+                 // console.log("not found final proposal")
                }
                if (item.opportunity_state == 'Final_Negotiation')
                {
                  this.finalnegoarrayvalue.push(item.value)
                  this.finalnegoopportunitylist.push(item)
-                 console.log("found final nego")
+                 // console.log("found final nego")
                }
                else
                {
-                 console.log("not found final nego")
+                 // console.log("not found final nego")
                }
 
                if (item.opportunity_state == 'Case_won')
                {
                  this.casewonarrayvalue.push(item.value)
                  this.casewonopportunitylist.push(item)
-                 console.log("found case won")
+                 // console.log("found case won")
                }
                else
                {
-                 console.log("not found case won")
+                 // console.log("not found case won")
                }
                if (item.opportunity_state == 'Case_lost')
                {
                  this.caselostarrayvalue.push(item.value)
                  this.caselostopportunitylist.push(item)
-                 console.log("found case lost")
+                 // console.log("found case lost")
                }
                else
                {
-                 console.log("not found case lost")
+                 // console.log("not found case lost")
                }
 
                })
@@ -420,7 +420,7 @@ onChangeofBoth() {
 
 onItemChange(value: string){
   
-  console.log("ppi",value);
+  // console.log("ppi",value);
   this.user = value;
 
 this.onChangeofBoth();

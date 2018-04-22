@@ -46,7 +46,7 @@ export class AnalyticsService {
 				orderByChild: 'casewontime'
 				}
 			});
-  	console.log("up",this.rvcharts)
+  	// console.log("up",this.rvcharts)
 		return this.rvcharts;
   }
 
@@ -77,28 +77,28 @@ export class AnalyticsService {
   				} else {
   					prev[cur[colValue]].push(cur);
   				}
-  				console.log("prev", prev);
+  				// console.log("prev", prev);
   				return prev;
   			}, {});
 
 
 
   			this.dataPro = Object.keys(groupedObj).map(key => { return { key, value: groupedObj[key] }});
-  			console.log("dp", this.dataPro);
+  			// console.log("dp", this.dataPro);
   			this.dataPro.forEach( i => {
   				this.oppoProValues = [];
   				i.value.forEach( j => {
   					this.oppoProValues.push(j.valueofdeal)
-  					console.log("j", this.oppoProValues);
+  					// console.log("j", this.oppoProValues);
   				})
   				this.oppoPRV = 0;
   				this.valuePPercent = null;
   				this.oppoPRV = this.oppoProValues.reduce((a,b) => a+b, 0);
   				this.valuePPercent = (this.oppoPRV/ this.oppoTPV)*100;
-  				console.log("PVTV", this.oppoPRV, this.oppoTPV, this.valuePPercent )
+  				// console.log("PVTV", this.oppoPRV, this.oppoTPV, this.valuePPercent )
   				this.pieProRevenue.push({name: i.key, y:this.valuePPercent});
   			})
-  			console.log("dp", this.pieProRevenue);
+  			// console.log("dp", this.pieProRevenue);
   			return this.pieProRevenue;
   		}
   	)
@@ -133,7 +133,7 @@ export class AnalyticsService {
             					} else {
             						prev[cur[colValue]].push(cur);
             					}
-            				console.log("prev", prev);
+            				// console.log("prev", prev);
             				return prev;
             			}, {});
 
@@ -144,16 +144,16 @@ export class AnalyticsService {
             				this.oppoCustValues = [];
 							i.value.forEach( j => {
 							this.oppoCustValues.push(j.valueofdeal)
-							console.log("j", this.oppoCustValues);
+							// console.log("j", this.oppoCustValues);
 							})
 							this.oppoCV = 0;
               				this.valueCPercent = null;
 							this.oppoCV = this.oppoCustValues.reduce((a,b) => a+b, 0);
 							this.valueCPercent = (this.oppoCV/ this.oppoTCV)*100;
-							console.log("PVTV", this.oppoCV, this.oppoTCV, this.valueCPercent )
+							// console.log("PVTV", this.oppoCV, this.oppoTCV, this.valueCPercent )
 							this.pieCustRevenue.push({name: i.key, y:this.valueCPercent});
 						})
-						console.log("dp", this.pieCustRevenue);
+						// console.log("dp", this.pieCustRevenue);
             			return this.pieCustRevenue;
             		})
 

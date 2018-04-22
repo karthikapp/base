@@ -1,0 +1,69 @@
+
+<br>
+<br>
+
+
+<div class="ui container" style="width: 100%;padding-left: 10px;padding-right: 10px;">
+	<div class="ui card" style="width: 100%;">
+		<div class="content">
+			<div class="header">Set Targets</div>
+			<div class="meta">2 days ago</div>
+			<div class="ui statistic">
+				<div class="value">
+					{{rupee(total)}}
+				</div>
+				<div class="label">
+					Overall Target
+				</div>
+			</div>
+			<div class="description">
+				<table class="ui fixed single line celled table">
+					<thead>
+						<tr><th>Executive</th>
+							<th>Q1</th>
+							<th>Q2</th>
+							<th>Q3</th>
+							<th>Q4</th>
+							<th>Total</th>
+						</tr></thead>
+						<tbody>
+							<tr *ngFor="let target of targetlist">
+								<td>{{target.name}}</td>
+								<td><div class="ui input mini" style="width: 80%;">
+									<input type="number" [(ngModel)]="target.Q1">
+								</div></td>
+								<td><div class="ui input mini" style="width: 80%;">
+									<input type="number" [(ngModel)]="target.Q2">
+								</div></td>
+								<td><div class="ui input mini" style="width: 80%;">
+									<input type="number" [(ngModel)]="target.Q3">
+								</div></td>
+								<td><div class="ui input mini" style="width: 80%;">
+									<input type="number" [(ngModel)]="target.Q4">
+								</div></td>
+								<td>
+									{{target.Q1+target.Q2+target.Q3+target.Q4}}
+								</td>
+							</tr>
+
+						</tbody>
+					</table>
+
+				</div>
+				<div class="container" align="center">
+					<br>
+					<br>
+					<button class="ui primary button" (click)="addtarget(financialyear,targetlist)">
+						Add Target
+					</button>
+					<button class="ui button">
+						Discard
+					</button>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+
+
+

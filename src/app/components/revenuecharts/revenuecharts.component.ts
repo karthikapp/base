@@ -125,14 +125,14 @@ yearSelect: any;
             
             else
             {
-              console.log('No access to this page choco');
+              // console.log('No access to this page choco');
               alert('No access to this page');
               return this.ev=false;
             }
          })
        }
        else{
-            console.log('No access to this page m&m');
+            // console.log('No access to this page m&m');
             this.router.navigate(['login']);
             return this.ev=false;
        }
@@ -151,7 +151,7 @@ yearSelect: any;
 
       onFYearChange(fyear){
     this.fyearSelect = fyear;
-    console.log("ssssssss", this.fyearSelect);
+    // console.log("ssssssss", this.fyearSelect);
 
     this.selectChartFYList();
   }
@@ -169,7 +169,7 @@ yearSelect: any;
     this.opportunities_L = this.opportunities.filter( i => {
         return i.financial_year == this.fyearSelect 
       })
-    console.log("ssssssss", this.opportunities_L)
+    // console.log("ssssssss", this.opportunities_L)
     this.dolineCharts();
   }
 
@@ -183,7 +183,7 @@ yearSelect: any;
     this.fyear_list = this.opportunities
       .map(item => item.financial_year)
       .filter((value, index, self) => { return self.indexOf(value) === index })
-      console.log("fyear", this.fyear_list)
+      // console.log("fyear", this.fyear_list)
 
   }
 
@@ -212,7 +212,7 @@ yearSelect: any;
 		'data': []
 	}], cur = this.opportunities_L;
 
-	console.log("ssssssss", cur);
+	// console.log("ssssssss", cur);
 
 	// cur.forEach( i =>
 	// 	{
@@ -230,7 +230,7 @@ yearSelect: any;
 		}
 		else
 		{
-			console.log("no chennai region")
+			// console.log("no chennai region")
 		}
 
 		if(item.region =='bangalore')
@@ -240,7 +240,7 @@ yearSelect: any;
 		}
 		else
 		{
-			console.log("no bangalore region")
+			// console.log("no bangalore region")
 		}
 
 		if(item.region == 'coimbatore')
@@ -251,7 +251,7 @@ yearSelect: any;
 		}
 		else
 		{
-			console.log("no coimbatore region")
+			// console.log("no coimbatore region")
 		}
 
 		if(item.region == 'mumbai')
@@ -262,7 +262,7 @@ yearSelect: any;
 		}
 		else
 		{
-			console.log("no mumbai region")
+			// console.log("no mumbai region")
 		}
 
 		if(item.region == 'hyderabad')
@@ -273,12 +273,12 @@ yearSelect: any;
 		}
 		else
 		{
-			console.log("no hyderabad region");
+			// console.log("no hyderabad region");
 		}
 
 	})
 
-console.log("ssssssss",series);
+// console.log("ssssssss",series);
 
 
 

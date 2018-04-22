@@ -142,14 +142,14 @@ export class StackedLeadsourceComponent implements OnInit, OnDestroy {
             
             else
             {
-              console.log('No access to this page choco');
+              // console.log('No access to this page choco');
               alert('No access to this page');
               return this.ev=false;
             }
          })
        }
        else{
-            console.log('No access to this page m&m');
+            // console.log('No access to this page m&m');
             this.router.navigate(['login']);
             return this.ev=false;
        }
@@ -172,7 +172,7 @@ export class StackedLeadsourceComponent implements OnInit, OnDestroy {
     this.fyear_list = this.opportunities_stkls
       .map(item => item.financial_year)
       .filter((value, index, self) => { return self.indexOf(value) === index })
-      console.log("fyear", this.fyear_list)
+      // console.log("fyear", this.fyear_list)
 
   }
 
@@ -194,7 +194,7 @@ export class StackedLeadsourceComponent implements OnInit, OnDestroy {
       // var date = moved_time.getDate();
       var lsmonth = i.leadsource + ""+ i.month;
       this.opportunities_ls.push({pkey:lsmonth, leadsource: i.leadsource, month: i.month,valueofdeal: i.valueofdeal})  
-      console.log("up", this.opportunities_ls);  
+      // console.log("up", this.opportunities_ls);  
     })
     
     const groupedObj = this.opportunities_ls.reduce((prev, cur)=> {
@@ -203,13 +203,13 @@ export class StackedLeadsourceComponent implements OnInit, OnDestroy {
       } else {
         prev[cur['pkey']].push(cur);
       }
-      console.log("prev", prev);
+      // console.log("prev", prev);
       return prev;
     }, {});
 
     this.datastckLS = Object.keys(groupedObj).map(key => { return { key, value: groupedObj[key]}});
 
-    console.log("up", this.datastckLS);
+    // console.log("up", this.datastckLS);
 
     this.datastckLS.forEach ( i => {
       this.datamonth = null;
@@ -227,12 +227,12 @@ export class StackedLeadsourceComponent implements OnInit, OnDestroy {
 
       this.dataFinalList.push({ymr: i.key, leadsource: this.dataleadsrce,
         month: this.datamonth, monthlyRev: dataValues })
-      console.log("up", this.dataFinalList);
+      // console.log("up", this.dataFinalList);
     })
 
     this.inbdList = this.dataFinalList.filter(i => {return i.leadsource == 'inbound-landline'})
 
-    console.log("chnList", this.inbdList);
+    // console.log("chnList", this.inbdList);
     this.datainbdvalue = ['','','','','','','','','','','','']
 
     for(let i=0; i< this.inbdList.length; i++){
@@ -249,47 +249,47 @@ export class StackedLeadsourceComponent implements OnInit, OnDestroy {
 
     this.distList = this.dataFinalList.filter(i => {return i.leadsource == 'distributor'})
 
-    console.log("chnList", this.distList);
+    // console.log("chnList", this.distList);
     this.datadistvalue = ['','','','','','','','','','','','']
 
     for(let i=0; i< this.distList.length; i++){
       this.datadistvalue.splice(this.distList[i].month,1,this.distList[i].monthlyRev);
     }
 
-    console.log ("chnList", this.datadistvalue);
+    // console.log ("chnList", this.datadistvalue);
 
     this.oemList = this.dataFinalList.filter(i => {return i.leadsource == 'oem'})
 
-    console.log("chnList", this.oemList);
+    // console.log("chnList", this.oemList);
     this.dataoemvalue = ['','','','','','','','','','','','']
 
     for(let i=0; i< this.oemList.length; i++){
       this.dataoemvalue.splice(this.oemList[i].month,1,this.oemList[i].monthlyRev);
     }
 
-    console.log ("chnList", this.dataoemvalue);
+    // console.log ("chnList", this.dataoemvalue);
 
     this.outbndList = this.dataFinalList.filter(i => {return i.leadsource == 'outboundcall'})
 
-    console.log("chnList", this.outbndList);
+    // console.log("chnList", this.outbndList);
     this.dataoutbndvalue = ['','','','','','','','','','','','']
 
     for(let i=0; i< this.outbndList.length; i++){
       this.dataoutbndvalue.splice(this.outbndList[i].month,1,this.outbndList[i].monthlyRev);
     }
 
-    console.log ("chnList", this.dataoutbndvalue);
+    // console.log ("chnList", this.dataoutbndvalue);
 
     this.onsiteList = this.dataFinalList.filter(i => {return i.leadsource == 'onsite'})
 
-    console.log("chnList", this.onsiteList);
+    // console.log("chnList", this.onsiteList);
     this.dataonsitevalue = ['','','','','','','','','','','','']
 
     for(let i=0; i< this.onsiteList.length; i++){
       this.dataonsitevalue.splice(this.onsiteList[i].month,1,this.onsiteList[i].monthlyRev);
     }
 
-    console.log ("chnList", this.dataonsitevalue);
+    // console.log ("chnList", this.dataonsitevalue);
 
 
     this.dostackedRegioncharts();
@@ -314,7 +314,7 @@ export class StackedLeadsourceComponent implements OnInit, OnDestroy {
       // var date = moved_time.getDate();
       var lsmonth = i.leadsource + ""+ i.month;
       this.opportunities_ls.push({pkey:lsmonth, leadsource: i.leadsource, month: i.month,valueofdeal: i.valueofdeal})  
-      console.log("up", this.opportunities_ls);  
+      // console.log("up", this.opportunities_ls);  
     })
     
     const groupedObj = this.opportunities_ls.reduce((prev, cur)=> {
@@ -323,13 +323,13 @@ export class StackedLeadsourceComponent implements OnInit, OnDestroy {
       } else {
         prev[cur['pkey']].push(cur);
       }
-      console.log("prev", prev);
+      // console.log("prev", prev);
       return prev;
     }, {});
 
     this.datastckLS = Object.keys(groupedObj).map(key => { return { key, value: groupedObj[key]}});
 
-    console.log("up", this.datastckLS);
+    // console.log("up", this.datastckLS);
 
     this.datastckLS.forEach ( i => {
       this.datamonth = null;
@@ -347,12 +347,12 @@ export class StackedLeadsourceComponent implements OnInit, OnDestroy {
 
       this.dataFinalList.push({ymr: i.key, leadsource: this.dataleadsrce,
         month: this.datamonth, monthlyRev: dataValues })
-      console.log("up", this.dataFinalList);
+      // console.log("up", this.dataFinalList);
     })
 
     this.inbdList = this.dataFinalList.filter(i => {return i.leadsource == 'inbound-landline'})
 
-    console.log("chnList", this.inbdList);
+    // console.log("chnList", this.inbdList);
     this.datainbdvalue = ['','','','','','','','','','','','']
 
     for(let i=0; i< this.inbdList.length; i++){
@@ -369,47 +369,47 @@ export class StackedLeadsourceComponent implements OnInit, OnDestroy {
 
     this.distList = this.dataFinalList.filter(i => {return i.leadsource == 'distributor'})
 
-    console.log("chnList", this.distList);
+    // console.log("chnList", this.distList);
     this.datadistvalue = ['','','','','','','','','','','','']
 
     for(let i=0; i< this.distList.length; i++){
       this.datadistvalue.splice(this.distList[i].month,1,this.distList[i].monthlyRev);
     }
 
-    console.log ("chnList", this.datadistvalue);
+    // console.log ("chnList", this.datadistvalue);
 
     this.oemList = this.dataFinalList.filter(i => {return i.leadsource == 'oem'})
 
-    console.log("chnList", this.oemList);
+    // console.log("chnList", this.oemList);
     this.dataoemvalue = ['','','','','','','','','','','','']
 
     for(let i=0; i< this.oemList.length; i++){
       this.dataoemvalue.splice(this.oemList[i].month,1,this.oemList[i].monthlyRev);
     }
 
-    console.log ("chnList", this.dataoemvalue);
+    // console.log ("chnList", this.dataoemvalue);
 
     this.outbndList = this.dataFinalList.filter(i => {return i.leadsource == 'outboundcall'})
 
-    console.log("chnList", this.outbndList);
+    // console.log("chnList", this.outbndList);
     this.dataoutbndvalue = ['','','','','','','','','','','','']
 
     for(let i=0; i< this.outbndList.length; i++){
       this.dataoutbndvalue.splice(this.outbndList[i].month,1,this.outbndList[i].monthlyRev);
     }
 
-    console.log ("chnList", this.dataoutbndvalue);
+    // console.log ("chnList", this.dataoutbndvalue);
 
     this.onsiteList = this.dataFinalList.filter(i => {return i.leadsource == 'onsite'})
 
-    console.log("chnList", this.onsiteList);
+    // console.log("chnList", this.onsiteList);
     this.dataonsitevalue = ['','','','','','','','','','','','']
 
     for(let i=0; i< this.onsiteList.length; i++){
       this.dataonsitevalue.splice(this.onsiteList[i].month,1,this.onsiteList[i].monthlyRev);
     }
 
-    console.log ("chnList", this.dataonsitevalue);
+    // console.log ("chnList", this.dataonsitevalue);
 
 
     this.dostackedRegioncharts();

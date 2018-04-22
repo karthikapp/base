@@ -114,7 +114,7 @@ export class RevenueRegionComponent implements OnInit, OnDestroy {
               .takeWhile(() => this.alive)
               .subscribe( 
                 u => {
-                  console.log("hi Region")
+                  // console.log("hi Region")
                  this.opportunities_region = [];
                  
 
@@ -223,7 +223,7 @@ export class RevenueRegionComponent implements OnInit, OnDestroy {
     this.fyear_list = this.opportunities_region
       .map(item => item.financial_year)
       .filter((value, index, self) => { return self.indexOf(value) === index })
-      console.log("fyear", this.fyear_list)
+      // console.log("fyear", this.fyear_list)
 
   }
 
@@ -233,7 +233,7 @@ export class RevenueRegionComponent implements OnInit, OnDestroy {
     this.quarter_list = this.opporegfylist
                       .map(item => item.quarter)
                       .filter((value, index, self) => { return self.indexOf(value) === index })
-                      console.log("fyear", this.quarter_list);
+                      // console.log("fyear", this.quarter_list);
   }
 
   onYearChange(year){
@@ -285,7 +285,7 @@ export class RevenueRegionComponent implements OnInit, OnDestroy {
     }
 
     this.opportunities_regL.forEach( i => {
-                  console.log("hi Region1")
+                  // console.log("hi Region1")
                   if(i.valueofdeal != undefined)
                   {
                     this.oppoRegionTotalValues.push(i.valueofdeal)
@@ -303,16 +303,16 @@ export class RevenueRegionComponent implements OnInit, OnDestroy {
                   {
                     prev[cur['region']].push(cur);
                   }
-                  console.log("prev", prev);
+                  // console.log("prev", prev);
                   return prev;
                 }, {});
 
                 this.dataRegion = Object.keys(groupedObj).map(key => { return { key, value: groupedObj[key] }});
                   
-                console.log("hi Region4", this.dataRegion)
+                // console.log("hi Region4", this.dataRegion)
                 this.dataRegion.forEach( i => {
                   this.oppoRegionValues = [];
-                  console.log("hi Region2", this.pieRegionRevenue)
+                  // console.log("hi Region2", this.pieRegionRevenue)
                   i.value.forEach( j => {
                     this.oppoRegionValues.push(j.valueofdeal)
                     //console.log("hi Region", this.oppoRegionValues);
@@ -323,7 +323,7 @@ export class RevenueRegionComponent implements OnInit, OnDestroy {
                 this.valuePercent = (this.oppoRV/ this.oppoTRV)*100;
                 //console.log("hi PVTV", this.oppoRV, this.oppoTRV, this.valuePercent )
                 this.pieRegionRevenue.push({name: i.key, y:this.valuePercent});
-                console.log("hi Region3", this.pieRegionRevenue)
+                // console.log("hi Region3", this.pieRegionRevenue)
               })
               this.dopieRegionCharts();
 
@@ -355,7 +355,7 @@ export class RevenueRegionComponent implements OnInit, OnDestroy {
     }
 
     this.opportunities_regL.forEach( i => {
-                  console.log("hi Region1")
+                  // console.log("hi Region1")
                   if(i.valueofdeal != undefined)
                   {
                     this.oppoRegionTotalValues.push(i.valueofdeal)
@@ -373,16 +373,16 @@ export class RevenueRegionComponent implements OnInit, OnDestroy {
                   {
                     prev[cur['region']].push(cur);
                   }
-                  console.log("prev", prev);
+                  // console.log("prev", prev);
                   return prev;
                 }, {});
 
                 this.dataRegion = Object.keys(groupedObj).map(key => { return { key, value: groupedObj[key] }});
                   
-                console.log("hi Region4", this.dataRegion)
+                // console.log("hi Region4", this.dataRegion)
                 this.dataRegion.forEach( i => {
                   this.oppoRegionValues = [];
-                  console.log("hi Region2", this.pieRegionRevenue)
+                  // console.log("hi Region2", this.pieRegionRevenue)
                   i.value.forEach( j => {
                     this.oppoRegionValues.push(j.valueofdeal)
                     //console.log("hi Region", this.oppoRegionValues);
@@ -393,7 +393,7 @@ export class RevenueRegionComponent implements OnInit, OnDestroy {
                 this.valuePercent = (this.oppoRV/ this.oppoTRV)*100;
                 //console.log("hi PVTV", this.oppoRV, this.oppoTRV, this.valuePercent )
                 this.pieRegionRevenue.push({name: i.key, y:this.valuePercent});
-                console.log("hi Region3", this.pieRegionRevenue)
+                // console.log("hi Region3", this.pieRegionRevenue)
               })
               this.dopieRegionCharts();
 
@@ -408,7 +408,7 @@ export class RevenueRegionComponent implements OnInit, OnDestroy {
       'data': []
     }], cur = this.pieRegionRevenue;
 
-    console.log("srpcur", cur);
+    // console.log("srpcur", cur);
 
     cur.forEach( i => {
       series[0].data.push(i);
