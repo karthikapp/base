@@ -44,7 +44,7 @@
    <div class="description">
     <h2 style="color: #079992;font-size: 2.8vw;font-weight: bold;">
      {{rupee(dealvaluequarter_total)}}
-   </h2>
+   </h2>59,32,488.00
  </div>
 </div>
 
@@ -61,9 +61,12 @@
    </div>
    <div class="description" align="center" style="align-content: center;" >
     <br>
-    <div class="c100 p33 small center">
+    <div class="c100 p{{(dealvaluequarter_total/qtd_total)*100 | number : '1.2-2'}} small center">
       <span>{{(dealvaluequarter_total/qtd_total)*100 | number : '1.2-2'}}%</span>
-      <div class="slice"><div class="bar"></div><div class="fill"></div></div>
+      <div class="slice">
+        <div class="bar"></div>
+        <div class="fill"></div>
+      </div>
     </div>
 
   </div>

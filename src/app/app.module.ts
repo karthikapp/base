@@ -81,6 +81,7 @@ import { MzterialDesignLiteDirective } from './directives/mzterial-design-lite.d
 import { ChartModule } from 'angular2-highcharts';
 import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
 import * as funnel from 'highcharts/modules/funnel';
+import * as sunburst from 'highcharts/modules/sunburst';
 import { ChartsComponent } from './components/charts/charts.component';
 import { FunnelchartsComponent } from './components/funnelcharts/funnelcharts.component';
 import { FunnelteamchartsComponent } from './components/funnelteamcharts/funnelteamcharts.component';
@@ -120,6 +121,7 @@ import { RevenueExstcustComponent } from './components/revenue-exstcust/revenue-
 import { StackedExstcustComponent } from './components/stacked-exstcust/stacked-exstcust.component';
 import { TargetaddComponent } from './targetadd/targetadd.component';
 import { TargetdashytdComponent } from './targetdashytd/targetdashytd.component';
+import { SunburstEmpYComponent } from './components/sunburst-emp-y/sunburst-emp-y.component';
 
 
 
@@ -266,7 +268,8 @@ export function highchartsFactory() {
     RevenueExstcustComponent,
     StackedExstcustComponent,
     TargetaddComponent,
-    TargetdashytdComponent
+    TargetdashytdComponent,
+    SunburstEmpYComponent
   ],
   imports: [
     BrowserModule ,

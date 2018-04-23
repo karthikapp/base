@@ -7,11 +7,11 @@ import * as moment from 'moment';
 import { AnalyticsService } from '../../services/analytics.service';
 
 @Component({
-  selector: 'app-sunburst-emp',
-  templateUrl: './sunburst-emp.component.html',
-  styleUrls: ['./sunburst-emp.component.css']
+  selector: 'app-sunburst-emp-y',
+  templateUrl: './sunburst-emp-y.component.html',
+  styleUrls: ['./sunburst-emp-y.component.css']
 })
-export class SunburstEmpComponent implements OnInit, OnDestroy {
+export class SunburstEmpYComponent implements OnInit, OnDestroy {
 
   options: Object;
     uid: string;
@@ -43,14 +43,14 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
     valuePercent: any;
     name: any;
 
-    fyearSelect: any;
-    previousYear: any;
+    yearSelect: any;
+
     currentYear: any;
-   fyear_list:any;
+   year_list:any;
 
    opposblist:any;
    oppo_sbL: any;
-   monthName: any;
+
    p: any;
 
    region: any;
@@ -59,7 +59,7 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
    eparent: any;
    cparent: any;
    pparent: any;
-   quarter: any;
+   month: any;
    assigned_to: any;
    customer: any;
    product: any;
@@ -69,8 +69,7 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
     private analyticsservice : AnalyticsService) { }
 
   ngOnInit() {
-    this.opportunities_sunburst = [];
-    this.monthName = '';  
+    this.opportunities_sunburst = []; 
 
     this.afAuth.authState
     .takeWhile(() => this.alive)
@@ -104,8 +103,7 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
             {
              this.currentYear = (new Date()).getFullYear();
              
-               this.previousYear = this.currentYear - 1;
-              this.fyearSelect = this.previousYear + '-' + this.currentYear;
+               this.yearSelect = this.currentYear
 
               this.analyticsservice.getOpportunitiesforrv()
               .takeWhile(() => this.alive)
@@ -114,8 +112,8 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
                   this.opportunities_sunburst = [];
                 
                 this.opportunities_sunburst = u;
-                  this.fyearSBList();
-                  this.selectSBFYList();
+                  this.yearSBList();
+                  this.selectSBYList();
 
               })
 
@@ -144,22 +142,22 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
 
 
 
-  fyearSBList(){
-    this.fyear_list = this.opportunities_sunburst
-      .map(item => item.financial_year)
+  yearSBList(){
+    this.year_list = this.opportunities_sunburst
+      .map(item => item.year)
       .filter((value, index, self) => { return self.indexOf(value) === index })
   }
 
 
- onFYearChange(fyear){
-    this.fyearSelect = fyear;
+ onYearChange(year){
+    this.yearSelect = year;
 
-    this.selectSBFYList();
+    this.selectSBYList();
   }
 
 
 
-  selectSBFYList(){
+  selectSBYList(){
 
     this.opportunities_SBL = [];
     this.opportunities_SBLV = [];
@@ -179,7 +177,7 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
     this.oppoSBV = 0;
 
     this.opportunities_SBL = this.opportunities_sunburst.filter( i => {
-        return i.financial_year == this.fyearSelect 
+        return i.year == this.yearSelect 
       })
 
     this.opportunities_SBL.forEach( 
@@ -189,17 +187,17 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
                   this.oppoSBTotalValues.push(i.valueofdeal)
                 }
 
-                var prmkey = i.quarter + i.region
+                var prmkey = i.month + i.region
 
-                var prmkeyl1 = i.quarter + i.region + i.assigned_to
+                var prmkeyl1 = i.month + i.region + i.assigned_to
 
-                var prmkeyl2 = i.quarter + i.region + i.assigned_to + i.company_id
+                var prmkeyl2 = i.month + i.region + i.assigned_to + i.company_id
 
-                var prmkeyl3 = i.quarter + i.region + i.assigned_to + i.company_id + i.product
+                var prmkeyl3 = i.month + i.region + i.assigned_to + i.company_id + i.product
                 
                
                 this.opportunities_SBLV.push({prmkey: prmkey, prmkeyl1: prmkeyl1, prmkeyl2: prmkeyl2, prmkeyl3: prmkeyl3,
-                 quarter: i.quarter, region: i.region, assigned_to: i.assigned_to, assignedto_name: i.assignedto_name,
+                 month: i.month, region: i.region, assigned_to: i.assigned_to, assignedto_name: i.assignedto_name,
                  company_id: i.company_id, companyname: i.companyname, product: i.product, productname: i.productname,
                  valueofdeal: i.valueofdeal})
 
@@ -207,31 +205,73 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
               })
               this.oppoTSBV = this.oppoSBTotalValues.reduce((a, b) => a + b, 0);
 
-              //Grouping by Quarter
+              //Grouping by Month
               const groupedqObj = this.opportunities_SBLV.reduce((prev, cur)=> {
-                if(!prev[cur['quarter']]) {
-                  prev[cur['quarter']] = [cur];
+                if(!prev[cur['month']]) {
+                  prev[cur['month']] = [cur];
                 } else {
-                  prev[cur['quarter']].push(cur);
+                  prev[cur['month']].push(cur);
                 }
                 return prev;
               }, {});
               this.dataqSB = Object.keys(groupedqObj).map(key => { return { key, value: groupedqObj[key] }});
 
-              //Looping thro' and finding percentage for each Quarter
+              //Looping thro' and finding percentage for each Month
               this.dataqSB.forEach( i => {
                 this.oppoSBValues = [];
                 this.name = '';
+                this.month = '';
                 i.value.forEach( j => {
                   this.oppoSBValues.push(j.valueofdeal)
-                  this.name = j.quarter
+                   if (j.month == 1){
+			        this.name = "January"
+			    }
+
+			    else if (j.month == 2){
+			      this.name = "February"
+			    }
+			    else if (j.month == 3){
+			      this.name = "March"
+			    }
+
+			    else if (j.month == 4){
+			      this.name = "April"
+			    }
+			    else if (j.month == 5){
+			      this.name = "May"
+			    }
+			    else if (j.month == 6){
+			      this.name = "June"
+			    }
+			    else if (j.month == 7){
+			      this.name = "July"
+			    }
+
+			    else if (j.month == 8){
+			      this.name = "August"
+			    }
+			    else if (j.month == 9){
+			      this.name = "September"
+			    }
+			    else if (j.month == 10){
+			      this.name = "October"
+			    }
+
+			    else if (j.month == 11){
+			      this.name = "November"
+			    }
+			    else if (j.month == 12){
+			      this.name = "December"
+			    }
+
+                  this.month = j.month;
                 })
                 this.oppoSBV = 0;
                 this.valuePercent = null;
                 this.oppoSBV = this.oppoSBValues.reduce((a,b) => a+b, 0)
                 this.valuePercent = (this.oppoSBV/ this.oppoTSBV)*100;
                 
-                this.pieSBQRevenue.push({id: this.p, parent: '0.0' , name: this.name, value:this.valuePercent});
+                this.pieSBQRevenue.push({id: this.p, parent: '0.0' , month: this.month, name: this.name, value:this.valuePercent});
                 console.log("psReg", this.pieSBQRevenue);
                  this.p++;
                  this.p = this.p + '.0';
@@ -252,11 +292,11 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
               this.datarSB.forEach( i => {
                 this.oppoSBValues = [];
                 this.name = '';
-                this.quarter = '';
+                this.month = '';
                 i.value.forEach( j => {
                   this.oppoSBValues.push(j.valueofdeal)
                   this.name = j.region
-                  this.quarter = j.quarter
+                  this.month = j.month
                 })
                 this.oppoSBV = 0;
                 this.valuePercent = null;
@@ -264,7 +304,7 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
                 this.valuePercent = (this.oppoSBV/ this.oppoTSBV)*100;
                 
                 console.log("data", this.p)
-                this.pieSBRRevenue.push({id: this.p, quarter: this.quarter,  name: this.name, value:this.valuePercent});
+                this.pieSBRRevenue.push({id: this.p, month: this.month,  name: this.name, value:this.valuePercent});
                 console.log("psReg", this.pieSBRRevenue);
                  this.p++;
                  this.p = this.p + '.0'
@@ -285,13 +325,13 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
               this.dataeSB.forEach( i => {
                 this.oppoSBValues = [];
                 this.name = '';
-                this.quarter = '';
+                this.month = '';
                 this.region = '';
                 this.assigned_to = '';
                 i.value.forEach( j => {
                   this.oppoSBValues.push(j.valueofdeal)
                   this.name = j.assignedto_name
-                  this.quarter = j.quarter;
+                  this.month = j.month;
                   this.region = j.region;
                   this.assigned_to = j.assigned_to
                 })
@@ -300,7 +340,7 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
                 this.oppoSBV = this.oppoSBValues.reduce((a,b) => a+b, 0)
                 this.valuePercent = (this.oppoSBV/ this.oppoTSBV)*100;
                
-                this.pieSBERevenue.push({id: this.p, quarter: this.quarter, region: this.region, assigned_to:this.assigned_to,  name: this.name, value:this.valuePercent});
+                this.pieSBERevenue.push({id: this.p, month: this.month, region: this.region, assigned_to:this.assigned_to,  name: this.name, value:this.valuePercent});
                 console.log("psReg", this.pieSBERevenue);
                  this.p++;
                   this.p = this.p + '.0'
@@ -321,7 +361,7 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
               this.datacSB.forEach( i => {
                 this.oppoSBValues = [];
                 this.name = '';
-                this.quarter = '';
+                this.month = '';
                 this.region = '';
                 this.assigned_to = '';
                 this.customer = '';
@@ -329,7 +369,7 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
                 i.value.forEach( j => {
                   this.oppoSBValues.push(j.valueofdeal)
                   this.name = j.companyname
-                  this.quarter = j.quarter;
+                  this.month = j.month;
                   this.region = j.region;
                   this.assigned_to = j.assigned_to
                   this.customer = j.company_id
@@ -339,7 +379,7 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
                 this.oppoSBV = this.oppoSBValues.reduce((a,b) => a+b, 0)
                 this.valuePercent = (this.oppoSBV/ this.oppoTSBV)*100;
                 
-                this.pieSBCRevenue.push({id: this.p, quarter: this.quarter, region: this.region, assigned_to:this.assigned_to, company_id: this.customer,
+                this.pieSBCRevenue.push({id: this.p, month: this.month, region: this.region, assigned_to:this.assigned_to, company_id: this.customer,
                  name: this.name, value:this.valuePercent});
                 console.log("psReg", this.pieSBCRevenue);
                  this.p++;
@@ -361,7 +401,7 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
               this.datapSB.forEach( i => {
                 this.oppoSBValues = [];
                 this.name = '';
-                this.quarter = '';
+                this.month = '';
                 this.region = '';
                 this.assigned_to = '';
                 this.customer = '';
@@ -370,7 +410,7 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
                 i.value.forEach( j => {
                   this.oppoSBValues.push(j.valueofdeal)
                   this.name = j.productname;
-                  this.quarter = j.quarter;
+                  this.month = j.month;
                   this.region = j.region;
                   this.assigned_to = j.assigned_to
                   this.customer = j.company_id
@@ -381,7 +421,7 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
                 this.oppoSBV = this.oppoSBValues.reduce((a,b) => a+b, 0)
                 this.valuePercent = (this.oppoSBV/ this.oppoTSBV)*100;
                 
-                this.pieSBPRevenue.push({quarter: this.quarter, region: this.region, assigned_to:this.assigned_to, company_id: this.customer,
+                this.pieSBPRevenue.push({month: this.month, region: this.region, assigned_to:this.assigned_to, company_id: this.customer,
                   product: this.product, name: this.name, value:this.valuePercent});
                 console.log("psReg", this.pieSBPRevenue);
 
@@ -400,17 +440,17 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
     c1 = this.pieSBCRevenue,
     p1 = this.pieSBPRevenue;
 
-    data.push({id: '0.0', parent: '', name: 'FY', value: 100})
+    data.push({id: '0.0', parent: '', name: 'Year', value: 100})
 
     q1.forEach( i=> {
       data.push({id:i.id, parent: i.parent, name: i.name, value: i.value});
-      this.quarter = '';
+      this.month = '';
       this.parent = '';
 
-      this.quarter = i.name;
+      this.month = i.month;
       this.parent = i.id;
       r1.forEach( j => {
-        if(this.quarter == j.quarter )
+        if(this.month == j.month )
         {
           data.push({id: j.id , parent: this.parent , name: j.name, value: j.value})  
           this.region = '';
@@ -418,10 +458,10 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
 
           this.region = j.name;
           this.rparent = j.id;
-          this.quarter = j.quarter;
+          this.month = j.month;
           e1.forEach( k => {
-            console.log("data1", this.quarter , j.quarter, this.region, j.region)
-            if(this.quarter == k.quarter && this.region == k.region)
+            console.log("data1", this.month , j.month, this.region, j.region)
+            if(this.month == k.month && this.region == k.region)
             {
               data.push({id: k.id , parent: this.rparent , name: k.name, value: k.value})
               this.eparent = '';
@@ -429,12 +469,12 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
 
               this.assigned_to = k.assigned_to;
               this.eparent = k.id;
-              this.quarter = k.quarter;
+              this.month = k.month;
               this.region = k.region;
 
               c1.forEach(l => {
-                console.log("data2",this.eparent, this.assigned_to, l.assigned_to, this.region, l.region, this.quarter, l.quarter)
-                if(this.quarter == l.quarter && this.region == l.region && this.assigned_to == l.assigned_to)
+                console.log("data2",this.eparent, this.assigned_to, l.assigned_to, this.region, l.region, this.month, l.month)
+                if(this.month == l.month && this.region == l.region && this.assigned_to == l.assigned_to)
                 {
                   console.log("data",this.eparent)
                   data.push({id: l.id , parent: this.eparent , name: l.name, value: l.value})
@@ -445,12 +485,12 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
                   this.customer = l.company_id;
                   this.cparent = l.id;
                   this.region = l.region;
-                  this.quarter = l.quarter;
+                  this.month = l.month;
                   this.assigned_to = l.assigned_to;
 
                   p1.forEach( m => {
-                    console.log("data3", this.cparent, this.customer, m.company_id , this.quarter, m.quarter, this.region, m.region)
-                    if(this.quarter == m.quarter && this.region == m.region && this.assigned_to == m.assigned_to && this.customer == m.company_id )
+                    console.log("data3", this.cparent, this.customer, m.company_id , this.month, m.month, this.region, m.region)
+                    if(this.month == m.month && this.region == m.region && this.assigned_to == m.assigned_to && this.customer == m.company_id )
                     {
                       console.log("data", this.cparent)
                       data.push({ parent: this.cparent , name: m.name, value: m.value})
@@ -464,12 +504,6 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
       })
     })    
 
-        
-          
-          
-            
-
-
 
 console.log("data", data);
 
@@ -479,7 +513,7 @@ console.log("data", data);
     },
 
     title: {
-        text: 'SALES INFORMATION BASED ON FINANCIAL YEAR'
+        text: 'SALES INFORMATION BASED ON YEAR'
     },
     series: [{
         type: "sunburst",
@@ -514,12 +548,14 @@ console.log("data", data);
         },
         {
             level: 3,
+            colorByPoint: true,
             colorVariation: {
                 key: 'brightness',
                 to: -0.5
             }
         }, {
             level: 4,
+            colorByPoint: true,
             colorVariation: {
                 key: 'brightness',
                 to: -0.5
@@ -527,6 +563,7 @@ console.log("data", data);
         },
         {
             level: 5,
+            colorByPoint: true,
             colorVariation: {
                 key: 'brightness',
                 to: -0.5
@@ -534,6 +571,7 @@ console.log("data", data);
         },
         {
             level: 6,
+            colorByPoint: true,
             colorVariation: {
                 key: 'brightness',
                 to: -0.5
@@ -547,5 +585,4 @@ console.log("data", data);
     }
 }
   }
-
 }

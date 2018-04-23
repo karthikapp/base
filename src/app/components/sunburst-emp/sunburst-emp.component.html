@@ -5,9 +5,9 @@
 
 					<form class="ui mini form">
 						<div class="form-group column" style="padding: 30px;">
-							<label style="font-weight: bold; font-size: 15px;" for="exampleFormControlSelect1">YEAR: </label>
-							<select class="form-control" id="exampleFormControlSelect1" name="yearSelect" [(ngModel)]="yearSelect" (change)="onYearChange($event.target.value)">
-								<option *ngFor="let p of year_list">{{ p }}</option>
+							<label style="font-weight: bold; font-size: 15px;" for="exampleFormControlSelect1">FINANCIAL YEAR: </label>
+							<select class="form-control" id="exampleFormControlSelect1" name="fyearSelect" [(ngModel)]="fyearSelect" (change)="onFYearChange($event.target.value)">
+								<option *ngFor="let p of fyear_list">{{ p }}</option>
 							</select>
 						</div>
 					</form>
@@ -16,4 +16,3 @@
 		</div>
 	</div>
 </div>
-
