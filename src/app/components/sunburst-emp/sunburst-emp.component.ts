@@ -27,14 +27,12 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
      pieSBQRevenue: any;
      pieSBRRevenue: any;
      pieSBERevenue: any;
-     pieSBCRevenue: any;
-     pieSBPRevenue: any;
+ 
      
      dataqSB: any;
      datarSB: any;
      dataeSB: any;
-     datacSB: any;
-     datapSB: any;
+
 
      opportunities_SBLV: any;
 
@@ -53,15 +51,10 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
    monthName: any;
    p: any;
 
-   region: any;
+   brand: any;
    parent: any;
    rparent: any;
-   eparent: any;
-   cparent: any;
-   pparent: any;
-   quarter: any;
    assigned_to: any;
-   customer: any;
    product: any;
 
   constructor(private firebaseservice : FirebaseService, 
@@ -163,16 +156,13 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
 
     this.opportunities_SBL = [];
     this.opportunities_SBLV = [];
-    this.datacSB = [];
     this.dataeSB = [];
-    this.datapSB = [];
     this.dataqSB = [];
     this.datarSB = [];
     this.pieSBQRevenue = [];
-    this.pieSBCRevenue = [];
+
     this.pieSBERevenue = [];
     this.pieSBRRevenue = [];
-    this.pieSBPRevenue = [];
     this.p = '1.0';
     this.oppoSBTotalValues = [];
     this.oppoTSBV = 0;
@@ -189,55 +179,49 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
                   this.oppoSBTotalValues.push(i.valueofdeal)
                 }
 
-                var prmkey = i.quarter + i.region
+                var prmkey = i.assigned_to + i.brand 
 
-                var prmkeyl1 = i.quarter + i.region + i.assigned_to
-
-                var prmkeyl2 = i.quarter + i.region + i.assigned_to + i.company_id
-
-                var prmkeyl3 = i.quarter + i.region + i.assigned_to + i.company_id + i.product
-                
+                var prmkeyl1 = i.assigned_to + i.brand + i.product
                
-                this.opportunities_SBLV.push({prmkey: prmkey, prmkeyl1: prmkeyl1, prmkeyl2: prmkeyl2, prmkeyl3: prmkeyl3,
-                 quarter: i.quarter, region: i.region, assigned_to: i.assigned_to, assignedto_name: i.assignedto_name,
-                 company_id: i.company_id, companyname: i.companyname, product: i.product, productname: i.productname,
-                 valueofdeal: i.valueofdeal})
-
+                this.opportunities_SBLV.push({prmkey: prmkey, prmkeyl1: prmkeyl1, assigned_to: i.assigned_to, assignedto_name: i.assignedto_name,
+                 brand: i.brand, product: i.product, productname: i.productname, valueofdeal: i.valueofdeal})
                 //console.log("opplsv", this.opportunities_SBLV)
               })
               this.oppoTSBV = this.oppoSBTotalValues.reduce((a, b) => a + b, 0);
 
-              //Grouping by Quarter
+             //Grouping by Assigned To
               const groupedqObj = this.opportunities_SBLV.reduce((prev, cur)=> {
-                if(!prev[cur['quarter']]) {
-                  prev[cur['quarter']] = [cur];
+                if(!prev[cur['assigned_to']]) {
+                  prev[cur['assigned_to']] = [cur];
                 } else {
-                  prev[cur['quarter']].push(cur);
+                  prev[cur['assigned_to']].push(cur);
                 }
                 return prev;
               }, {});
               this.dataqSB = Object.keys(groupedqObj).map(key => { return { key, value: groupedqObj[key] }});
 
-              //Looping thro' and finding percentage for each Quarter
+              //Looping thro' and finding percentage for each Assigned To
               this.dataqSB.forEach( i => {
                 this.oppoSBValues = [];
                 this.name = '';
+                this.assigned_to = '';
                 i.value.forEach( j => {
                   this.oppoSBValues.push(j.valueofdeal)
-                  this.name = j.quarter
+                  this.assigned_to = j.assigned_to;
+                  this.name = j.assignedto_name;
                 })
                 this.oppoSBV = 0;
                 this.valuePercent = null;
                 this.oppoSBV = this.oppoSBValues.reduce((a,b) => a+b, 0)
                 this.valuePercent = (this.oppoSBV/ this.oppoTSBV)*100;
                 
-                this.pieSBQRevenue.push({id: this.p, parent: '0.0' , name: this.name, value:this.valuePercent});
+                this.pieSBQRevenue.push({id: this.p, parent: '0.0' , assigned_to: this.assigned_to, name: this.name, value:this.valuePercent});
                 //console.log("psReg", this.pieSBQRevenue);
                  this.p++;
                  this.p = this.p + '.0';
               })
 
-              //Grouping by Region
+              //Grouping by Brand
               const groupedrObj = this.opportunities_SBLV.reduce((prev, cur)=> {
                 if(!prev[cur['prmkey']]) {
                   prev[cur['prmkey']] = [cur];
@@ -248,29 +232,28 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
               }, {});
               this.datarSB = Object.keys(groupedrObj).map(key => { return { key, value: groupedrObj[key] }});
 
-              //Looping thro' and finding percentage for each Region
+              //Looping thro' and finding percentage for each Brand
               this.datarSB.forEach( i => {
                 this.oppoSBValues = [];
                 this.name = '';
-                this.quarter = '';
+                this.assigned_to = '';     
                 i.value.forEach( j => {
                   this.oppoSBValues.push(j.valueofdeal)
-                  this.name = j.region
-                  this.quarter = j.quarter
+                  this.name = j.brand;
+                  this.assigned_to = j.assigned_to;
                 })
                 this.oppoSBV = 0;
                 this.valuePercent = null;
                 this.oppoSBV = this.oppoSBValues.reduce((a,b) => a+b, 0)
                 this.valuePercent = (this.oppoSBV/ this.oppoTSBV)*100;
                 
-                //console.log("data", this.p)
-                this.pieSBRRevenue.push({id: this.p, quarter: this.quarter,  name: this.name, value:this.valuePercent});
+                this.pieSBRRevenue.push({id: this.p, assigned_to: this.assigned_to,  name: this.name, value:this.valuePercent});
                 //console.log("psReg", this.pieSBRRevenue);
                  this.p++;
                  this.p = this.p + '.0'
               })
 
-              //Grouping by Assigned To
+              //Grouping by Product
               const groupedeObj = this.opportunities_SBLV.reduce((prev, cur)=> {
                 if(!prev[cur['prmkeyl1']]) {
                   prev[cur['prmkeyl1']] = [cur];
@@ -281,112 +264,27 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
               }, {});
               this.dataeSB = Object.keys(groupedeObj).map(key => { return { key, value: groupedeObj[key] }});
 
-              //Looping thro' and finding percentage for each Assigned To
+              //Looping thro' and finding percentage for each Product
               this.dataeSB.forEach( i => {
                 this.oppoSBValues = [];
                 this.name = '';
-                this.quarter = '';
-                this.region = '';
                 this.assigned_to = '';
+                this.product = '';
+                this.brand = '';
                 i.value.forEach( j => {
                   this.oppoSBValues.push(j.valueofdeal)
-                  this.name = j.assignedto_name
-                  this.quarter = j.quarter;
-                  this.region = j.region;
-                  this.assigned_to = j.assigned_to
+                  this.name = j.productname
+                  this.product = j.product;
+                  this.assigned_to = j.assigned_to;
+                  this.brand = j.brand
                 })
                 this.oppoSBV = 0;
                 this.valuePercent = null;
                 this.oppoSBV = this.oppoSBValues.reduce((a,b) => a+b, 0)
                 this.valuePercent = (this.oppoSBV/ this.oppoTSBV)*100;
                
-                this.pieSBERevenue.push({id: this.p, quarter: this.quarter, region: this.region, assigned_to:this.assigned_to,  name: this.name, value:this.valuePercent});
-                //console.log("psReg", this.pieSBERevenue);
-                 this.p++;
-                  this.p = this.p + '.0'
+                this.pieSBERevenue.push({brand: this.brand, assigned_to:this.assigned_to, product: this.product,  name: this.name, value:this.valuePercent});
               })
-
-              //Grouping by Customer
-              const groupedcObj = this.opportunities_SBLV.reduce((prev, cur)=> {
-                if(!prev[cur['prmkeyl2']]) {
-                  prev[cur['prmkeyl2']] = [cur];
-                } else {
-                  prev[cur['prmkeyl2']].push(cur);
-                }
-                return prev;
-              }, {});
-              this.datacSB = Object.keys(groupedcObj).map(key => { return { key, value: groupedcObj[key] }});
-
-              //Looping thro' and finding percentage for each Customer
-              this.datacSB.forEach( i => {
-                this.oppoSBValues = [];
-                this.name = '';
-                this.quarter = '';
-                this.region = '';
-                this.assigned_to = '';
-                this.customer = '';
-
-                i.value.forEach( j => {
-                  this.oppoSBValues.push(j.valueofdeal)
-                  this.name = j.companyname
-                  this.quarter = j.quarter;
-                  this.region = j.region;
-                  this.assigned_to = j.assigned_to
-                  this.customer = j.company_id
-                })
-                this.oppoSBV = 0;
-                this.valuePercent = null;
-                this.oppoSBV = this.oppoSBValues.reduce((a,b) => a+b, 0)
-                this.valuePercent = (this.oppoSBV/ this.oppoTSBV)*100;
-                
-                this.pieSBCRevenue.push({id: this.p, quarter: this.quarter, region: this.region, assigned_to:this.assigned_to, company_id: this.customer,
-                 name: this.name, value:this.valuePercent});
-                //console.log("psReg", this.pieSBCRevenue);
-                 this.p++;
-                 this.p = this.p + '.0'
-              })
-
-              //Grouping by Products
-              const groupedpObj = this.opportunities_SBLV.reduce((prev, cur)=> {
-                if(!prev[cur['prmkeyl3']]) {
-                  prev[cur['prmkeyl3']] = [cur];
-                } else {
-                  prev[cur['prmkeyl3']].push(cur);
-                }
-                return prev;
-              }, {});
-              this.datapSB = Object.keys(groupedpObj).map(key => { return { key, value: groupedpObj[key] }});
-
-              //Looping thro' and finding percentage for each Product
-              this.datapSB.forEach( i => {
-                this.oppoSBValues = [];
-                this.name = '';
-                this.quarter = '';
-                this.region = '';
-                this.assigned_to = '';
-                this.customer = '';
-                this.product = '';
-
-                i.value.forEach( j => {
-                  this.oppoSBValues.push(j.valueofdeal)
-                  this.name = j.productname;
-                  this.quarter = j.quarter;
-                  this.region = j.region;
-                  this.assigned_to = j.assigned_to
-                  this.customer = j.company_id
-                  this.product = j.product
-                })
-                this.oppoSBV = 0;
-                this.valuePercent = null;
-                this.oppoSBV = this.oppoSBValues.reduce((a,b) => a+b, 0)
-                this.valuePercent = (this.oppoSBV/ this.oppoTSBV)*100;
-                
-                this.pieSBPRevenue.push({quarter: this.quarter, region: this.region, assigned_to:this.assigned_to, company_id: this.customer,
-                  product: this.product, name: this.name, value:this.valuePercent});
-                //console.log("psReg", this.pieSBPRevenue);
-
-              })
-
 
 
               this.dosunburstRegChart();
@@ -396,82 +294,36 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
     var data = [], 
     q1 = this.pieSBQRevenue,
     r1 = this.pieSBRRevenue,
-    e1 = this.pieSBERevenue,
-    c1 = this.pieSBCRevenue,
-    p1 = this.pieSBPRevenue;
+    e1 = this.pieSBERevenue
 
     data.push({id: '0.0', parent: '', name: 'FY', value: 100})
 
-    q1.forEach( i=> {
+     q1.forEach( i=> {
       data.push({id:i.id, parent: i.parent, name: i.name, value: i.value});
-      this.quarter = '';
+      this.assigned_to = '';
       this.parent = '';
 
-      this.quarter = i.name;
+      this.assigned_to = i.assigned_to;
       this.parent = i.id;
       r1.forEach( j => {
-        if(this.quarter == j.quarter )
+        if(this.assigned_to == j.assigned_to )
         {
           data.push({id: j.id , parent: this.parent , name: j.name, value: j.value})  
-          this.region = '';
+          this.brand = '';
           this.rparent = '';
 
-          this.region = j.name;
+          this.brand = j.name;
           this.rparent = j.id;
-          this.quarter = j.quarter;
+          this.assigned_to = j.assigned_to;
           e1.forEach( k => {
-            //console.log("data1", this.quarter , j.quarter, this.region, j.region)
-            if(this.quarter == k.quarter && this.region == k.region)
+            if(this.assigned_to == k.assigned_to && this.brand == k.brand)
             {
-              data.push({id: k.id , parent: this.rparent , name: k.name, value: k.value})
-              this.eparent = '';
-              this.assigned_to = '';
-
-              this.assigned_to = k.assigned_to;
-              this.eparent = k.id;
-              this.quarter = k.quarter;
-              this.region = k.region;
-
-              c1.forEach(l => {
-                //console.log("data2",this.eparent, this.assigned_to, l.assigned_to, this.region, l.region, this.quarter, l.quarter)
-                if(this.quarter == l.quarter && this.region == l.region && this.assigned_to == l.assigned_to)
-                {
-                  //console.log("data",this.eparent)
-                  data.push({id: l.id , parent: this.eparent , name: l.name, value: l.value})
-
-                  this.cparent = '';
-                  this.customer = '';
-
-                  this.customer = l.company_id;
-                  this.cparent = l.id;
-                  this.region = l.region;
-                  this.quarter = l.quarter;
-                  this.assigned_to = l.assigned_to;
-
-                  p1.forEach( m => {
-                    //console.log("data3", this.cparent, this.customer, m.company_id , this.quarter, m.quarter, this.region, m.region)
-                    if(this.quarter == m.quarter && this.region == m.region && this.assigned_to == m.assigned_to && this.customer == m.company_id )
-                    {
-                      //console.log("data", this.cparent)
-                      data.push({ parent: this.cparent , name: m.name, value: m.value})
-                    }
-                  })
-                }
-              })
+              data.push({ parent: this.rparent , name: k.name, value: k.value})
             }
           })
         }
       })
     })    
-
-        
-          
-          
-            
-
-
-
-//console.log("data", data);
 
     this.options = {
     chart: {
@@ -522,21 +374,7 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
             level: 4,
             colorVariation: {
                 key: 'brightness',
-                to: -0.5
-            }
-        },
-        {
-            level: 5,
-            colorVariation: {
-                key: 'brightness',
-                to: -0.5
-            }
-        },
-        {
-            level: 6,
-            colorVariation: {
-                key: 'brightness',
-                to: -0.5
+                to: 0.5
             }
         }]
 
