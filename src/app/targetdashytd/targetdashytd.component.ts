@@ -113,6 +113,10 @@ export class TargetdashytdComponent implements OnInit {
   	return fystring
   }
 
+  getValue(val){
+    return Math.round(val);
+  }
+
   ngOnInit() 
   {
   	var d = new Date();

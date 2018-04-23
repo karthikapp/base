@@ -124,14 +124,14 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
             
             else
             {
-              console.log('No access to this page choco');
+              //console.log('No access to this page choco');
               alert('No access to this page');
               return this.ev=false;
             }
          })
        }
        else{
-            console.log('No access to this page m&m');
+            //console.log('No access to this page m&m');
             this.router.navigate(['login']);
             return this.ev=false;
        }
@@ -203,7 +203,7 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
                  company_id: i.company_id, companyname: i.companyname, product: i.product, productname: i.productname,
                  valueofdeal: i.valueofdeal})
 
-                console.log("opplsv", this.opportunities_SBLV)
+                //console.log("opplsv", this.opportunities_SBLV)
               })
               this.oppoTSBV = this.oppoSBTotalValues.reduce((a, b) => a + b, 0);
 
@@ -232,7 +232,7 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
                 this.valuePercent = (this.oppoSBV/ this.oppoTSBV)*100;
                 
                 this.pieSBQRevenue.push({id: this.p, parent: '0.0' , name: this.name, value:this.valuePercent});
-                console.log("psReg", this.pieSBQRevenue);
+                //console.log("psReg", this.pieSBQRevenue);
                  this.p++;
                  this.p = this.p + '.0';
               })
@@ -263,9 +263,9 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
                 this.oppoSBV = this.oppoSBValues.reduce((a,b) => a+b, 0)
                 this.valuePercent = (this.oppoSBV/ this.oppoTSBV)*100;
                 
-                console.log("data", this.p)
+                //console.log("data", this.p)
                 this.pieSBRRevenue.push({id: this.p, quarter: this.quarter,  name: this.name, value:this.valuePercent});
-                console.log("psReg", this.pieSBRRevenue);
+                //console.log("psReg", this.pieSBRRevenue);
                  this.p++;
                  this.p = this.p + '.0'
               })
@@ -301,7 +301,7 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
                 this.valuePercent = (this.oppoSBV/ this.oppoTSBV)*100;
                
                 this.pieSBERevenue.push({id: this.p, quarter: this.quarter, region: this.region, assigned_to:this.assigned_to,  name: this.name, value:this.valuePercent});
-                console.log("psReg", this.pieSBERevenue);
+                //console.log("psReg", this.pieSBERevenue);
                  this.p++;
                   this.p = this.p + '.0'
               })
@@ -341,7 +341,7 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
                 
                 this.pieSBCRevenue.push({id: this.p, quarter: this.quarter, region: this.region, assigned_to:this.assigned_to, company_id: this.customer,
                  name: this.name, value:this.valuePercent});
-                console.log("psReg", this.pieSBCRevenue);
+                //console.log("psReg", this.pieSBCRevenue);
                  this.p++;
                  this.p = this.p + '.0'
               })
@@ -383,7 +383,7 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
                 
                 this.pieSBPRevenue.push({quarter: this.quarter, region: this.region, assigned_to:this.assigned_to, company_id: this.customer,
                   product: this.product, name: this.name, value:this.valuePercent});
-                console.log("psReg", this.pieSBPRevenue);
+                //console.log("psReg", this.pieSBPRevenue);
 
               })
 
@@ -420,7 +420,7 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
           this.rparent = j.id;
           this.quarter = j.quarter;
           e1.forEach( k => {
-            console.log("data1", this.quarter , j.quarter, this.region, j.region)
+            //console.log("data1", this.quarter , j.quarter, this.region, j.region)
             if(this.quarter == k.quarter && this.region == k.region)
             {
               data.push({id: k.id , parent: this.rparent , name: k.name, value: k.value})
@@ -433,10 +433,10 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
               this.region = k.region;
 
               c1.forEach(l => {
-                console.log("data2",this.eparent, this.assigned_to, l.assigned_to, this.region, l.region, this.quarter, l.quarter)
+                //console.log("data2",this.eparent, this.assigned_to, l.assigned_to, this.region, l.region, this.quarter, l.quarter)
                 if(this.quarter == l.quarter && this.region == l.region && this.assigned_to == l.assigned_to)
                 {
-                  console.log("data",this.eparent)
+                  //console.log("data",this.eparent)
                   data.push({id: l.id , parent: this.eparent , name: l.name, value: l.value})
 
                   this.cparent = '';
@@ -449,10 +449,10 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
                   this.assigned_to = l.assigned_to;
 
                   p1.forEach( m => {
-                    console.log("data3", this.cparent, this.customer, m.company_id , this.quarter, m.quarter, this.region, m.region)
+                    //console.log("data3", this.cparent, this.customer, m.company_id , this.quarter, m.quarter, this.region, m.region)
                     if(this.quarter == m.quarter && this.region == m.region && this.assigned_to == m.assigned_to && this.customer == m.company_id )
                     {
-                      console.log("data", this.cparent)
+                      //console.log("data", this.cparent)
                       data.push({ parent: this.cparent , name: m.name, value: m.value})
                     }
                   })
@@ -471,7 +471,7 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
 
 
 
-console.log("data", data);
+//console.log("data", data);
 
     this.options = {
     chart: {
@@ -487,7 +487,7 @@ console.log("data", data);
         allowDrillToNode: true,
         cursor: 'pointer',
         dataLabels: {
-            format: '{point.name}: {point.value}%',
+            format: '{point.name}',
             filter: {
                 property: 'innerArcLength',
                 operator: '>',

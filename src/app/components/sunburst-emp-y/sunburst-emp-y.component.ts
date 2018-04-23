@@ -521,7 +521,7 @@ console.log("data", data);
         allowDrillToNode: true,
         cursor: 'pointer',
         dataLabels: {
-            format: '{point.name}: {point.value}%',
+            format: '{point.name}',
             filter: {
                 property: 'innerArcLength',
                 operator: '>',
