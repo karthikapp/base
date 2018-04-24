@@ -123,6 +123,8 @@ import { TargetaddComponent } from './targetadd/targetadd.component';
 import { TargetdashytdComponent } from './targetdashytd/targetdashytd.component';
 import { SunburstEmpYComponent } from './components/sunburst-emp-y/sunburst-emp-y.component';
 import { ChartMastersComponent } from './components/chart-masters/chart-masters.component';
+import { OrderModule } from 'ngx-order-pipe';
+import { ReversepipePipe } from './reversepipe.pipe';
 
 
 
@@ -272,12 +274,14 @@ export function highchartsFactory() {
     TargetaddComponent,
     TargetdashytdComponent,
     SunburstEmpYComponent,
-    ChartMastersComponent
+    ChartMastersComponent,
+    ReversepipePipe
   ],
   imports: [
     BrowserModule ,
     FormsModule,
     ReactiveFormsModule,
+    OrderModule,
     RouterModule.forRoot(appRoutes
      // ,{ enableTracing: true } // <-- debugging purposes only 
      ),

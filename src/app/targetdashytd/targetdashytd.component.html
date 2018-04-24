@@ -25,14 +25,14 @@
    </div>
    <div class="description" align="center" style="align-content: center;" >
     <br>
-   <!--  <div [ngClass]="['c100', 'p{{(dealvalue_total/total)*100  | number : '1.2-2'}}', 'small', 'center']"> -->
-    <div class="c100 p{{getValue((dealvalue_total/total)*100)}} small center">
-      <span>{{(dealvalue_total/total)  | percent : '1.2-2'}}</span>
-      <div class="slice"><div class="bar"></div><div class="fill"></div></div>
-    </div>
+    <!--  <div [ngClass]="['c100', 'p{{(dealvalue_total/total)*100  | number : '1.2-2'}}', 'small', 'center']"> -->
+      <div class="c100 p{{getValue((dealvalue_total/total)*100)}} small center">
+        <span>{{(dealvalue_total/total)  | percent : '1.2-2'}}</span>
+        <div class="slice"><div class="bar"></div><div class="fill"></div></div>
+      </div>
 
+    </div>
   </div>
-</div>
 </div>
 
 
@@ -52,12 +52,12 @@
 </div>
 
 
- <div class="card">
+<div class="card">
   <div class="content">
     <div class="header">
      Revenue Vs Target (QTD)
    </div>
-  <div class="meta" style="color:  #034f84">
+   <div class="meta" style="color:  #034f84">
      Target : {{rupee(qtd_total)}}
    </div>
    <div class="description" align="center" style="align-content: center;" >
@@ -74,7 +74,7 @@
 </div>
 </div>
 
- <div class="card">
+<div class="card" style="width: 100%;">
   <div class="content">
     <div class="header">
      Revenue Vs Target (Region)
@@ -82,35 +82,84 @@
 
    <div class="description" align="center" style="align-content: center;" >
     <br>
-    <div *ngFor="let p of dataFinalRegList">
-      {{p.region}} , {{p.revenue}} , {{p.target}}
 
-      <div class="c100 p{{getValueRT(p.revenue,p.target)}} small center">
-        <span>{{((p.revenue/p.target) ? (p.revenue/p.target)  : 0 )  | percent : '1.2-2'}}</span>
-        <div class="slice"><div class="bar"></div><div class="fill"></div></div>
+    <div class="ui stackable four column grid">
+      <div class="column" *ngFor="let p of dataFinalRegList">
+        <div>
+         <h4 style="font-weight: bold;color: #800000"> {{returnnonullregion(p.region)| uppercase}} </h4>
+
+         <div class="c100 p{{getValueRT(p.revenue,p.target)}} small center orange">
+          <span>{{((p.revenue/p.target) ? (p.revenue/p.target)  : 0 )  | percent : '1.2-2'}}</span>
+          <div class="slice"><div class="bar"></div><div class="fill"></div></div>
+        </div>
+        <div style="font-weight: bold;">
+          <br>
+          REVENUE YTD : {{rupee(p.revenue)}}
+          <br>
+          TARGET : {{rupee(p.target)}}
+        </div>
       </div>
     </div>
+
   </div>
+
+</div>
 </div>
 </div>
 
- <div class="card">
+<div class="card" style="width: 100%;">
   <div class="content">
     <div class="header">
-     Revenue Vs Target (Executive)
+     Revenue YTD Vs Target (Executive)
    </div>
 
-   <div class="description" align="center" style="align-content: center;" >
-    <br>
-    <div *ngFor="let e of dataFinalEmpList">
-    {{e.assigned_to}} , {{e.revenue}} , {{e.target}}
+   <div class="description">
+
+    <div>
+      <table class="ui inverted blue table">
+        <thead>
+          <tr>
+           <th>EXECUTIVE</th>
+           <th style="text-align: right;">REVENUE YTD</th>
+           <th style="text-align: right;">TARGET</th>
+           <th style="text-align: center;">% ACHIEVED</th>
+         </tr>
+       </thead>
+     </table>
+   </div>
+<div style="max-height:200px;overflow:auto;">
+   <table class="ui inverted blue table">
+    <thead>
+     <!--  <tr>
+       <th></th>
+       <th></th>
+       <th></th>
+       <th></th>
+       <th></th>
+     </tr> -->
+   </thead>
+   <tbody>
+    <tr *ngFor="let e of dataFinalEmpList | orderBy: 'revenue' | reversepipe">
+      <td> <app-assignedtonameget name="{{e.assigned_to}}"></app-assignedtonameget></td>
+      <td>{{rupee(e.revenue)}}</td>
+      <td>{{rupee(e.target)}}</td>
+      <td>{{((e.revenue/e.target) ?  (e.revenue/e.target) : 0 ) | percent : '1.2-2'}}</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<!--     <br>
+    <div >
+     ,  , 
       <div class="c100 p{{getValueRT(e.revenue,e.target)}} small center">
-        <span>{{((e.revenue/e.target) ?  (e.revenue/e.target) : 0 ) | percent : '1.2-2'}}</span>
+        <span></span>
         <div class="slice"><div class="bar"></div><div class="fill"></div></div>
       </div>
     </div>
-  </div>
+  </div> -->
 </div>
+
+
 </div>
 
 

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FirebaseService } from "../services/firebase.service";
 declare var jQuery: any;
+import {ReversepipePipe} from '../reversepipe.pipe';
+
 
 @Component({
   selector: 'app-targetdashytd',
@@ -84,6 +86,22 @@ export class TargetdashytdComponent implements OnInit {
       }
     }
     return a;
+  }
+
+  returnnonullregion(regionname)
+  {
+    let val = ''
+    // console.log("region", regionname)
+    if (regionname == '')
+    {
+      val = "N/S"
+    }
+    else 
+    {
+      val = regionname
+    }
+
+    return val
   }
 
 
@@ -416,7 +434,7 @@ export class TargetdashytdComponent implements OnInit {
     }
     else 
     {
-      console.log("no targets found")
+      // console.log("no targets found")
     }
   }
 
@@ -451,7 +469,7 @@ export class TargetdashytdComponent implements OnInit {
 
   getValueRT(value,target){
     let val = 0;
-    console.log("trying", value, target);
+    // console.log("trying", value, target);
     if(value == 0 || target == 0)
     {
       val =0
@@ -459,7 +477,7 @@ export class TargetdashytdComponent implements OnInit {
     else{
       val = (value/target)*100;
     }
-    console.log("trying12", val)
+    // console.log("trying12", val)
 
 
     return Math.round(val);
