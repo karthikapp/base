@@ -74,6 +74,44 @@
 </div>
 </div>
 
+ <div class="card">
+  <div class="content">
+    <div class="header">
+     Revenue Vs Target (Region)
+   </div>
+
+   <div class="description" align="center" style="align-content: center;" >
+    <br>
+    <div *ngFor="let p of dataFinalRegList">
+      {{p.region}} , {{p.revenue}} , {{p.target}}
+
+      <div class="c100 p{{getValueRT(p.revenue,p.target)}} small center">
+        <span>{{((p.revenue/p.target) ? (p.revenue/p.target)  : 0 )  | percent : '1.2-2'}}</span>
+        <div class="slice"><div class="bar"></div><div class="fill"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+ <div class="card">
+  <div class="content">
+    <div class="header">
+     Revenue Vs Target (Executive)
+   </div>
+
+   <div class="description" align="center" style="align-content: center;" >
+    <br>
+    <div *ngFor="let e of dataFinalEmpList">
+    {{e.assigned_to}} , {{e.revenue}} , {{e.target}}
+      <div class="c100 p{{getValueRT(e.revenue,e.target)}} small center">
+        <span>{{((e.revenue/e.target) ?  (e.revenue/e.target) : 0 ) | percent : '1.2-2'}}</span>
+        <div class="slice"><div class="bar"></div><div class="fill"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
 
 
 

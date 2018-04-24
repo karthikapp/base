@@ -21,6 +21,33 @@ export class TargetdashytdComponent implements OnInit {
   qtd_total: number;
   dealvaluequarter_total:number;
 
+  dataRegion: any;
+  rtotal: number;
+  data: any;
+  dataTargetRegList: any;
+  dataEmp : any;
+  dataTargetEmpList: any;
+  empname: string;
+  revenueList: any;
+  dataRevRegList: any;
+  dataRevEmpList: any;
+
+  dataFinalRegList: any;
+  dataFinalEmpList: any;
+  name: any;
+  value: any;
+  RevPercent : number =0;
+  EmpPercent: number = 0;
+  regionList: any;
+  executiveList: any;
+  count: number = 0;
+
+  dataTRegList: any;
+  dataTEmpList: any;
+  dataRRegList: any;
+  dataREmpList: any;
+  tvalue: any;
+
   constructor(private firebaseservice : FirebaseService) 
   {
     this.percentcompleted = (this.dealvalue_total/this.total)*100
@@ -45,41 +72,352 @@ export class TargetdashytdComponent implements OnInit {
   	return stringret
   }
 
+  unique(arr) {
+    var u = {}, a = [];
+    for(var i = 0, l = arr.length; i < l; ++i){
+      if(arr[i] == undefined){
+          arr[i] = '';
+      }
+      if(!u.hasOwnProperty(arr[i])) {
+        a.push(arr[i]);
+        u[arr[i]] = 1;
+      }
+    }
+    return a;
+  }
 
 
    ngAfterContentChecked() 
   {
    
+   this.dataRegion = [];
+   this.dataEmp = [];
+   this.dataREmpList = [];
+   this.dataTEmpList = [];
+   this.dataTargetEmpList = [];
+   this.dataTRegList = [];
+   this.dataTargetRegList = [];
+   this.dataRRegList = [];
+   this.dataRevRegList = [];
+   this.dataFinalRegList = [];
+   this.dataFinalEmpList = [];
+   this.dataRevEmpList = [];
+
    let total = 0;
    let qtd_total = 0;
-    // console.log("trying new value")
+
     for (var i = 0; i < this.targetlist.length; i++) {
       
-            total += (this.targetlist[i].Q1 + this.targetlist[i].Q2 + this.targetlist[i].Q3 + this.targetlist[i].Q4) ;
-            this.total = total;
+      total += (this.targetlist[i].Q1 + this.targetlist[i].Q2 + this.targetlist[i].Q3 + this.targetlist[i].Q4) ;
+      this.total = total;
 
-            if (this.quarter == "Q1")
-            {
-              qtd_total +=  (this.targetlist[i].Q1)
-            }
-            else if (this.quarter == "Q2")
-            {
-              qtd_total +=  (this.targetlist[i].Q2)
-            }
-             else if (this.quarter == "Q3")
-            {
-              qtd_total +=  (this.targetlist[i].Q3)
-            }
-              else if (this.quarter == "Q4")
-            {
-              qtd_total +=  (this.targetlist[i].Q4)
-            }
-     
+      if (this.quarter == "Q1")
+      {
+        qtd_total +=  (this.targetlist[i].Q1)
+      }
+      else if (this.quarter == "Q2")
+      {
+        qtd_total +=  (this.targetlist[i].Q2)
+      }
+      else if (this.quarter == "Q3")
+      {
+        qtd_total +=  (this.targetlist[i].Q3)
+      }
+      else if (this.quarter == "Q4")
+      {
+        qtd_total +=  (this.targetlist[i].Q4)
+      }     
     }
 
     this.total = total
     this.qtd_total = qtd_total
 
+    if(this.targetlist != undefined && this.revenueList != undefined){
+
+      const groupedObj = this.targetlist.reduce((prev, cur)=> {
+        if(!prev[cur['region']]) {
+          prev[cur['region']] = [cur];
+        } else {
+          prev[cur['region']].push(cur);
+        }
+        // console.log("prev", prev);
+        return prev;
+      }, {});
+
+      this.dataRegion = Object.keys(groupedObj).map(key => { return { key, value: groupedObj[key]}});
+
+      this.dataRegion.forEach ( i => {
+        this.data = [];
+        this.rtotal = 0;
+
+        i.value.forEach( j =>
+        {
+          this.data.push((j.Q1+ j.Q2 + j.Q3 + j.Q4));
+        })
+
+         this.rtotal = this.data.reduce((a,b) => a+b ,0);
+
+        this.dataTRegList.push({region: i.key, value: this.rtotal})
+      })
+
+      
+
+      this.regionList.forEach( i => {
+        this.name = '';
+        this.count = 0;
+        this.name = i;
+        this.value = 0;
+        this.dataTRegList.forEach ( j => {
+          if(this.name == j.region){
+            this.count = 1;
+            this.value = j.value
+          }
+        })
+        if(this.count = 0){
+          this.dataTargetRegList.push({region: this.name, value: 0})
+        }
+        else{
+          this.dataTargetRegList.push({region: this.name, value: this.value})
+        }
+  
+      })
+
+      //console.log("trying88", this.dataTargetRegList, this.dataTRegList)
+
+
+
+      const groupedeObj = this.targetlist.reduce((prev, cur)=> {
+        if(!prev[cur['userid']]) {
+          prev[cur['userid']] = [cur];
+        } else {
+          prev[cur['userid']].push(cur);
+        }
+        // console.log("prev", prev);
+        return prev;
+      }, {});
+
+      this.dataEmp = Object.keys(groupedeObj).map(key => { return { key, value: groupedeObj[key]}});
+
+
+
+      this.dataEmp.forEach ( i => {
+        this.data = [];
+        
+        this.empname = '';
+        this.rtotal = 0;
+
+        i.value.forEach( j =>
+        {
+          this.data.push((j.Q1 + j.Q2 + j.Q3 + j.Q4));
+          this.empname = j.name
+        })
+
+         this.rtotal = this.data.reduce((a,b) => a+b ,0);
+
+        this.dataTEmpList.push({assigned_to: i.key, name: this.empname, value: this.rtotal})
+        // console.log("up", this.dataFinalRegList);
+      })
+
+
+
+      this.executiveList.forEach( i => {
+        this.name = '';
+        this.count = 0;
+        this.empname = '';
+        this.value = '';
+        this.name = i;
+        this.dataTEmpList.forEach ( j => {
+          if(this.name == j.assigned_to){
+            this.count = 1;
+            this.value = j.value;
+            this.empname = j.name;
+          }
+        })
+        if(this.count = 0){
+          this.dataTargetEmpList.push({assigned_to: this.name, name: '', value: 0})
+        }
+        else{
+          this.dataTargetEmpList.push({assigned_to: this.name, name: this.empname, value: this.value})
+        }
+        //console.log("trying89", this.dataTargetEmpList, this.dataTEmpList)
+      })
+
+      const groupedRObj = this.revenueList.reduce((prev, cur)=> {
+      if(!prev[cur['region']]) {
+        prev[cur['region']] = [cur];
+      } else {
+        prev[cur['region']].push(cur);
+      }
+      // console.log("prev", prev);
+      return prev;
+    }, {});
+
+    this.dataRegion = Object.keys(groupedRObj).map(key => { return { key, value: groupedRObj[key]}});
+
+      
+    this.dataRegion.forEach ( i => {
+      this.data = [];
+
+      this.rtotal = 0;
+
+      i.value.forEach( j =>
+      {
+        this.data.push(j.valueofdeal);
+      })
+
+       this.rtotal = this.data.reduce((a,b) => a+b ,0);
+
+      this.dataRRegList.push({region: i.key, value: this.rtotal})
+      // console.log("up", this.dataFinalRegList);
+    })
+
+    
+
+      this.regionList.forEach( i => {
+        this.name = '';
+        this.count = 0;
+        this.name = i;
+        this.value = 0;
+        this.dataRRegList.forEach ( j => {
+          if(this.name == j.region){
+            this.count = 1;
+            this.value = j.value
+          }
+        })
+        if(this.count = 0){
+          this.dataRevRegList.push({region: this.name, value: 0})
+        }
+         else{
+          this.dataRevRegList.push({region: this.name, value: this.value})
+        }
+      })
+
+
+
+    const groupedReObj = this.revenueList.reduce((prev, cur)=> {
+      if(!prev[cur['assigned_to']]) {
+        prev[cur['assigned_to']] = [cur];
+      } else {
+        prev[cur['assigned_to']].push(cur);
+      }
+      // console.log("prev", prev);
+      return prev;
+    }, {});
+
+    this.dataEmp = Object.keys(groupedReObj).map(key => { return { key, value: groupedReObj[key]}});
+
+
+
+
+    this.dataEmp.forEach ( i => {
+      this.data = [];
+
+      this.empname = '';
+      this.rtotal = 0;
+
+      i.value.forEach( j =>
+      {
+        this.data.push(j.valueofdeal);
+        this.empname = j.assignedto_name
+      })
+
+       this.rtotal = this.data.reduce((a,b) => a+b ,0);
+
+      this.dataREmpList.push({assigned_to: i.key, name: this.empname, value: this.rtotal})
+      //console.log("trying7", this.dataREmpList);
+    })
+
+     
+
+      this.executiveList.forEach( i => {
+        this.name = '';
+        this.count = 0;
+        this.empname = '';
+        this.value = '';
+        this.name = i;
+        this.dataREmpList.forEach ( j => {
+          if(this.name == j.assigned_to){
+             this.count = 1;
+            this.value = j.value;
+            this.empname = j.name;
+          }
+        })
+        if(this.count = 0){
+          this.dataRevEmpList.push({assigned_to: this.name, name: '', value: 0})
+        }
+        else{
+          this.dataRevEmpList.push({assigned_to: this.name, name: this.empname, value: this.value})
+        }
+      })
+
+
+
+    this.RevPercent = 0;
+    
+
+    //console.log("trying12  ",this.dataTargetRegList, this.dataRevRegList)
+
+    this.dataRevRegList.forEach( i => {
+      this.name = '';
+
+      this.value = 0;
+      this.tvalue = 0;
+      this.name = i.region
+      this.value = i.value;
+
+      
+      this.dataTargetRegList.forEach ( j => {
+          if(j.region == this.name)
+          {
+            
+             this.tvalue = j.value;
+           
+          }
+      })
+      if(this.value == '' || this.value == undefined){
+        this.value = 0;
+      }
+      if(this.tvalue == '' || this.tvalue == undefined){
+        this.tvalue = 0;
+      }
+      this.dataFinalRegList.push({region: this.name, revenue: this.value, target: this.tvalue  })
+    })
+
+
+    this.EmpPercent = 0;
+    
+    
+    this.dataRevEmpList.forEach( i => {
+      this.empname = '';
+      this.name = '';
+      this.tvalue = 0;
+      this.value = 0;
+
+      this.empname = i.name;
+      this.name = i.assigned_to
+      this.value = i.value;
+      this.dataTargetEmpList.forEach ( j => {
+        if(j.assigned_to == this.name){
+            this.tvalue = j.value
+        }
+
+      })
+       if(this.value == '' || this.value == undefined){
+        this.value = 0;
+      }
+      if(this.tvalue == '' || this.tvalue == undefined){
+        this.tvalue = 0;
+      }
+      this.dataFinalEmpList.push({assigned_to: this.name, assignedto_name: this.empname,  revenue: this.value, target: this.tvalue })
+    })
+
+    // console.log("trying1", this.dataFinalRegList)
+    // console.log("trying2", this.dataFinalEmpList)
+    }
+    else 
+    {
+      console.log("no targets found")
+    }
   }
 
 
@@ -106,6 +444,24 @@ export class TargetdashytdComponent implements OnInit {
   }
 
   getValue(val){
+
+    return Math.round(val);
+  }
+
+
+  getValueRT(value,target){
+    let val = 0;
+    console.log("trying", value, target);
+    if(value == 0 || target == 0)
+    {
+      val =0
+    }
+    else{
+      val = (value/target)*100;
+    }
+    console.log("trying12", val)
+
+
     return Math.round(val);
   }
 
@@ -119,7 +475,7 @@ export class TargetdashytdComponent implements OnInit {
     this.dealvaluequarter_total = 0;
 
     
-    console.log([4,5,6].indexOf(this.month))
+    //console.log([4,5,6].indexOf(this.month))
 
     if ([4,5,6].indexOf(this.month) >= 0)
     {
@@ -135,13 +491,15 @@ export class TargetdashytdComponent implements OnInit {
     }
     else if ([1,2,3].indexOf(this.month) >= 0)
     {
-      this.quarter = "Q3"
+      this.quarter = "Q4"
     }
 
     console.log(this.quarter);
 
 
-  	this.firebaseservice.getcasewon().subscribe(val => {
+  	this.firebaseservice.getcasewon().subscribe(val => { 
+      this.revenueList = [];
+      this.revenueList = val.filter( i => { return i.financial_year == this.financialyear});
       // console.log(val)
   		val.forEach(el => 
       { 
@@ -167,14 +525,41 @@ export class TargetdashytdComponent implements OnInit {
 
   	this.targetlist = []
   	this.runningvalue = 0;
+    this.regionList = [];
+    this.executiveList = [];
+
+    this.firebaseservice.getUsers().subscribe(employees => 
+         { 
+           var regionlistall = [];
+            employees.forEach(el => {
+              regionlistall.push(el.region)
+              //console.log("trying", regionlistall)
+            })
+
+           this.regionList = this.unique(regionlistall);
+           //console.log("trying12", this.regionList)
+
+          var execlistall = []
+            employees.forEach(el => {
+              execlistall.push(el.userid)
+              //console.log("trying34", execlistall)
+            })
+           this.executiveList = this.unique(execlistall);
+           //console.log("trying56", this.executiveList)
+        })
+
   	this.firebaseservice.gettargets(this.financialyear).subscribe(val => {
   		// console.log(val)
        if (val.length == 0)
        {
-       	this.targetlist = []
+       	  this.targetlist = []
+
+
        	this.firebaseservice.getUsers().subscribe(employees => 
-       	{
-       		employees.forEach(element => {
+       	{ 
+           
+
+            employees.forEach(element => {
        			// console.log(element)
        			this.targetlist.push
        				(
