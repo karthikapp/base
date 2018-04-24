@@ -1,27 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-
 declare var jQuery: any;
 
 @Component({
-  selector: 'app-charts',
-  templateUrl: './charts.component.html',
-  styleUrls: ['./charts.component.css']
+  selector: 'app-chart-masters',
+  templateUrl: './chart-masters.component.html',
+  styleUrls: ['./chart-masters.component.css']
 })
-export class ChartsComponent implements OnInit {
-
-  yflag: number = 1;
+export class ChartMastersComponent implements OnInit {
+ yflag: number = 1;
   rflag: number = 2;
-
 
 
 
   constructor() { }
 
   ngOnInit() {
-    
 
 
   }
+
 
     ngAfterViewInit() 
   {
@@ -30,6 +27,11 @@ export class ChartsComponent implements OnInit {
     //jQuery('.ui.rating').rating();
 
 
+     
   }
+
+
+
+
 
 }

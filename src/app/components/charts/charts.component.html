@@ -1,154 +1,25 @@
 <div class="main">
-	<div class="ui top attached tabular menu" style="background-color: #CFD8DC; ">
-		<a class="item active" data-tab="zero">Home</a>
-		<a class="item " data-tab="first">Funnel</a>
-		<a class="item" data-tab="second">Revenue By Year</a>
-		<a class="item" data-tab="third">Revenue By FY</a>
-		<a class="item" data-tab="fourth">Sunburst FY</a>
-		<a class="item" data-tab="fifth">Sunburst Year</a>
-	</div>
-		<div class="ui bottom attached tab segment active" data-tab="zero" style="background-color: #424242; ">
-		<div class = "container" align="center">
-			<app-targetdashytd></app-targetdashytd>
-		</div>
-	</div>
-	<div class="ui bottom attached tab segment" data-tab="first" style="background-color: #424242; ">
-		<div class = "container">
-			<app-funnelcharts></app-funnelcharts>
-			<br>
 
-			<app-funnelteamcharts></app-funnelteamcharts>
-			<br>
-
-			<app-funnelallcharts></app-funnelallcharts>
-			<br>
-			<app-funnelallregioncharts></app-funnelallregioncharts>
-		</div>
-	</div>
-	<div class="ui bottom attached tab segment" data-tab="second" style="background-color: #424242; ">
 		
-			<div class="eight wide column">
-				<app-revenuecharts [yflag]="yflag"></app-revenuecharts>
-			</div>
-			<div class="eight wide column">
-				<app-revenuecharts-product [yflag]="yflag"></app-revenuecharts-product>
-			</div>
 
-			<div class="eight wide column">
-			<app-revenuecharts-customer [yflag]="yflag"></app-revenuecharts-customer>
-			</div>
-
-			<div class="eight wide column">
-			<app-revenue-prod [yflag]="yflag"></app-revenue-prod>
-			</div>
-
-			<div class="eight wide column">
-			<app-revenue-region [yflag]="yflag"></app-revenue-region>
-			</div>
-	
-			<div class="eight wide column">
-			<app-revenue-assignedto [yflag]="yflag"></app-revenue-assignedto>
-			</div>
-
-			<div class="eight wide column">
-			<app-revenue-leadsource [yflag]="yflag"></app-revenue-leadsource>
-			</div>
-
-			<div class="eight wide column">
-			<app-revenue-exstcust [yflag]="yflag"></app-revenue-exstcust>
+		<div class="ui top attached tabular menu" style="background-color: #CFD8DC; " >
+			<a class="item active" data-tab="first">Funnel</a>
 		</div>
 
-			<div class="eight wide column">
-			<app-barcharts-region [yflag]="yflag"></app-barcharts-region>
-			</div>
+		<div class="ui bottom attached tab segment active" data-tab="first" style="background-color: #424242; " >
+			<div class = "container">
+				<app-funnelcharts></app-funnelcharts>
+				<br>
 
-			<div class="eight wide column">
-				<app-barchartscust-region [yflag]="yflag"></app-barchartscust-region>
-			</div>
+				<app-funnelteamcharts></app-funnelteamcharts>
+				<br>
 
-			<div class="eight wide column">
-			<app-stacked-region [yflag]="yflag"></app-stacked-region>
-			</div>
-
-			<div class="eight wide column">
-			<app-stacked-leadsource [yflag]="yflag"> </app-stacked-leadsource>
-			</div>
-
-			<div class="eight wide column">
-			<app-stacked-exstcust [yflag]="yflag"></app-stacked-exstcust>
-			</div>
-
-	</div>
-
-	<div class="ui bottom attached tab segment" data-tab="third" style="background-color: #424242 ">
-		<div class="eight wide column">
-
-				<app-revenuecharts [yflag]="rflag"></app-revenuecharts>
-
-			</div>
-			<div class="eight wide column">
-				<app-revenuecharts-product [yflag]="rflag"></app-revenuecharts-product>
-			</div>
-
-			<div class="eight wide column">
-			<app-revenuecharts-customer [yflag]="rflag"></app-revenuecharts-customer>
-			</div>
-
-			<div class="eight wide column">
-			<app-revenue-prod [yflag]="rflag"></app-revenue-prod>
-			</div>
-
-			<div class="eight wide column">
-			<app-revenue-region [yflag]="rflag"></app-revenue-region>
-			</div>
-	
-			<div class="eight wide column">
-			<app-revenue-assignedto [yflag]="rflag"></app-revenue-assignedto>
-			</div>
-
-			<div class="eight wide column">
-			<app-revenue-leadsource [yflag]="rflag"></app-revenue-leadsource>
-			</div>
-
-			<div class="eight wide column">
-			<app-revenue-exstcust [yflag]="rflag"></app-revenue-exstcust>
-			</div>
-
-			<div class="eight wide column">
-			<app-barcharts-region [yflag]="rflag"></app-barcharts-region>
-			</div>
-
-			<div class="eight wide column">
-				<app-barchartscust-region [yflag]="rflag"></app-barchartscust-region>
-			</div>
-
-			<div class="eight wide column">
-			<app-stacked-region [yflag]="rflag"></app-stacked-region>
-			</div>
-
-			<div class="eight wide column">
-			<app-stacked-leadsource [yflag]="rflag"> </app-stacked-leadsource>
-			</div>
-
-			<div class="eight wide column">
-			<app-stacked-exstcust [yflag]="rflag"></app-stacked-exstcust>
-			</div>
-
-	</div>
-
-		<div class="ui bottom attached tab segment" data-tab="fourth" style="background-color: #424242 ">
-		<div class="eight wide column">
-
-				<app-sunburst-emp></app-sunburst-emp>
-
+				<app-funnelallcharts></app-funnelallcharts>
+				<br>
+				<app-funnelallregioncharts></app-funnelallregioncharts>
 			</div>
 		</div>
 
-		<div class="ui bottom attached tab segment" data-tab="fifth" style="background-color: #424242 ">
-		<div class="eight wide column">
 
-				<app-sunburst-emp-y></app-sunburst-emp-y>
 
-			</div>
-		</div>
 </div>

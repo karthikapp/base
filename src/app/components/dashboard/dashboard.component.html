@@ -38,7 +38,8 @@
 
     <!--Routing for Users-->
     <nav class="mdl-navigation" style="" [hidden]="!showReportsFlag">
-      <a class="mdl-navigation__link" routerLink="/dashboard/Charts" routerLinkActive="active">Dashboard</a>
+      <a class="mdl-navigation__link" routerLink="/dashboard/Charts" routerLinkActive="active" *ngIf="role != 'Inside Sales' && role != 'master'">Dashboard</a>
+       <a class="mdl-navigation__link" routerLink="/dashboard/ChartsMaster" routerLinkActive="active" *ngIf="role == 'master'">Dashboard</a>
       <a class="mdl-navigation__link" routerLink="/dashboard/MyLeads" routerLinkActive="active">My Leads</a>
       <a class="mdl-navigation__link" routerLink="/dashboard/MyOpportunities" routerLinkActive="active">My Opportunities</a>
       <a class="mdl-navigation__link" routerLink="/dashboard/TeamLeads" routerLinkActive="active" *ngIf="report == 'recipient'">Team Leads</a>

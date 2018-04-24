@@ -122,6 +122,7 @@ import { StackedExstcustComponent } from './components/stacked-exstcust/stacked-
 import { TargetaddComponent } from './targetadd/targetadd.component';
 import { TargetdashytdComponent } from './targetdashytd/targetdashytd.component';
 import { SunburstEmpYComponent } from './components/sunburst-emp-y/sunburst-emp-y.component';
+import { ChartMastersComponent } from './components/chart-masters/chart-masters.component';
 
 
 
@@ -148,6 +149,7 @@ const appRoutes: Routes = [
                {path:'LeadDetail/:leadid', component: LeadsdetailComponent},
                {path:'OppoDetail/:oppoid', component: OppodetailComponent},
                {path:'Charts',component: ChartsComponent},
+               {path:'ChartsMaster',component: ChartMastersComponent},
                {path:'ViewQLeads/:rflag/:regions/:userid/:sdate/:edate', component:ViewqualifiedleadsComponent},
                {path:'ViewPreSales/:rflag/:regions/:userid/:sdate/:edate', component:ViewpresalesComponent},
                {path:'ViewBudgetary/:rflag/:regions/:userid/:sdate/:edate', component:BudgetarypriceComponent},
@@ -269,7 +271,8 @@ export function highchartsFactory() {
     StackedExstcustComponent,
     TargetaddComponent,
     TargetdashytdComponent,
-    SunburstEmpYComponent
+    SunburstEmpYComponent,
+    ChartMastersComponent
   ],
   imports: [
     BrowserModule ,

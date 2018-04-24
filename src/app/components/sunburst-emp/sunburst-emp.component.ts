@@ -89,11 +89,7 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
               v.title = '';
             }
 
-            if (v.report.toUpperCase() == 'REPORTER'
-              || v.report.toUpperCase() == 'RECIPIENT'
-              || v.title.toUpperCase() == "PRE-SALES HEAD"
-              || v.role.toUpperCase() == "PRESALES"
-              || v.role.toUpperCase() == "MASTER")
+            if (v.role.toUpperCase() == "MASTER")
             {
              this.currentYear = (new Date()).getFullYear();
              
@@ -339,7 +335,7 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
         allowDrillToNode: true,
         cursor: 'pointer',
         dataLabels: {
-            format: '{point.name}',
+            format: '{point.name}: {point.value:.2f}%',
             filter: {
                 property: 'innerArcLength',
                 operator: '>',
@@ -381,7 +377,7 @@ export class SunburstEmpComponent implements OnInit, OnDestroy {
     }],
     tooltip: {
         headerFormat: "",
-        pointFormat: '<b>{point.name}</b> is <b>{point.value}</b>'
+        pointFormat: '<b>{point.name}</b> is <b>{point.value:.2f}%</b>'
     }
 }
   }

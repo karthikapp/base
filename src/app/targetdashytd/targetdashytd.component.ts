@@ -29,12 +29,7 @@ export class TargetdashytdComponent implements OnInit {
   ngAfterViewInit() 
   {
     jQuery('#example1').progress();
-
-
-    //jQuery('.ui.rating').rating();
   }
-
-
 
   removeundefined(value)
   {
@@ -84,9 +79,6 @@ export class TargetdashytdComponent implements OnInit {
 
     this.total = total
     this.qtd_total = qtd_total
-
-
-
 
   }
 
@@ -147,9 +139,6 @@ export class TargetdashytdComponent implements OnInit {
     }
 
     console.log(this.quarter);
-
-
-
 
 
   	this.firebaseservice.getcasewon().subscribe(val => {

@@ -97,11 +97,7 @@ export class StackedExstcustComponent implements OnInit, OnDestroy {
               v.title = '';
             }
 
-            if (v.report.toUpperCase() == 'REPORTER'
-              || v.report.toUpperCase() == 'RECIPIENT'
-              || v.title.toUpperCase() == "PRE-SALES HEAD"
-              || v.role.toUpperCase() == "PRESALES"
-              || v.role.toUpperCase() == "MASTER")
+            if ( v.role.toUpperCase() == "MASTER")
             {
               
               this.rv_last_updt_dt = this.analyticsservice.rv_last_updt_dt;

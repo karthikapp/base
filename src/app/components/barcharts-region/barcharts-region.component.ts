@@ -101,11 +101,7 @@ export class BarchartsRegionComponent implements OnInit {
               v.title = '';
             }
 
-            if (v.report.toUpperCase() == 'REPORTER'
-              || v.report.toUpperCase() == 'RECIPIENT'
-              || v.title.toUpperCase() == "PRE-SALES HEAD"
-              || v.role.toUpperCase() == "PRESALES"
-              || v.role.toUpperCase() == "MASTER")
+            if ( v.role.toUpperCase() == "MASTER")
             {
               
                this.currentYear = (new Date()).getFullYear();
