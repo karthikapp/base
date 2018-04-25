@@ -22,19 +22,19 @@ export class GetcompanycontactnameComponent implements OnInit {
   }
 
  ngOnInit() {      
-    console.log('Hello from getcompany component 123', this.companyid) ; 
+    //console.log('Hello from getcompany component 123', this.companyid) ; 
     this.text = this.companyid;
-    console.log(this.text)
+    //console.log(this.text)
     let contactslist = []
     this.contacts = []
     this.afDB.getContactbyAccount(String(this.companyid)).subscribe(v => {
 
-       console.log("companyid", this.companyid)
+       //console.log("companyid", this.companyid)
        
        v.forEach(el => {
          this.contacts.push(el)
        })
-       console.log("hello 123",this.contacts)
+       //console.log("hello 123",this.contacts)
 
     })
     

@@ -58,46 +58,46 @@ export class FilterreportsPipe implements PipeTransform {
 	}
 
 
-	console.log("cpp",EDCStartDate, EDCEndDate)
+	//console.log("cpp",EDCStartDate, EDCEndDate)
 
  	if (value && value.length){
- 		console.log("pp",value,value.length, status,oppoassigned, leadassigned, EDCStartDate)
+ 		//console.log("pp",value,value.length, status,oppoassigned, leadassigned, EDCStartDate)
     	return value.filter(values =>{
                 if (leadtitle && values.lead_title.toLowerCase().indexOf(leadtitle.toLowerCase()) === -1){
-                	console.log("pp", leadtitle,values.lead_title.toLowerCase().indexOf(leadtitle.toLowerCase()) === -1 )
+                	//console.log("pp", leadtitle,values.lead_title.toLowerCase().indexOf(leadtitle.toLowerCase()) === -1 )
                     return false;
                 }
                 if (companyname && values.company_name.toLowerCase().indexOf(companyname.toLowerCase()) === -1){
-                	console.log("pp", companyname , values.company_name.toLowerCase().indexOf(companyname.toLowerCase()) === -1 )
+                	//console.log("pp", companyname , values.company_name.toLowerCase().indexOf(companyname.toLowerCase()) === -1 )
                     return false;
                 }
                 if (status && values.opportunity_state.toLowerCase().indexOf(status.toLowerCase()) === -1){
-                	console.log("pp", status, values.opportunity_state.toLowerCase().indexOf(status.toLowerCase()) === -1)
+                	//console.log("pp", status, values.opportunity_state.toLowerCase().indexOf(status.toLowerCase()) === -1)
                     return false;
                 }
                 if (region && values.region.toLowerCase().indexOf(region.toLowerCase()) === -1){
-                	console.log("pp",region,values.region.toLowerCase().indexOf(region.toLowerCase()) === -1)
+                	//console.log("pp",region,values.region.toLowerCase().indexOf(region.toLowerCase()) === -1)
                     return false;
                 }
                 if (leadassigned && values.lead_assigned_to.toLowerCase().indexOf(leadassigned.toLowerCase()) === -1){
-                	console.log("pp", leadassigned, values.lead_assigned_to.toLowerCase().indexOf(leadassigned.toLowerCase()) === -1)
+                	//console.log("pp", leadassigned, values.lead_assigned_to.toLowerCase().indexOf(leadassigned.toLowerCase()) === -1)
                     return false;
                 }
                 if (oppoassigned && values.opportunity_assignedto.toLowerCase().indexOf(oppoassigned.toLowerCase()) === -1){
-                	console.log("pp",oppoassigned,values.opportunity_assignedto.toLowerCase().indexOf(oppoassigned.toLowerCase()) === -1)
+                	//console.log("pp",oppoassigned,values.opportunity_assignedto.toLowerCase().indexOf(oppoassigned.toLowerCase()) === -1)
                     return false;
                 }
                 if (EDCStartDate && EDCStartDate != null && EDCEndDate == null && !(values.edc >= EDCStartDate)){
-                	console.log("filter for dates",EDCStartDate, EDCEndDate, values.edc, values.edc >= EDCStartDate,  values.edc <= EDCEndDate)
-                	console.log("hello")
+                	//console.log("filter for dates",EDCStartDate, EDCEndDate, values.edc, values.edc >= EDCStartDate,  values.edc <= EDCEndDate)
+                	//console.log("hello")
                 	return false;	
                 }
                 if(EDCEndDate && EDCEndDate != null && EDCStartDate == null && !(values.edc <= EDCEndDate)){
-                	console.log("krishna")
+                	//console.log("krishna")
                 	return false;
                 }
                 if(EDCStartDate  && EDCEndDate && EDCStartDate!= null && EDCEndDate !=null && !(values.edc >= EDCStartDate && values.edc <= EDCEndDate)){
-	                console.log("bharadwaj")
+	                //console.log("bharadwaj")
 	                return false;
 	            }
                 return true;

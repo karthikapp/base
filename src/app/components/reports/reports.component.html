@@ -2,17 +2,46 @@
     <div *ngIf ="ev">
       <div id="" style="overflow-y: scroll;height: 100%; width:100%;">
           
+<!--                       <div style="float:right;padding: 5px;font-family: 'Marvel', sans-serif;">
+  <button class="ui inverted button" (click)="download()">Export CSV</button>
+  </div> -->
+
+<!--   <p> Test1: <button id="btnExport" > Export to XLS</button> 
+  </p> -->
+
+
+<!--       <div>
+        <button id="customCSVButton" (click)="exportCSV()">I am a SMALL custom CSV button</button>
+    </div>
+
+
+
+        <button (click)="jquery('#table').tableExport({
+    headers: true,                             
+    footers: true,                             
+    formats: ['csv'],                           
+    filename: 'id',                            
+    bootstrap: false,                           
+    exportButtons: true,                        
+    position: 'bottom',                        
+    ignoreRows: [-1],                         
+    ignoreCols: null,                          
+    trimWhitespace: true                      
+});"> <img src="icons/csv.png" width="24px"> CSV</button> -->
+
 
         <div class="card" style=" background-color: #e8eaf6; border-radius: 5px;">
+
+
             
           <!--Tabs of Opportunities and Activities -->
           <lsu-tabset type="'tabular'">
             <!--List of Opportunities-->
             <lsu-tab  [headerText]="'Opportunities'" [active]="'true'">
-                <div class="ui active dimmer" *ngIf="isLoading">
+                <!-- <div class="ui active dimmer" *ngIf="isLoading">
                     <div class="ui text loader">Loading</div>
-                </div>
-                <table class="ui inverted table">
+                </div> -->
+                <table id="table1" class="ui inverted table">
                 <thead>
                   <tr>
                     <th>Lead Title</th>
@@ -33,7 +62,7 @@
                     <th>Presales Approved</th>
                     <th>Presales Date</th>
                     <th>Created At</th>
-                    <th>Created By</th>
+               <!--      <th>Created By</th> -->
                     <th>Remarks</th>
                   </tr>
                   <tr>
