@@ -1,47 +1,23 @@
  <div class ="main">
     <div *ngIf ="ev">
       <div id="" style="overflow-y: scroll;height: 100%; width:100%;">
-          
-<!--                       <div style="float:right;padding: 5px;font-family: 'Marvel', sans-serif;">
-  <button class="ui inverted button" (click)="download()">Export CSV</button>
-  </div> -->
+    
 
-<!--   <p> Test1: <button id="btnExport" > Export to XLS</button> 
-  </p> -->
-
-
-<!--       <div>
-        <button id="customCSVButton" (click)="exportCSV()">I am a SMALL custom CSV button</button>
-    </div>
-
-
-
-        <button (click)="jquery('#table').tableExport({
-    headers: true,                             
-    footers: true,                             
-    formats: ['csv'],                           
-    filename: 'id',                            
-    bootstrap: false,                           
-    exportButtons: true,                        
-    position: 'bottom',                        
-    ignoreRows: [-1],                         
-    ignoreCols: null,                          
-    trimWhitespace: true                      
-});"> <img src="icons/csv.png" width="24px"> CSV</button> -->
-
-
-        <div class="card" style=" background-color: #e8eaf6; border-radius: 5px;">
-
-
+       <div class="card" style=" background-color: #e8eaf6; border-radius: 5px;">
             
           <!--Tabs of Opportunities and Activities -->
           <lsu-tabset type="'tabular'">
             <!--List of Opportunities-->
             <lsu-tab  [headerText]="'Opportunities'" [active]="'true'">
-                <!-- <div class="ui active dimmer" *ngIf="isLoading">
+                <div class="ui active dimmer" *ngIf="isLoading">
                     <div class="ui text loader">Loading</div>
-                </div> -->
-                <table id="table1" class="ui inverted table">
+                </div>
+                <div id="table1">
+                    <div class="ui button" (click)="exportTableToCSV('Opportunities.csv', '#table1')">
+                       Export CSV File
+                    </div>
+                <table class="ui inverted table">
+
                 <thead>
                   <tr>
                     <th>Lead Title</th>
@@ -53,7 +29,7 @@
                     <th>Status</th>
                     <th>Region</th>
                     <th>Value</th>
-                    <th>Product, Quantity</th>
+                    <th>Product - Quantity</th>
                     <th>Contacts</th>
                     <th>EDC</th>
                     <th>Lead Activities Count</th>
@@ -131,7 +107,7 @@
                 </thead>
 
                 <tbody>
-                  <tr *ngFor="let vv of v | filterreports: lead_title : company_name : opportunity_assignedto : lead_assigned_to : status : region : EDCStartDate : EDCEndDate | sortorder" >
+                  <tr *ngFor="let vv of v | filterreports: lead_title : company_name : opportunity_assignedto : lead_assigned_to : status : region : EDCStartDate : EDCEndDate | sortorder">
                     <td>{{vv.lead_title}}</td>
                     <td>{{vv.company_name}}</td>
                     <td>{{leadsourcelabel(vv.leadsource)}}</td> 
@@ -145,7 +121,7 @@
                     <td>{{vv.region}}</td>
 
                     <td>{{returnruppeamount(vv.value)}}</td>   
-                    <td>{{vv.product_name}}, {{vv.quantity}}</td>  
+                    <td>{{vv.product_name}} - {{vv.quantity}}</td>  
                     <td><app-getcompanycontactname [companyid]="vv.company_id"> </app-getcompanycontactname> </td>
                     <td>{{vv.edc}}</td>
                     <td>{{getnooffollowups(vv.lead_activities)}} </td>
@@ -159,9 +135,14 @@
                   </tr>
                 </tbody>
               </table>
+          </div>
             </lsu-tab>
 
             <lsu-tab  [headerText]="'Lead Activities'" [active]="'true'">
+                <div id="table2">
+                    <div class="ui button"  (click)="exportTableToCSV('Lead_Activities.csv', '#table2')">
+                        Export CSV File
+                    </div>
               <table class="ui inverted table">
                 <thead>
                   <tr>
@@ -169,7 +150,7 @@
                     <th>Company Name</th>
                     <th>Lead Assigned To</th>
                     <th>Value</th>
-                    <th>Product, Quantity</th>
+                    <th>Product - Quantity</th>
                     <th>Activity Type</th>
                     <th>Date</th>
                     <th>Remarks</th>
@@ -205,7 +186,7 @@
                     <td>{{activ.company_name}}</td>
                     <td><app-assignedtonameget name="{{activ.lead_assigned_to}}"> </app-assignedtonameget></td>
                     <td>{{returnruppeamount(activ.value)}}</td>   
-                    <td>{{activ.product_name}}, {{activ.quantity}}</td> 
+                    <td>{{activ.product_name}} - {{activ.quantity}}</td> 
                     <td>
                     {{getactivitytypetext(lead_activ.activity_type)}}</td>         
                     <td *ngIf="lead_activ.activity_type == 'phonecall'"> {{lead_activ.phonecallDate | date: 'longDate'}}</td>
@@ -222,9 +203,14 @@
                   </tr>
                 </tbody> 
               </table>
+          </div>
             </lsu-tab>
 
             <lsu-tab  [headerText]="'Opportunity Activities'" [active]="'true'">
+                <div id="table3">
+                    <div class="ui button" (click)="exportTableToCSV('Opportunities_Activities.csv', '#table3')">
+                        Export CSV File
+                    </div>
               <table class="ui inverted table">
                 <thead>
                   <tr>
@@ -232,7 +218,7 @@
                     <th>Company Name</th>
                     <th>Opportunity Assigned To</th>
                     <th>Value</th>
-                    <th>Product, Quantity</th>
+                    <th>Product - Quantity</th>
                     <th>Activity Type</th>
                     <th>Activity Created By</th>
                     <th>Activity Created at</th>
@@ -271,7 +257,7 @@
 
                     <td> <app-assignedtonameget name="{{acti.opportunity_assignedto}}"> </app-assignedtonameget></td>
                     <td>{{returnruppeamount(acti.value)}}</td>   
-                    <td>{{acti.product_name}}, {{acti.quantity}}</td> 
+                    <td>{{acti.product_name}} - {{acti.quantity}}</td> 
                     <td>
                     {{getactivitytypetext(oppo_activ.activity_type)}}</td>
                     <td>
@@ -318,9 +304,14 @@
                   </tr>
                 </tbody> 
               </table>
+            </div>
             </lsu-tab>
 
             <lsu-tab  [headerText]="'Upcoming Activities'" [active]="'true'">
+                <div id="table4">
+                <div class="ui button" (click)="exportTableToCSV('Upcoming_Activities.csv', '#table4')">
+                        Export CSV File
+                    </div>
               <table class="ui inverted table">
                 <thead>
                   <tr>
@@ -329,7 +320,7 @@
                     <th>Opportunity Assigned To</th>
                     <th>Lead Assigned To</th>       
                     <th>Value</th>
-                    <th>Product, Quantity</th>
+                    <th>Product - Quantity</th>
                     <th>Activity Type</th>
                     <th>Date</th>
                     <th>Activity Created at</th>       
@@ -375,7 +366,7 @@
                     <td><app-assignedtonameget name="{{ac.opportunity_assignedto}}"> </app-assignedtonameget></td>
                     <td><app-assignedtonameget name="{{ac.lead_assigned_to}}"> </app-assignedtonameget></td>
                     <td>{{returnruppeamount(ac.value)}}</td>   
-                    <td>{{ac.product_name}}, {{ac.quantity}}</td> 
+                    <td>{{ac.product_name}} - {{ac.quantity}}</td> 
                     <td>
                     {{getupcomingtext(up.next_meeting_type)}}
                     </td>
@@ -386,6 +377,7 @@
                   </tr>
                 </tbody>
               </table>
+          </div>
             </lsu-tab>
 
           </lsu-tabset>

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit , ViewChild, ElementRef, AfterContentChecked, AfterContentInit} from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, AfterViewInit , ViewChild, ElementRef, AfterContentChecked, AfterContentInit, OnChanges, DoCheck} from '@angular/core';
 import { FirebaseService } from "../../services/firebase.service";
 import { Router, ActivatedRoute } from '@angular/router';
 import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
@@ -12,7 +12,8 @@ declare var jQuery: any;
   styleUrls: ['./reports.component.css']
 })
 export class ReportsComponent implements  OnInit, OnDestroy {
- 
+   @Input('table1') table1: any;
+
 
   v: any;
   u: any;
@@ -107,24 +108,114 @@ export class ReportsComponent implements  OnInit, OnDestroy {
      });
   }
 
-ngAfterViewInit(){
 
 
-     
-              jQuery('#table1').tableExport({
-                headers: true,                              // (Boolean), display table headers (th or td elements) in the <thead>, (default: true)
-                footers: true,                              // (Boolean), display table footers (th or td elements) in the <tfoot>, (default: false)
-                formats: ['csv'],                           // (String[]), filetype(s) for the export, (default: ['xlsx', 'csv', 'txt'])
-                filename: 'id',                             // (id, String), filename for the downloaded file, (default: 'id')
-                bootstrap: false,                           // (Boolean), style buttons using bootstrap, (default: true)
-                exportButtons: true,                        // (Boolean), automatically generate the built-in export buttons for each of the specified formats (default: true)
-                position: 'bottom',                         // (top, bottom), position of the caption element relative to table, (default: 'bottom')
-                ignoreRows: [-1],                           // (Number, Number[]), row indices to exclude from the exported file(s) (default: null)
-                ignoreCols: null,                           // (Number, Number[]), column indices to exclude from the exported file(s) (default: null)
-                trimWhitespace: true                        // (Boolean), remove all leading/trailing newlines, spaces, and tabs from cell text in the exported file(s) (default: false)
-            });
+exportTableToCSV(filename, id) {
+    var csv = [];
+    var csv1 = [];
+ 
+    var crows = document.querySelector(id);
+    var rows = crows.querySelectorAll("table tr");
 
+    for(var i =0 ; i<=0 ; i++){
+    var row = [];
+    var columns = rows[i].querySelectorAll("th");
+
+      for (var j = 0; j < columns.length; j++) 
+      if(columns[j] != undefined){
+        row.push(columns[j].textContent);
+      }
+      else{
+        row.push("");
+      }
+
+      csv.push(row.join(","));  
+      }
+    
+    for (var i = 2; i < rows.length; i++) {
+        var row = [];
+        var cols = rows[i].querySelectorAll("td");
+        
+        for (var j = 0; j < cols.length; j++) 
+          if(cols[j] != undefined){
+            var text = cols[j].textContent
+            text = text.replace(/[\n\r]+|[\s]{2,}/g,' ');
+            text = text.replace(/,/g, "");
+            //console.log("text", text);
+            row.push(text);
+            
+          }
+          else{
+            row.push("");
+          }
+        csv.push(row.join(","));   
+    }
+
+    // Download CSV file
+    this.downloadCSV(csv.join("\n"), filename);
 }
+
+downloadCSV(csv, filename) {
+    var csvFile;
+    var downloadLink;
+
+    // CSV file
+    csvFile = new Blob([csv], {type: "text/csv"});
+
+    // Download link
+    downloadLink = document.createElement("a");
+
+    // File name
+    downloadLink.download = filename;
+
+    // Create a link to the file
+    downloadLink.href = window.URL.createObjectURL(csvFile);
+
+    // Hide download link
+    downloadLink.style.display = "none";
+
+    // Add the link to DOM
+    document.body.appendChild(downloadLink);
+
+    // Click download link
+    downloadLink.click();
+}
+
+// ngAfterViewInit(){
+
+//   console.log("hi")   
+//   var el = jQuery(this.rootNode.nativeElement).find('table');
+//    console.log("el",el, this.rootNode.nativeElement) 
+
+//               jQuery("#table1").tableExport({
+//                 headers: true,                              // (Boolean), display table headers (th or td elements) in the <thead>, (default: true)
+//                 footers: true,                              // (Boolean), display table footers (th or td elements) in the <tfoot>, (default: false)
+//                 formats: ['csv'],                           // (String[]), filetype(s) for the export, (default: ['xlsx', 'csv', 'txt'])
+//                 filename: 'id',                             // (id, String), filename for the downloaded file, (default: 'id')
+//                 bootstrap: false,                           // (Boolean), style buttons using bootstrap, (default: true)
+//                 exportButtons: true,                        // (Boolean), automatically generate the built-in export buttons for each of the specified formats (default: true)
+//                 position: 'bottom',                         // (top, bottom), position of the caption element relative to table, (default: 'bottom')
+//                 ignoreRows: [-1],                           // (Number, Number[]), row indices to exclude from the exported file(s) (default: null)
+//                 ignoreCols: null,                           // (Number, Number[]), column indices to exclude from the exported file(s) (default: null)
+//                 trimWhitespace: true                        // (Boolean), remove all leading/trailing newlines, spaces, and tabs from cell text in the exported file(s) (default: false)
+//             })
+              
+
+//                jQuery("#table2").tableExport({
+//                 headers: true,                              // (Boolean), display table headers (th or td elements) in the <thead>, (default: true)
+//                 footers: true,                              // (Boolean), display table footers (th or td elements) in the <tfoot>, (default: false)
+//                 formats: ['csv'],                           // (String[]), filetype(s) for the export, (default: ['xlsx', 'csv', 'txt'])
+//                 filename: 'id',                             // (id, String), filename for the downloaded file, (default: 'id')
+//                 bootstrap: false,                           // (Boolean), style buttons using bootstrap, (default: true)
+//                 exportButtons: true,                        // (Boolean), automatically generate the built-in export buttons for each of the specified formats (default: true)
+//                 position: 'bottom',                         // (top, bottom), position of the caption element relative to table, (default: 'bottom')
+//                 ignoreRows: [-1],                           // (Number, Number[]), row indices to exclude from the exported file(s) (default: null)
+//                 ignoreCols: null,                           // (Number, Number[]), column indices to exclude from the exported file(s) (default: null)
+//                 trimWhitespace: true                        // (Boolean), remove all leading/trailing newlines, spaces, and tabs from cell text in the exported file(s) (default: false)
+//             });
+
+
+// }
 
 
   // ngAfterViewInit(){
