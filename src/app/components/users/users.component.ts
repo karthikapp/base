@@ -22,6 +22,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   email: string;
   userid: string;
   region: string;
+  category: string;
   default_pwd: string;
 
   user_recipient_list: Users[];
@@ -37,6 +38,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   uemail: string;
   uuserid: string;
   uregion: string;
+  ucategory: string;
 
   created_at: Date;
 
@@ -80,6 +82,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   	this.userid = '';
     this.default_pwd = '';
     this.region = '';
+    this.category = '';
 
     this.created_at = firebaseservice.created_at;
 
@@ -101,7 +104,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     .subscribe(data => {
        if (data) {
          this.uid = data.uid
-         console.log("email",this.uid)
+         //console.log("email",this.uid)
          
          this.firebaseservice.getUser(this.uid)
          .takeWhile(() => this.alive)
@@ -128,14 +131,14 @@ export class UsersComponent implements OnInit, OnDestroy {
           }
             else
             {
-              console.log('No access to this page choc');
+              //console.log('No access to this page choc');
               alert('No access to this page');
               return this.ev=false;
             }
          })
        }
        else{
-            console.log('No access to this page m&m');
+            //console.log('No access to this page m&m');
             this.router.navigate(['login']);
             return this.ev=false;
        }
@@ -194,6 +197,7 @@ export class UsersComponent implements OnInit, OnDestroy {
           			 email: this.email,
           			 userid: this.userid,
                  region: this.region,
+                 category: this.category,
                  created_at: this.created_at
             	}
     this.firebaseservice.createUser(user,this.default_pwd);
@@ -250,10 +254,11 @@ export class UsersComponent implements OnInit, OnDestroy {
               			 reports_to: this.ureports_to,
               			 email: this.uemail,
                      region: this.uregion,
+                     category: this.ucategory,
                      created_at: this.created_at
             	     }
 
-    console.log("pp",userData)
+    //console.log("pp",userData)
     this.firebaseservice.saveUser(this.uuserid, userData)
     this.cancelUserModal();
   }
@@ -274,6 +279,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   	this.reports_to = '';
   	this.email = '';
     this.region = '';
+    this.category = '';
     this.default_pwd = '';
   	
     this.addUserModal_flag = true;
@@ -316,6 +322,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.uemail = user.email;
     this.uuserid = user.userid;
     this.uregion = user.region;
+    this.ucategory = user.category;
     this.user = user})
 
     this.editUsersModal();
@@ -326,14 +333,14 @@ export class UsersComponent implements OnInit, OnDestroy {
   //Displays reports_to value when edit user modal is loaded
   reportsToChanges(){
     this.user_recipient_list = this.users.filter((userEdit: Users) => {
-      console.log("RPTC",userEdit.report)
+      //console.log("RPTC",userEdit.report)
       if(userEdit.report != undefined)
       {     
-        console.log(userEdit.report, userEdit.report.indexOf("recipient") !== -1)
+        //console.log(userEdit.report, userEdit.report.indexOf("recipient") !== -1)
         return userEdit.report.indexOf("recipient") !== -1;
       }  
     });  
-    console.log(this.user_recipient_list)
+    //console.log(this.user_recipient_list)
 
     if(this.ureport == 'recipient' || this.ureport == 'other'){
       this.user_recipient_list = [];

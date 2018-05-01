@@ -37,9 +37,9 @@ export class AddCompaniesComponent implements OnInit {
 
   created_at: Date;
   
+  //Page Access Variables
   uid: string;
   ev: boolean = false;
-
   alive: boolean = true;
 
   constructor(private firebaseservice : FirebaseService, private route: Router,
@@ -95,14 +95,14 @@ export class AddCompaniesComponent implements OnInit {
           }
           else
           {
-            console.log('No access to this page');
+            //console.log('No access to this page');
             alert('No access to this page');
             return this.ev=false;
           }
         })
       }
       else {
-        console.log('No access to this page');
+        //console.log('No access to this page');
         this.route.navigate(['login']);
         return this.ev=false;
       }

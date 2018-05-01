@@ -921,6 +921,7 @@ addinsideSalesinoneShot(insidesaleslist: {
     			 email: string,
     			 userid: string,
     			 region: string,
+    			 category: string,
                  created_at: Date
 	}, default_pwd: string ){
 		 secondaryApp.auth().createUserWithEmailAndPassword(usersObject.email, default_pwd)
@@ -981,6 +982,7 @@ addinsideSalesinoneShot(insidesaleslist: {
         reports_to: string,
         email: string,
         region: string,
+        category: string,
         created_at: Date
 	}){
 

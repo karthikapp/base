@@ -112,16 +112,35 @@
                 <option [value]="'bangalore'">Bangalore</option>
               </select>
             </div>
+
+            <div class="form-group column" style="padding-top: 10px;padding-bottom:  10px;">
+              <label style="font-weight: bold; font-size: 15px;" for="exampleFormControlSelect26">Category</label>
+              <br>
+              <br>
+              <select class="form-control" id="exampleFormControlSelect26" name="category" [(ngModel)]="category" style="height: 29px;font-size: 1.2em">
+                <option [value]="'thunderbird'">Thunder Bird</option>
+                <option [value]="'classic'">Classic</option>
+              </select>
+            </div>
+
           </div>
         </form>
 
   		</div>
 
   		<div class="actions">
-    		<button class="ui black deny button" (click)="cancelUserModal()">Cancel</button>
-    		<button class="ui positive right labeled icon button" [disabled]="name == '' || email== '' || default_pwd == ''" (click)="on_add_user()">Add
+        <div *ngIf="role=='admin'">
+      		<button class="ui black deny button" (click)="cancelUserModal()">Cancel</button>
+          <button class="ui positive right labeled icon button" [disabled]="name == '' || email== '' || default_pwd == ''" (click)="on_add_user()">Add
+              <i class="checkmark icon"></i>
+          </button>
+        </div>
+        <div *ngIf="role!='admin'">
+          <button class="ui black deny button" (click)="cancelUserModal()">Cancel</button>
+    		  <button class="ui positive right labeled icon button" [disabled]="name == '' || email== '' || default_pwd == '' || category == ''" (click)="on_add_user()">Add
       			<i class="checkmark icon"></i>
-    		</button>
+    		  </button>
+        </div>
   		</div>
 	</lsu-modal>
 
@@ -163,6 +182,7 @@
             <th>Report</th>
             <th>Reports To</th>
             <th>Region</th>
+            <th>Category</th>
 		    		<th>Actions</th>
 		  		</tr>
 		  	</thead>
@@ -174,9 +194,9 @@
             <td class="mdl-data-table__cell--non-numeric">{{user.role}}</td>
             <td class="mdl-data-table__cell--non-numeric">{{user.title}}</td>
             <td class="mdl-data-table__cell--non-numeric">{{user.report}}</td>
-            <td class="mdl-data-table__cell--non-numeric">{{onListReportsTo(user.reports_to, user.report, user.role)}}</td>
+            <td class="mdl-data-table__cell--non-numeric">{{onListReportsTo(user.reports_to, user.report, user.role)}}</td>  
             <td class="mdl-data-table__cell--non-numeric">{{user.region}}</td>
-            <!-- <td class="mdl-data-table__cell--non-numeric">{{user.created_at | date: 'medium'}}</td> -->
+            <td class="mdl-data-table__cell--non-numeric">{{user.category | uppercase }}</td>
             <td>
 		    			<a (click)="editUserModal(user.userid)">
 		    				<i class="material-icons">edit</i>
@@ -296,16 +316,34 @@
                 <option [value]="'bangalore'">Bangalore</option>
               </select>
             </div>
+
+            <div class="form-group column" style="padding-top: 10px;padding-bottom:  10px;">
+              <label style="font-weight: bold; font-size: 15px;" for="exampleFormControlSelect6">Category</label>
+              <br>
+              <br>
+              <select class="form-control" id="exampleFormControlSelect6" name="ucategory" [(ngModel)]="ucategory" style="height: 29px;font-size: 1.2em">
+                <option [value]="'thunderbird'">Thunder Bird</option>
+                <option [value]="'classic'">Classic</option>
+              </select>
+            </div>
           </div>
         </form>
 
   		</div>
 
   		<div class="actions">
-    		<button class="ui black deny button" (click)="cancelUserModal()">Cancel</button>
-    		<button class="ui positive right labeled icon button" [disabled]="uname == '' || uemail== ''" (click)="on_edit_user()">Save changes
+        <div *ngIf="urole=='admin'">
+    		  <button class="ui black deny button" (click)="cancelUserModal()">Cancel</button>
+    		  <button class="ui positive right labeled icon button" [disabled]="uname == '' || uemail== ''" (click)="on_edit_user()">Save changes
       			<i class="checkmark icon"></i>
-    		</button>
+    		  </button>
+        </div>
+        <div *ngIf="urole!='admin'">
+          <button class="ui black deny button" (click)="cancelUserModal()">Cancel</button>
+          <button class="ui positive right labeled icon button" [disabled]="uname == '' || uemail== '' || ucategory==''" (click)="on_edit_user()">Save changes
+            <i class="checkmark icon"></i>
+          </button>
+        </div>
   		</div>
 	</lsu-modal>
 	        

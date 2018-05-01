@@ -78,20 +78,20 @@ export class AllleadsComponent implements OnInit, OnDestroy {
               this.leadList('All', 'All');
               this.leadSourceList('All', 'All');
               this.onChangeof();
-              console.log(this.leads);
+              //console.log(this.leads);
             }) 
             return this.ev = true;
           } 
           else
           {
-            console.log('No access to this page choco');
+            //console.log('No access to this page choco');
             alert('No access to this page');
             return this.ev=false;
           }
         })
       }
       else{
-        console.log('No access to this page m&m');
+        //console.log('No access to this page m&m');
         this.router.navigate(['login']);
         return this.ev=false;
       }
@@ -103,7 +103,7 @@ export class AllleadsComponent implements OnInit, OnDestroy {
     this.region = region;
     this.leadList(this.region, this.lead_source);
     this.leadSourceList(this.region, this.lead_assigned_to);
-    console.log("region", region);
+    //console.log("region", region);
 
     this.onChangeof();
   }
@@ -255,7 +255,7 @@ export class AllleadsComponent implements OnInit, OnDestroy {
       })
     }
 
-    console.log("leadslist",this.leads_list);
+    //console.log("leadslist",this.leads_list);
     this.totalCount = Object.keys(this.leads_list).length;
 
     this.leads_list.forEach(element => {
@@ -284,7 +284,7 @@ export class AllleadsComponent implements OnInit, OnDestroy {
       }
 
     this.totalValue = parseFloat(this.leadsum);
-    console.log("TV",this.totalValue, this.leadsum, this.leadsarrayvalue, this.leadsarraylist)
+    //console.log("TV",this.totalValue, this.leadsum, this.leadsarrayvalue, this.leadsarraylist)
 
   }
 
