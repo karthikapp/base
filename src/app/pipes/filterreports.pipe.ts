@@ -5,9 +5,45 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class FilterreportsPipe implements PipeTransform {
 
-  transform(value: any, leadtitle:any,companyname: any,oppoassigned: any, leadassigned: any,
+  transform(value: any, leadtitle:any,companyname: any, lead_source:any, oed_name: any, oppoassigned: any, leadassigned: any,
   	status: any, region: any, EDCStartDate: any, EDCEndDate: any, args?: any): any {
 
+  	//Lead Source
+  	if(lead_source == 'Select'){
+  		lead_source = undefined
+  	}
+  	else if(lead_source == "INBOUND LANDLINE" ){
+  		lead_source = "inbound-landline"
+  	}
+  	else if(lead_source == "EVENT"){
+  		lead_source = "event"
+  	}
+  	else if(lead_source == "DISTRIBUTOR"){
+  		lead_source = "distributor"
+  	}
+  	else if(lead_source == "OEM"){
+  		lead_source = "oem"
+  	}
+  	else if(lead_source == "OUTBOUND CALL"){
+  		lead_source = "outboundcall"
+  	}
+  	else if(lead_source == "ON SITE VISIT"){
+  		lead_source = "onsite"
+  	}
+
+  	if(lead_source != undefined && oed_name != ''){
+  		if(lead_source == "event"){
+  			var eve_name = oed_name
+  		}
+  		else if(lead_source == 'distributor'){
+  			var dis_name = oed_name
+  		}
+  		else if(lead_source == "oem"){
+  			var oem_name = oed_name
+  		}
+  	}
+
+  	//Status 
 	if (status == 'Select'){
 		status = undefined
 	}
@@ -69,6 +105,22 @@ export class FilterreportsPipe implements PipeTransform {
                 }
                 if (companyname && values.company_name.toLowerCase().indexOf(companyname.toLowerCase()) === -1){
                 	//console.log("pp", companyname , values.company_name.toLowerCase().indexOf(companyname.toLowerCase()) === -1 )
+                    return false;
+                }
+                if (lead_source && values.leadsource.toLowerCase().indexOf(lead_source.toLowerCase()) === -1){
+                	//console.log("pp", companyname , values.company_name.toLowerCase().indexOf(companyname.toLowerCase()) === -1 )
+                    return false;
+                }
+                if ((oem_name && values.oem_name.toLowerCase().indexOf(oem_name.toLowerCase()) === -1)){
+                	//console.log("pp", oed_name , values.oem_name.toLowerCase().indexOf(oed_name.toLowerCase()) === -1 )
+                    return false;
+                }
+                if (eve_name && values.event_name.toLowerCase().indexOf(eve_name.toLowerCase()) === -1){
+                	//console.log("pp", oed_name , values.event_name.toLowerCase().indexOf(oed_name.toLowerCase()) === -1 )
+                    return false;
+                }
+                if (dis_name && values.distributor_name.toLowerCase().indexOf(dis_name.toLowerCase()) === -1){
+                	//console.log("pp", oed_name , values.distributor_name.toLowerCase().indexOf(oed_name.toLowerCase()) === -1 )
                     return false;
                 }
                 if (status && values.opportunity_state.toLowerCase().indexOf(status.toLowerCase()) === -1){

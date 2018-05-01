@@ -38,7 +38,6 @@
                     <th>Presales Approved</th>
                     <th>Presales Date</th>
                     <th>Created At</th>
-               <!--      <th>Created By</th> -->
                     <th>Remarks</th>
                   </tr>
                   <tr>
@@ -52,8 +51,26 @@
                             <input type="text"  name="company_name" placeholder="Company Name" [(ngModel)]="company_name"> 
                         </div>
                     </th>
-                    <th></th>
-                    <th></th>
+                    <th>
+                        <div class="ui input">
+                           <select [(ngModel)]="lead_source">
+                                <option>Select</option>
+                                <option>INBOUND LANDLINE</option>
+                                <option>EVENT</option>
+                                <option>DISTRIBUTOR</option>
+                                <option>OEM</option>
+                                <option>OUTBOUND CALL</option>
+                                <option>ON SITE VISIT</option>
+                            </select>
+                        </div>
+                    </th>
+                    <th>
+                        <div *ngIf="lead_source == 'OEM' || lead_source == 'EVENT' || lead_source == 'DISTRIBUTOR'">
+                            <div class="ui input">
+                                <input type="text"  name="oed_name" placeholder="Name" [(ngModel)]="oed_name"> 
+                            </div>
+                        </div>
+                    </th>
                     <th>
                         <div class="ui input">
                            <select [(ngModel)]="opportunity_assignedto">
@@ -75,18 +92,20 @@
                         </div>
                     </th>
                     <th>
-                    <select [(ngModel)]="status">
-                    <option>Select</option>
-                    <option>Qualified Lead</option>
-                    <option>Presales Presentation</option>
-                    <option>Budgetary Price Shared</option>
-                    <option>Finalising BOM</option>
-                    <option>POC / Demo</option>
-                    <option>Final Proposal</option>
-                    <option>Final Negotiation</option>
-                    <option>Case Won</option>
-                    <option>Case Lost</option>
-                    </select>
+                        <div class="ui input">
+                            <select [(ngModel)]="status">
+                            <option>Select</option>
+                            <option>Qualified Lead</option>
+                            <option>Presales Presentation</option>
+                            <option>Budgetary Price Shared</option>
+                            <option>Finalising BOM</option>
+                            <option>POC / Demo</option>
+                            <option>Final Proposal</option>
+                            <option>Final Negotiation</option>
+                            <option>Case Won</option>
+                            <option>Case Lost</option>
+                            </select>
+                        </div>
                     </th>
                     <th>
                         <div class="ui input">
@@ -107,7 +126,7 @@
                 </thead>
 
                 <tbody>
-                  <tr *ngFor="let vv of v | filterreports: lead_title : company_name : opportunity_assignedto : lead_assigned_to : status : region : EDCStartDate : EDCEndDate | sortorder">
+                  <tr *ngFor="let vv of v | filterreports: lead_title : company_name : lead_source: oed_name: opportunity_assignedto : lead_assigned_to : status : region : EDCStartDate : EDCEndDate | sortorder">
                     <td>{{vv.lead_title}}</td>
                     <td>{{vv.company_name}}</td>
                     <td>{{leadsourcelabel(vv.leadsource)}}</td> 
