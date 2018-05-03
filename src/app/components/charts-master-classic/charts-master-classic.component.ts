@@ -1,18 +1,18 @@
-import { Component, OnInit , OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FirebaseService } from "../../services/firebase.service";
 declare var jQuery: any;
 
 @Component({
-  selector: 'app-chart-masters',
-  templateUrl: './chart-masters.component.html',
-  styleUrls: ['./chart-masters.component.css']
+  selector: 'app-charts-master-classic',
+  templateUrl: './charts-master-classic.component.html',
+  styleUrls: ['./charts-master-classic.component.css']
 })
-export class ChartMastersComponent implements OnInit, OnDestroy {
+export class ChartsMasterClassicComponent implements OnInit, OnDestroy {
  yflag: number = 1;
   rflag: number = 2;
-catgeory: string = 'All';
+catgeory: string = 'Classic';
 
 //Variables
   //Common for All for accessing Users
@@ -24,9 +24,9 @@ catgeory: string = 'All';
     private router: Router,private afAuth: AngularFireAuth) {
    }
 
-  ngOnInit() {
 
-     this.afAuth.authState
+  ngOnInit() {
+         this.afAuth.authState
     .takeWhile(() => this.alive)
     .subscribe(data => {
       if (data) {
@@ -69,19 +69,18 @@ catgeory: string = 'All';
     });
   }
 
-  ngOnDestroy(){
-    this.alive =false;
-  }
-
 
     ngAfterViewInit() 
   {
     jQuery('.menu .item').tab();
-   
+
+    //jQuery('.ui.rating').rating();
+
+
+     
   }
 
-
-
-
-
+  ngOnDestroy(){
+    this.alive = false;
+  }
 }

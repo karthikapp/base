@@ -16,6 +16,9 @@ export class RevenuechartsProductComponent implements OnInit, OnDestroy {
      @Input()
    yflag: any;
 
+   @Input()
+   category: any;
+
 	options: Object;
 
   	uid: string;
@@ -106,6 +109,7 @@ export class RevenuechartsProductComponent implements OnInit, OnDestroy {
               this.fyearSelect = this.previousYear + '-' + this.currentYear;
               // console.log("fyear", this.fyearSelect)
 
+              if(this.category == 'All'){
            this.analyticsservice.getOpportunitiesforrv()
             	.takeWhile(() => this.alive)
             	.subscribe( 
@@ -127,6 +131,54 @@ export class RevenuechartsProductComponent implements OnInit, OnDestroy {
                    
             				
             		})
+            }
+            else if(this.category == 'ThunderBird'){
+              this.analyticsservice.getOpportunitiesforBird()
+              .takeWhile(() => this.alive)
+              .subscribe( 
+                u => {
+                  this.opportunities = [];
+                  
+                  
+                    this.opportunities = u;
+
+               if(this.yrflag == false){
+                 this.yearBrandList();
+                    this.monthBrandList();
+                    this.selectBrandYList();
+              } else if (this.fyflag == false){
+                this.fyearBrandList();
+              this.quarterBrandList();
+              this.selectBrandFYList();
+            }
+                   
+                    
+                })
+            }
+            else if(this.category == 'Classic'){
+              this.analyticsservice.getOpportunitiesforClassic()
+              .takeWhile(() => this.alive)
+              .subscribe( 
+                u => {
+                  this.opportunities = [];
+                  
+                  
+                    this.opportunities = u;
+
+               if(this.yrflag == false){
+                 this.yearBrandList();
+                    this.monthBrandList();
+                    this.selectBrandYList();
+              } else if (this.fyflag == false){
+                this.fyearBrandList();
+              this.quarterBrandList();
+              this.selectBrandFYList();
+            }
+                   
+                    
+                })
+            }
+
 
  
 

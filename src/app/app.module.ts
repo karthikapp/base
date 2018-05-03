@@ -125,6 +125,8 @@ import { SunburstEmpYComponent } from './components/sunburst-emp-y/sunburst-emp-
 import { ChartMastersComponent } from './components/chart-masters/chart-masters.component';
 import { OrderModule } from 'ngx-order-pipe';
 import { ReversepipePipe } from './reversepipe.pipe';
+import { ChartsMasterThunderbirdComponent } from './components/charts-master-thunderbird/charts-master-thunderbird.component';
+import { ChartsMasterClassicComponent } from './components/charts-master-classic/charts-master-classic.component';
 
 
 
@@ -151,7 +153,9 @@ const appRoutes: Routes = [
                {path:'LeadDetail/:leadid', component: LeadsdetailComponent},
                {path:'OppoDetail/:oppoid', component: OppodetailComponent},
                {path:'Charts',component: ChartsComponent},
-               {path:'ChartsMaster',component: ChartMastersComponent},
+               {path:'ChartsMaster/All',component: ChartMastersComponent},
+               {path:'ChartsMaster/ThunderBird',component: ChartsMasterThunderbirdComponent},
+               {path:'ChartsMaster/Classic',component: ChartsMasterClassicComponent},
                {path:'ViewQLeads/:rflag/:regions/:userid/:sdate/:edate', component:ViewqualifiedleadsComponent},
                {path:'ViewPreSales/:rflag/:regions/:userid/:sdate/:edate', component:ViewpresalesComponent},
                {path:'ViewBudgetary/:rflag/:regions/:userid/:sdate/:edate', component:BudgetarypriceComponent},
@@ -275,7 +279,9 @@ export function highchartsFactory() {
     TargetdashytdComponent,
     SunburstEmpYComponent,
     ChartMastersComponent,
-    ReversepipePipe
+    ReversepipePipe,
+    ChartsMasterThunderbirdComponent,
+    ChartsMasterClassicComponent
   ],
   imports: [
     BrowserModule ,

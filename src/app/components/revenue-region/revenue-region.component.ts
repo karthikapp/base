@@ -16,6 +16,9 @@ export class RevenueRegionComponent implements OnInit, OnDestroy {
      @Input()
    yflag: any;
 
+   @Input()
+   category: any;
+
 	options: Object;
 
   	uid: string;
@@ -106,6 +109,7 @@ export class RevenueRegionComponent implements OnInit, OnDestroy {
               this.quarterSelect = '';
               this.fyearSelect = this.previousYear + '-' + this.currentYear;
               
+              if(this.category == 'All'){
               this.analyticsservice.getOpportunitiesforrv()
               .takeWhile(() => this.alive)
               .subscribe( 
@@ -128,6 +132,55 @@ export class RevenueRegionComponent implements OnInit, OnDestroy {
             }
                  
             })
+            }
+            else if(this.category == 'ThunderBird'){
+              this.analyticsservice.getOpportunitiesforBird()
+              .takeWhile(() => this.alive)
+              .subscribe( 
+                u => {
+                  // console.log("hi Region")
+                 this.opportunities_region = [];
+                 
+
+                 this.opportunities_region = u;
+
+                  if(this.yrflag == false){
+                this.yearRegList();
+                 this.monthRegList();
+                 this.selectRegYList();
+                
+              } else if (this.fyflag == false){
+                this.fyearRegList();
+              this.quarterRegList();
+              this.selectRegFYList();
+            }
+                 
+            })
+            }
+            else if(this.category == 'Classic'){
+              this.analyticsservice.getOpportunitiesforClassic()
+              .takeWhile(() => this.alive)
+              .subscribe( 
+                u => {
+                  // console.log("hi Region")
+                 this.opportunities_region = [];
+                 
+
+                 this.opportunities_region = u;
+
+                  if(this.yrflag == false){
+                this.yearRegList();
+                 this.monthRegList();
+                 this.selectRegYList();
+                
+              } else if (this.fyflag == false){
+                this.fyearRegList();
+              this.quarterRegList();
+              this.selectRegFYList();
+            }
+                 
+            })
+            }
 
 
               

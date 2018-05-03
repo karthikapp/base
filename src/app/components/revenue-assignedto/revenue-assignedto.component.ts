@@ -15,6 +15,9 @@ export class RevenueAssignedtoComponent implements OnInit, OnDestroy {
  
    @Input()
    yflag: any;
+
+   @Input()
+   category: any;
   //Variables
   //Common for All for accessing Users
   uid: string;
@@ -108,6 +111,7 @@ export class RevenueAssignedtoComponent implements OnInit, OnDestroy {
               // console.log("fyear", this.fyearSelect)
               
             //Fetching Values from Analytics
+            if(this.category == 'All'){
             this.analyticsservice.getOpportunitiesforrv()
             .takeWhile(() => this.alive)
             .subscribe( 
@@ -119,15 +123,63 @@ export class RevenueAssignedtoComponent implements OnInit, OnDestroy {
 
               if(this.yrflag == false){
                 this.yearAssgntoList();
-              this.monthAssgntoList();
-              this.selectAssgnToYList();
+                this.monthAssgntoList();
+                this.selectAssgnToYList();
               } else if (this.fyflag == false){
                 this.fyearAssgntoList();
-              this.quarterAssgntoList();
-              this.selectAssgnToFYList();
+                this.quarterAssgntoList();
+                this.selectAssgnToFYList();
             }
               
             })
+          }
+          else if(this.category == 'ThunderBird')
+          {
+            this.analyticsservice.getOpportunitiesforBird()
+            .takeWhile(() => this.alive)
+            .subscribe( 
+            u => {
+              this.opportunities_assgnto = [];
+             
+              this.opportunities_assgnto = u;
+
+
+              if(this.yrflag == false){
+                this.yearAssgntoList();
+                this.monthAssgntoList();
+                this.selectAssgnToYList();
+              } else if (this.fyflag == false){
+                this.fyearAssgntoList();
+                this.quarterAssgntoList();
+                this.selectAssgnToFYList();
+            }
+              
+            })
+          }
+          else if(this.category == 'Classic'){
+            this.analyticsservice.getOpportunitiesforClassic()
+            .takeWhile(() => this.alive)
+            .subscribe( 
+            u => {
+              this.opportunities_assgnto = [];
+             
+              this.opportunities_assgnto = u;
+
+
+              if(this.yrflag == false){
+                this.yearAssgntoList();
+                this.monthAssgntoList();
+                this.selectAssgnToYList();
+              } else if (this.fyflag == false){
+                this.fyearAssgntoList();
+                this.quarterAssgntoList();
+                this.selectAssgnToFYList();
+            }
+              
+            })
+          }
+
+
             return this.ev = true;
           }
           else
@@ -167,7 +219,7 @@ export class RevenueAssignedtoComponent implements OnInit, OnDestroy {
     this.fyear_list = this.opportunities_assgnto
       .map(item => item.financial_year)
       .filter((value, index, self) => { return self.indexOf(value) === index })
-      console.log("fyear", this.fyear_list)
+      //console.log("fyear", this.fyear_list)
 
   }
 

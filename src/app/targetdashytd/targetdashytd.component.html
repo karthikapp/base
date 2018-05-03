@@ -15,7 +15,7 @@
 
 
 
- <div class="card">
+ <div class="card" *ngIf="category=='All'">
   <div class="content">
     <div class="header">
      Revenue Vs Target (YTD)
@@ -52,7 +52,7 @@
 </div>
 
 
-<div class="card">
+<div class="card" *ngIf="category=='All'">
   <div class="content">
     <div class="header">
      Revenue Vs Target (QTD)
@@ -148,15 +148,7 @@
   </tbody>
 </table>
 </div>
-<!--     <br>
-    <div >
-     ,  , 
-      <div class="c100 p{{getValueRT(e.revenue,e.target)}} small center">
-        <span></span>
-        <div class="slice"><div class="bar"></div><div class="fill"></div></div>
-      </div>
-    </div>
-  </div> -->
+
 </div>
 
 

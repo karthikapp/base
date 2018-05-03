@@ -22,10 +22,12 @@ export class DashboardComponent  {
   name: string;
 
 
+
   constructor(private firebaseservice : FirebaseService,
               private router: Router, 
               private afAuth: AngularFireAuth) {
     //Authenticating the dashboard page to check if the user is ADMIN / REPORTER / RECIPIENT / OTHERS
+  
     this.afAuth.authState.subscribe(data => {
     if (data) {
       this.uid = data.uid;

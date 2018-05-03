@@ -15,6 +15,9 @@ export class StackedRegionComponent implements OnInit, OnDestroy {
        @Input()
    yflag: any;
 
+   @Input()
+   category: any;
+
 	options: Object;
 
   uid: string;
@@ -111,6 +114,7 @@ export class StackedRegionComponent implements OnInit, OnDestroy {
                this.previousYear = this.currentYear - 1;
               this.fyearSelect = this.previousYear + '-' + this.currentYear;
 
+              if(this.category == 'All'){
             	this.analyticsservice.getOpportunitiesforrv()
             	.takeWhile(() => this.alive)
             	.subscribe( 
@@ -129,6 +133,49 @@ export class StackedRegionComponent implements OnInit, OnDestroy {
             }
 
             	})
+            }
+            else if(this.category == 'ThunderBird'){
+              this.analyticsservice.getOpportunitiesforBird()
+              .takeWhile(() => this.alive)
+              .subscribe( 
+                u => {
+                  this.opportunities_stkreg = [];
+                  this.opportunities_stkreg = u;
+
+                     if(this.yrflag == false){
+                this.yearList();
+                  this.onSelectYear();
+                
+              } else if (this.fyflag == false){
+                this.fyearList();
+        
+              this.onSelectFY();
+            }
+
+              })
+            }
+            else if(this.category == 'Classic'){
+              this.analyticsservice.getOpportunitiesforClassic()
+              .takeWhile(() => this.alive)
+              .subscribe( 
+                u => {
+                  this.opportunities_stkreg = [];
+                  this.opportunities_stkreg = u;
+
+                     if(this.yrflag == false){
+                this.yearList();
+                  this.onSelectYear();
+                
+              } else if (this.fyflag == false){
+                this.fyearList();
+        
+              this.onSelectFY();
+            }
+
+              })
+
+            }
+
               return this.ev = true;
             }
             

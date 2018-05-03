@@ -15,6 +15,9 @@ export class RevenuechartsComponent implements OnInit, OnDestroy {
        @Input()
    yflag: any;
 
+   @Input()
+   category: any;
+
 	options: Object;
 
   uid: string;
@@ -92,6 +95,7 @@ yearSelect: any;
                this.previousYear = this.currentYear - 1;
               this.fyearSelect = this.previousYear + '-' + this.currentYear;
 
+              if(this.category == 'All'){
             	this.analyticsservice.getOpportunitiesforrv()
             	.takeWhile(() => this.alive)
             	.subscribe( 
@@ -107,13 +111,47 @@ yearSelect: any;
                 this.fyearList();
         
               this.selectChartFYList();
-            }
-      
-                 
-                 
-
-            		
+            }		
             	})
+            }
+            else if(this.category == 'ThunderBird'){
+              this.analyticsservice.getOpportunitiesforBird()
+              .takeWhile(() => this.alive)
+              .subscribe( 
+                u => {
+                  this.opportunities = [];
+                  this.opportunities = u;
+
+                  if(this.yrflag == false){
+                this.yearList();
+                 this.selectChartYList();
+                
+              } else if (this.fyflag == false){
+                this.fyearList();
+        
+              this.selectChartFYList();
+            }    
+              })
+            }
+            else if(this.category == 'Classic'){
+              this.analyticsservice.getOpportunitiesforClassic()
+              .takeWhile(() => this.alive)
+              .subscribe( 
+                u => {
+                  this.opportunities = [];
+                  this.opportunities = u;
+
+                  if(this.yrflag == false){
+                this.yearList();
+                 this.selectChartYList();
+                
+              } else if (this.fyflag == false){
+                this.fyearList();
+        
+              this.selectChartFYList();
+            }    
+              })
+            }
 
    				
               	return this.ev = true;

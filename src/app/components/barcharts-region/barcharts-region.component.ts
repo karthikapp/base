@@ -16,6 +16,9 @@ export class BarchartsRegionComponent implements OnInit {
      @Input()
    yflag: any;
 
+   @Input()
+   category: any;
+
 	options: Object;
 
   	uid: string;
@@ -112,7 +115,7 @@ export class BarchartsRegionComponent implements OnInit {
               this.fyearSelect = this.previousYear + '-' + this.currentYear;
               // console.log("fyear", this.fyearSelect)
               
-
+              if(this.category == 'All'){
              this.analyticsservice.getOpportunitiesforrv()
               .takeWhile(() => this.alive)
               .subscribe( 
@@ -128,11 +131,49 @@ export class BarchartsRegionComponent implements OnInit {
                 this.fyearProList();
               this.quarterProList();
               this.selectProFYList();
+            }    
+             })
+            }
+            else if (this.category == 'ThunderBird'){
+              this.analyticsservice.getOpportunitiesforBird()
+              .takeWhile(() => this.alive)
+              .subscribe( 
+                u => {
+                    this.opportunities_pro = [];
+                    this.opportunities_pro = u;
+
+                     if(this.yrflag == false){
+              this.yearProList();
+                    this.monthProList();
+                    this.selectProYList();
+              } else if (this.fyflag == false){
+                this.fyearProList();
+              this.quarterProList();
+              this.selectProFYList();
+            }    
+             })
+            }
+            else if(this.category == 'Classic'){
+              this.analyticsservice.getOpportunitiesforClassic()
+              .takeWhile(() => this.alive)
+              .subscribe( 
+                u => {
+                    this.opportunities_pro = [];
+                    this.opportunities_pro = u;
+
+                     if(this.yrflag == false){
+              this.yearProList();
+                    this.monthProList();
+                    this.selectProYList();
+              } else if (this.fyflag == false){
+                this.fyearProList();
+              this.quarterProList();
+              this.selectProFYList();
+            }    
+             })
             }
 
-                    
-                    
-                })
+
  				
               	return this.ev = true;
             }

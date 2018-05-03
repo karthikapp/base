@@ -16,6 +16,9 @@ export class RevenueProdComponent implements OnInit, OnDestroy {
      @Input()
    yflag: any;
 
+   @Input()
+   category: any;
+
 	options: Object;
 
   	uid: string;
@@ -106,6 +109,7 @@ export class RevenueProdComponent implements OnInit, OnDestroy {
               this.fyearSelect = this.previousYear + '-' + this.currentYear;
               // console.log("fyear", this.fyearSelect)
 
+              if(this.category == 'All') {
            this.analyticsservice.getOpportunitiesforrv()
             	.takeWhile(() => this.alive)
             	.subscribe( 
@@ -128,6 +132,55 @@ export class RevenueProdComponent implements OnInit, OnDestroy {
 
             			
             		})
+            }
+            else if(this.category == 'ThunderBird'){
+              this.analyticsservice.getOpportunitiesforBird()
+              .takeWhile(() => this.alive)
+              .subscribe( 
+                u => {
+                  this.opportunities_pro = [];
+                  
+                  
+                    this.opportunities_pro = u;
+
+                    if(this.yrflag == false){
+                
+                    this.yearProdList();
+                    this.monthProdList();
+                    this.selectProdYList();
+              } else if (this.fyflag == false){
+                this.fyearProdList();
+              this.quarterProdList();
+              this.selectProdFYList();
+            }
+
+                  
+                })
+            }
+            else if(this.category == 'Classic'){
+              this.analyticsservice.getOpportunitiesforClassic()
+              .takeWhile(() => this.alive)
+              .subscribe( 
+                u => {
+                  this.opportunities_pro = [];
+                  
+                  
+                    this.opportunities_pro = u;
+
+                    if(this.yrflag == false){
+                
+                    this.yearProdList();
+                    this.monthProdList();
+                    this.selectProdYList();
+              } else if (this.fyflag == false){
+                this.fyearProdList();
+              this.quarterProdList();
+              this.selectProdFYList();
+            }
+
+                  
+                })
+            }
 
                				
               	return this.ev = true;

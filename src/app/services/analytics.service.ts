@@ -10,28 +10,9 @@ export class AnalyticsService {
 	rvcharts: FirebaseListObservable<any[]>;
 	rv_last_updt_dt: any;
 
-		opportunities_pro: any;
+  rvbcharts: FirebaseListObservable<any[]>;
+  rvccharts: FirebaseListObservable<any[]>;
 
-   	oppoProTotalValues: any;
-   	oppoProValues: any;
-   	pieProRevenue: any;
-   	dataPro: any;
-
-   	oppoTPV: any;
-   	oppoPRV: any;
-
-   	valuePPercent: any;
-
-   	opportunities_cust: any;
-
-   	oppoCustTotalValues: any;
-   	oppoCustValues: any;
-   	pieCustRevenue: any;
-   	dataCust: any;
-
-   	oppoTCV: any;
-   	oppoCV: any;
-     valueCPercent: any;
   	
   constructor(private ap: AngularFireDatabase) { 
   this.created_at = firebase.database.ServerValue.TIMESTAMP;
@@ -48,6 +29,28 @@ export class AnalyticsService {
 			});
   	// console.log("up",this.rvcharts)
 		return this.rvcharts;
+  }
+
+  getOpportunitiesforBird(){
+    this.rvbcharts =  this.ap.list('/analytics/thunderbird/casewon/deals',
+      {query:
+        {
+        orderByChild: 'casewontime'
+        }
+      });
+    // console.log("up",this.rvcharts)
+    return this.rvbcharts;
+  }
+
+  getOpportunitiesforClassic(){
+    this.rvccharts =  this.ap.list('/analytics/classic/casewon/deals',
+      {query:
+        {
+        orderByChild: 'casewontime'
+        }
+      });
+    // console.log("up",this.rvcharts)
+    return this.rvccharts;
   }
 
   

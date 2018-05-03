@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FirebaseService } from "../services/firebase.service";
+import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
 declare var jQuery: any;
 import {ReversepipePipe} from '../reversepipe.pipe';
+import { AnalyticsService } from '../services/analytics.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -9,7 +12,15 @@ import {ReversepipePipe} from '../reversepipe.pipe';
   templateUrl: './targetdashytd.component.html',
   styleUrls: ['./targetdashytd.component.css']
 })
-export class TargetdashytdComponent implements OnInit {
+export class TargetdashytdComponent implements OnInit, OnDestroy {
+
+  @Input()
+   category: any;
+   
+   uid: string;
+   ev: boolean = false;
+
+   alive: boolean = true;
 
   targetlist: any;
   total: number;
@@ -50,7 +61,12 @@ export class TargetdashytdComponent implements OnInit {
   dataREmpList: any;
   tvalue: any;
 
-  constructor(private firebaseservice : FirebaseService) 
+  employees: any;
+
+
+
+  constructor(private firebaseservice : FirebaseService, private afAuth: AngularFireAuth, 
+    private analyticservice: AnalyticsService,private router: Router) 
   {
     this.percentcompleted = (this.dealvalue_total/this.total)*100
   }
@@ -428,9 +444,6 @@ export class TargetdashytdComponent implements OnInit {
       }
       this.dataFinalEmpList.push({assigned_to: this.name, assignedto_name: this.empname,  revenue: this.value, target: this.tvalue })
     })
-
-    // console.log("trying1", this.dataFinalRegList)
-    // console.log("trying2", this.dataFinalEmpList)
     }
     else 
     {
@@ -445,6 +458,8 @@ export class TargetdashytdComponent implements OnInit {
   	var ans= value.toLocaleString('en-IN',{ style: 'currency', currency: "INR",minimumFractionDigits:2,maximumFractionDigits:2 });
   	return ans
   }
+
+
    getfinancialyear(month,year)
   {
   	if (month <= 3)
@@ -485,86 +500,237 @@ export class TargetdashytdComponent implements OnInit {
 
   ngOnInit() 
   {
-  	var d = new Date();
-  	this.month =  d.getMonth() + 1
-  	this.fullyear = d.getFullYear()
-  	this.financialyear = this.getfinancialyear(this.month,this.fullyear)
-    this.dealvalue_total = 0;
-    this.dealvaluequarter_total = 0;
-
-    
-    //console.log([4,5,6].indexOf(this.month))
-
-    if ([4,5,6].indexOf(this.month) >= 0)
-    {
-      this.quarter = "Q1"
-    }
-    else if ([7,8,9].indexOf(this.month) >= 0)
-     {
-       this.quarter = "Q2"
-     }
-    else if ([10,11,12].indexOf(this.month) >= 0)
-    {
-      this.quarter = "Q3"
-    }
-    else if ([1,2,3].indexOf(this.month) >= 0)
-    {
-      this.quarter = "Q4"
-    }
-
-    console.log(this.quarter);
+        this.targetlist = []
+    this.runningvalue = 0;
+          this.regionList = [];
+              this.executiveList = [];
+this.employees =[];
+this.total = 0;
+this.dealvalue_total = 0;
+              this.dealvaluequarter_total = 0;
 
 
-  	this.firebaseservice.getcasewon().subscribe(val => { 
-      this.revenueList = [];
-      this.revenueList = val.filter( i => { return i.financial_year == this.financialyear});
-      // console.log(val)
-  		val.forEach(el => 
-      { 
-        if (String(el.financial_year) == String(this.financialyear))
-        {
-          // console.log("found", el.valueofdeal)
-          this.dealvalue_total = this.dealvalue_total + el.valueofdeal
+    this.afAuth.authState
+    .takeWhile(() => this.alive)
+    .subscribe(data => {
+       if (data) {
+         this.uid = data.uid
+         
+         this.firebaseservice.getUser(this.uid)
+          .takeWhile(() => this.alive)
+          .subscribe((v) => {
+            if (v.report == undefined)
+            {
+                v.report = '';
+            }
 
-          if (String(el.quarter) == String(this.quarter))
-          {
-            this.dealvaluequarter_total = this.dealvaluequarter_total + el.valueofdeal
-          }
+            if (v.role == undefined)
+            {
+              v.role = '';
+            }
 
-        }
-        else 
-        {
-          // console.log("not found")
-        }
-      })
-  	})
+            if(v.title == undefined)
+            {
+              v.title = '';
+            }
+
+            if (v.role.toUpperCase() == "MASTER")
+            {
+
+            	var d = new Date();
+            	this.month =  d.getMonth() + 1
+            	this.fullyear = d.getFullYear()
+            	this.financialyear = this.getfinancialyear(this.month,this.fullyear)
+              
+
+              if ([4,5,6].indexOf(this.month) >= 0)
+              {
+                this.quarter = "Q1"
+              }
+              else if ([7,8,9].indexOf(this.month) >= 0)
+               {
+                 this.quarter = "Q2"
+               }
+              else if ([10,11,12].indexOf(this.month) >= 0)
+              {
+                this.quarter = "Q3"
+              }
+              else if ([1,2,3].indexOf(this.month) >= 0)
+              {
+                this.quarter = "Q4"
+              }
+
+              if(this.category == 'All'){
+            	this.firebaseservice.getcasewon().subscribe(val => { 
+                this.revenueList = [];
+                this.revenueList = val.filter( i => { return i.financial_year == this.financialyear});
+                // console.log(val)
+            		val.forEach(el => 
+                { 
+                  if (String(el.financial_year) == String(this.financialyear))
+                  {
+                    // console.log("found", el.valueofdeal)
+                    this.dealvalue_total = this.dealvalue_total + el.valueofdeal
+
+                    if (String(el.quarter) == String(this.quarter))
+                    {
+                      this.dealvaluequarter_total = this.dealvaluequarter_total + el.valueofdeal
+                    }
+
+                  }
+                  else 
+                  {
+                    // console.log("not found")
+                  }
+                })
+            	})
+
+        
+
+              this.firebaseservice.getUsers().subscribe(employees => 
+                   { 
+                     var regionlistall = [];
+                      employees.forEach(el => {
+                        regionlistall.push(el.region)
+                        //console.log("trying", regionlistall)
+                      })
+
+                     this.regionList = this.unique(regionlistall);
+                     //console.log("trying12", this.regionList)
+
+                    var execlistall = []
+                      employees.forEach(el => {
+                        execlistall.push(el.userid)
+                        //console.log("trying34", execlistall)
+                      })
+                     this.executiveList = this.unique(execlistall);
+                     //console.log("trying56", this.executiveList)
+                  })
+
+            }
+            else if(this.category == 'ThunderBird'){
+              this.analyticservice.getOpportunitiesforBird().subscribe(val => { 
+                this.revenueList = [];
+                this.revenueList = val.filter( i => { return i.financial_year == this.financialyear});
+                // console.log(val)
+                val.forEach(el => 
+                { 
+                  if (String(el.financial_year) == String(this.financialyear))
+                  {
+                    // console.log("found", el.valueofdeal)
+                    this.dealvalue_total = this.dealvalue_total + el.valueofdeal
+
+                    if (String(el.quarter) == String(this.quarter))
+                    {
+                      this.dealvaluequarter_total = this.dealvaluequarter_total + el.valueofdeal
+                    }
+
+                  }
+                  else 
+                  {
+                    // console.log("not found")
+                  }
+                })
+              })
+
+
+              this.firebaseservice.getUsers().subscribe(employees => 
+                   { 
+                     this.employees = employees;
+                     var regionlistall = [];
+                      this.employees.forEach(el => {
+                        if(el.category == this.category.toLowerCase()){
+                        regionlistall.push(el.region)
+                        }
+                        else{
+                          //console.log("no region");
+                        }
+                        //console.log("trying", regionlistall)
+                      })
+
+                     this.regionList = this.unique(regionlistall);
+                     //console.log("trying12", this.regionList)
+
+                    var execlistall = [];
+                      this.employees.forEach(el => {
+                        if(el.category == this.category.toLowerCase())
+                        {
+                        execlistall.push(el.userid)
+                      }
+                      else{
+
+                        //console.log("no executive list");
+                      }
+                      })
+                     this.executiveList = this.unique(execlistall);
+                     //console.log("trying56", this.executiveList)
+                  })
+
+            }
+            else if(this.category == 'Classic'){
+              this.analyticservice.getOpportunitiesforClassic().subscribe(val => { 
+                this.revenueList = [];
+                this.revenueList = val.filter( i => { return i.financial_year == this.financialyear});
+                // console.log(val)
+                val.forEach(el => 
+                { 
+                  if (String(el.financial_year) == String(this.financialyear))
+                  {
+                    // console.log("found", el.valueofdeal)
+                    this.dealvalue_total = this.dealvalue_total + el.valueofdeal
+
+                    if (String(el.quarter) == String(this.quarter))
+                    {
+                      this.dealvaluequarter_total = this.dealvaluequarter_total + el.valueofdeal
+                    }
+
+                  }
+                  else 
+                  {
+                    // console.log("not found")
+                  }
+                })
+              })
+
+
+
+            this.firebaseservice.getUsers().subscribe(employees => 
+                 { 
+                   this.employees = employees;
+                   var regionlistall = [];
+                    this.employees.forEach(el => {
+                      if(el.category == this.category.toLowerCase()){
+                      regionlistall.push(el.region)
+                      }
+                      else{
+                        //console.log("no region");
+                      }
+                      //console.log("trying", regionlistall)
+                    })
+
+                   this.regionList = this.unique(regionlistall);
+                   //console.log("trying12", this.regionList)
+
+                  var execlistall = [];
+                    this.employees.forEach(el => {
+                      if(el.category == this.category.toLowerCase()){
+                      execlistall.push(el.userid)
+                    }
+                    else{
+
+                      //console.log("no executive list");
+                    }
+                    })
+                   this.executiveList = this.unique(execlistall);
+                   //console.log("trying56", this.executiveList)
+                })
+              }
+
+
 
     // console.log("result", this.dealvalue_total)
 
-  	this.targetlist = []
-  	this.runningvalue = 0;
-    this.regionList = [];
-    this.executiveList = [];
 
-    this.firebaseservice.getUsers().subscribe(employees => 
-         { 
-           var regionlistall = [];
-            employees.forEach(el => {
-              regionlistall.push(el.region)
-              //console.log("trying", regionlistall)
-            })
-
-           this.regionList = this.unique(regionlistall);
-           //console.log("trying12", this.regionList)
-
-          var execlistall = []
-            employees.forEach(el => {
-              execlistall.push(el.userid)
-              //console.log("trying34", execlistall)
-            })
-           this.executiveList = this.unique(execlistall);
-           //console.log("trying56", this.executiveList)
-        })
 
   	this.firebaseservice.gettargets(this.financialyear).subscribe(val => {
   		// console.log(val)
@@ -599,7 +765,7 @@ export class TargetdashytdComponent implements OnInit {
        else 
        {
        		this.targetlist = []
-       		console.log("found targets")
+       		//console.log("found targets")
        		this.firebaseservice.gettargets(this.financialyear).subscribe(employees => 
        			
        			this.targetlist = employees
@@ -607,7 +773,30 @@ export class TargetdashytdComponent implements OnInit {
        }
        
   	})
+
+return this.ev = true;
+            }
+            
+            else
+            {
+              // console.log('No access to this page choco');
+              alert('No access to this page');
+              return this.ev=false;
+            }
+         })
+       }
+       else{
+            // console.log('No access to this page m&m');
+            this.router.navigate(['login']);
+            return this.ev=false;
+       }
+     });
+
   
+}
+
+ngOnDestroy(){
+  this.alive = false;
 }
 
 }

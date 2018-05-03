@@ -15,6 +15,9 @@ export class RevenueExstcustComponent implements OnInit, OnDestroy {
 
    @Input()
    yflag: any;
+
+   @Input()
+   category: any;
 //Variables
   //Common for All for accessing Users
   uid: string;
@@ -121,6 +124,7 @@ export class RevenueExstcustComponent implements OnInit, OnDestroy {
               // console.log("fyear", this.fyearSelect)
               
             //Fetching Values from Analytics
+            if(this.category == 'All'){
             this.analyticsservice.getOpportunitiesforrv()
             .takeWhile(() => this.alive)
             .subscribe( 
@@ -144,7 +148,61 @@ export class RevenueExstcustComponent implements OnInit, OnDestroy {
               
               
             })
+          }
+          else if(this.category == 'ThunderBird'){
+            this.analyticsservice.getOpportunitiesforBird()
+            .takeWhile(() => this.alive)
+            .subscribe( 
+            u => {
+              this.opportunities_EC = [];
+             
+              this.opportunities_EC = u;
+
+               if(this.yrflag == false){
+                this.yearECList();
+              this.monthECList();
+
+              this.selectECYList();
+
+              } else if (this.fyflag == false){
+                this.fyearECList();
+              this.quarterECList();
+              this.selectECFYList();
+            }
+
+              
+              
+            })
+          }
+
+          else if(this.category == 'Classic')
+          {
+            this.analyticsservice.getOpportunitiesforClassic()
+            .takeWhile(() => this.alive)
+            .subscribe( 
+            u => {
+              this.opportunities_EC = [];
+             
+              this.opportunities_EC = u;
+
+               if(this.yrflag == false){
+                this.yearECList();
+              this.monthECList();
+
+              this.selectECYList();
+
+              } else if (this.fyflag == false){
+                this.fyearECList();
+              this.quarterECList();
+              this.selectECFYList();
+            }
+
+              
+              
+            })
+          }  
             return this.ev = true;
+          
           }
           else
           {

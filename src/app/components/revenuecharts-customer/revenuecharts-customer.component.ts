@@ -16,6 +16,9 @@ export class RevenuechartsCustomerComponent implements OnInit, OnDestroy {
      @Input()
    yflag: any;
 
+   @Input()
+   category: any;
+
 	options: Object;
 
   	uid: string;
@@ -61,6 +64,9 @@ export class RevenuechartsCustomerComponent implements OnInit, OnDestroy {
     private analyticsservice : AnalyticsService) { }
 
   ngOnInit() {
+
+    //console.log("category", this.category);
+    
   	this.opportunities_cust = [];
   	this.monthName = '';
 
@@ -106,6 +112,7 @@ export class RevenuechartsCustomerComponent implements OnInit, OnDestroy {
               this.fyearSelect = this.previousYear + '-' + this.currentYear;
               // console.log("fyear", this.fyearSelect)
 
+              if(this.category == 'All'){
               this.analyticsservice.getOpportunitiesforrv()
             	.takeWhile(() => this.alive)
             	.subscribe( 
@@ -125,6 +132,49 @@ export class RevenuechartsCustomerComponent implements OnInit, OnDestroy {
             }
                   
             		})
+            }
+            else if(this.category == 'ThunderBird'){
+              this.analyticsservice.getOpportunitiesforBird()
+              .takeWhile(() => this.alive)
+              .subscribe( 
+                u => {
+                  this.opportunities_cust = [];
+                
+                  this.opportunities_cust = u;
+
+                     if(this.yrflag == false){
+                this.yearCustList();
+                  this.monthCustList();
+                  this.selectCustYList();
+              } else if (this.fyflag == false){
+                this.fyearCustList();
+              this.quarterCustList();
+              this.selectCustFYList();
+            }
+                  
+                })
+            }
+            else if(this.category == 'Classic'){
+              this.analyticsservice.getOpportunitiesforClassic()
+              .takeWhile(() => this.alive)
+              .subscribe( 
+                u => {
+                  this.opportunities_cust = [];
+                
+                  this.opportunities_cust = u;
+
+                     if(this.yrflag == false){
+                this.yearCustList();
+                  this.monthCustList();
+                  this.selectCustYList();
+              } else if (this.fyflag == false){
+                this.fyearCustList();
+              this.quarterCustList();
+              this.selectCustFYList();
+            }
+                  
+                })
+            }
 
               	return this.ev = true;
             }

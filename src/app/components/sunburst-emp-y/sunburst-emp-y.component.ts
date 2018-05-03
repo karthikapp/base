@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { FirebaseService } from "../../services/firebase.service";
 import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -12,6 +12,9 @@ import { AnalyticsService } from '../../services/analytics.service';
   styleUrls: ['./sunburst-emp-y.component.css']
 })
 export class SunburstEmpYComponent implements OnInit, OnDestroy {
+
+  @Input()
+   category: any;
 
   options: Object;
     uid: string;
@@ -92,6 +95,7 @@ export class SunburstEmpYComponent implements OnInit, OnDestroy {
              
                this.yearSelect = this.currentYear
 
+               if(this.category == 'All'){
               this.analyticsservice.getOpportunitiesforrv()
               .takeWhile(() => this.alive)
               .subscribe( 
@@ -103,6 +107,35 @@ export class SunburstEmpYComponent implements OnInit, OnDestroy {
                   this.selectSBYList();
 
               })
+            }
+            else if(this.category == 'ThunderBird'){
+              this.analyticsservice.getOpportunitiesforBird()
+              .takeWhile(() => this.alive)
+              .subscribe( 
+                u => {
+                  this.opportunities_sunburst = [];
+                
+                this.opportunities_sunburst = u;
+                  this.yearSBList();
+                  this.selectSBYList();
+
+              })
+            }
+            else if(this.category == 'Classic'){
+              this.analyticsservice.getOpportunitiesforClassic()
+              .takeWhile(() => this.alive)
+              .subscribe( 
+                u => {
+                  this.opportunities_sunburst = [];
+                
+                this.opportunities_sunburst = u;
+                  this.yearSBList();
+                  this.selectSBYList();
+
+              })
+            }
+
+            
 
                 return this.ev = true;
             }

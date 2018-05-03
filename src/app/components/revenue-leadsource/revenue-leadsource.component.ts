@@ -15,6 +15,9 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
      @Input()
    yflag: any;
 
+   @Input()
+   category: any;
+
 	//Variables
   //Common for All for accessing Users
   uid: string;
@@ -120,6 +123,7 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
               this.fyearSelect = this.previousYear + '-' + this.currentYear;
 
             //Fetching Values from Analytics
+            if(this.category == 'All'){
             this.analyticsservice.getOpportunitiesforrv()
             .takeWhile(() => this.alive)
             .subscribe( 
@@ -139,6 +143,50 @@ export class RevenueLeadsourceComponent implements OnInit, OnDestroy {
             }
               
             })
+          }
+          else if(this.category == 'ThunderBird'){
+            this.analyticsservice.getOpportunitiesforBird()
+            .takeWhile(() => this.alive)
+            .subscribe( 
+            u => {
+              this.opportunities_LS = [];
+             
+              this.opportunities_LS = u;
+
+               if(this.yrflag == false){
+                this.yearLSList();
+              this.monthLSList();
+              this.selectLSYList();
+              } else if (this.fyflag == false){
+                this.fyearLSList();
+              this.quarterLSList();
+              this.selectLSFYList();
+            }
+              
+            })
+          }
+          else if(this.category == 'Classic'){
+            this.analyticsservice.getOpportunitiesforClassic()
+            .takeWhile(() => this.alive)
+            .subscribe( 
+            u => {
+              this.opportunities_LS = [];
+             
+              this.opportunities_LS = u;
+
+               if(this.yrflag == false){
+                this.yearLSList();
+              this.monthLSList();
+              this.selectLSYList();
+              } else if (this.fyflag == false){
+                this.fyearLSList();
+              this.quarterLSList();
+              this.selectLSFYList();
+            }
+              
+            })
+          }
+
             return this.ev = true;
           }
           else

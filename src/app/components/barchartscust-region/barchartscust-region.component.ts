@@ -16,6 +16,9 @@ export class BarchartscustRegionComponent implements OnInit, OnDestroy {
      @Input()
    yflag: any;
 
+   @Input()
+   category: any;
+
 options: Object;
 
   	uid: string;
@@ -109,6 +112,8 @@ options: Object;
               this.fyearSelect = this.previousYear + '-' + this.currentYear;
               // console.log("fyear", this.fyearSelect)
 
+              if(this.category == 'All')
+              {
                this.analyticsservice.getOpportunitiesforrv()
               .takeWhile(() => this.alive)
               .subscribe( 
@@ -124,13 +129,49 @@ options: Object;
                 this.fyearCustList();
               this.quarterCustList();
               this.selectbCustFYList();
-            }
-
-                   
-
-                    
+            }   
                 })
+            }
+            else if (this.category == 'ThunderBird')
+            {
+              this.analyticsservice.getOpportunitiesforBird()
+              .takeWhile(() => this.alive)
+              .subscribe( 
+                u => {
+                  this.opportunities_cust = [];
+                    this.opportunities_cust = u;
 
+                     if(this.yrflag == false){
+                this.yearbCustList();
+                    this.monthbCustList();
+                    this.selectbCustYList();
+              } else if (this.fyflag == false){
+                this.fyearCustList();
+              this.quarterCustList();
+              this.selectbCustFYList();
+            }   
+                })
+            }
+            else if(this.category == 'Classic')
+            {
+              this.analyticsservice.getOpportunitiesforClassic()
+              .takeWhile(() => this.alive)
+              .subscribe( 
+                u => {
+                  this.opportunities_cust = [];
+                    this.opportunities_cust = u;
+
+                     if(this.yrflag == false){
+                this.yearbCustList();
+                    this.monthbCustList();
+                    this.selectbCustYList();
+              } else if (this.fyflag == false){
+                this.fyearCustList();
+              this.quarterCustList();
+              this.selectbCustFYList();
+            }   
+                })
+            }
 
                 return this.ev = true;
             }
