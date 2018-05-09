@@ -468,8 +468,8 @@ dofunnelcharts(){
             ['POC/DEMO',this.valuesofsum.pocopportunitysum ],
             ['Proposal', this.valuesofsum.finalproposalopportunitysum ],
             ['Negotiation', this.valuesofsum.finalnegoopportunitysum ],
-            ['Case Won',  this.valuesofsum.casewonopportunitysum ],
-            ['Case Lost',  this.valuesofsum.caselostopportunitysum ]
+            ['Case Won',  this.valuesofsum.casewonopportunitysum ]
+            // ['Case Lost',  this.valuesofsum.caselostopportunitysum ]
         ]
     }],
         responsive: {
