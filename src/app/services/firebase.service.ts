@@ -278,6 +278,28 @@ addinsideSalesinoneShot(insidesaleslist: {
 	}
 //END ACCOUNT
 
+// retrieve forecast for 13 weeks 
+retreiveforecast(){
+		var forecast_URL = "analytics/forecast_byexec/"
+		//console.log("remove",accountremove_URL)
+		return this.af.list(forecast_URL);
+	}
+
+// retrieve forecast by region for 13 weeks 
+retreiveforecastbyregion(){
+		var forecast_URL_region = "analytics/forecast_byregion/"
+		//console.log("remove",accountremove_URL)
+		return this.af.list(forecast_URL_region);
+	}
+
+// retrieve forecast by brand for 13 weeks 
+retreiveforecastbybrand(){
+		var forecast_URL_brand = "analytics/forecast_bybrand/"
+		//console.log("remove",accountremove_URL)
+		return this.af.list(forecast_URL_brand);
+	}
+
+
 //START OEMS
 	//Fetch list of OEMS
 	getOEMs(){

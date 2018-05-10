@@ -52,6 +52,23 @@
 </div>
 
 
+<div class="card">
+  <div class="content">
+    <div class="header">
+     13 WEEKS FORECAST
+   </div>
+
+   <div class="description">
+    <h2 style="color: #303F9F;font-size: 2.8vw;font-weight: bold;">
+     {{rupee(forecast_total)}}
+   </h2>
+ </div>
+</div>
+
+</div>
+
+
+
 <div class="card" *ngIf="category=='All'">
   <div class="content">
     <div class="header">
@@ -120,8 +137,8 @@
         <thead>
           <tr>
            <th>EXECUTIVE</th>
-           <th style="text-align: right;">REVENUE YTD</th>
-           <th style="text-align: right;">TARGET</th>
+           <th style="text-align: left;">REVENUE YTD</th>
+           <th style="text-align: left;">TARGET</th>
            <th style="text-align: center;">% ACHIEVED</th>
          </tr>
        </thead>
@@ -130,13 +147,6 @@
 <div style="max-height:200px;overflow:auto;">
    <table class="ui inverted blue table">
     <thead>
-     <!--  <tr>
-       <th></th>
-       <th></th>
-       <th></th>
-       <th></th>
-       <th></th>
-     </tr> -->
    </thead>
    <tbody>
     <tr *ngFor="let e of dataFinalEmpList | orderBy: 'revenue' | reversepipe">
@@ -153,8 +163,121 @@
 
 
 </div>
+</div>
 
 
 
+<div class="card" style="width: 100%;">
+  <div class="content">
+    <div class="header">
+     13 WEEKS FORECAST (Executive)
+   </div>
+
+   <div class="description">
+
+    <div>
+      <table class="ui inverted teal table">
+        <thead>
+          <tr>
+           <th>EXECUTIVE</th>
+           <th style="text-align: left;">13 WEEKS FORECAST</th>
+         </tr>
+       </thead>
+     </table>
+   </div>
+<div style="max-height:200px;overflow:auto;">
+   <table class="ui inverted teal table">
+    <thead>
+   </thead>
+   <tbody>
+    <tr *ngFor="let rev of forecast | orderBy: 'value_exec' | reversepipe">
+      <td>{{rupee(rev.execname) | uppercase }}</td>
+      <td align="left">{{rupee(rev.value_exec)}}</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+</div>
+
+
+</div>
+</div>
+
+
+<div class="card" style="width: 100%;">
+  <div class="content">
+    <div class="header">
+     13 WEEKS FORECAST (Region)
+   </div>
+
+   <div class="description">
+
+    <div>
+      <table class="ui inverted orange table">
+        <thead>
+          <tr>
+           <th>REGION</th>
+           <th style="text-align: left;">13 WEEKS FORECAST</th>
+         </tr>
+       </thead>
+     </table>
+   </div>
+<div style="max-height:200px;overflow:auto;">
+   <table class="ui inverted orange table">
+    <thead>
+   </thead>
+   <tbody>
+    <tr *ngFor="let rev_reg of forecast_byregion | orderBy: 'value_region' | reversepipe">
+      <td>{{rev_reg.region | uppercase }}</td>
+      <td align="left">{{rupee(rev_reg.value_region)}}</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+</div>
+
+
+</div>
+</div>
+
+
+
+<div class="card" style="width: 100%;">
+  <div class="content">
+    <div class="header">
+     13 WEEKS FORECAST (Brand)
+   </div>
+
+   <div class="description">
+
+    <div>
+      <table class="ui inverted red table">
+        <thead>
+          <tr>
+           <th>BRAND</th>
+           <th style="text-align: left;">13 WEEKS FORECAST</th>
+         </tr>
+       </thead>
+     </table>
+   </div>
+<div style="max-height:200px;overflow:auto;">
+   <table class="ui inverted red table">
+    <thead>
+   </thead>
+   <tbody>
+    <tr *ngFor="let rev_brand of forecast_bybrand | orderBy: 'value_brand' | reversepipe">
+      <td>{{rev_brand.brand | uppercase }}</td>
+      <td align="left">{{rupee(rev_brand.value_brand)}}</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+</div>
+
+
+</div>
 </div>
 

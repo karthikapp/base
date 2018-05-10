@@ -15,12 +15,12 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class TargetdashytdComponent implements OnInit, OnDestroy {
 
   @Input()
-   category: any;
-   
-   uid: string;
-   ev: boolean = false;
+  category: any;
 
-   alive: boolean = true;
+  uid: string;
+  ev: boolean = false;
+
+  alive: boolean = true;
 
   targetlist: any;
   total: number;
@@ -62,6 +62,10 @@ export class TargetdashytdComponent implements OnInit, OnDestroy {
   tvalue: any;
 
   employees: any;
+  forecast: any;
+  forecast_total: any;
+  forecast_byregion: any;
+  forecast_bybrand: any;
 
 
 
@@ -94,7 +98,7 @@ export class TargetdashytdComponent implements OnInit, OnDestroy {
     var u = {}, a = [];
     for(var i = 0, l = arr.length; i < l; ++i){
       if(arr[i] == undefined){
-          arr[i] = '';
+        arr[i] = '';
       }
       if(!u.hasOwnProperty(arr[i])) {
         a.push(arr[i]);
@@ -121,27 +125,27 @@ export class TargetdashytdComponent implements OnInit, OnDestroy {
   }
 
 
-   ngAfterContentChecked() 
+  ngAfterContentChecked() 
   {
-   
-   this.dataRegion = [];
-   this.dataEmp = [];
-   this.dataREmpList = [];
-   this.dataTEmpList = [];
-   this.dataTargetEmpList = [];
-   this.dataTRegList = [];
-   this.dataTargetRegList = [];
-   this.dataRRegList = [];
-   this.dataRevRegList = [];
-   this.dataFinalRegList = [];
-   this.dataFinalEmpList = [];
-   this.dataRevEmpList = [];
 
-   let total = 0;
-   let qtd_total = 0;
+    this.dataRegion = [];
+    this.dataEmp = [];
+    this.dataREmpList = [];
+    this.dataTEmpList = [];
+    this.dataTargetEmpList = [];
+    this.dataTRegList = [];
+    this.dataTargetRegList = [];
+    this.dataRRegList = [];
+    this.dataRevRegList = [];
+    this.dataFinalRegList = [];
+    this.dataFinalEmpList = [];
+    this.dataRevEmpList = [];
+
+    let total = 0;
+    let qtd_total = 0;
 
     for (var i = 0; i < this.targetlist.length; i++) {
-      
+
       total += (this.targetlist[i].Q1 + this.targetlist[i].Q2 + this.targetlist[i].Q3 + this.targetlist[i].Q4) ;
       this.total = total;
 
@@ -189,7 +193,7 @@ export class TargetdashytdComponent implements OnInit, OnDestroy {
           this.data.push((j.Q1+ j.Q2 + j.Q3 + j.Q4));
         })
 
-         this.rtotal = this.data.reduce((a,b) => a+b ,0);
+        this.rtotal = this.data.reduce((a,b) => a+b ,0);
 
         this.dataTRegList.push({region: i.key, value: this.rtotal})
       })
@@ -213,7 +217,7 @@ export class TargetdashytdComponent implements OnInit, OnDestroy {
         else{
           this.dataTargetRegList.push({region: this.name, value: this.value})
         }
-  
+
       })
 
       //console.log("trying88", this.dataTargetRegList, this.dataTRegList)
@@ -246,7 +250,7 @@ export class TargetdashytdComponent implements OnInit, OnDestroy {
           this.empname = j.name
         })
 
-         this.rtotal = this.data.reduce((a,b) => a+b ,0);
+        this.rtotal = this.data.reduce((a,b) => a+b ,0);
 
         this.dataTEmpList.push({assigned_to: i.key, name: this.empname, value: this.rtotal})
         // console.log("up", this.dataFinalRegList);
@@ -277,35 +281,35 @@ export class TargetdashytdComponent implements OnInit, OnDestroy {
       })
 
       const groupedRObj = this.revenueList.reduce((prev, cur)=> {
-      if(!prev[cur['region']]) {
-        prev[cur['region']] = [cur];
-      } else {
-        prev[cur['region']].push(cur);
-      }
+        if(!prev[cur['region']]) {
+          prev[cur['region']] = [cur];
+        } else {
+          prev[cur['region']].push(cur);
+        }
       // console.log("prev", prev);
       return prev;
     }, {});
 
-    this.dataRegion = Object.keys(groupedRObj).map(key => { return { key, value: groupedRObj[key]}});
+      this.dataRegion = Object.keys(groupedRObj).map(key => { return { key, value: groupedRObj[key]}});
 
       
-    this.dataRegion.forEach ( i => {
-      this.data = [];
+      this.dataRegion.forEach ( i => {
+        this.data = [];
 
-      this.rtotal = 0;
+        this.rtotal = 0;
 
-      i.value.forEach( j =>
-      {
-        this.data.push(j.valueofdeal);
-      })
+        i.value.forEach( j =>
+        {
+          this.data.push(j.valueofdeal);
+        })
 
-       this.rtotal = this.data.reduce((a,b) => a+b ,0);
+        this.rtotal = this.data.reduce((a,b) => a+b ,0);
 
-      this.dataRRegList.push({region: i.key, value: this.rtotal})
+        this.dataRRegList.push({region: i.key, value: this.rtotal})
       // console.log("up", this.dataFinalRegList);
     })
 
-    
+
 
       this.regionList.forEach( i => {
         this.name = '';
@@ -321,47 +325,47 @@ export class TargetdashytdComponent implements OnInit, OnDestroy {
         if(this.count = 0){
           this.dataRevRegList.push({region: this.name, value: 0})
         }
-         else{
+        else{
           this.dataRevRegList.push({region: this.name, value: this.value})
         }
       })
 
 
 
-    const groupedReObj = this.revenueList.reduce((prev, cur)=> {
-      if(!prev[cur['assigned_to']]) {
-        prev[cur['assigned_to']] = [cur];
-      } else {
-        prev[cur['assigned_to']].push(cur);
-      }
+      const groupedReObj = this.revenueList.reduce((prev, cur)=> {
+        if(!prev[cur['assigned_to']]) {
+          prev[cur['assigned_to']] = [cur];
+        } else {
+          prev[cur['assigned_to']].push(cur);
+        }
       // console.log("prev", prev);
       return prev;
     }, {});
 
-    this.dataEmp = Object.keys(groupedReObj).map(key => { return { key, value: groupedReObj[key]}});
+      this.dataEmp = Object.keys(groupedReObj).map(key => { return { key, value: groupedReObj[key]}});
 
 
 
 
-    this.dataEmp.forEach ( i => {
-      this.data = [];
+      this.dataEmp.forEach ( i => {
+        this.data = [];
 
-      this.empname = '';
-      this.rtotal = 0;
+        this.empname = '';
+        this.rtotal = 0;
 
-      i.value.forEach( j =>
-      {
-        this.data.push(j.valueofdeal);
-        this.empname = j.assignedto_name
-      })
+        i.value.forEach( j =>
+        {
+          this.data.push(j.valueofdeal);
+          this.empname = j.assignedto_name
+        })
 
-       this.rtotal = this.data.reduce((a,b) => a+b ,0);
+        this.rtotal = this.data.reduce((a,b) => a+b ,0);
 
-      this.dataREmpList.push({assigned_to: i.key, name: this.empname, value: this.rtotal})
+        this.dataREmpList.push({assigned_to: i.key, name: this.empname, value: this.rtotal})
       //console.log("trying7", this.dataREmpList);
     })
 
-     
+
 
       this.executiveList.forEach( i => {
         this.name = '';
@@ -371,7 +375,7 @@ export class TargetdashytdComponent implements OnInit, OnDestroy {
         this.name = i;
         this.dataREmpList.forEach ( j => {
           if(this.name == j.assigned_to){
-             this.count = 1;
+            this.count = 1;
             this.value = j.value;
             this.empname = j.name;
           }
@@ -386,8 +390,8 @@ export class TargetdashytdComponent implements OnInit, OnDestroy {
 
 
 
-    this.RevPercent = 0;
-    
+      this.RevPercent = 0;
+
 
     //console.log("trying12  ",this.dataTargetRegList, this.dataRevRegList)
 
@@ -401,12 +405,12 @@ export class TargetdashytdComponent implements OnInit, OnDestroy {
 
       
       this.dataTargetRegList.forEach ( j => {
-          if(j.region == this.name)
-          {
-            
-             this.tvalue = j.value;
-           
-          }
+        if(j.region == this.name)
+        {
+
+          this.tvalue = j.value;
+
+        }
       })
       if(this.value == '' || this.value == undefined){
         this.value = 0;
@@ -432,11 +436,11 @@ export class TargetdashytdComponent implements OnInit, OnDestroy {
       this.value = i.value;
       this.dataTargetEmpList.forEach ( j => {
         if(j.assigned_to == this.name){
-            this.tvalue = j.value
+          this.tvalue = j.value
         }
 
       })
-       if(this.value == '' || this.value == undefined){
+      if(this.value == '' || this.value == undefined){
         this.value = 0;
       }
       if(this.tvalue == '' || this.tvalue == undefined){
@@ -444,9 +448,9 @@ export class TargetdashytdComponent implements OnInit, OnDestroy {
       }
       this.dataFinalEmpList.push({assigned_to: this.name, assignedto_name: this.empname,  revenue: this.value, target: this.tvalue })
     })
-    }
-    else 
-    {
+  }
+  else 
+  {
       // console.log("no targets found")
     }
   }
@@ -460,7 +464,7 @@ export class TargetdashytdComponent implements OnInit, OnDestroy {
   }
 
 
-   getfinancialyear(month,year)
+  getfinancialyear(month,year)
   {
   	if (month <= 3)
   	{
@@ -500,72 +504,100 @@ export class TargetdashytdComponent implements OnInit, OnDestroy {
 
   ngOnInit() 
   {
-        this.targetlist = []
+    this.targetlist = []
     this.runningvalue = 0;
-          this.regionList = [];
-              this.executiveList = [];
-this.employees =[];
-this.total = 0;
-this.dealvalue_total = 0;
-              this.dealvaluequarter_total = 0;
+    this.regionList = [];
+    this.executiveList = [];
+    this.employees =[];
+    this.total = 0;
+    this.dealvalue_total = 0;
+    this.dealvaluequarter_total = 0;
 
+    this.forecast_total = 0;
+
+    this.forecast = []
+    this.forecast_byregion = []
+    this.forecast_bybrand = []
 
     this.afAuth.authState
     .takeWhile(() => this.alive)
     .subscribe(data => {
-       if (data) {
-         this.uid = data.uid
-         
-         this.firebaseservice.getUser(this.uid)
-          .takeWhile(() => this.alive)
-          .subscribe((v) => {
-            if (v.report == undefined)
+      if (data) {
+        this.uid = data.uid
+
+
+        this.firebaseservice.retreiveforecast().subscribe(value => {
+          console.log('forecast',value)
+          this.forecast = value
+          var total = 0;
+          value.forEach(el => 
+          {
+            total = total + el.value_exec
+          })
+          this.forecast_total = total
+        })
+
+
+        this.firebaseservice.retreiveforecastbyregion().subscribe(val => {
+          console.log('forecast_by_region',val)
+          this.forecast_byregion = val
+        })
+
+          this.firebaseservice.retreiveforecastbybrand().subscribe(valu => {
+          console.log('forecast_by_brand',valu)
+          this.forecast_bybrand = valu
+        })
+
+        this.firebaseservice.getUser(this.uid)
+        .takeWhile(() => this.alive)
+        .subscribe((v) => {
+          if (v.report == undefined)
+          {
+            v.report = '';
+          }
+
+          if (v.role == undefined)
+          {
+            v.role = '';
+          }
+
+          if(v.title == undefined)
+          {
+            v.title = '';
+          }
+
+          if (v.role.toUpperCase() == "MASTER")
+          {
+
+            var d = new Date();
+            this.month =  d.getMonth() + 1
+            this.fullyear = d.getFullYear()
+            this.financialyear = this.getfinancialyear(this.month,this.fullyear)
+
+
+            if ([4,5,6].indexOf(this.month) >= 0)
             {
-                v.report = '';
+              this.quarter = "Q1"
+            }
+            else if ([7,8,9].indexOf(this.month) >= 0)
+            {
+              this.quarter = "Q2"
+            }
+            else if ([10,11,12].indexOf(this.month) >= 0)
+            {
+              this.quarter = "Q3"
+            }
+            else if ([1,2,3].indexOf(this.month) >= 0)
+            {
+              this.quarter = "Q4"
             }
 
-            if (v.role == undefined)
-            {
-              v.role = '';
-            }
-
-            if(v.title == undefined)
-            {
-              v.title = '';
-            }
-
-            if (v.role.toUpperCase() == "MASTER")
-            {
-
-            	var d = new Date();
-            	this.month =  d.getMonth() + 1
-            	this.fullyear = d.getFullYear()
-            	this.financialyear = this.getfinancialyear(this.month,this.fullyear)
-              
-
-              if ([4,5,6].indexOf(this.month) >= 0)
-              {
-                this.quarter = "Q1"
-              }
-              else if ([7,8,9].indexOf(this.month) >= 0)
-               {
-                 this.quarter = "Q2"
-               }
-              else if ([10,11,12].indexOf(this.month) >= 0)
-              {
-                this.quarter = "Q3"
-              }
-              else if ([1,2,3].indexOf(this.month) >= 0)
-              {
-                this.quarter = "Q4"
-              }
-
-              if(this.category == 'All'){
+            if(this.category == 'All'){
             	this.firebaseservice.getcasewon().subscribe(val => { 
                 this.revenueList = [];
                 this.revenueList = val.filter( i => { return i.financial_year == this.financialyear});
                 // console.log(val)
-            		val.forEach(el => 
+                val.forEach(el => 
                 { 
                   if (String(el.financial_year) == String(this.financialyear))
                   {
@@ -583,29 +615,29 @@ this.dealvalue_total = 0;
                     // console.log("not found")
                   }
                 })
-            	})
+              })
 
-        
+
 
               this.firebaseservice.getUsers().subscribe(employees => 
-                   { 
-                     var regionlistall = [];
-                      employees.forEach(el => {
-                        regionlistall.push(el.region)
+              { 
+                var regionlistall = [];
+                employees.forEach(el => {
+                  regionlistall.push(el.region)
                         //console.log("trying", regionlistall)
                       })
 
-                     this.regionList = this.unique(regionlistall);
+                this.regionList = this.unique(regionlistall);
                      //console.log("trying12", this.regionList)
 
-                    var execlistall = []
-                      employees.forEach(el => {
-                        execlistall.push(el.userid)
+                     var execlistall = []
+                     employees.forEach(el => {
+                       execlistall.push(el.userid)
                         //console.log("trying34", execlistall)
                       })
                      this.executiveList = this.unique(execlistall);
                      //console.log("trying56", this.executiveList)
-                  })
+                   })
 
             }
             else if(this.category == 'ThunderBird'){
@@ -635,36 +667,36 @@ this.dealvalue_total = 0;
 
 
               this.firebaseservice.getUsers().subscribe(employees => 
-                   { 
-                     this.employees = employees;
-                     var regionlistall = [];
-                      this.employees.forEach(el => {
-                        if(el.category == this.category.toLowerCase()){
-                        regionlistall.push(el.region)
-                        }
-                        else{
+              { 
+                this.employees = employees;
+                var regionlistall = [];
+                this.employees.forEach(el => {
+                  if(el.category == this.category.toLowerCase()){
+                    regionlistall.push(el.region)
+                  }
+                  else{
                           //console.log("no region");
                         }
                         //console.log("trying", regionlistall)
                       })
 
-                     this.regionList = this.unique(regionlistall);
+                this.regionList = this.unique(regionlistall);
                      //console.log("trying12", this.regionList)
 
-                    var execlistall = [];
-                      this.employees.forEach(el => {
-                        if(el.category == this.category.toLowerCase())
-                        {
-                        execlistall.push(el.userid)
-                      }
-                      else{
+                     var execlistall = [];
+                     this.employees.forEach(el => {
+                       if(el.category == this.category.toLowerCase())
+                       {
+                         execlistall.push(el.userid)
+                       }
+                       else{
 
                         //console.log("no executive list");
                       }
-                      })
+                    })
                      this.executiveList = this.unique(execlistall);
                      //console.log("trying56", this.executiveList)
-                  })
+                   })
 
             }
             else if(this.category == 'Classic'){
@@ -694,37 +726,37 @@ this.dealvalue_total = 0;
 
 
 
-            this.firebaseservice.getUsers().subscribe(employees => 
-                 { 
-                   this.employees = employees;
-                   var regionlistall = [];
-                    this.employees.forEach(el => {
-                      if(el.category == this.category.toLowerCase()){
-                      regionlistall.push(el.region)
-                      }
-                      else{
+              this.firebaseservice.getUsers().subscribe(employees => 
+              { 
+                this.employees = employees;
+                var regionlistall = [];
+                this.employees.forEach(el => {
+                  if(el.category == this.category.toLowerCase()){
+                    regionlistall.push(el.region)
+                  }
+                  else{
                         //console.log("no region");
                       }
                       //console.log("trying", regionlistall)
                     })
 
-                   this.regionList = this.unique(regionlistall);
+                this.regionList = this.unique(regionlistall);
                    //console.log("trying12", this.regionList)
 
-                  var execlistall = [];
-                    this.employees.forEach(el => {
-                      if(el.category == this.category.toLowerCase()){
-                      execlistall.push(el.userid)
-                    }
-                    else{
+                   var execlistall = [];
+                   this.employees.forEach(el => {
+                     if(el.category == this.category.toLowerCase()){
+                       execlistall.push(el.userid)
+                     }
+                     else{
 
                       //console.log("no executive list");
                     }
-                    })
+                  })
                    this.executiveList = this.unique(execlistall);
                    //console.log("trying56", this.executiveList)
-                })
-              }
+                 })
+            }
 
 
 
@@ -732,67 +764,67 @@ this.dealvalue_total = 0;
 
 
 
-  	this.firebaseservice.gettargets(this.financialyear).subscribe(val => {
+    this.firebaseservice.gettargets(this.financialyear).subscribe(val => {
   		// console.log(val)
-       if (val.length == 0)
-       {
-       	  this.targetlist = []
+      if (val.length == 0)
+      {
+        this.targetlist = []
 
 
-       	this.firebaseservice.getUsers().subscribe(employees => 
-       	{ 
-           
+        this.firebaseservice.getUsers().subscribe(employees => 
+        { 
 
-            employees.forEach(element => {
+
+          employees.forEach(element => {
        			// console.log(element)
        			this.targetlist.push
-       				(
-       				{
-       					'userid': element.userid,
-       					'name':element.name,
-       					'region': this.removeundefined(element.region),
-       					'Q1': 0,
-       					'Q2': 0,
-       					'Q3': 0,
-       					'Q4': 0
+             (
+             {
+               'userid': element.userid,
+               'name':element.name,
+               'region': this.removeundefined(element.region),
+               'Q1': 0,
+               'Q2': 0,
+               'Q3': 0,
+               'Q4': 0
 
-       				}
-       				)
+             }
+             )
        			// console.log(element)
        		})
-       	})
-       }
-       else 
-       {
-       		this.targetlist = []
+        })
+      }
+      else 
+      {
+        this.targetlist = []
        		//console.log("found targets")
        		this.firebaseservice.gettargets(this.financialyear).subscribe(employees => 
        			
        			this.targetlist = employees
-       	)
-       }
-       
-  	})
+             )
+         }
 
-return this.ev = true;
-            }
-            
-            else
-            {
+       })
+
+    return this.ev = true;
+  }
+
+  else
+  {
               // console.log('No access to this page choco');
               alert('No access to this page');
               return this.ev=false;
             }
-         })
-       }
-       else{
+          })
+}
+else{
             // console.log('No access to this page m&m');
             this.router.navigate(['login']);
             return this.ev=false;
-       }
-     });
+          }
+        });
 
-  
+
 }
 
 ngOnDestroy(){
