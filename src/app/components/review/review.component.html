@@ -24,6 +24,19 @@
       </div>
     </form>
   </div>
+
+  <div class="column">
+          <form class="ui mini form">
+            <div class="form-group column" style="padding: 5px;">
+              <label style="font-weight: bold; font-size: 15px;color: white" for="exampleFormControlSelect3">Status: </label>
+              <select class="form-control" id="exampleFormControlSelect3" name="oppostatus" [(ngModel)]="oppostatus" style="height: 29px;font-size: 1.2em; padding-top: 4px; padding-bottom: 4px;">
+              <option [value]="'All'">All</option>
+              <option *ngFor="let p of filteredoppostatus">{{ p }}</option>
+              </select>
+            </div>
+          </form>
+        </div>
+
 </div>
     <br> 
 
@@ -635,7 +648,7 @@
                   
             </div>    
                 <div class="content" style="padding-left: 15px;">
-                    <div *ngFor="let opportunity of exec_wiseopportunity | filterreviews: startDate : endDate">
+                    <div *ngFor="let opportunity of exec_wiseopportunity | filterreviews: startDate : endDate: oppostatus">
 
                      <div class="ui blue segment">
                       <div (click) = "displayReview(opportunity)">

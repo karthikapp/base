@@ -526,27 +526,7 @@ export class TargetdashytdComponent implements OnInit, OnDestroy {
         this.uid = data.uid
 
 
-        this.firebaseservice.retreiveforecast().subscribe(value => {
-          console.log('forecast',value)
-          this.forecast = value
-          var total = 0;
-          value.forEach(el => 
-          {
-            total = total + el.value_exec
-          })
-          this.forecast_total = total
-        })
-
-
-        this.firebaseservice.retreiveforecastbyregion().subscribe(val => {
-          console.log('forecast_by_region',val)
-          this.forecast_byregion = val
-        })
-
-          this.firebaseservice.retreiveforecastbybrand().subscribe(valu => {
-          console.log('forecast_by_brand',valu)
-          this.forecast_bybrand = valu
-        })
+       
 
         this.firebaseservice.getUser(this.uid)
         .takeWhile(() => this.alive)
@@ -568,6 +548,8 @@ export class TargetdashytdComponent implements OnInit, OnDestroy {
 
           if (v.role.toUpperCase() == "MASTER")
           {
+
+
 
             var d = new Date();
             this.month =  d.getMonth() + 1
@@ -638,6 +620,30 @@ export class TargetdashytdComponent implements OnInit, OnDestroy {
                      this.executiveList = this.unique(execlistall);
                      //console.log("trying56", this.executiveList)
                    })
+
+               this.firebaseservice.retreiveforecast().subscribe(value => {
+          //console.log('forecast',value)
+                this.forecast = value
+            var total = 0;
+            value.forEach(el => 
+            {
+              for(let i=0; i<13; i++){
+                 total = total + el.value_exec[i];
+               }
+            })
+            this.forecast_total = total
+          })
+
+
+        // this.firebaseservice.retreiveforecastbyregion().subscribe(val => {
+        //   console.log('forecast_by_region',val)
+        //   this.forecast_byregion = val
+        // })
+
+        //   this.firebaseservice.retreiveforecastbybrand().subscribe(valu => {
+        //   console.log('forecast_by_brand',valu)
+        //   this.forecast_bybrand = valu
+        // })
 
             }
             else if(this.category == 'ThunderBird'){
@@ -830,5 +836,11 @@ else{
 ngOnDestroy(){
   this.alive = false;
 }
+
+
+
+
+
+
 
 }

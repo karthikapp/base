@@ -127,6 +127,9 @@ import { OrderModule } from 'ngx-order-pipe';
 import { ReversepipePipe } from './reversepipe.pipe';
 import { ChartsMasterThunderbirdComponent } from './components/charts-master-thunderbird/charts-master-thunderbird.component';
 import { ChartsMasterClassicComponent } from './components/charts-master-classic/charts-master-classic.component';
+import { BarForecastregionComponent } from './components/bar-forecastregion/bar-forecastregion.component';
+import { BarForecastexecComponent } from './components/bar-forecastexec/bar-forecastexec.component';
+import { BarForecastbrandComponent } from './components/bar-forecastbrand/bar-forecastbrand.component';
 
 
 
@@ -281,7 +284,10 @@ export function highchartsFactory() {
     ChartMastersComponent,
     ReversepipePipe,
     ChartsMasterThunderbirdComponent,
-    ChartsMasterClassicComponent
+    ChartsMasterClassicComponent,
+    BarForecastregionComponent,
+    BarForecastexecComponent,
+    BarForecastbrandComponent
   ],
   imports: [
     BrowserModule ,

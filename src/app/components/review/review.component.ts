@@ -177,7 +177,12 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
   answers: any;
   ansindex: any;
   ansfilter: any;
+  nxt_reviewDate: any;
+
+  filteredoppostatus: any;
  
+  oppostatus: any = 'All';
+
   constructor(private firebaseservice : FirebaseService, 
     private router: Router, private afAuth: AngularFireAuth,
     private rqservice: ReviewquestionService ) {
@@ -256,14 +261,14 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
         }
         else
         {
-          console.log('No access to this page choco');
+          //console.log('No access to this page choco');
           alert('No access to this page');
           return this.ev=false
         }
       })
       }
       else{
-        console.log('No access to this page m&m');
+        //console.log('No access to this page m&m');
         this.router.navigate(['login']);
         return this.ev=false;
       }
@@ -274,8 +279,15 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
     this.question_reviews_ql = [];
     this.answer_reviews_ql = [];
 
+
+
      this.firebaseservice.getopportunities().subscribe(v =>{
-              this.opportunities = v;
+              //this.opportunities = v;
+              //console.log("v", v.length);
+
+              this.opportunities = v
+                  .filter( p => { return p.opportunity_state != 'Case_won' && p.opportunity_state != 'Case_lost' });
+
               this.totalCountValueAll(this.opportunities);
               //this.showReview(this.opportunities);
               
@@ -286,7 +298,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
               this.regionList = this.unique(regionlistall);
               this.showtotalCountReview(this.regionList, this.opportunities);
 
-              console.log("oppo",this.opportunities)
+              //console.log("oppo",this.opportunities)
               
             })
           return this.ev = true;
@@ -298,10 +310,14 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
 
     this.firebaseservice.getopportunitiesbyreporttoid(this.uid)
             .subscribe(v => {
-            this.opportunities = v;
+            //this.opportunities = v;
+
+             this.opportunities = v
+                  .filter( p => { return p.opportunity_state != 'Case_won' && p.opportunity_state != 'Case_lost' });
+
             this.totalCountValueAll(this.opportunities);
 
-            console.log("oppo",this.opportunities)
+            //console.log("oppo",this.opportunities)
             var regionlistall = []
             this.opportunities.forEach(el => {
               regionlistall.push(el.region)
@@ -347,13 +363,13 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
       answerslist.push(answertopush)
       let element: any = {question: question, qid:qid, answers: answerslist};
       this.answer_reviews_ql.push(element)
-      console.log("no answers till now")
-      console.log("review",this.answer_reviews_ql)
+      //console.log("no answers till now")
+      //console.log("review",this.answer_reviews_ql)
     }
 
     else
     {
-      console.log("found answers")
+      //console.log("found answers")
       // this.answer_reviews_ql = this.answer_reviews_ql.filter(function(el)
       // {
       //   return el.qid == qid;
@@ -363,22 +379,22 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
 
       this.ansindex = this.answer_reviews_ql.findIndex(p => p.qid === qid);
 
-      console.log("kri", this.ansindex);
+      //console.log("kri", this.ansindex);
       
       if(this.ansindex != -1){
       this.answer_reviews_ql.forEach(element => 
       {
         if (element.qid == qid)
         {
-          console.log("question already answered")
+          //console.log("question already answered")
           var answerspresent = element.answers
-          console.log("answerspresent", answerspresent, element.answers);
+          //console.log("answerspresent", answerspresent, element.answers);
           answerspresent.forEach(loopanswer => 
           {
-            console.log("answerspresent", loopanswer);
+            //console.log("answerspresent", loopanswer);
             if (loopanswer.ansid == answerid && checked == true)
             {
-             console.log(answerid, "already selected")
+             //console.log(answerid, "already selected")
              answerspresent = answerspresent.filter(function(el) {
                    return el.ansid !== answerid;
              });
@@ -387,19 +403,19 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
                    return el.qid !== qid;
              });
 
-             console.log("ap", answerspresent, this.answer_reviews_ql);
+             //console.log("ap", answerspresent, this.answer_reviews_ql);
 
 
              if(answerspresent.length > 0){
 
                let element: any = {question: question, qid:qid, answers: answerspresent};
                this.answer_reviews_ql.push(element)
-               console.log("review",this.answer_reviews_ql)
+               //console.log("review",this.answer_reviews_ql)
              }
 
              else if(answerspresent == 0){
                this.answer_reviews_ql.splice(this.ansindex,1);
-               console.log("review", this.answer_reviews_ql);
+               //console.log("review", this.answer_reviews_ql);
              }
             }
 
@@ -418,8 +434,8 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
           {
             let answertopush: any = {answer: answer, ansid: answerid}
             answerspresent.push(answertopush)
-            console.log("new answer pushed",answerspresent)
-            console.log("review",this.answer_reviews_ql)
+            //console.log("new answer pushed",answerspresent)
+            //console.log("review",this.answer_reviews_ql)
           }
         }
 
@@ -439,20 +455,20 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
 
       else if(checked == false &&  this.ansindex == -1)
       {
-        console.log("question not answered previously")
+        //console.log("question not answered previously")
         var answerslist = []
         let answertopush: any = {answer: answer, ansid: answerid}
         answerslist.push(answertopush)
         let element: any = {question: question, qid:qid, answers: answerslist};
         this.answer_reviews_ql.push(element)
-        console.log("review",this.answer_reviews_ql)
+        //console.log("review",this.answer_reviews_ql)
       }
 
   }
 }
 
   onkey(value, rquestion, rqid, ranswerid, rchecked){
-    console.log("keytup", value, rquestion, rqid, ranswerid, rchecked);
+    //console.log("keytup", value, rquestion, rqid, ranswerid, rchecked);
 
     this.ansindex = null;
 
@@ -485,13 +501,13 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
       answerslist.push(answertopush)
       let element: any = {question: rquestion, qid:rqid, answers: answerslist};
       this.answer_reviews_ql.push(element)
-      console.log("no answers till now")
-      console.log("review",this.answer_reviews_ql)
+      //console.log("no answers till now")
+      //console.log("review",this.answer_reviews_ql)
     }
 
     else
     {
-      console.log("found answers")
+      //console.log("found answers")
       // this.answer_reviews_ql = this.answer_reviews_ql.filter(function(el)
       // {
       //   return el.qid == qid;
@@ -501,22 +517,22 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
 
       this.ansindex = this.answer_reviews_ql.findIndex(p => p.qid === rqid);
 
-      console.log("kri onkey", this.ansindex);
+      //console.log("kri onkey", this.ansindex);
       
       if(this.ansindex != -1){
       this.answer_reviews_ql.forEach(element => 
       {
         if (element.qid == rqid)
         {
-          console.log("question already answered")
+          //console.log("question already answered")
           var answerspresent = element.answers
           // console.log("answerspresent", answerspresent, element.answers);
           answerspresent.forEach(loopanswer => 
           {
-            console.log("answerspresent", loopanswer);
+            //console.log("answerspresent", loopanswer);
             if ((loopanswer.ansid == ranswerid && rchecked == false) || (loopanswer.ansid == ranswerid && value != ''))
             {
-             console.log(ranswerid, "already selected")
+             //console.log(ranswerid, "already selected")
              answerspresent = answerspresent.filter(function(el) {
                    return el.ansid !== ranswerid;
              });
@@ -527,7 +543,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
 
              let element: any = {question: rquestion, qid:rqid, answers: answerspresent};
              this.answer_reviews_ql.push(element)
-             console.log("review",this.answer_reviews_ql)
+             //console.log("review",this.answer_reviews_ql)
             }
 
             // else if (loopanswer.ansid != answerid && checked == false)
@@ -545,8 +561,8 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
           {
             let answertopush: any = {answer: value, ansid: ranswerid}
             answerspresent.push(answertopush)
-            console.log("new answer pushed",answerspresent)
-            console.log("review",this.answer_reviews_ql)
+            //console.log("new answer pushed",answerspresent)
+            //console.log("review",this.answer_reviews_ql)
           }
         }
 
@@ -566,13 +582,13 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
 
       else if(rchecked == true &&  this.ansindex == -1)
       {
-        console.log("question not answered previously")
+        //console.log("question not answered previously")
         var answerslist = []
         let answertopush: any = {answer: value, ansid: ranswerid}
         answerslist.push(answertopush)
         let element: any = {question: rquestion, qid: rqid, answers: answerslist};
         this.answer_reviews_ql.push(element)
-        console.log("review",this.answer_reviews_ql)
+        //console.log("review",this.answer_reviews_ql)
       }
 
     }
@@ -580,11 +596,11 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
   }
 
   submit_reviews( oppoid: any){
-    console.log("pp12", oppoid, this.ranswers, this.rquestionnarie.question)
-      console.log("hello", this.ratings);
+    //console.log("pp12", oppoid, this.ranswers, this.rquestionnarie.question)
+      //console.log("hello", this.ratings);
 
       if(this.question_reviews_ql == '' && this.roquestions != ''){
-        console.log("krishna")
+        //console.log("krishna")
 
         let value: any = {question: this.roquestions,
           answer: '', qid: '', ansid:''} 
@@ -604,7 +620,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
         created_at: this.created_at
       }
 
-      console.log("pp12", reviewsObject);
+      //console.log("pp12", reviewsObject);
 
         this.firebaseservice.addReviews(reviewsObject, oppoid).then(success => {
           this.rquestionnarie.question = '';
@@ -646,7 +662,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
   selectRegion(item)
   {
   
-    console.log("reg123",item)
+    //console.log("reg123",item)
     this.region_wiseopportunity = []
     var execlistall = []
 
@@ -659,7 +675,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
       }
     }
     this.executivelist = this.unique(execlistall)
-    console.log("reg123", this.executivelist)
+    //console.log("reg123", this.executivelist)
 
     this.showtotalCountRExec(item, this.executivelist, this.opportunities);
 
@@ -676,7 +692,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
       this.oppoExecList = opporegion.filter(u=> 
         {return u.opportunity_assignedto == execList[i] &&
           u.region == region})
-      console.log("oppo", this.oppoExecList , execList[i] )
+      //console.log("oppo", this.oppoExecList , execList[i] )
 
       this.totalCountValueExec(this.oppoExecList,execList[i]);
       //this.showRegReview(this.oppoRegionList); 
@@ -684,7 +700,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
   }
 
   totalCountValueExec(arr, exec){
-    console.log("oppo123456", arr, exec)
+    //console.log("oppo123456", arr, exec)
     this.execarraylist = [];
     this.execarrayvalue = [];
     this.oppoEValues = [];
@@ -792,7 +808,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
 
     this.execList.push(item_exec);
 
-    console.log("oppo12345",this.execList)
+    //console.log("oppo12345",this.execList)
     
   }
 
@@ -855,21 +871,24 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
   }
 
   selectedexec(exec, item){
-    console.log("exec",exec,item)
+    //console.log("exec",exec,item)
     this.exec_wiseopportunity = []
-    console.log(item)
+    //console.log(item)
  
+    var oppostatuslistall = [];
     for (var i = 0; i < this.opportunities.length; i++) 
     {
       if (this.opportunities[i].opportunity_assignedto == exec && this.opportunities[i].region == item)
       {
         this.exec_wiseopportunity.push(this.opportunities[i])
-        //execlistall.push(this.opportunities[i].opportunity_assignedto)
+        oppostatuslistall.push(this.opportunities[i].opportunity_state)
       }
     }
+
+    this.filteredoppostatus = this.unique(oppostatuslistall)
     //this.executivelist = this.unique(execlistall)
-    console.log("exec",this.exec_wiseopportunity)
-    console.log("flag", this.isRegLoading)
+    //console.log("exec",this.exec_wiseopportunity)
+    //console.log("flag", this.isRegLoading)
    
   }
 
@@ -918,14 +937,14 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
     }
 
     this.totalValue = this.totalValue.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-    console.log("total",arr, this.totalValue)
+    //console.log("total",arr, this.totalValue)
 
     //this.oppoValues = Object.values(oppo);
     //console.log("opporeview", this.oppoValues, oppo)
 
     for(let i= 0; i< this.totalCount; i++)
     {
-      console.log("opporeview", this.oppoValues[i].reviews, i)
+      //console.log("opporeview", this.oppoValues[i].reviews, i)
       if(this.oppoValues[i].reviews == undefined )
       {
         this.unReview = this.unReview + 1;
@@ -949,7 +968,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
             this.nxt_rvw_date = this.oppoOValues[this.oppoCount - 1].next_review_date
           }
 
-          console.log("oppo1234",this.nxt_rvw_date, this.nxt_rvw_date > this.todays_date,this.nxt_rvw_date <= this.todays_date );
+          //console.log("oppo1234",this.nxt_rvw_date, this.nxt_rvw_date > this.todays_date,this.nxt_rvw_date <= this.todays_date );
           if (this.nxt_rvw_date < this.todays_date)
           {
             this.lapsedReview = this.lapsedReview + 1;
@@ -1026,8 +1045,14 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
           }
         }
         else if(rflag == 'd'){
+          this.nxt_reviewDate = null;
           if(this.review[this.reviewCount - 1].next_review_date != undefined){
-            return this.review[this.reviewCount -1].next_review_date
+            this.nxt_reviewDate = new Date(this.review[this.reviewCount -1].next_review_date);
+            //console.log("date", this.nxt_reviewDate);
+            if(this.nxt_reviewDate == 'Invalid Date'){
+              this.nxt_reviewDate = '';
+            }
+            return this.nxt_reviewDate;
           }else if(this.review[this.reviewCount -1].next_review_date == undefined)
           {
             return ''
@@ -1061,7 +1086,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
   
 
   totalCountValueReg(arr, region){
-    console.log("oppo123456", arr, region)
+    //console.log("oppo123456", arr, region)
     this.regarraylist = [];
     this.regarrayvalue = [];
     this.oppoRValues = [];
@@ -1084,7 +1109,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
 
     this.oppoRegCount = 0;
     
-    console.log("oppo12345", this.oppoRegionList);
+    //console.log("oppo12345", this.oppoRegionList);
 
     this.totalCountReg = Object.keys(arr).length;
 
@@ -1104,12 +1129,12 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
     //this.showReview(arr);
 
     this.oppoRValues = Object.values(arr);
-    console.log("opporeview", this.oppoRValues)
+    //console.log("opporeview", this.oppoRValues)
 
 
     for(let i= 0; i< this.totalCountReg; i++)
     {
-      console.log("opporeview", this.oppoRValues[i].reviews)
+      //console.log("opporeview", this.oppoRValues[i].reviews)
       if(this.oppoRValues[i].reviews == undefined )
       {
         this.unReviewR = this.unReviewR + 1;
@@ -1118,7 +1143,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
       }
       else if(this.oppoRValues[i].reviews != undefined)
       { 
-        console.log("oppo678",region, this.oppoRValues[i].reviews,this.oppoRValues[i].$key, i , this.oppoRValues[i])
+        //console.log("oppo678",region, this.oppoRValues[i].reviews,this.oppoRValues[i].$key, i , this.oppoRValues[i])
         
         //this.oppoRegValues = this.oppoRValues[i];
 
@@ -1175,7 +1200,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
 
     this.regList.push(item);
 
-    console.log("oppo12345",this.regList)
+    //console.log("oppo12345",this.regList)
   }
 
 
@@ -1223,7 +1248,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
     if(this.question_reviews_ql == undefined){
       this.question_reviews_ql = '';
     }
-    console.log("ql",this.question_reviews_ql);
+    //console.log("ql",this.question_reviews_ql);
   }
 
   gettimeDiff(dateto , datefrom){
@@ -1367,7 +1392,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
   //START MODALS
   //Add Product Modal
   addReviewModal(): void {
-    console.log("MFlag", this.addReviewModal_flag)
+    //console.log("MFlag", this.addReviewModal_flag)
     this.addReviewModal_flag = true;
 
   }
