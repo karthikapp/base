@@ -622,17 +622,29 @@ export class TargetdashytdComponent implements OnInit, OnDestroy {
                    })
 
                this.firebaseservice.retreiveforecast().subscribe(value => {
-          //console.log('forecast',value)
-                this.forecast = value
-            var total = 0;
-            value.forEach(el => 
-            {
-              for(let i=0; i<13; i++){
-                 total = total + el.value_exec[i];
-               }
-            })
-            this.forecast_total = total
-          })
+                //console.log('forecast',value)
+                this.forecast = [];
+                this.forecast = value.filter( i => { return i.financial_year == this.financialyear})
+                //this.forecast = value
+                //console.log("1", this.forecast)
+                var total = 0;
+                value.forEach(el => 
+                {
+                  el.val.forEach(p => {
+                    for(let i=0; i<54; i++)
+                    {
+                     if(p.value[i] == undefined)
+                     {
+                       p.value[i] = 0;
+                     }
+                     total = total + p.value[i];
+                     //console.log("p",total, p.value[i]);
+                    }
+                 })
+                })
+                this.forecast_total = total
+                //console.log("12", this.forecast_total);
+              })
 
 
         // this.firebaseservice.retreiveforecastbyregion().subscribe(val => {

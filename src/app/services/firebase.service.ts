@@ -279,11 +279,16 @@ addinsideSalesinoneShot(insidesaleslist: {
 //END ACCOUNT
 
 // retrieve forecast for 13 weeks 
+// retreiveforecast(){
+// 		var forecast_URL = "analytics/forecast_byexec/"
+// 		//console.log("remove",accountremove_URL)
+// 		return this.af.list(forecast_URL);
+// 	}
+
 retreiveforecast(){
-		var forecast_URL = "analytics/forecast_byexec/"
-		//console.log("remove",accountremove_URL)
-		return this.af.list(forecast_URL);
-	}
+	var forecast_URL = "analytics/forecast_byweek_exec"
+	return this.af.list(forecast_URL);
+}
 
 // retrieve forecast by region for 13 weeks 
 retreiveforecastbyregion(){

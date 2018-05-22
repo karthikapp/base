@@ -55,7 +55,7 @@
 <div class="card" *ngIf="category=='All'">
   <div class="content">
     <div class="header">
-     13 WEEKS FORECAST
+     FORECAST
    </div>
 
    <div class="description">
@@ -165,19 +165,19 @@
 </div>
 </div>
 
-<div class="card" style="width: 100%;" *ngIf="category=='All'">
+<!-- <div class="card" style="width: 100%;" *ngIf="category=='All'">
   <app-bar-forecastregion [category]="'All'"></app-bar-forecastregion>
           
           
-</div>
+</div> -->
 
 <div class="card" style="width: 100%;" *ngIf="category=='All'">
-  <app-bar-forecastexec [category]="'All'"></app-bar-forecastexec>
+  <app-bar-forecastexec [category]="'All'" [fyear]="financialyear"></app-bar-forecastexec>
 </div>
-
+<!-- 
 <div class="card" style="width: 100%;" *ngIf="category=='All'">
   <app-bar-forecastbrand [category]="'All'"></app-bar-forecastbrand>
-  </div>
+  </div> -->
 
 
 

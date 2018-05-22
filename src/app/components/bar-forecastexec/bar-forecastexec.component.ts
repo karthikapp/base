@@ -14,6 +14,9 @@ export class BarForecastexecComponent implements OnInit {
 	@Input()
 	category: any;
 
+  @Input()
+  fyear: any;
+
    options: Object;
 
   	uid: string;
@@ -26,6 +29,9 @@ export class BarForecastexecComponent implements OnInit {
 
      execList: any;
      execSelect: string;
+
+     oppo_barfexec_val: any;
+
      
   constructor(private firebaseservice : FirebaseService, 
     private router: Router,private afAuth: AngularFireAuth) { }
@@ -60,21 +66,18 @@ export class BarForecastexecComponent implements OnInit {
             }
 
             if ( v.role.toUpperCase() == "MASTER")
-            {
-              
-                            
-              if(this.category == 'All'){
-             this.firebaseservice.retreiveforecast()
-              .takeWhile(() => this.alive)
-              .subscribe( 
-                u => {
+            {              
+              if(this.category == 'All')
+              {
+               this.firebaseservice.retreiveforecast()
+                .subscribe(u => {
                     this.opportunities_barfexec = [];
-                    this.opportunities_barfexec = u;
-
+                    this.opportunities_barfexec = u.filter( v => {
+                      return v.financial_year == this.fyear
+                    })
                     this.selectExecList();
-                    this.doExecList();
-                    
-             	})
+                    this.doExecList();  
+             	  })
             }
             else if (this.category == 'ThunderBird'){
               //console.log("Need to push values in analytics")
@@ -112,22 +115,46 @@ export class BarForecastexecComponent implements OnInit {
   }
 
   selectExecList(){
+    var execlistall = [];
     this.execList = [];
-    this.execList = this.opportunities_barfexec
-      .map(item => item.execname)
-      .filter((value, index, self) => { return self.indexOf(value) === index })
+    this.oppo_barfexec_val = [];
+    
+    this.opportunities_barfexec.forEach( i => {
+      this.oppo_barfexec_val.push(i.val);
+      i.val.forEach( j => {
+        execlistall.push(j.executive);
+        this.oppo_barfexec_val.push({executive: j.executive, value:j.value});
+      })
+    })
+
+    this.execList = this.unique(execlistall);
+
     this.execSelect = this.execList[0];
     
   }
 
+    unique(arr) {
+    var u = {}, a = [];
+    for(var i = 0, l = arr.length; i < l; ++i){
+      if(!u.hasOwnProperty(arr[i])) {
+        a.push(arr[i]);
+        u[arr[i]] = 1;
+      }
+    }
+    return a;
+  }
+
   doExecList(){
+
+      //var oppo_value = [];
      this.barFExec = [];
+
      //console.log("12", this.execList, this.execSelect)
-      this.barFExec = this.opportunities_barfexec.filter( i=> {
-        return i.execname == this.execSelect
+      this.barFExec = this.oppo_barfexec_val.filter( i=> {
+        return i.executive == this.execSelect
       })
 
-      //console.log("13", this.barFExec)
+     console.log("13", this.barFExec, this.oppo_barfexec_val)
     if(this.barFExec.length> 0)
     {
     this.dobarforecastExec();
@@ -265,14 +292,18 @@ export class BarForecastexecComponent implements OnInit {
     'data': []
   }], cur = this.barFExec;
 
-  for(let i=0; i< 13; i++)
+  for(let i=0; i< 53; i++)
   {
-    series[0].data.push(cur[0].value_exec[i])
-    //console.log("cur", cur[0].value_exec[i]);
+    if(cur[0].value[i] == undefined){
+      cur[0].value[i] = 0;
+    }
+
+    series[0].data.push(cur[0].value[i])
+    console.log("cur", cur[0].value[i]);
   }
 
   var xAxis = {
-    'categories' : ['Week1','Week2','Week3','Week4', 'Week5', 'Week6', 'Week7', 'Week8', 'Week9', 'Week10', 'Week11', 'Week12', 'Week13'],
+    'categories' : ['1','2','3','4', '5', '6', '7', '8', '9', '10', '11', '12', '13','14','15','16','17','18', '19', '20', '21', '22', '23', '24', '25', '26', '27','28','29','30','31','32', '33', '34', '35', '36', '37', '38', '39', '40', '41','42','43','44','45','46', '47', '48', '49', '50', '51', '52','53'],
     'title': {
       'text': 'Week'
     }
