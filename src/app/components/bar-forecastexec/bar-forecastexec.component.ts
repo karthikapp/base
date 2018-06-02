@@ -154,7 +154,7 @@ export class BarForecastexecComponent implements OnInit {
         return i.executive == this.execSelect
       })
 
-     console.log("13", this.barFExec, this.oppo_barfexec_val)
+     //console.log("13", this.barFExec, this.oppo_barfexec_val)
     if(this.barFExec.length> 0)
     {
     this.dobarforecastExec();
@@ -299,7 +299,7 @@ export class BarForecastexecComponent implements OnInit {
     }
 
     series[0].data.push(cur[0].value[i])
-    console.log("cur", cur[0].value[i]);
+    //console.log("cur", cur[0].value[i]);
   }
 
   var xAxis = {

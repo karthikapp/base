@@ -105,8 +105,9 @@
         <div>
          <h4 style="font-weight: bold;color: #800000"> {{returnnonullregion(p.region)| uppercase}} </h4>
 
-         <div class="c100 p{{getValueRT(p.revenue,p.target)}} small center orange">
-          <span>{{((p.revenue/p.target) ? (p.revenue/p.target)  : 0 )  | percent : '1.2-2'}}</span>
+         <div class="c100 p{{getValueRRT(p.revenue,p.target)}} small center orange">
+          <!-- <span>{{((p.revenue/p.target) ? (p.revenue/p.target)  : 0 )  | percent : '1.2-2'}}</span> -->
+          <span>{{getValueRT(p.revenue,p.target) | number: '1.2-2'}}%</span>
           <div class="slice"><div class="bar"></div><div class="fill"></div></div>
         </div>
         <div style="font-weight: bold;">
@@ -153,7 +154,8 @@
       <td> <app-assignedtonameget name="{{e.assigned_to}}"></app-assignedtonameget></td>
       <td>{{rupee(e.revenue)}}</td>
       <td>{{rupee(e.target)}}</td>
-      <td>{{((e.revenue/e.target) ?  (e.revenue/e.target) : 0 ) | percent : '1.2-2'}}</td>
+      <!-- <td>{{((e.revenue/e.target) ?  (e.revenue/e.target) : 0 ) | percent : '1.2-2'}}</td> -->
+      <td>{{getValueET(e.revenue,e.target) | number: '1.2-2'}}%</td>
     </tr>
   </tbody>
 </table>

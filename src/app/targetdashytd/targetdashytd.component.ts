@@ -145,6 +145,23 @@ export class TargetdashytdComponent implements OnInit, OnDestroy {
     let qtd_total = 0;
 
     for (var i = 0; i < this.targetlist.length; i++) {
+      //console.log("target", this.targetlist[i].Q1, this.targetlist[i].Q2, this.targetlist[i].Q3, this.targetlist[i].Q4);
+      if(this.targetlist[i].Q1 == '' || this.targetlist[i].Q1 == undefined)
+      {
+        this.targetlist[i].Q1 = 0;
+      }
+      if(this.targetlist[i].Q2 == '' || this.targetlist[i].Q2 == undefined)
+      {
+        this.targetlist[i].Q2 = 0;
+      }
+      if(this.targetlist[i].Q3 == '' || this.targetlist[i].Q3 == undefined)
+      {
+        this.targetlist[i].Q3 = 0;
+      }
+      if(this.targetlist[i].Q4 == '' || this.targetlist[i].Q4 == undefined)
+      {
+        this.targetlist[i].Q4 = 0;
+      }
 
       total += (this.targetlist[i].Q1 + this.targetlist[i].Q2 + this.targetlist[i].Q3 + this.targetlist[i].Q4) ;
       this.total = total;
@@ -400,17 +417,23 @@ export class TargetdashytdComponent implements OnInit, OnDestroy {
 
       this.value = 0;
       this.tvalue = 0;
-      this.name = i.region
+      this.name = i.region;
+      if(isNaN(i.value)){
+        i.value = 0;
+      }
       this.value = i.value;
 
       
       this.dataTargetRegList.forEach ( j => {
         if(j.region == this.name)
         {
-
+          if(isNaN(j.value))
+           {
+             j.value = 0;
+           }
           this.tvalue = j.value;
-
         }
+        //console.log("tvalue1", this.tvalue, j.value);
       })
       if(this.value == '' || this.value == undefined){
         this.value = 0;
@@ -418,6 +441,7 @@ export class TargetdashytdComponent implements OnInit, OnDestroy {
       if(this.tvalue == '' || this.tvalue == undefined){
         this.tvalue = 0;
       }
+      //console.log("tvalue", this.tvalue)
       this.dataFinalRegList.push({region: this.name, revenue: this.value, target: this.tvalue  })
     })
 
@@ -432,10 +456,16 @@ export class TargetdashytdComponent implements OnInit, OnDestroy {
       this.value = 0;
 
       this.empname = i.name;
-      this.name = i.assigned_to
+      this.name = i.assigned_to;
+      if(isNaN(i.value)){
+        i.value = 0;
+      }
       this.value = i.value;
       this.dataTargetEmpList.forEach ( j => {
         if(j.assigned_to == this.name){
+          if(isNaN(j.value)){
+            j.value =0;
+          }
           this.tvalue = j.value
         }
 
@@ -488,7 +518,7 @@ export class TargetdashytdComponent implements OnInit, OnDestroy {
 
   getValueRT(value,target){
     let val = 0;
-    // console.log("trying", value, target);
+     //console.log("trying", value, target);
     if(value == 0 || target == 0)
     {
       val =0
@@ -496,10 +526,45 @@ export class TargetdashytdComponent implements OnInit, OnDestroy {
     else{
       val = (value/target)*100;
     }
-    // console.log("trying12", val)
+    //console.log("trying12", val)
+
+
+    //return Math.round(val);
+    return val;
+  }
+
+  getValueRRT(value,target){
+    let val = 0;
+     //console.log("trying", value, target);
+    if(value == 0 || target == 0)
+    {
+      val =0
+    }
+    else{
+      val = (value/target)*100;
+    }
+    //console.log("trying12", val)
 
 
     return Math.round(val);
+    //return val;
+  }
+
+  getValueET(value,target){
+    let val = 0;
+     //console.log("trying", value, target);
+    if(value == 0 || target == 0)
+    {
+      val =0
+    }
+    else{
+      val = (value/target)*100;
+    }
+    console.log("trying12", val)
+
+
+    //return Math.round(val);
+    return val;
   }
 
   ngOnInit() 
@@ -581,9 +646,13 @@ export class TargetdashytdComponent implements OnInit, OnDestroy {
                 // console.log(val)
                 val.forEach(el => 
                 { 
+                  if(isNaN(el.valueofdeal)){
+                      el.valueofdeal = 0;
+                    }
                   if (String(el.financial_year) == String(this.financialyear))
                   {
                     // console.log("found", el.valueofdeal)
+                    
                     this.dealvalue_total = this.dealvalue_total + el.valueofdeal
 
                     if (String(el.quarter) == String(this.quarter))
@@ -633,6 +702,10 @@ export class TargetdashytdComponent implements OnInit, OnDestroy {
                   el.val.forEach(p => {
                     for(let i=0; i<54; i++)
                     {
+                      if(isNaN(p.value[i]))
+                      {
+                       p.value[i] = 0; 
+                      }
                      if(p.value[i] == undefined)
                      {
                        p.value[i] = 0;
@@ -665,9 +738,14 @@ export class TargetdashytdComponent implements OnInit, OnDestroy {
                 // console.log(val)
                 val.forEach(el => 
                 { 
+                  if(isNaN(el.valueofdeal)){
+                      el.valueofdeal = 0;
+                    }
+
                   if (String(el.financial_year) == String(this.financialyear))
                   {
                     // console.log("found", el.valueofdeal)
+
                     this.dealvalue_total = this.dealvalue_total + el.valueofdeal
 
                     if (String(el.quarter) == String(this.quarter))
@@ -724,6 +802,9 @@ export class TargetdashytdComponent implements OnInit, OnDestroy {
                 // console.log(val)
                 val.forEach(el => 
                 { 
+                  if(isNaN(el.valueofdeal)){
+                      el.valueofdeal = 0;
+                    }
                   if (String(el.financial_year) == String(this.financialyear))
                   {
                     // console.log("found", el.valueofdeal)

@@ -36,3 +36,12 @@ apiKey: "AIzaSyAQYKTQBbaHhAG8Enp-M-0aGQv6S5l_fho",
     storageBucket: "raksha-db.appspot.com",
     messagingSenderId: "59012078689"
     */
+
+    /*Rough Case DB
+    apiKey: "AIzaSyA2v-WvAdeycboRR8-CJur_5SK_tAJgiyE",
+    authDomain: "zingrdb.firebaseapp.com",
+    databaseURL: "https://zingrdb.firebaseio.com",
+    projectId: "zingrdb",
+    storageBucket: "",
+    messagingSenderId: "238411365096"
+   */
