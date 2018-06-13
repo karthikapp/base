@@ -67,7 +67,8 @@ export class LeadComponent implements OnInit, OnDestroy {
               || v.title.toUpperCase() == "PRE-SALES HEAD"
               || v.role.toUpperCase() == "PRESALES"
               || v.role.toUpperCase() == "MASTER"
-              || v.role.toUpperCase() == "INSIDE SALES")
+              || v.role.toUpperCase() == "INSIDE SALES"
+              )
             {
               this.firebaseservice.getLeadsByID(this.uid)
               .takeWhile(() => this.alive)

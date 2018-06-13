@@ -14,7 +14,10 @@ export class TargetaddComponent implements OnInit {
   month : number;
   fullyear : number;
   financialyear : string;
-
+  dsgn: any;
+  dsgnList: any;
+  userList: any;
+  useridList: any
 
   constructor(private firebaseservice : FirebaseService) 
   { 
@@ -31,9 +34,25 @@ export class TargetaddComponent implements OnInit {
   {
    
    let total = 0;
-    console.log("trying new value")
+    //console.log("trying new value")
     for (var i = 0; i < this.targetlist.length; i++) {
-      
+      if(this.targetlist[i].Q1 == '' || this.targetlist[i].Q1 == undefined)
+      {
+        this.targetlist[i].Q1 = 0;
+      }
+      if(this.targetlist[i].Q2 == '' || this.targetlist[i].Q2 == undefined)
+      {
+        this.targetlist[i].Q2 = 0;
+      }
+      if(this.targetlist[i].Q3 == '' || this.targetlist[i].Q3 == undefined)
+      {
+        this.targetlist[i].Q3 = 0;
+      }
+      if(this.targetlist[i].Q4 == '' || this.targetlist[i].Q4 == undefined)
+      {
+        this.targetlist[i].Q4 = 0;
+      }
+
             total += (this.targetlist[i].Q1 + this.targetlist[i].Q2 + this.targetlist[i].Q3 + this.targetlist[i].Q4) ;
             this.total = total;
      
@@ -79,73 +98,108 @@ export class TargetaddComponent implements OnInit {
   	return stringret
   }
 
+  onDesgnChange(dsgn: string)
+  {
+    this.dsgn = dsgn;
+    this.initial_checks();
+  }
+
+  selectDesgnList()
+  {
+    this.dsgnList = ['sales engineer','presales','Inside Sales','master','Sales Manager','Marketing','presaleshead']
+    this.dsgn = this.dsgnList[0];
+  }
+
+  initial_checks()
+  {
+    this.targetlist = []
+    this.runningvalue = 0;
+
+    this.firebaseservice.getUsers().subscribe( e => {
+      this.userList = e.filter( o => {
+        return o.role == this.dsgn
+      })
+      console.log("userList", this.userList);
+      this.useridList = this.userList.map(item => item.userid)
+        .filter((value, index, self) => { return self.indexOf(value) === index })
+        console.log("userid",this.useridList)
+   
+
+      this.firebaseservice.gettargets(this.financialyear).subscribe(val => {
+        // console.log(val)
+         if (val.length == 0)
+         {
+           this.targetlist = [];
+
+           this.firebaseservice.getUsers().subscribe(employees => 
+           {
+             for(let i=0; i<this.useridList.length; i++)
+             {
+             employees.forEach(element => {
+               // console.log(element)
+               if(this.useridList[i] == element.userid){
+                 this.targetlist.push
+                   ({
+                     'userid': element.userid,
+                     'name':element.name,
+                     'region': this.removeundefined(element.region),
+                     'Q1': 0,
+                     'Q2': 0,
+                     'Q3': 0,
+                     'Q4': 0
+                  })
+                  console.log("tl",this.targetlist)
+               }
+               else{
+                 console.log("no ush");
+               }
+               // console.log(element)
+             })
+           }
+           })
+         }
+         else 
+         {
+             this.targetlist = []
+             //console.log("found targets")
+             this.firebaseservice.gettargets(this.financialyear).subscribe(employees => 
+             {
+               for(let i =0 ;i < this.useridList.length; i++)
+               {
+                 employees.forEach(element => {
+                   if(this.useridList[i] == element.userid)
+                   {
+                     this.targetlist.push(element)
+                     console.log("tl",this.targetlist)
+                   }
+                 })
+               }
+               
+               //this.targetlist = employees
+             }
+           )
+         }
+
+      })
+     })
+  }
 
 
   ngOnInit() 
   {
   	var d = new Date();
   	this.month =  d.getMonth() + 1
-  	this.fullyear = d.getFullYear()
+  	this.fullyear = d.getFullYear();
   	this.financialyear = this.getfinancialyear(this.month,this.fullyear)
 
-  	this.targetlist = []
-  	this.runningvalue = 0;
-  	this.firebaseservice.gettargets(this.financialyear).subscribe(val => {
-  		// console.log(val)
-       if (val.length == 0)
-       {
-       	this.targetlist = []
-       	this.firebaseservice.getUsers().subscribe(employees => 
-       	{
-       		employees.forEach(element => {
-       			// console.log(element)
-       			this.targetlist.push
-       				(
-       				{
-       					'userid': element.userid,
-       					'name':element.name,
-       					'region': this.removeundefined(element.region),
-       					'Q1': 0,
-       					'Q2': 0,
-       					'Q3': 0,
-       					'Q4': 0
-
-       				}
-       				)
-       			// console.log(element)
-       		})
-       	})
-       }
-       else 
-       {
-       		this.targetlist = []
-       		console.log("found targets")
-       		this.firebaseservice.gettargets(this.financialyear).subscribe(employees => 
-       			
-       			this.targetlist = employees
-       	// {
-       	// 	employees.forEach(element => {
-       	// 		// console.log(element)
-       	// 		this.targetlist.push
-       	// 			(
-       	// 			{
-       	// 				'userid': element.userid,
-       	// 				'name':element.name,
-       	// 				'region': element.region,
-       	// 				'Q1': element.Q1,
-       	// 				'Q2': element.Q2,
-       	// 				'Q3': element.Q3,
-       	// 				'Q4': element.Q4
-
-       	// 			}
-       	// 			)
-       	// 		// console.log(element)
-       	// 	})
-       	// }
-       	)
-       }
-       // console.log(this.targetlist)
-  	})
+    this.dsgnList = []
+    this.userList = []
+    this.dsgn = '';
+    this.selectDesgnList();
+    this.initial_checks();
+    
+    
+  	
   }
 
 }

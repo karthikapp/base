@@ -67,7 +67,7 @@ export class AllleadsComponent implements OnInit, OnDestroy {
             v.title = '';
           }
 
-          if (v.role.toUpperCase() == "MASTER" || v.title.toUpperCase() == "PRE-SALES HEAD" )
+          if (v.role.toUpperCase() == "MASTER" || v.title.toUpperCase() == "PRE-SALES HEAD" || v.role.toUpperCase() == "ADMIN")
           {
             this.firebaseservice.getAllLeads()
             .takeWhile(() => this.alive)

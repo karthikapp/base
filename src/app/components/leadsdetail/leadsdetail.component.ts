@@ -59,6 +59,17 @@ export class LeadsdetailComponent implements OnInit, OnDestroy {
   presales_approved_by: string;
   presales_approved_to: string;
 
+  new_reportsto: String;
+  old_reportsto: String;
+  reportsToModal_flag: boolean = false;
+  deleteModal_flag: boolean = false;
+  modalOptions: any; 
+  reportsto: any;
+  role: any;
+
+  isDataAvailable:boolean = false;
+
+
   constructor(private firebaseservice : FirebaseService, 
     private route: Router, private afAuth: AngularFireAuth, private router: ActivatedRoute) { }
 
@@ -94,9 +105,18 @@ export class LeadsdetailComponent implements OnInit, OnDestroy {
     this.presales_approved_date = null;
     this.presales_approved_by = '';
     this.presales_approved_to = '';
+    this.reportsto = '';
+    this.role = '';
 
     //Display the leads detail based on lead key on respective fields
   	this.leadid = this.router.snapshot.params['leadid'];
+
+    this.modalOptions = 
+    {
+      "size": "small",
+      "type": "default",
+      "closeable": true
+    }
 
   //Leads list
     this.afAuth.authState
@@ -122,14 +142,61 @@ export class LeadsdetailComponent implements OnInit, OnDestroy {
               v.title = '';
             }
 
+            this.role = v.role.toUpperCase();
+
             if (v.report.toUpperCase() == 'REPORTER'
               || v.report.toUpperCase() == 'RECIPIENT'
               || v.title.toUpperCase() == 'PRE-SALES HEAD'
               || v.role.toUpperCase() == "PRESALES"
               || v.role.toUpperCase() == "MASTER"
-              || v.role.toUpperCase() == "INSIDE SALES")
+              || v.role.toUpperCase() == "INSIDE SALES"
+              || v.role.toUpperCase() == "ADMIN")
             {
-              this.firebaseservice.getLeadsByKey(this.leadid)
+              this.callTochangeObject();
+              
+            }
+            else
+            {
+              //console.log('No access to this page choco');
+              alert('No access to this page');
+              return this.ev=false;
+            }
+         })
+       }
+       else{
+            //console.log('No access to this page m&m');
+            this.route.navigate(['login']);
+            return this.ev=false;
+       }
+     });
+  }
+
+  changeReportsTo(reportsTo: String){
+    this.old_reportsto = reportsTo; 
+    this.new_reportsto = '';
+    this.changeReportstoModal();
+  }
+
+  chngReportsToName(new_reportsto){
+    
+    this.new_reportsto = new_reportsto;
+    if(this.new_reportsto != '' && (this.new_reportsto != this.old_reportsto)){
+      this.firebaseservice.change_reportsto(new_reportsto, this.leadid).then(success => {
+        alert("Changed Successfully");
+               
+      });
+    }
+    this.old_reportsto = '';
+    this.new_reportsto = '';
+   
+    this.cancelModal();
+
+  }
+
+  callTochangeObject(){
+    this.reports_to = '';
+
+    this.firebaseservice.getLeadsByKey(this.leadid)
               .takeWhile(() => this.alive)
               .subscribe(lead => {
               this.activities = lead.activities;
@@ -139,13 +206,13 @@ export class LeadsdetailComponent implements OnInit, OnDestroy {
               this.lead_title = lead.lead_title;
 
               this.approval_authority= lead.approval_authority;
-            	this.assigned_to= lead.assigned_to;
-            	this.budget= lead.budget;
-            	this.company_contact_person_id= lead.company_contact_person_id;
-            	this.company_id= lead.company_id;
-            	this.company_name= lead.company_name;
+              this.assigned_to= lead.assigned_to;
+              this.budget= lead.budget;
+              this.company_contact_person_id= lead.company_contact_person_id;
+              this.company_id= lead.company_id;
+              this.company_name= lead.company_name;
 
-            	this.created_at= lead.created_at;
+              this.created_at= lead.created_at;
               this.distributor_id= lead.distributor_id;
               this.distributor_name = lead.distributor_name;
               this.edc= lead.edc;
@@ -166,27 +233,52 @@ export class LeadsdetailComponent implements OnInit, OnDestroy {
               this.presales_approved_by = lead.presales_approved_by;
 
               this.leads = lead;
-
-              console.log("hello",this.leads, this.activities, this.reports_to,this.assigned_to);
+              this.isDataAvailable = true;
+              //console.log("hello",this.leads, this.activities, this.reports_to,this.assigned_to);
 
             }) 
+              this.firebaseservice.getUsers().subscribe(u=> 
+                {
+                  this.reportsto = u.filter(rt => {
+                    return rt.report == 'recipient'
+                  })
+                });
+              
+
               return this.ev = true;
-            }
-            else
-            {
-              console.log('No access to this page choco');
-              alert('No access to this page');
-              return this.ev=false;
-            }
-         })
-       }
-       else{
-            console.log('No access to this page m&m');
-            this.route.navigate(['login']);
-            return this.ev=false;
-       }
-     });
   }
+
+  //START MODALS
+  deleteModal():void{
+    this.deleteModal_flag = true;
+  }
+
+  changeReportstoModal(): void{
+    this.reportsToModal_flag = true;
+    this.isDataAvailable = false;
+  }
+
+  //Cancel Modal
+  cancelModal(): void {
+    this.reportsToModal_flag = false;
+    this.callTochangeObject(); 
+
+  }
+
+  //Type & Size of the Modal
+  setType(type: string): void {
+    this.modalOptions.type = type;
+    this.deleteModal();
+    this.changeReportstoModal();
+  }
+
+  setSize(size: string): void {
+    this.modalOptions.size = size;
+    this.deleteModal();
+    this.changeReportstoModal();
+  }
+//END MODALS
+
 
   // lead source label 
   leadsourcelabel(leadsource: String){

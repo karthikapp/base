@@ -228,13 +228,13 @@ export class ViewqualifiedleadsComponent implements OnInit, OnDestroy {
    onMoveTo(stage, oppokey){
 
   //console.log("dropdown",stage,oppokey)
-if(stage != ''){
-  this.addModal();
+    if(stage != ''){
+      this.addModal();
 
-  this.stages = stage;
-  this.oppokey = oppokey;
-}
-  //  this.submitModal_flag = true;
+      this.stages = stage;
+      this.oppokey = oppokey;
+    }
+    //  this.submitModal_flag = true;
     
     /*let opportunity_state = stage;
     let movetolist = {
@@ -403,7 +403,7 @@ if(stage != ''){
   this.cancelModal();
   }*/
 
-   //START MODALS
+  //START MODALS
   //Add Modal
   addModal(): void {
     console.log("MFlag", this.submitModal_flag)

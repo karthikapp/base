@@ -3,8 +3,51 @@
 
     <div *ngIf="ev">
 
+      <lsu-modal [(ngModel)]="reportsToModal_flag" [options]="modalOptions" align="center">
+        <div class="lsu-modal" style="padding: 10px">
+          <div class="header">
+            <a style="padding-left: 0px;font-family: 'Marvel', sans-serif; text-transform: capitalize;color: #673AB7 ;font-size:2.0vw;font-weight: bold;">
+            Confirm</a> 
+          </div> 
+
+          <div class ="ui divider"> </div>
+
+          <div class="description">
+            <div class="ui stackable two column grid">
+              <div class ="ui column">
+                <div class="label"  style="font-weight: bold; font-size: 15px;padding: 10px">Old Reports To:</div>
+                <a class="ui label" style="padding-left: 10px; font-size: 20px;"*ngIf="old_reportsto">
+                  <app-assignedtonameget name="{{old_reportsto}}"> </app-assignedtonameget>
+                </a>
+              </div>
+
+              <div class="ui column">
+                <div class="label"  style="font-weight: bold; font-size: 15px; padding: 10px;" for="exampleFormControlSelect5">New Reports To:</div>
+                <div class="ui item" style="padding-left: 10px;">
+                  <select class="form-control" id="exampleFormControlSelect5" style="height: 29px;font-size: 1.0em; padding-top: 4px; padding-bottom: 4px;width: 130px;" [(ngModel)]="new_reportsto">
+                    <option selected [value]="''"></option>
+                    <option *ngFor="let n of reportsto" [value]="n.userid"><app-assignedtonameget name="{{n.userid}}"> </app-assignedtonameget> </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br>
+
+          <div class ="ui divider"> </div>
+
+          <div class="action">
+            <br>
+            <button class="ui black deny button" (click)="cancelModal()">Cancel</button>
+            <button class="ui positive right labeled icon button" (click)="chngReportsToName(new_reportsto)">Submit
+              <i class="checkmark icon"></i>
+            </button>
+          </div>
+        </div>
+      </lsu-modal>
+
       <!-- Lead Title at the top center-->
-      <div align="center">
+      <div align="center" >
         <a class="ui massive label" style="font-weight: bolder; background-color: white; color: #673AB7;
         " > {{lead_title}} 
         </a> 
@@ -15,7 +58,7 @@
       <div class="ui stackable two column grid">
 
         <!--Card 1-->
-        <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand" *ngIf = "lead_title != ''" >
+        <div class="wide-card mdl-card mdl-shadow--2dp item-wr mdl-card--expand" *ngIf = "isDataAvailable" >
 
         <!--Company Name & Created Date -->
 
@@ -112,7 +155,7 @@
                 </div>
               </div>
 
-              <div class="column">
+              <div class="column" *ngIf="role!='ADMIN'">
                 <div class="ui teal labels" align="center">
                   <div class="labelspec" style="color: black; font-size: 10px;">Reports To:</div>
                   <a class="ui  label">
@@ -120,7 +163,21 @@
                   </a>
                 </div>
               </div>
+
+              <div class="column" *ngIf="role=='ADMIN'">
+                <div class="ui teal labels" align="center">
+                  <div class="labelspec" style="color: black; font-size: 10px;">Reports To:</div>
+                  <a class="ui  label">
+                    <app-assignedtonameget name="{{reports_to}}"> </app-assignedtonameget>
+                  </a>
+                  <a (click)="changeReportsTo(reports_to)">
+                    <i class="material-icons" style="font-size: 12pt;" >edit</i>
+                  </a>
+                </div>
+              </div>
             </div>
+
+
       
             <div class="ui divider"></div>
             <div class="ui stackable two column grid">

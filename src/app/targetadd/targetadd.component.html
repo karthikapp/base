@@ -19,7 +19,11 @@
 			<div class="description">
 				<table class="ui fixed single line celled table">
 					<thead>
-						<tr><th>Executive</th>
+						<tr><th>
+						<select class="form-control" id="exampleFormControlSelect1" name="dsgn" [(ngModel)]="dsgn" (change)="onDesgnChange($event.target.value)" style="height: 29px;font-size: 1.2em; padding-top: 4px; padding-bottom: 4px;">
+		                <option *ngFor="let d of dsgnList"> {{d}} </option>
+		              </select>
+          			</th>
 							<th>Q1</th>
 							<th>Q2</th>
 							<th>Q3</th>

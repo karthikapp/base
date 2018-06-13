@@ -775,6 +775,15 @@ retreiveforecastbybrand(){
 
     }
 
+    //Update reports to in all leads stage
+    change_reportsto(reportsto, reportstokey){
+    	var opporepValue = '/leads/' + reportstokey;
+    	var opporepValueD = this.af.object(opporepValue).update({'reports_to': reportsto});
+
+    	return opporepValueD;
+
+    }
+
         //Update presales assigned to in all opportunity stages
     change_assignedpreto(assignedto, assgnkey){
     	var oppoassignpreValue = '/opportunities/' + assgnkey;
