@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterContentChecked } from '@angular/core';
 import { FirebaseService } from "../services/firebase.service";
+import { AUTH_PROVIDERS, AngularFireAuth } from 'angularfire2/auth';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-targetadd',
   templateUrl: './targetadd.component.html',
   styleUrls: ['./targetadd.component.css']
 })
-export class TargetaddComponent implements OnInit {
+export class TargetaddComponent implements OnInit, AfterContentChecked, OnDestroy {
  
   targetlist: any;
   total: number;
@@ -17,9 +19,16 @@ export class TargetaddComponent implements OnInit {
   dsgn: any;
   dsgnList: any;
   userList: any;
-  useridList: any
+  useridList: any;
+  val: any;
+  gettargetList: any;
 
-  constructor(private firebaseservice : FirebaseService) 
+  alive: boolean = true;
+
+  uid: string;
+  ev: boolean = false;
+
+  constructor(private firebaseservice : FirebaseService,  private router: Router, private afAuth: AngularFireAuth) 
   { 
 
   }
@@ -78,10 +87,17 @@ export class TargetaddComponent implements OnInit {
   	return fystring
   }
 
+
   addtarget(financialyear,targetlist)
   { 
-    this.firebaseservice.addtargets(financialyear,targetlist)
-     alert("Success, Targets updated");
+    this.targetListChange(targetlist)
+    //console.log("targetlist", targetlist)
+    //console.log("final", this.val)
+    this.firebaseservice.addtargets(financialyear,this.val).then(success => {
+      alert("Success, Targets updated");
+     this.discardTarget();
+    })
+     
   }
 
   removeundefined(value)
@@ -98,10 +114,46 @@ export class TargetaddComponent implements OnInit {
   	return stringret
   }
 
-  onDesgnChange(dsgn: string)
+  onDesgnChange(dsgn: string, targetList)
   {
     this.dsgn = dsgn;
+    //console.log("targetlistdsgn", targetList)
+
+    this.targetListChange(targetList);
+    
     this.initial_checks();
+  }
+
+  targetListChange(targetList)
+  {
+    for(let k=0; k < targetList.length; k++)
+    {
+      let i = 0;
+      let j = 0;
+
+      i = this.val.length;
+
+      this.val.forEach( (element,index) => {
+        
+        if(element.userid == targetList[k].userid)
+        {
+          this.val.splice(index, 1)
+          this.val.push(targetList[k])
+        }
+        else
+        {
+          j++;
+        }                                        
+      }) 
+
+      //console.log("gettargetlist", j, i)
+
+      if(j == i){
+        this.val.push(targetList[k])
+      } 
+      //console.log("gettargetlist", this.val)
+    }
+
   }
 
   selectDesgnList()
@@ -113,93 +165,206 @@ export class TargetaddComponent implements OnInit {
   initial_checks()
   {
     this.targetlist = []
+    this.userList = []
     this.runningvalue = 0;
+    this.useridList = [];
+
+    //console.log("valic", this.val)
 
     this.firebaseservice.getUsers().subscribe( e => {
+      this.userList = []
       this.userList = e.filter( o => {
         return o.role == this.dsgn
       })
-      console.log("userList", this.userList);
+
       this.useridList = this.userList.map(item => item.userid)
         .filter((value, index, self) => { return self.indexOf(value) === index })
-        console.log("userid",this.useridList)
-   
+        //console.log("userini", this.userList, this.useridList)
 
-      this.firebaseservice.gettargets(this.financialyear).subscribe(val => {
-        // console.log(val)
-         if (val.length == 0)
-         {
-           this.targetlist = [];
+        
 
-           this.firebaseservice.getUsers().subscribe(employees => 
-           {
-             for(let i=0; i<this.useridList.length; i++)
-             {
-             employees.forEach(element => {
-               // console.log(element)
-               if(this.useridList[i] == element.userid){
-                 this.targetlist.push
-                   ({
-                     'userid': element.userid,
-                     'name':element.name,
-                     'region': this.removeundefined(element.region),
-                     'Q1': 0,
-                     'Q2': 0,
-                     'Q3': 0,
-                     'Q4': 0
-                  })
-                  console.log("tl",this.targetlist)
-               }
-               else{
-                 console.log("no ush");
-               }
-               // console.log(element)
-             })
-           }
-           })
-         }
-         else 
-         {
-             this.targetlist = []
-             //console.log("found targets")
-             this.firebaseservice.gettargets(this.financialyear).subscribe(employees => 
-             {
-               for(let i =0 ;i < this.useridList.length; i++)
-               {
-                 employees.forEach(element => {
-                   if(this.useridList[i] == element.userid)
-                   {
-                     this.targetlist.push(element)
-                     console.log("tl",this.targetlist)
-                   }
-                 })
-               }
+        for(let i=0; i<=this.useridList.length; i++)
+        {
+          this.val.forEach(ele => {
+            if(this.useridList[i] == ele.userid){
+             this.targetlist.push(ele)
+             //console.log("targetlist in targets", this.targetlist, this.targetlist.length, i) 
+            }
+          })
+
+          if(this.targetlist.length <= i){
+            this.userList.forEach( el => {
+              if(this.useridList[i] == el.userid){
+                this.targetlist.push
+                ({
+                 'userid': el.userid,
+                 'name':el.name,
+                 'region': this.removeundefined(el.region),
+                 'Q1': 0,
+                 'Q2': 0,
+                 'Q3': 0,
+                 'Q4': 0
+               })
+                //console.log("targetlist not in targets", this.targetlist, this.targetlist.length, i)
+              }
+            })
+          }
+        }
+      
+    })
+
+      // this.firebaseservice.gettargets(this.financialyear).subscribe(val => {
+      //   this.val = val;
+      //   console.log("val", this.val, val.length, this.financialyear)
+      //    if (val.length == 0)
+      //    {
+      //     console.log("val", val.length)
+      //      this.targetlist = [];
+
+      //      this.firebaseservice.getUsers().subscribe(employees => 
+      //      {
+      //        for(let i=0; i<this.useridList.length; i++)
+      //        {
+      //        employees.forEach(element => {
+      //          // console.log(element)
+      //          if(this.useridList[i] == element.userid){
+      //            this.targetlist.push
+      //              ({
+      //                'userid': element.userid,
+      //                'name':element.name,
+      //                'region': this.removeundefined(element.region),
+      //                'Q1': 0,
+      //                'Q2': 0,
+      //                'Q3': 0,
+      //                'Q4': 0
+      //             })
+      //             console.log("tl",this.targetlist)
+      //          }
+      //          else{
+      //            console.log("no push");
+      //          }
+      //          // console.log(element)
+      //        })
+      //      }
+      //      })
+      //    }
+      //    else 
+      //    {
+      //        this.targetlist = []
+      //        console.log("found targets")
+      //        this.firebaseservice.gettargets(this.financialyear).subscribe(employees => 
+      //        {
+      //         console.log("userid", this.useridList.length)
+      //          for(let i =0 ;i < this.useridList.length; i++)
+      //          {
+      //            employees.forEach(element => {
+      //               console.log("element", this.useridList[i], element.userid)
+      //              if(this.useridList[i] == element.userid)
+      //              {
+      //                this.targetlist.push(element)
+      //                console.log("tl",this.targetlist)
+      //              } 
+      //            })
+      //          }
                
-               //this.targetlist = employees
-             }
-           )
-         }
+      //          //this.targetlist = employees
+      //        }
+      //      )
+      //    }
 
-      })
-     })
+      // })
+     
   }
-
 
   ngOnInit() 
   {
-  	var d = new Date();
-  	this.month =  d.getMonth() + 1
-  	this.fullyear = d.getFullYear();
-  	this.financialyear = this.getfinancialyear(this.month,this.fullyear)
+    this.targetlist = [];
+
+    this.afAuth.authState
+    .takeWhile(() => this.alive)
+    .subscribe(data => {
+       if (data) {
+         this.uid = data.uid
+         //console.log("email",this.uid)
+         
+         this.firebaseservice.getUser(this.uid)
+         .takeWhile(() => this.alive)
+         .subscribe((v) => {
+            if (v.report == undefined)
+            {
+                v.report = '';
+            }
+
+            if (v.role == undefined)
+            {
+              v.role = '';
+            }
+
+            if (v.role.toUpperCase() == 'MASTER')
+            {
+            	var d = new Date();
+            	this.month =  d.getMonth() + 1
+            	this.fullyear = d.getFullYear();
+            	this.financialyear = this.getfinancialyear(this.month,this.fullyear)
+
+              this.dsgnList = []
+              this.userList = []
+              this.useridList = []
+              this.dsgn = '';
+              this.targetlist = []
+              
+               this.firebaseservice.gettargets(this.financialyear).subscribe( val => {
+                  
+                  this.val = [];
+                  this.val = val;
+
+                  this.selectDesgnList();
+                  this.initial_checks();
+
+                  //console.log("valuemain", this.val)
+                })
+              return this.ev=true;
+            }
+            else
+            {
+              //console.log('No access to this page choc');
+              alert('No access to this page');
+              return this.ev=false;
+            }
+         })
+       }
+       else{
+            //console.log('No access to this page m&m');
+            this.router.navigate(['login']);
+            return this.ev=false;
+       }
+     });
+  	
+  }
+
+   ngOnDestroy() {
+    this.alive = false;
+  }
+
+  discardTarget(){
+    var d = new Date();
+    this.month =  d.getMonth() + 1
+    this.fullyear = d.getFullYear();
+    this.financialyear = this.getfinancialyear(this.month,this.fullyear)
 
     this.dsgnList = []
     this.userList = []
+    this.useridList = []
     this.dsgn = '';
-    this.selectDesgnList();
-    this.initial_checks();
-    
-    
-  	
+    this.targetlist = []
+
+    this.firebaseservice.gettargets(this.financialyear).subscribe( val => {
+      this.val = [];
+      this.val = val;
+      this.selectDesgnList();
+      this.initial_checks();
+    })
+
   }
 
 }

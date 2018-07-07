@@ -657,7 +657,7 @@ retreiveforecastbybrand(){
 	addtargets(financialyear:string,targetlist:any)
 	{
 		let targetURL = '/targets/' + financialyear;
-		this.af.object(targetURL).update({'values':targetlist});
+		return this.af.object(targetURL).update({'values':targetlist});
 	}
 
 
