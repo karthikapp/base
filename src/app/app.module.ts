@@ -130,6 +130,7 @@ import { ChartsMasterClassicComponent } from './components/charts-master-classic
 import { BarForecastregionComponent } from './components/bar-forecastregion/bar-forecastregion.component';
 import { BarForecastexecComponent } from './components/bar-forecastexec/bar-forecastexec.component';
 import { BarForecastbrandComponent } from './components/bar-forecastbrand/bar-forecastbrand.component';
+import { FilterexecPipe } from './pipes/filterexec.pipe';
 
 
 
@@ -287,7 +288,8 @@ export function highchartsFactory() {
     ChartsMasterClassicComponent,
     BarForecastregionComponent,
     BarForecastexecComponent,
-    BarForecastbrandComponent
+    BarForecastbrandComponent,
+    FilterexecPipe
   ],
   imports: [
     BrowserModule ,

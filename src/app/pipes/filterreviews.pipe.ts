@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class FilterreviewsPipe implements PipeTransform {
 
-  transform(value: any, edc1: any, edc2: any,  oppostatus: any, rgs?: any): any {
+  transform(value: any, edc1: any, edc2: any,  oppostatus: any, oppovalue: any, args?: any): any {
     if(edc1 == undefined || edc1 == ''){
 		edc1 = null
 	}
@@ -14,6 +14,7 @@ export class FilterreviewsPipe implements PipeTransform {
 		edc2 = null
 	}
 
+  //console.log("oppovalue", oppovalue)
 	// if(val == undefined || val == ''){
 	// 	val = 0
 	// }
@@ -23,6 +24,10 @@ export class FilterreviewsPipe implements PipeTransform {
     oppostatus = 'All';
   }
 
+  if(oppovalue == undefined || oppovalue == '')
+  {
+    oppovalue = 'All';
+  }
 
 
   if (value && value.length){
@@ -43,6 +48,13 @@ export class FilterreviewsPipe implements PipeTransform {
 	                return false;
 	              }
                 if(oppostatus && oppostatus != 'All' &&  values.opportunity_state.toLowerCase().indexOf(oppostatus.toLowerCase()) === -1){
+                  return false;
+                }
+                if(oppovalue && oppovalue != 'All' && oppovalue == '> 200000' && !(values.value > 200000))
+                {
+                  return false;
+                }
+                if(oppovalue && oppovalue != 'All' && oppovalue == '<= 200000' && !(values.value <= 200000)){
                   return false;
                 }
                 return true;

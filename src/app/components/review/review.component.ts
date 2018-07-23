@@ -182,6 +182,8 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
   filteredoppostatus: any;
  
   oppostatus: any = 'All';
+  oppovalue: any = 'All';
+  oppocategory: any = 'All';
 
   constructor(private firebaseservice : FirebaseService, 
     private router: Router, private afAuth: AngularFireAuth,
@@ -685,6 +687,8 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
     this.oppoExecList = [];
     this.execList = [];
 
+    //console.log("exec", execList)
+
     let oppokeys = Object.keys(execList).length
 
 
@@ -692,7 +696,6 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
       this.oppoExecList = opporegion.filter(u=> 
         {return u.opportunity_assignedto == execList[i] &&
           u.region == region})
-      //console.log("oppo", this.oppoExecList , execList[i] )
 
       this.totalCountValueExec(this.oppoExecList,execList[i]);
       //this.showRegReview(this.oppoRegionList); 
