@@ -1,7 +1,7 @@
 <div class="main"> 
   <div id="" style="overflow-y: scroll;overflow-x: scroll; width: 100%;height: 100%;">
 
-    <div class="ui stackable six column grid">
+    <!-- <div class="ui stackable six column grid">
        <div class="column">
           <form class="ui mini form">
             <div class="form-group column" style="padding: 5px;">
@@ -15,8 +15,8 @@
           </form>
         </div>
 
-      <div class="column" >
-    <form class="ui mini form">
+        <div class="column" >
+          <form class="ui mini form">
             <div class="form-group column" style="padding: 5px;">
               <label style="font-weight: bold; font-size: 15px;color: white">EDC Start Date: </label> 
               <div class="ui input" style="width: 140px;">
@@ -24,46 +24,46 @@
               </div>
             </div>
           </form>
-  </div>
-
-  <div class="column">
-
-    <form class="ui mini form">
-      <div class="form-group column" style="padding: 5px;">
-        <label style="font-weight: bold; font-size: 15px;color: white">EDC End Date: </label> 
-        <div class="ui input" style="width: 140px;">
-          <input [(ngModel)]="endDate" type="date" name="endDate" style="height: 29px;width: 135px;padding-left: 2px;padding-right: 2px;"/>
         </div>
-      </div>
-    </form>
-  </div>
 
-  <div class="column">
+        <div class="column">
+
           <form class="ui mini form">
             <div class="form-group column" style="padding: 5px;">
-              <label style="font-weight: bold; font-size: 15px;color: white" for="exampleFormControlSelect3">Status: </label>
-              <select class="form-control" id="exampleFormControlSelect3" name="oppostatus" [(ngModel)]="oppostatus" style="height: 29px;font-size: 1.2em; padding-top: 4px; padding-bottom: 4px;">
-              <option [value]="'All'">All</option>
-              <option *ngFor="let p of filteredoppostatus">{{ p }}</option>
-              </select>
+              <label style="font-weight: bold; font-size: 15px;color: white">EDC End Date: </label> 
+              <div class="ui input" style="width: 140px;">
+                <input [(ngModel)]="endDate" type="date" name="endDate" style="height: 29px;width: 135px;padding-left: 2px;padding-right: 2px;"/>
+              </div>
             </div>
           </form>
         </div>
 
-    <div class="column">
-          <form class="ui mini form">
-            <div class="form-group column" style="padding: 5px;">
-              <label style="font-weight: bold; font-size: 15px;color: white" for="exampleFormControlSelect4">Value: </label>
-              <select class="form-control" id="exampleFormControlSelect4" name="oppovalue" [(ngModel)]="oppovalue" style="height: 29px;font-size: 1.2em; padding-top: 4px; padding-bottom: 4px;">
-              <option [value]="'All'">All</option>
-              <option [value]="'<= 200000'"><= 200000</option>
-              <option [value]="'> 200000'">> 200000</option>
-              </select>
-            </div>
-          </form>
-        </div>
+        <div class="column">
+                <form class="ui mini form">
+                  <div class="form-group column" style="padding: 5px;">
+                    <label style="font-weight: bold; font-size: 15px;color: white" for="exampleFormControlSelect3">Status: </label>
+                    <select class="form-control" id="exampleFormControlSelect3" name="oppostatus" [(ngModel)]="oppostatus" style="height: 29px;font-size: 1.2em; padding-top: 4px; padding-bottom: 4px;">
+                    <option [value]="'All'">All</option>
+                    <option *ngFor="let p of filteredoppostatus">{{ p }}</option>
+                    </select>
+                  </div>
+                </form>
+              </div>
 
-</div>
+          <div class="column">
+                <form class="ui mini form">
+                  <div class="form-group column" style="padding: 5px;">
+                    <label style="font-weight: bold; font-size: 15px;color: white" for="exampleFormControlSelect4">Value: </label>
+                    <select class="form-control" id="exampleFormControlSelect4" name="oppovalue" [(ngModel)]="oppovalue" style="height: 29px;font-size: 1.2em; padding-top: 4px; padding-bottom: 4px;">
+                    <option [value]="'All'">All</option>
+                    <option [value]="'<= 200000'"><= 200000</option>
+                    <option [value]="'> 200000'">> 200000</option>
+                    </select>
+                  </div>
+                </form>
+              </div>
+
+        </div> -->
     <br> 
 
     <!-- REGIONS -->
@@ -329,54 +329,8 @@
           <div class="title"  style="color: purple; font-size: 15px; font-weight: bold"> REVIEW</div>
           <br>
           <label style="font-weight: bold; font-size: 15px;color: black; margin-bottom: 1px;" >Review Dtl: </label>
-          <!-- <div class="ui input" style =" width: 430px;">
-            <input type="text" name="reviews" placeholder="Review" [(ngModel)]="reviews" style="height: 34px;width: 400px;"> 
-          </div> -->
+         
           &nbsp;
-          <!-- <div class="ui input" *ngIf="question_reviews_ql==''">
-              <input type="text" placeholder="Enter Text here" [(ngModel)]="roquestions">
-          </div> -->
-
-
-           <!-- <div class="ui input" *ngIf="question_reviews_ql!=''">
-              <select (change)="getAnswersforRev()" [(ngModel)]="rquestionnarie">
-                
-                <option *ngFor="let qr of question_reviews_ql" [ngValue]="qr"> {{qr.question}}
-                </option>
-              </select>
-            </div> -->
-
-          <!-- <div *ngIf="question_reviews_ql!=''">
-            <div class="ui accordion">
-              <div class="title"  (click) = "getAnswersforRev(qr)" style="color: #B71C1C;" *ngFor="let qr of question_reviews_ql">
-                <i class="dropdown icon"></i>
-                {{qr.question}}
-                  <div class="content" style="padding-left: 12px;" *ngIf="qr.isOpen">
-                    <div *ngIf="(answer_reviews_ql== '#') || (qr.question == 'Others')">
-                      <div class="ui input" >
-                        <input type="text" placeholder="Enter Text Here" [(ngModel)]="roanswers">
-                      </div>
-                    </div>
-
-                    <div *ngIf="answer_reviews_ql !='#' && qr.question != 'Others'">
-                      <div *ngFor="let ans of answer_reviews_ql">
-                        <div class="ui input" style="color: green" (click)="selectAnswerforRev(ans.answer, ans.checked, ans.answerid)">
-                          <input type="checkbox" [(ngModel)]="ans.checked"> &nbsp; {{ans.answer}}
-                          <div *ngIf="ans.answer=='Others'">
-                          &nbsp;
-                            <div class="ui input" style="bottom: 5px;">
-                              <input type="text" placeholder="Reason" [(ngModel)]="roanswers">
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div> -->
-
-
 
           <div class="ui input" *ngIf="question_reviews_ql==''">
             <input type="text" placeholder="Enter Text here" [(ngModel)]="roquestions">
@@ -411,24 +365,6 @@
             <br>
             <br>
 
-      <!--       <div class="ui input" *ngIf="(answer_reviews_ql== '#') || (rquestionnarie.question == 'Others')">
-              <input type="text" placeholder="Enter Text Here" [(ngModel)]="roanswers">
-          </div>
- -->
-          <!-- <div *ngIf="answer_reviews_ql !='#'">
-            <div *ngFor="let ans of answer_reviews_ql">
-              <div class="ui input">
-                <input type="checkbox" [(ngModel)]="ans.checked" (click)="selectAnswerforRev(ans.answer, ans.checked, ans.answerid)"> &nbsp; {{ans.answer}}
-                <div *ngIf="ans.answer=='Others'">
-                  &nbsp;
-                  <div class="ui input" style="bottom: 5px;">
-                    <input type="text" placeholder="Reason" [(ngModel)]="roanswers">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> -->
-
           <br>
           <br>
 
@@ -437,7 +373,8 @@
               <label style="font-weight: bold; font-size: 15px;color: black; margin-bottom: 1px;" >Next Review Date: </label>
               &nbsp;
               <div class="ui input">
-                <input [(ngModel)]="next_review_date" type="datetime-local" name="next_review_date" style="height: 29px;width: 137px;padding-left: 2px;padding-right: 2px;"/>
+                <input [(ngModel)]="next_review_day" type="date"  name="next_review_day" style="height: 29px;width: 135px;padding-left: 1px;padding-right: 1px;"/>
+                <input [(ngModel)]="next_review_time" type="time" value="00:00"  name="next_review_time" style="height: 29px;width: 73px;padding-left: 1px;padding-right: 1px;"/>
               </div>
             </div>
             <div class="column" style="padding-top: 20px;">
@@ -531,8 +468,10 @@
       <br>
     </div>
       <div class="ui accordion">
+
         <br>
         <div *ngFor="let item of regList" style="padding-left: 20px;">
+
           <div class="title ui stacked segment "  (click) = "selectRegion(item.region)" style="color: #B71C1C;">
             <div class="ui six  horizontal divided list">
                <div class="item four wide column">
@@ -603,6 +542,126 @@
      
           <div class="content"  style="padding-left: 22px;">    
             <div class="ui accordion">
+
+<div class="ui stackable six column grid">
+       <div class="column">
+              <form class="ui mini form">
+            <div class="form-group column" style="padding: 5px;">
+              <label style="font-weight: bold; font-size: 15px;color: black" for="exampleFormControlSelect5">Category: </label>
+              <select class="form-control" id="exampleFormControlSelect5" name="oppocategory" [(ngModel)]="oppocategory" style="height: 29px;font-size: 1.2em; padding-top: 4px; padding-bottom: 4px;">
+              <option [value]="'All'">All</option>
+              <option [value]="'thunderbird'">Thunderbird</option>
+              <option [value]="'classic'">Classic</option>
+              </select>
+            </div>
+          </form>
+        </div>
+
+        
+      </div>
+
+<!-- 
+          <b>Filtered Total:</b> -->
+
+          <div *ngFor="let i of item | totalCountRegion: execList: oppocategory" style="padding-left: 20px;">
+
+            <div class="title ui stacked segment "  style="color: #B71C1C;">
+              <div class="ui six  horizontal divided list">
+
+                <div class="item four wide column">
+              <!-- <img class="ui avatar image" src="/images/avatar/small/tom.jpg"> -->
+                  <div class="content" align="center">
+                    <div class="header" style="vertical-align: center; align-content: center">
+                    FILTERED TOTAL:
+                  </div>
+                  <br>
+                  <i class="fas fa-arrow-alt-circle-right"></i>
+                </div>
+              </div>
+
+                <div class="item" style="padding-left: 22px;">
+                  <div class="content">
+                    <div class="header">
+                    {{i.totalCountReg}}
+                    <p>
+                      &#8377;{{i.totalValueReg}}
+                    </p>
+                  </div>
+                    Total
+                  </div>
+                </div>
+
+                <div class="item" style="padding-left: 22px;">
+                  <div class="content">
+                    <div class="header">{{i.reviewCompleteR}}
+                      <p>
+                        &#8377;{{i.reviewCompleteRV1}}
+                      </p>
+                    </div>
+                    Complete
+                  </div>
+                </div>
+
+                <div class="item" style="padding-left: 22px;">
+                  <!-- <img class="ui avatar image" src="/images/avatar/small/matt.jpg"> -->
+                  <div class="content">
+                    <div class="header">{{i.liveReviewR}}
+                      <p>&#8377;{{i.liveReviewRV1}}
+                      </p></div>
+                   Live
+                  </div>
+                </div>
+
+                <div class="item" style="padding-left: 22px;">
+                  <!-- <img class="ui avatar image" src="/images/avatar/small/matt.jpg"> -->
+                  <div class="content">
+                    <div class="header">{{i.lapsedReviewR}}
+                      <p>&#8377;{{i.lapsedReviewRV1}}
+                      </p></div>
+                   Lapsed
+                  </div>
+                </div>
+
+                 <div class="item" style="padding-left: 22px;">
+                  <!-- <img class="ui avatar image" src="/images/avatar/small/matt.jpg"> -->
+                  <div class="content">
+                    <div class="header">{{i.unReviewR}}
+                      <p>&#8377;{{i.unReviewRV1}}
+                      </p>
+                    </div>
+                   Un-Reviewed
+                  </div>
+                </div>
+          </div>
+          </div>
+        </div>
+
+          
+          
+
+
+     
+              
+
+<!--               <div class="ui small horizontal divided list" *ngFor="let i of item | totalCountRegion: execList: oppocategory">
+                <div class="item">
+    
+                  <div class="content">
+                    <div class="header">{{i.region}}</div>
+                 
+                  </div>
+                </div>
+                
+              </div> -->
+                    
+         
+            
+      
+
+<!--            {{item | totalCountRegion: opportunities: regionList: execList: exec_wiseopportunity: oppocategory: oppostatus: oppovalue: startDate: endDate | json}}
+ -->
+
+
               <div *ngFor="let executive of execList | filterexec: oppocategory">
                 <div class="title">
                   <div class="title ui stacked secondary segment "  (click) = "selectedexec(executive.id,item.region)" style="color: #B71C1C;">
@@ -674,6 +733,153 @@
                   
             </div>    
                 <div class="content" style="padding-left: 15px;">
+
+<div class="ui stackable six column grid">
+ <div class="column" >
+          <form class="ui mini form">
+            <div class="form-group column" style="padding: 5px;">
+              <label style="font-weight: bold; font-size: 15px;color: black">EDC Start Date: </label> 
+              <div class="ui input" style="width: 140px;">
+                <input [(ngModel)]="startDate" type="date" name="startDate" style="height: 29px;width: 135px;padding-left: 2px;padding-right: 2px;"/>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="column">
+
+          <form class="ui mini form">
+            <div class="form-group column" style="padding: 5px;">
+              <label style="font-weight: bold; font-size: 15px;color: black">EDC End Date: </label> 
+              <div class="ui input" style="width: 140px;">
+                <input [(ngModel)]="endDate" type="date" name="endDate" style="height: 29px;width: 135px;padding-left: 2px;padding-right: 2px;"/>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="column">
+                <form class="ui mini form">
+                  <div class="form-group column" style="padding: 5px;">
+                    <label style="font-weight: bold; font-size: 15px;color: black" for="exampleFormControlSelect3">Status: </label>
+                    <select class="form-control" id="exampleFormControlSelect3" name="oppostatus" [(ngModel)]="oppostatus" style="height: 29px;font-size: 1.2em; padding-top: 4px; padding-bottom: 4px;">
+                    <option [value]="'All'">All</option>
+                    <option *ngFor="let p of filteredoppostatus">{{ p }}</option>
+                    </select>
+                  </div>
+                </form>
+              </div>
+
+          <div class="column">
+                <form class="ui mini form">
+                  <div class="form-group column" style="padding: 5px;">
+                    <label style="font-weight: bold; font-size: 15px;color: black" for="exampleFormControlSelect4">Value: </label>
+                    <select class="form-control" id="exampleFormControlSelect4" name="oppovalue" [(ngModel)]="oppovalue" style="height: 29px;font-size: 1.2em; padding-top: 4px; padding-bottom: 4px;">
+                    <option [value]="'All'">All</option>
+                    <option [value]="'<= 200000'"><= 200000</option>
+                    <option [value]="'> 200000'">> 200000</option>
+                    </select>
+                  </div>
+                </form>
+              </div>
+
+        </div>
+
+
+   <!--        <b>Filtered Total:</b> -->
+
+          <div *ngFor="let i of executive | totalCountExec: exec_wiseopportunity: oppostatus: oppovalue: startDate: endDate" style="padding-left: 20px;">
+
+            <div class="title ui stacked segment "  style="color: #B71C1C;">
+              <div class="ui six  horizontal divided list">
+
+                <div class="item four wide column">
+              <!-- <img class="ui avatar image" src="/images/avatar/small/tom.jpg"> -->
+                  <div class="content" align="center">
+                    <div class="header" style="vertical-align: center; align-content: center">
+                    FILTERED TOTAL:
+                  </div>
+                  <br>
+                  <i class="fas fa-arrow-alt-circle-right"></i>
+                </div>
+              </div>
+
+                <div class="item" style="padding-left: 22px;">
+                  <div class="content">
+                    <div class="header">
+                    {{i.totalCountExec}}
+                    <p>
+                      &#8377;{{i.totalValueExec}}
+                    </p>
+                  </div>
+                    Total
+                  </div>
+                </div>
+
+                <div class="item" style="padding-left: 22px;">
+                  <div class="content">
+                    <div class="header">{{i.reviewCompleteE}}
+                      <p>
+                        &#8377;{{i.reviewCompleteEV1}}
+                      </p>
+                    </div>
+                    Complete
+                  </div>
+                </div>
+
+                <div class="item" style="padding-left: 22px;">
+                  <!-- <img class="ui avatar image" src="/images/avatar/small/matt.jpg"> -->
+                  <div class="content">
+                    <div class="header">{{i.liveReviewE}}
+                      <p>&#8377;{{i.liveReviewEV1}}
+                      </p></div>
+                   Live
+                  </div>
+                </div>
+
+                <div class="item" style="padding-left: 22px;">
+                  <!-- <img class="ui avatar image" src="/images/avatar/small/matt.jpg"> -->
+                  <div class="content">
+                    <div class="header">{{i.lapsedReviewE}}
+                      <p>&#8377;{{i.lapsedReviewEV1}}
+                      </p></div>
+                   Lapsed
+                  </div>
+                </div>
+
+                 <div class="item" style="padding-left: 22px;">
+                  <!-- <img class="ui avatar image" src="/images/avatar/small/matt.jpg"> -->
+                  <div class="content">
+                    <div class="header">{{i.unReviewE}}
+                      <p>&#8377;{{i.unReviewEV1}}
+                      </p>
+                    </div>
+                   Un-Reviewed
+                  </div>
+                </div>
+          </div>
+          </div>
+        </div>
+
+          
+          
+
+     
+              
+
+<!--               <div class="ui small horizontal divided list" *ngFor="let j of executive | totalCountExec: exec_wiseopportunity: oppostatus: oppovalue: startDate: endDate">
+                <div class="item">
+    
+                  <div class="content">
+                    <div class="header">{{j.key}}</div>
+                   {{j.val}}
+                   <div class="header">{{j.key}}</div>
+                   {{j.val}}
+                  </div>
+                </div>
+                
+              </div> -->
+
                     <div *ngFor="let opportunity of exec_wiseopportunity | filterreviews: startDate : endDate: oppostatus: oppovalue">
 
                      <div class="ui blue segment">

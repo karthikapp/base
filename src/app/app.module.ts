@@ -131,6 +131,9 @@ import { BarForecastregionComponent } from './components/bar-forecastregion/bar-
 import { BarForecastexecComponent } from './components/bar-forecastexec/bar-forecastexec.component';
 import { BarForecastbrandComponent } from './components/bar-forecastbrand/bar-forecastbrand.component';
 import { FilterexecPipe } from './pipes/filterexec.pipe';
+import { TotalCountReviewPipe } from './pipes/total-count-review.pipe';
+import { TotalCountRegionPipe } from './pipes/total-count-region.pipe';
+import { TotalCountExecPipe } from './pipes/total-count-exec.pipe';
 
 
 
@@ -289,7 +292,10 @@ export function highchartsFactory() {
     BarForecastregionComponent,
     BarForecastexecComponent,
     BarForecastbrandComponent,
-    FilterexecPipe
+    FilterexecPipe,
+    TotalCountReviewPipe,
+    TotalCountRegionPipe,
+    TotalCountExecPipe
   ],
   imports: [
     BrowserModule ,

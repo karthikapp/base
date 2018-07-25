@@ -124,7 +124,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
 
   nxt_rvw_reg_date: any;
   regList: any;
-  execList: any;
+  public execList: any;
   oppoExecList: any;
 
   review: any;
@@ -153,6 +153,9 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
   lead_presales_approved_to: any;
   oppo_key: any;
   leadsource: any;
+
+  next_review_time: any;
+  next_review_day: any;
 
   isRegLoading: boolean = true;
 
@@ -194,6 +197,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
       "type": "default",
       "closeable": true
     }     
+
     }
 
   ngOnInit() {
@@ -209,6 +213,8 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
     this.totalCountReg = 0;
     this.totalValueReg = 0;
     this.next_review_date = null;
+    this.next_review_day = null;
+    this.next_review_time = '00:00';
     this.ratings = 0;
     this.nxt_rvw_reg_date = null;
     this.nxt_rvw_date = null;
@@ -601,6 +607,10 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
     //console.log("pp12", oppoid, this.ranswers, this.rquestionnarie.question)
       //console.log("hello", this.ratings);
 
+      //console.log("rishna", this.next_review_day, this.next_review_time)
+
+      this.next_review_date = this.next_review_day + "T" + this.next_review_time
+
       if(this.question_reviews_ql == '' && this.roquestions != ''){
         //console.log("krishna")
 
@@ -633,6 +643,8 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
           this.roquestions = '';
           this.ratings = 0;
           this.next_review_date = null;
+          this.next_review_day = null;
+          this.next_review_time = '00:00';
           alert("Review submitted successfully");
           this.cancelReviewModal();  
         }); 
@@ -687,7 +699,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
     this.oppoExecList = [];
     this.execList = [];
 
-    //console.log("exec", execList)
+    //console.log("exec", execList, opporegion)
 
     let oppokeys = Object.keys(execList).length
 
@@ -697,12 +709,12 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
         {return u.opportunity_assignedto == execList[i] &&
           u.region == region})
 
-      this.totalCountValueExec(this.oppoExecList,execList[i]);
+      this.totalCountValueExec(this.oppoExecList,execList[i], region);
       //this.showRegReview(this.oppoRegionList); 
     }
   }
 
-  totalCountValueExec(arr, exec){
+  public totalCountValueExec(arr, exec, region){
     //console.log("oppo123456", arr, exec)
     this.execarraylist = [];
     this.execarrayvalue = [];
@@ -797,6 +809,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
       
     let item_exec = {
       id: exec,
+      regionexec: region,
       totalCountExec: this.totalCountExec,
       totalValueExec: this.totalValueExec,
       reviewCompleteE: this.reviewCompleteE,
@@ -810,6 +823,8 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
     }
 
     this.execList.push(item_exec);
+
+    return item_exec;
 
     //console.log("oppo12345",this.execList)
     
@@ -971,7 +986,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
             this.nxt_rvw_date = this.oppoOValues[this.oppoCount - 1].next_review_date
           }
 
-          //console.log("oppo1234",this.nxt_rvw_date, this.nxt_rvw_date > this.todays_date,this.nxt_rvw_date <= this.todays_date );
+          //console.log("oppo1234",this.nxt_rvw_date, this.oppoValues[i].reviews);
           if (this.nxt_rvw_date < this.todays_date)
           {
             this.lapsedReview = this.lapsedReview + 1;
@@ -984,7 +999,7 @@ export class ReviewComponent implements OnInit,  AfterViewInit,  OnDestroy  {
             this.liveReviewValue = this.liveReviewValue + this.oppoValues[i].value;
             this.liveReviewValue1 = this.liveReviewValue.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
           }
-          else if(this.nxt_rvw_date == undefined )
+          else if(this.nxt_rvw_date == undefined || this.nxt_rvw_date == null )
           {
             this.reviewComplete = this.reviewComplete + 1;
             this.reviewCompleteValue = this.reviewCompleteValue + this.oppoValues[i].value;
