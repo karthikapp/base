@@ -1,0 +1,119 @@
+<div align="center">
+  <div *ngIf="ev">
+
+	<!--Modal for adding a new Contact Type-->
+	<lsu-modal [(ngModel)]="addContactTypeModal_flag" [options]="modalOptions" align="center">
+  
+  		<div class="header">Create Contact Type</div>
+  
+  		<div class="description">
+    	<br>
+    	<!--Contact Type-->
+    		<form class="ui mini form">
+      			<div class="field" style="padding: 20px;">
+        			<label style="font-weight: bold; font-size: 15px;">Contact Type</label>
+        			<br>
+        			<input type="text"  name="contact_type" placeholder="Contact Type" [(ngModel)]="contact_type" required> 
+      			</div>
+    		</form>
+  		</div>
+
+  		<div class="actions">
+    		<button class="ui black deny button" (click)="cancelcontacttypeModal()">Cancel</button>
+    		<button class="ui positive right labeled icon button" [disabled]="contact_type==''" (click)="on_add_ContactType()">Add
+      			<i class="checkmark icon"></i>
+    		</button>
+  		</div>
+	</lsu-modal>
+
+	<div id="" style="overflow-y: scroll;height: 100%; width: 95%;">
+  <br>
+
+  <!--Search button with expandable holder-->
+  <div appMzterialDesignLite style="float:right; color: white;height:50px">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+      <label class="mdl-button mdl-js-button mdl-button--icon" for="site-search">
+        <i class="material-icons" style="top: 10px">search</i>
+      </label>
+      <div class="mdl-textfield__expandable-holder">
+        <input class="mdl-textfield__input" type="search" id="site-search" name="site-search" placeholder="Contact Type" [(ngModel)] ="querystring" />
+        <label class="mdl-textfield__label" for="site-search">Search</label>
+      </div>
+    </div>
+  </div>
+
+  <!--Add Contact Type Button on top right corner-->
+  <div style="float:right;padding: 5px;font-family: 'Marvel', sans-serif;">
+      <button class="ui inverted button" (click)="addContactTypeModal()">Add Contact Type</button>
+  </div>
+
+  <div style="float:right;padding: 5px;font-family: 'Marvel', sans-serif;">
+  <button class="ui inverted button" (click)="download()">Export CSV</button>
+  </div>
+  
+  <br>
+  <br>
+  <br>
+
+	<!--List Contact Type in a table with actions (Edit/ Delete)-->
+	<table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp" style="width: 95%;background-color: white;height:50vh">
+  	<thead>
+  		<tr>
+    		<th>Contact Type</th>
+    		<th>Actions</th>
+  		</tr>
+  	</thead>
+
+  	<tbody>
+  		<!-- <tr *ngFor="let contacttype of typeofcontacts | filterrecords: querystring : 'contacttype' | paginate: { itemsPerPage: 7, currentPage: p }"> -->
+  			<tr *ngFor="let contacttype of typeofcontacts | keyvalueobject | filterrecords: querystring : 'contacttype'|sortorder| paginate: { itemsPerPage: 7, currentPage: p }">
+    		<td class="mdl-data-table__cell--non-numeric">{{contacttype.value}}
+    		</td>
+    		<td>
+    			<a (click)="editContactTypeModal(contacttype.key)">
+    				<i class="material-icons">edit</i>
+    			</a>
+    			&nbsp;
+    			<a (click)="on_delete_ContactType(contacttype.key)">
+    				<i class="material-icons">delete</i>
+    			</a>
+    		</td>
+  		</tr>
+  	</tbody>
+	</table>
+  <br>
+
+
+  <!--Pagination-->
+  <div class="ui item" style="color: white; background-color: #eee; float:right; border-radius: 5px;">
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  </div>
+
+</div>
+  
+	<!--Modal for Editing an Contact Type -->
+	<lsu-modal [(ngModel)]="editContactTypeModal_flag" [options]="modalOptions">
+  
+  		<div class="header">Edit Contact Type</div>
+  
+  		<div class="description">
+    	<br>
+    	<!--Contact Type-->
+    		<form class="ui mini form">
+      			<div class="field" style="padding: 20px;">
+        			<label style="font-weight: bold; font-size: 15px;">Contact Type</label>
+        			<br>
+        			<input type="text"  name="contacttype" placeholder="Contact Type" [(ngModel)]="contacttype" required> 
+      			</div>
+   			</form>
+  		</div>
+
+  		<div class="actions">
+    		<button class="ui black deny button" (click)="cancelcontacttypeModal()">Cancel</button>
+    		<button class="ui positive right labeled icon button" [disabled]="contacttype==''"(click)="on_edit_ContactType()">Save changes
+      			<i class="checkmark icon"></i>
+    		</button>
+  		</div>
+	 </lsu-modal>
+  </div>
+</div>

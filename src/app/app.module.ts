@@ -134,6 +134,8 @@ import { FilterexecPipe } from './pipes/filterexec.pipe';
 import { TotalCountReviewPipe } from './pipes/total-count-review.pipe';
 import { TotalCountRegionPipe } from './pipes/total-count-region.pipe';
 import { TotalCountExecPipe } from './pipes/total-count-exec.pipe';
+import { TypeofcontactComponent } from './components/typeofcontact/typeofcontact.component';
+import { KeyvalueobjectPipe } from './pipes/keyvalueobject.pipe';
 
 
 
@@ -183,7 +185,8 @@ const appRoutes: Routes = [
                {path:'Reports', component: ReportsComponent},
                {path:'Review', component: ReviewComponent},
                {path:'OppoReviewDetail', component: OppoReviewDetailComponent},
-               {path:'AddTarget', component: TargetaddComponent}
+               {path:'AddTarget', component: TargetaddComponent},
+               {path:'ContactType', component: TypeofcontactComponent}
               ]}
 ];
 
@@ -295,7 +298,9 @@ export function highchartsFactory() {
     FilterexecPipe,
     TotalCountReviewPipe,
     TotalCountRegionPipe,
-    TotalCountExecPipe
+    TotalCountExecPipe,
+    TypeofcontactComponent,
+    KeyvalueobjectPipe
   ],
   imports: [
     BrowserModule ,

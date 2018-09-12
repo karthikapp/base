@@ -37,12 +37,6 @@ export class TotalCountRegionPipe implements PipeTransform {
 
   	var a = [];
 
-  	// for (var key in value) {
-   //    if (value.hasOwnProperty(key)) {
-   //      a.push({key: key, val: value[key]});
-   //    }
-   //  }
-
    a = [value];
 
   	if( (oppocategory == '' || oppocategory == undefined || oppocategory == 'All') )
@@ -96,21 +90,9 @@ export class TotalCountRegionPipe implements PipeTransform {
 			 	this.unReviewEV1 += +(m.unReviewEV1.toString().replace(/,/g, ""))
 			 	this.region = m.regionexec
 
-			 	console.log("lapsedReviewEV1", this.lapsedReviewEV1, this.liveReviewEV1)
 			 })
 
-// let filtervalue = value.filter( j=> {
-// 	return j.region === this.region
-// })
-
-// const index = value.findIndex(v => v.region === this.region);
-
-// value.splice(index,1,item)
-
-// console.log("value", index)
-
-
-		
+	
 			 let item = {
 			      region: this.region,
 			      totalCountReg: this.totalCountExec,
@@ -134,8 +116,6 @@ export class TotalCountRegionPipe implements PipeTransform {
 		   //  }
 
 		   a.push(item)
-
-		   console.log("a", a)
 
 			 return a
 				

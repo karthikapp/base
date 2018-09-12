@@ -168,6 +168,15 @@ addinsideSalesinoneShot(insidesaleslist: {
 		 
 		var companyData = this.af.object(companyURL).update(companyObject);
 		//console.log(Object.keys(contactpersonObject).length, Object.values(contactpersonObject))
+
+		if(companyObject.employee_count != null || companyObject.employee_count != undefined){
+			var empcountURLs = '/accounts/' + company_id + '/employee_count_his'
+	    	var empcount = {
+				emp_count: companyObject.employee_count,
+				create_date: this.created_at
+			}
+			this.af.list(empcountURLs).push(empcount)
+		}
 		
 		if (contactspersonObject != null)
 		{
@@ -184,6 +193,8 @@ addinsideSalesinoneShot(insidesaleslist: {
 					var contactpersonURL = '/accounts/' + company_id + '/contact_persons/' + contactpersonslist[key].contact_person_id
 					//console.log(contactpersonURL, contactpersonslist[key])
 					var contactpersonData = this.af.object(contactpersonURL).update(contactpersonslist[key])
+
+					
 				}
 			}
 		}
@@ -260,6 +271,17 @@ addinsideSalesinoneShot(insidesaleslist: {
 		var contactpersonsid = contactpersonsData.key;
 		var contactpersonsid_URL1 = '/accounts/' + companiesid + '/contact_persons/' + contactpersonsid;
 		var contactpersonsData1 = this.af.object(contactpersonsid_URL1).update({'contact_person_id': contactpersonsid});
+
+		console.log("employee_count_his", )
+		if(companiesObject.employee_count != null || companiesObject.employee_count != undefined)
+		{
+			var eempcountURLs = '/accounts/' + companiesid + '/employee_count_his'
+	    	var eempcount = {
+				emp_count: companiesObject.employee_count,
+				create_date: this.created_at
+			}
+			this.af.list(eempcountURLs).push(eempcount)
+		}
 
 		return companies1;
 	}
@@ -534,6 +556,39 @@ retreiveforecastbybrand(){
 		this.af.list(needlist_URL).remove();
 	}
 //END NEED_LIST
+
+//START Contact Type
+	//Fetch list of contact type 
+	getContactTypes(){
+		return this.af.object('/typeofcontact', { preserveSnapshot: true });
+	}
+
+	getContactType(contactkey){
+		return this.af.object('/typeofcontact/' + contactkey);
+	}
+
+	//Update Contact Type information
+	saveContactType(contactkey, contactname){
+		var contactURL = '/typeofcontact/' + contactkey
+		var contactData = this.af.object(contactURL).set(contactname);
+
+		return contactData;
+	}
+
+	//Add a new Contact type information 
+	addContactType(contactname){
+
+		//Pushing Contact Type data and setting contact id with the generated key
+		var contacttypesData = this.af.list('/typeofcontact').push(contactname);
+		return contacttypesData;
+	}
+
+	//Delete an Contact Type
+	deleteContactType(contactkey: string){
+		var contacttype_URL = "/typeofcontact/" + contactkey
+		this.af.list(contacttype_URL).remove();
+	}
+//END Contact Type
 
 //START SUPPLIERS
 	//Get suppliers information (created date)

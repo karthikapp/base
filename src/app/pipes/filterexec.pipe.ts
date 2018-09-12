@@ -13,8 +13,8 @@ export class FilterexecPipe implements PipeTransform {
 	constructor(public fb: FirebaseService)
 	{
 		this.fb.getUsers().subscribe( p => {
-					this.users = p
-					})
+			this.users = p
+		})
 	}
 
   transform(value: any, oppocategory: any, args?: any): any 

@@ -47,6 +47,7 @@
                       <div class="field" class="column" >
                         <div class="ui input">
                           <label>No. of Employees: </label>
+                          &nbsp;
                           <input type="text"  class="form-control" name="employee_count" placeholder="Employee Count" [(ngModel)]="employee_count" required (keyup)=onKey($event)>
                         </div>
                       </div>
@@ -56,6 +57,29 @@
                 				<label for="exampleFormControlSelect1">Industry Type: </label>
                 				&nbsp;
                         {{industry_type}}
+                        <!-- <select class="form-control" id="exampleFormControlSelect98" [(ngModel)]="industry_type" name="industry_type"> 
+                          <option>Automotive</option>
+                          <option>Banking/ Finance</option>
+                          <option>Cement/ Construction</option>
+                          <option>Chemicals</option>
+                          <option>Conglomerates</option>
+                          <option>Cons Durable</option>
+                          <option>Cons Non-Durable</option>
+                          <option>Engineering</option>
+                          <option>Food & Beverage</option>
+                          <option>Technology</option>
+                          <option>Manufacturing</option>
+                          <option>Media</option>
+                          <option>Metals & Mining</option>
+                          <option>Miscellaneous</option>
+                          <option>Oil & Gas</option>
+                          <option>Pharmaceuticals</option>
+                          <option>Retail/ Real Estate</option>
+                          <option>Services</option>
+                          <option>Telecom</option>
+                          <option>Tobacco</option>
+                          <option>Utilities</option>
+                        </select> -->
               				</div>
           
               			  <!--Company Type-->

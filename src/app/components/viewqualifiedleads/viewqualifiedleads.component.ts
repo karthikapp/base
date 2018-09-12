@@ -406,7 +406,7 @@ export class ViewqualifiedleadsComponent implements OnInit, OnDestroy {
   //START MODALS
   //Add Modal
   addModal(): void {
-    console.log("MFlag", this.submitModal_flag)
+   // console.log("MFlag", this.submitModal_flag)
     this.submitModal_flag = true;
 
   }
@@ -416,7 +416,7 @@ export class ViewqualifiedleadsComponent implements OnInit, OnDestroy {
   }
 
   changeAssignedToModal(): void{
-  console.log("krishna", this.old_assignedto)
+  //console.log("krishna", this.old_assignedto)
     this.assignedToModal_flag = true;
   }
 

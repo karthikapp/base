@@ -8,7 +8,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class FilterrecordsPipe implements PipeTransform {
 
   transform(value: any, input:any, ip1: string, args?: any): any {
-    console.log("filter", value, input, ip1)
+    //console.log("filter", value, input, ip1)
 
     //When Input == search String is NULL or UNDEFINED, 
     //return ALL the accounts / oems/ events/ products/ distributors values
@@ -62,6 +62,10 @@ export class FilterrecordsPipe implements PipeTransform {
     } else if ((value != null || value != undefined) && ip1 == 'suppliers'){
       return value.filter( values => {
        return values.supplier_name.toLowerCase().indexOf(input.toLowerCase()) > -1;
+      })
+    } else if ((value != null || value != undefined) && ip1 == 'contacttype'){
+      return value.filter( values => {
+       return values.value.toLowerCase().indexOf(input.toLowerCase()) > -1;
       })
     }
     

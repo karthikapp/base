@@ -1,0 +1,14 @@
+.mdl-data-table 
+th{
+	text-align: left !important;
+	font-weight: bold;
+	font-size: 17px;
+	color: black;
+	background-color: #e0f2f1 
+}
+td{
+	text-align: left !important;
+	padding-bottom: 1px;
+	padding-top: 1px;
+	font-size: 16px;
+}
