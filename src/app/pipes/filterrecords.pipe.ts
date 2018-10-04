@@ -67,6 +67,10 @@ export class FilterrecordsPipe implements PipeTransform {
       return value.filter( values => {
        return values.value.toLowerCase().indexOf(input.toLowerCase()) > -1;
       })
+    } else if ((value != null || value != undefined) && ip1 == 'industrytype'){
+      return value.filter( values => {
+       return values.value.toLowerCase().indexOf(input.toLowerCase()) > -1;
+      })
     }
     
 

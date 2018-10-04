@@ -136,6 +136,7 @@ import { TotalCountRegionPipe } from './pipes/total-count-region.pipe';
 import { TotalCountExecPipe } from './pipes/total-count-exec.pipe';
 import { TypeofcontactComponent } from './components/typeofcontact/typeofcontact.component';
 import { KeyvalueobjectPipe } from './pipes/keyvalueobject.pipe';
+import { IndustrytypeComponent } from './components/industrytype/industrytype.component';
 
 
 
@@ -186,7 +187,8 @@ const appRoutes: Routes = [
                {path:'Review', component: ReviewComponent},
                {path:'OppoReviewDetail', component: OppoReviewDetailComponent},
                {path:'AddTarget', component: TargetaddComponent},
-               {path:'ContactType', component: TypeofcontactComponent}
+               {path:'ContactType', component: TypeofcontactComponent},
+               {path:'Industrytype', component: IndustrytypeComponent}
               ]}
 ];
 
@@ -300,7 +302,8 @@ export function highchartsFactory() {
     TotalCountRegionPipe,
     TotalCountExecPipe,
     TypeofcontactComponent,
-    KeyvalueobjectPipe
+    KeyvalueobjectPipe,
+    IndustrytypeComponent
   ],
   imports: [
     BrowserModule ,

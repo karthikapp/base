@@ -590,6 +590,39 @@ retreiveforecastbybrand(){
 	}
 //END Contact Type
 
+//START Industry Type
+	//Fetch list of industry type 
+	getIndustryTypes(){
+		return this.af.object('/industrytype', { preserveSnapshot: true });
+	}
+
+	getIndustryType(industrykey){
+		return this.af.object('/industrytype/' + industrykey);
+	}
+
+	//Update Industry Type information
+	saveIndustryType(industrykey, industryname){
+		var industryURL = '/industrytype/' + industrykey
+		var industryData = this.af.object(industryURL).set(industryname);
+
+		return industryData;
+	}
+
+	//Add a new Industry type information 
+	addIndustryType(industryname){
+
+		//Pushing Industry Type data and setting industry id with the generated key
+		var industrytypesData = this.af.list('/industrytype').push(industryname);
+		return industrytypesData;
+	}
+
+	//Delete an Industry Type
+	deleteIndustryType(industrykey: string){
+		var industrytype_URL = "/industrytype/" + industrykey
+		this.af.list(industrytype_URL).remove();
+	}
+//END Industry Type
+
 //START SUPPLIERS
 	//Get suppliers information (created date)
 	getSuppliers(){
