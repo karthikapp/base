@@ -126,7 +126,7 @@
                 </thead>
 
                 <tbody>
-                  <tr *ngFor="let vv of v | filterreports: lead_title : company_name : lead_source: oed_name: opportunity_assignedto : lead_assigned_to : status : region : EDCStartDate : EDCEndDate | sortorder">
+                  <tr *ngFor="let vv of v | filterreports: lead_title : company_name :  opportunity_assignedto : lead_assigned_to : status : region : EDCStartDate : EDCEndDate : lead_source: oed_name| sortorder">
                     <td>{{vv.lead_title}}</td>
                     <td>{{vv.company_name}}</td>
                     <td>{{leadsourcelabel(vv.leadsource)}}</td> 
@@ -199,7 +199,7 @@
                   </tr>
                 </thead>
 
-                <tbody *ngFor="let activ of v | filterreports: lead_title1 : company_name1 : opportunity_assignedto1 : lead_assigned_to1 : status1 : region1 | sortorder">
+                <tbody *ngFor="let activ of v | filterreports: lead_title1 : company_name1 :  opportunity_assignedto1 : lead_assigned_to1 : status1 : region1 | sortorder">
                   <tr *ngFor="let lead_activ of activ.lead_activities | contactpersons">
                     <td>{{activ.lead_title}}</td>
                     <td>{{activ.company_name}}</td>
@@ -269,7 +269,7 @@
                   </tr>
                 </thead>
 
-                <tbody *ngFor="let acti of v | filterreports: lead_title2 : company_name2 : opportunity_assignedto2 : lead_assigned_to2 : status2 : region2 | sortorder">
+                <tbody *ngFor="let acti of v | filterreports: lead_title2 : company_name2 :  opportunity_assignedto2 : lead_assigned_to2 : status2 : region2 | sortorder">
                   <tr *ngFor="let oppo_activ of acti.opportunity_activities | contactpersons">
                     <td>{{acti.lead_title}}</td>
                     <td>{{acti.company_name}}</td>
@@ -378,7 +378,7 @@
                   </tr>
                 </thead>
 
-                <tbody *ngFor="let ac of v | filterreports: lead_title3 : company_name3 : opportunity_assignedto3 : lead_assigned_to3 : status3 : region3  | sortorder">
+                <tbody *ngFor="let ac of v | filterreports: lead_title3 : company_name3 :  opportunity_assignedto3 : lead_assigned_to3 : status3 : region3  | sortorder">
                   <tr *ngFor="let up of ac.upcoming | contactpersons">
                     <td>{{ac.lead_title}}</td>
                     <td>{{ac.company_name}}</td>

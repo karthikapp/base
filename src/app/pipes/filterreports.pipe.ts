@@ -5,8 +5,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class FilterreportsPipe implements PipeTransform {
 
-  transform(value: any, leadtitle:any,companyname: any, lead_source:any, oed_name: any, oppoassigned: any, leadassigned: any,
-  	status: any, region: any, EDCStartDate: any, EDCEndDate: any, args?: any): any {
+  transform(value: any, leadtitle:any,companyname: any, oppoassigned: any, leadassigned: any,
+  	status: any, region: any, EDCStartDate: any, EDCEndDate: any, lead_source:any, oed_name: any, args?: any): any {
 
   	//Lead Source
   	if(lead_source == 'Select'){

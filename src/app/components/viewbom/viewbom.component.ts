@@ -439,7 +439,6 @@ export class ViewbomComponent implements OnInit,OnDestroy {
   }
 
   changeAssignedToModal(): void{
-  console.log("krishna", this.old_assignedto)
     this.assignedToModal_flag = true;
   }
 
