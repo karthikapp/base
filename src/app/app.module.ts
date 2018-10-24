@@ -137,6 +137,9 @@ import { TotalCountExecPipe } from './pipes/total-count-exec.pipe';
 import { TypeofcontactComponent } from './components/typeofcontact/typeofcontact.component';
 import { KeyvalueobjectPipe } from './pipes/keyvalueobject.pipe';
 import { IndustrytypeComponent } from './components/industrytype/industrytype.component';
+import { ReportsLeadsComponent } from './components/reports-leads/reports-leads.component';
+import { FilterreportsLeadsPipe } from './pipes/filterreports-leads.pipe';
+import { GetproductquantityComponent } from './components/getproductquantity/getproductquantity.component';
 
 
 
@@ -183,7 +186,8 @@ const appRoutes: Routes = [
                {path:'insidesales', component: InsideSalesComponent },
                {path:'insidesales_master', component: InsideSalesMasterComponent },
                {path:'Suppliers', component: SuppliersComponent},
-               {path:'Reports', component: ReportsComponent},
+               {path:'ReportsOpportunities', component: ReportsComponent},
+               {path:'ReportsLeads', component: ReportsLeadsComponent},
                {path:'Review', component: ReviewComponent},
                {path:'OppoReviewDetail', component: OppoReviewDetailComponent},
                {path:'AddTarget', component: TargetaddComponent},
@@ -303,7 +307,10 @@ export function highchartsFactory() {
     TotalCountExecPipe,
     TypeofcontactComponent,
     KeyvalueobjectPipe,
-    IndustrytypeComponent
+    IndustrytypeComponent,
+    ReportsLeadsComponent,
+    FilterreportsLeadsPipe,
+    GetproductquantityComponent
   ],
   imports: [
     BrowserModule ,

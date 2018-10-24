@@ -716,6 +716,17 @@ retreiveforecastbybrand(){
 		let leadURL = '/leads/' + leadid
 		return this.af.object(leadURL);
 	}
+
+	//Get Leads
+    getleads()
+    {
+      // console.log(userid)
+      return this.af.list('/leads',{query:
+		{
+			orderByChild: 'created_at'
+		}
+		});
+    }
 	//End's here
 
 	//OPPORTUNITIES

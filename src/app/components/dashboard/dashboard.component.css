@@ -6,3 +6,19 @@
 	font-weight: bolder;
 	font-size: 1.2rem;
 }
+
+#id1{
+	padding-left: 60px;
+}
+
+#id2{
+	font-weight: bolder;
+	 font-size: 1.2rem;
+	 color: #757575;
+	 flex-shrink: 0;
+	 padding: 16px 40px 16px 40px;
+	    display: block;
+	    line-height: 24px;
+    letter-spacing: 0;
+    opacity: .87;
+}

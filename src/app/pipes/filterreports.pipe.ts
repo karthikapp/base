@@ -8,6 +8,7 @@ export class FilterreportsPipe implements PipeTransform {
   transform(value: any, leadtitle:any,companyname: any, oppoassigned: any, leadassigned: any,
   	status: any, region: any, EDCStartDate: any, EDCEndDate: any, lead_source:any, oed_name: any, args?: any): any {
 
+    console.log("values", value, leadtitle, companyname, oppoassigned)
   	//Lead Source
   	if(lead_source == 'Select'){
   		lead_source = undefined

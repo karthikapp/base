@@ -21,11 +21,14 @@ export class DashboardComponent  {
   title: string;
   name: string;
 
+  report_value: boolean = false;
+
 
 
   constructor(private firebaseservice : FirebaseService,
               private router: Router, 
               private afAuth: AngularFireAuth) {
+
     //Authenticating the dashboard page to check if the user is ADMIN / REPORTER / RECIPIENT / OTHERS
   
     this.afAuth.authState.subscribe(data => {
@@ -76,6 +79,13 @@ export class DashboardComponent  {
           })
         }
       })
+    }
+
+    toggleReports()
+    {
+
+      this.report_value = !this.report_value
+      return this.report_value
     }
 
     //Logout from any page once logged in and not return to any page

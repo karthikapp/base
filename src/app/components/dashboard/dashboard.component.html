@@ -53,9 +53,41 @@
       <a class="mdl-navigation__link" routerLink="/dashboard/AllLeads" routerLinkActive="active" *ngIf="role== 'master'">All Leads</a>
       <a class="mdl-navigation__link" routerLink="/dashboard/AllLeads" routerLinkActive="active" *ngIf="title == 'Pre-Sales Head'">All Leads</a>
       <a class="mdl-navigation__link" routerLink="/dashboard/AllOpportunities" routerLinkActive="active" *ngIf="role== 'master'">All Opportunities</a>    
-      <a class="mdl-navigation__link" routerLink="/dashboard/AllOpportunities" routerLinkActive="active" *ngIf="title == 'Pre-Sales Head'">All Opportunities</a>   
-      <a class="mdl-navigation__link" routerLink="/dashboard/Reports" routerLinkActive="active" *ngIf="title == 'Pre-Sales Head'">Reports</a> 
-      <a class="mdl-navigation__link" routerLink="/dashboard/Reports" routerLinkActive="active" *ngIf="role== 'master'">Reports</a> 
+      <a class="mdl-navigation__link" routerLink="/dashboard/AllOpportunities" routerLinkActive="active" *ngIf="title == 'Pre-Sales Head'">All Opportunities</a> 
+
+      <div> 
+        <div *ngIf="role== 'Pre-Sales Head'" id="id2" > Reports
+        <!-- FAB button -->
+          <button class="mdl-button mdl-js-button mdl-button-mini-fab">
+            <i class="medium material-icons" (click)="toggleReports()">arrow_drop_down</i>
+          </button>
+        
+        </div>
+       
+          <div [hidden]="!report_value">
+          
+          <a id="id1" class="mdl-navigation__link" routerLink="/dashboard/ReportsLeads" routerLinkActive="active" *ngIf="title == 'Pre-Sales Head'">Leads</a> 
+
+           <a id="id1" class="mdl-navigation__link" routerLink="/dashboard/ReportsOpportunities" routerLinkActive="active" *ngIf="title == 'Pre-Sales Head'">Opportunities</a> 
+
+          </div>
+      </div>
+
+
+      <div> 
+        <div *ngIf="role== 'master'" id="id2" > Reports
+        <!-- FAB button -->
+          <button class="mdl-button mdl-js-button mdl-button-mini-fab">
+            <i class="medium material-icons" (click)="toggleReports()">arrow_drop_down</i>
+          </button>
+        </div>
+       
+          <div [hidden]="!report_value">
+          <a id="id1" class="mdl-navigation__link" routerLink="/dashboard/ReportsLeads" routerLinkActive="active" *ngIf="role== 'master'">Leads</a>
+          <a id="id1" class="mdl-navigation__link" routerLink="/dashboard/ReportsOpportunities" routerLinkActive="active" *ngIf="role== 'master'">Opportunities</a> 
+          </div>
+      </div>
+
         <a class="mdl-navigation__link" routerLink="/dashboard/AddTarget" routerLinkActive="active" *ngIf="role== 'master'">Set Targets</a> 
       <a class="mdl-navigation__link" routerLink="/dashboard/Review" routerLinkActive="active" *ngIf="report == 'recipient' || role== 'master'">Review</a> 
      <a class="mdl-navigation__link" routerLink="/dashboard/insidesales" routerLinkActive="active" *ngIf="role== 'Inside Sales'">Renewal</a>
