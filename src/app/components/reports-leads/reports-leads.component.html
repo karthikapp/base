@@ -198,9 +198,11 @@
                     <td><app-assignedtonameget name="{{activ.assigned_to}}"> </app-assignedtonameget></td>
                     <td>{{returnruppeamount(activ.budget)}}</td> 
 
-                    <div *ngFor="let prod1 of activ.products_list">
+                    <td *ngIf="activ.products_list == undefined"> </td>
+                    <td *ngIf="activ.products_list != undefined"> <app-getproductquantity [productlist]="activ.products_list"> </app-getproductquantity> </td>
+                    <!-- <div *ngFor="let prod1 of activ.products_list">
                     <td>{{prod1.product_name}} - {{prod1.productqty}}</td> 
-                    </div>
+                    </div> -->
                     <td>
                     {{getactivitytypetext(lead_activ.activity_type)}}</td>         
                     <td *ngIf="lead_activ.activity_type == 'phonecall'"> {{lead_activ.phonecallDate | date: 'longDate'}}</td>
