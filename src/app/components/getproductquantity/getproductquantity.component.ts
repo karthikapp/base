@@ -13,11 +13,7 @@ export class GetproductquantityComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-  	
-  	// this.productlist.forEach( pd => {
-  	// this.productname = pd.product_name
-  	// this.quantity = pd.productqty
-  	// })
+
   }
 
 }

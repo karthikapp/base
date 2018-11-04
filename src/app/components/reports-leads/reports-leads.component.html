@@ -16,7 +16,7 @@
                     <div class="ui button" (click)="exportTableToCSVLead('Leads.csv', '#table5')">
                        Export CSV File
                     </div>
-                <table class="ui inverted table">
+                <table class="ui inverted table" align="left">
 
                 <thead>
                   <tr>
@@ -122,27 +122,25 @@
                     <td *ngIf="vv.leadsource == 'oem'">{{vv.oem_name}}</td>
                     <td *ngIf="vv.leadsource == 'distributor'">{{vv.distributor_name}}</td>
                     <td *ngIf="vv.leadsource == 'event'">{{vv.event_name}}</td>
-                    <td><app-assignedtonameget name="{{vv.assigned_to}}"> </app-assignedtonameget></td>
+                    <td><app-assignedtonameget name="{{vv.assigned_to}}"></app-assignedtonameget></td>
                     <td>{{getleadapprovalstatus(vv.leadstatus)}}</td> 
                     <td>{{vv.leadtype}}</td>
                     <td>{{vv.region}}</td>
                     <td>{{returnruppeamount(vv.budget)}}</td>
-                    <td *ngIf="vv.products_list == undefined"> </td>
-                    <td *ngIf="vv.products_list != undefined"> <app-getproductquantity [productlist]="vv.products_list"> </app-getproductquantity> </td>
+                    <td *ngIf="vv.products_list == undefined"></td>
+                    <td *ngIf="vv.products_list != undefined"><app-getproductquantity [productlist]="vv.products_list"></app-getproductquantity></td>
                     <!-- <div *ngFor="let prod of vv.products_list">
                         <td>{{prod.product_name}} - {{prod.productqty}}</td> 
                     </div> --> 
-                    <td><app-getcompanycontactname [companyid]="vv.company_id"> </app-getcompanycontactname> </td>
+                    <td><app-getcompanycontactname [companyid]="vv.company_id"></app-getcompanycontactname></td>
                     <td>{{vv.edc}}</td>
-                    <td>{{getnooffollowups(vv.activities)}} </td>
-                    
-                    <td><app-assignedtonameget name="{{vv.presales_approved_to}}"> </app-assignedtonameget></td>
-                    <td><app-assignedtonameget name="{{vv.presales_approved_by}}"> </app-assignedtonameget></td>
+                    <td>{{getnooffollowups(vv.activities)}}</td>
+                    <td><app-assignedtonameget name="{{vv.presales_approved_to}}"></app-assignedtonameget></td>
+                    <td><app-assignedtonameget name="{{vv.presales_approved_by}}"></app-assignedtonameget></td>
                     <td>{{vv.presales_approved_date | date: 'medium' }}</td>
-                    <td>{{returnremark(vv.presales_remark)}}
-                    <td>{{vv.created_at| date: 'medium' }} </td> 
-                    <td>
-                    {{vv.meeting_remark}} </td>      
+                    <td>{{returnremark(vv.presales_remark)}}</td>
+                    <td>{{vv.created_at| date: 'medium'}}</td> 
+                    <td>{{vv.meeting_remark}}</td>      
                   </tr>
                 </tbody>
               </table>
@@ -154,7 +152,7 @@
                     <div class="ui button"  (click)="exportTableToCSVLead('Lead_Activities.csv', '#table6')">
                         Export CSV File
                     </div>
-              <table class="ui inverted table">
+              <table class="ui inverted table" align="left">
                 <thead>
                   <tr>
                     <th>Lead Title</th>
@@ -195,27 +193,21 @@
                   <tr *ngFor="let lead_activ of activ.activities | contactpersons">
                     <td>{{activ.lead_title}}</td>
                     <td>{{activ.company_name}}</td>
-                    <td><app-assignedtonameget name="{{activ.assigned_to}}"> </app-assignedtonameget></td>
-                    <td>{{returnruppeamount(activ.budget)}}</td> 
-
-                    <td *ngIf="activ.products_list == undefined"> </td>
-                    <td *ngIf="activ.products_list != undefined"> <app-getproductquantity [productlist]="activ.products_list"> </app-getproductquantity> </td>
+                    <td><app-assignedtonameget name="{{activ.assigned_to}}"></app-assignedtonameget></td>
+                    <td>{{returnruppeamount(activ.budget)}}</td>
+                    <td *ngIf="activ.products_list == undefined"></td>
+                    <td *ngIf="activ.products_list != undefined"><app-getproductquantity [productlist]="activ.products_list"></app-getproductquantity></td>
                     <!-- <div *ngFor="let prod1 of activ.products_list">
                     <td>{{prod1.product_name}} - {{prod1.productqty}}</td> 
                     </div> -->
-                    <td>
-                    {{getactivitytypetext(lead_activ.activity_type)}}</td>         
-                    <td *ngIf="lead_activ.activity_type == 'phonecall'"> {{lead_activ.phonecallDate | date: 'longDate'}}</td>
-                    <td *ngIf="lead_activ.activity_type == 'onsitevisit'">
-                    {{lead_activ.visitDate | date: 'longDate' }}</td>
+                    <td>{{getactivitytypetext(lead_activ.activity_type)}}</td>         
+                    <td *ngIf="lead_activ.activity_type == 'phonecall'">{{lead_activ.phonecallDate | date: 'longDate'}}</td>
+                    <td *ngIf="lead_activ.activity_type == 'onsitevisit'">{{lead_activ.visitDate | date: 'longDate' }}</td>
                     <td *ngIf="lead_activ.activity_type == ''"></td>
-                    <td *ngIf="lead_activ.activity_type == 'onsitevisit'">
-                    {{lead_activ.visitremarks}}</td>
-                    <td *ngIf="lead_activ.activity_type == 'phonecall'">
-                    {{lead_activ.phonecallremarks}}</td>
+                    <td *ngIf="lead_activ.activity_type == 'onsitevisit'">{{lead_activ.visitremarks}}</td>
+                    <td *ngIf="lead_activ.activity_type == 'phonecall'">{{lead_activ.phonecallremarks}}</td>
                     <td *ngIf="lead_activ.activity_type == ''"></td>
-                    <td>
-                    {{lead_activ.created_at | date: 'medium'}}</td>
+                    <td>{{lead_activ.created_at | date: 'medium'}}</td>
                   </tr>
                 </tbody> 
               </table>

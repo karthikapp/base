@@ -16,7 +16,7 @@
                     <div class="ui button" (click)="exportTableToCSV('Opportunities.csv', '#table1')">
                        Export CSV File
                     </div>
-                <table class="ui inverted table">
+                <table class="ui inverted table" align="left">
 
                 <thead>
                   <tr>
@@ -134,23 +134,21 @@
                     <td *ngIf="vv.leadsource == 'oem'">{{vv.oem_name}}</td>
                     <td *ngIf="vv.leadsource == 'distributor'">{{vv.distributor_name}}</td>
                     <td *ngIf="vv.leadsource == 'event'">{{vv.event_name}}</td>
-                    <td><app-assignedtonameget name="{{vv.opportunity_assignedto}}"> </app-assignedtonameget></td>
-                    <td><app-assignedtonameget name="{{vv.lead_assigned_to}}"> </app-assignedtonameget></td>
+                    <td><app-assignedtonameget name="{{vv.opportunity_assignedto}}"></app-assignedtonameget></td>
+                    <td><app-assignedtonameget name="{{vv.lead_assigned_to}}"></app-assignedtonameget></td>
                     <td>{{vv.opportunity_state}}</td> 
                     <td>{{vv.region}}</td>
-
                     <td>{{returnruppeamount(vv.value)}}</td>   
                     <td>{{vv.product_name}} - {{vv.quantity}}</td>  
-                    <td><app-getcompanycontactname [companyid]="vv.company_id"> </app-getcompanycontactname> </td>
+                    <td><app-getcompanycontactname [companyid]="vv.company_id"></app-getcompanycontactname></td>
                     <td>{{vv.edc}}</td>
-                    <td>{{getnooffollowups(vv.lead_activities)}} </td>
-                    <td>{{getnooffollowups(vv.opportunity_activities)}} </td>
-                    <td><app-assignedtonameget name="{{vv.lead_presales_approved_to}}"> </app-assignedtonameget></td>
-                    <td><app-assignedtonameget name="{{vv.lead_approved_by_presales}}"> </app-assignedtonameget></td>
-                    <td>{{vv.lead_approved_by_presales_date | date: 'medium' }}</td>
-                    <td>{{vv.opportunity_created_at| date: 'medium' }} </td> 
-                    <td>
-                    {{vv.lead_meeting_remark}} </td>      
+                    <td>{{getnooffollowups(vv.lead_activities)}}</td>
+                    <td>{{getnooffollowups(vv.opportunity_activities)}}</td>
+                    <td><app-assignedtonameget name="{{vv.lead_presales_approved_to}}"></app-assignedtonameget></td>
+                    <td><app-assignedtonameget name="{{vv.lead_approved_by_presales}}"></app-assignedtonameget></td>
+                    <td>{{vv.lead_approved_by_presales_date | date: 'medium'}}</td>
+                    <td>{{vv.opportunity_created_at| date: 'medium'}}</td> 
+                    <td>{{vv.lead_meeting_remark}}</td>      
                   </tr>
                 </tbody>
               </table>
@@ -230,7 +228,7 @@
                     <div class="ui button" (click)="exportTableToCSV('Opportunities_Activities.csv', '#table3')">
                         Export CSV File
                     </div>
-              <table class="ui inverted table">
+              <table class="ui inverted table" align="left">
                 <thead>
                   <tr>
                     <th>Lead Title</th>
@@ -273,52 +271,30 @@
                   <tr *ngFor="let oppo_activ of acti.opportunity_activities | contactpersons">
                     <td>{{acti.lead_title}}</td>
                     <td>{{acti.company_name}}</td>
-
-                    <td> <app-assignedtonameget name="{{acti.opportunity_assignedto}}"> </app-assignedtonameget></td>
+                    <td><app-assignedtonameget name="{{acti.opportunity_assignedto}}"></app-assignedtonameget></td>
                     <td>{{returnruppeamount(acti.value)}}</td>   
                     <td>{{acti.product_name}} - {{acti.quantity}}</td> 
-                    <td>
-                    {{getactivitytypetext(oppo_activ.activity_type)}}</td>
-                    <td>
-                    <app-assignedtonameget name="{{oppo_activ.activity_created_by}}"> </app-assignedtonameget></td>
-                    <td>
-                    {{oppo_activ.created_at | date: 'medium' }} </td>
-                    <td>
-                    {{returnopportunitystate(oppo_activ.opportunity_stage)}}</td>
-                    <td *ngIf="oppo_activ.activity_type == 'phonecall'">
-                    {{oppo_activ.phonecallDate | date: 'longDate'}}</td>
-                    <td *ngIf="oppo_activ.activity_type == 'onsitevisit'">
-                    {{oppo_activ.visitDate | date: 'longDate' }}</td>
-                    <td *ngIf="oppo_activ.activity_type == 'presentation'">
-                    {{oppo_activ.presentationDate | date: 'longDate' }}</td>
-                    <td *ngIf="oppo_activ.activity_type == 'solutiondocumenting'">
-                    {{oppo_activ.solutiondocumentingDate | date: 'longDate' }}</td>
-                    <td *ngIf="oppo_activ.activity_type == 'poc'">
-                    {{oppo_activ.pocstartDate | date: 'longDate' }}</td>
-                    <td *ngIf="oppo_activ.activity_type == 'poc'">
-                    {{oppo_activ.pocendDate | date: 'longDate' }}</td>
-                    <td *ngIf="oppo_activ.activity_type == 'poc'">
-                    {{oppo_activ.poc_signoff }}</td>
-                    <td *ngIf="oppo_activ.activity_type == 'demo'">
-                    {{oppo_activ.demostartDate | date: 'longDate' }}</td>
-                    <td *ngIf="oppo_activ.activity_type == 'demo'">
-                    {{oppo_activ.demoendDate| date: 'longDate' }}</td>
-                    <td *ngIf="oppo_activ.activity_type == 'demo'">
-                    {{oppo_activ.demo_signoff }}</td>
+                    <td>{{getactivitytypetext(oppo_activ.activity_type)}}</td>
+                    <td><app-assignedtonameget name="{{oppo_activ.activity_created_by}}"></app-assignedtonameget></td>
+                    <td>{{oppo_activ.created_at | date: 'medium' }}</td>
+                    <td>{{returnopportunitystate(oppo_activ.opportunity_stage)}}</td>
+                    <td *ngIf="oppo_activ.activity_type == 'phonecall'">{{oppo_activ.phonecallDate | date: 'longDate'}}</td>
+                    <td *ngIf="oppo_activ.activity_type == 'onsitevisit'">{{oppo_activ.visitDate | date: 'longDate' }}</td>
+                    <td *ngIf="oppo_activ.activity_type == 'presentation'">{{oppo_activ.presentationDate | date: 'longDate'}}</td>
+                    <td *ngIf="oppo_activ.activity_type == 'solutiondocumenting'">{{oppo_activ.solutiondocumentingDate | date: 'longDate'}}</td>
+                    <td *ngIf="oppo_activ.activity_type == 'poc'">{{oppo_activ.pocstartDate | date: 'longDate' }}</td>
+                    <td *ngIf="oppo_activ.activity_type == 'poc'">{{oppo_activ.pocendDate | date: 'longDate' }}</td>
+                    <td *ngIf="oppo_activ.activity_type == 'poc'">{{oppo_activ.poc_signoff }}</td>
+                    <td *ngIf="oppo_activ.activity_type == 'demo'">{{oppo_activ.demostartDate | date: 'longDate' }}</td>
+                    <td *ngIf="oppo_activ.activity_type == 'demo'">{{oppo_activ.demoendDate| date: 'longDate' }}</td>
+                    <td *ngIf="oppo_activ.activity_type == 'demo'">{{oppo_activ.demo_signoff }}</td>
                     <td *ngIf="oppo_activ.activity_type == ''"></td>
-
-                    <td *ngIf="oppo_activ.activity_type == 'onsitevisit'">
-                    {{oppo_activ.visitremarks}}</td>
-                    <td *ngIf="oppo_activ.activity_type == 'phonecall'">
-                    {{oppo_activ.phonecallremarks}}</td>
-                    <td *ngIf="oppo_activ.activity_type == 'presentation'">
-                    {{oppo_activ.presentationremarks}}</td>
-                    <td *ngIf="oppo_activ.activity_type == 'solutiondocumenting'">
-                    {{oppo_activ.solutiondocumentingremarks}}</td>
-                    <td *ngIf="oppo_activ.activity_type == 'poc'">
-                    {{oppo_activ.pocremarks}}</td>
-                    <td *ngIf="oppo_activ.activity_type == 'demo'">
-                    {{oppo_activ.demoremarks}}</td>
+                    <td *ngIf="oppo_activ.activity_type == 'onsitevisit'">{{oppo_activ.visitremarks}}</td>
+                    <td *ngIf="oppo_activ.activity_type == 'phonecall'">{{oppo_activ.phonecallremarks}}</td>
+                    <td *ngIf="oppo_activ.activity_type == 'presentation'">{{oppo_activ.presentationremarks}}</td>
+                    <td *ngIf="oppo_activ.activity_type == 'solutiondocumenting'">{{oppo_activ.solutiondocumentingremarks}}</td>
+                    <td *ngIf="oppo_activ.activity_type == 'poc'">{{oppo_activ.pocremarks}}</td>
+                    <td *ngIf="oppo_activ.activity_type == 'demo'">{{oppo_activ.demoremarks}}</td>
                     <td *ngIf="oppo_activ.activity_type == ''"></td>
                   </tr>
                 </tbody> 
@@ -331,7 +307,7 @@
                 <div class="ui button" (click)="exportTableToCSV('Upcoming_Activities.csv', '#table4')">
                         Export CSV File
                     </div>
-              <table class="ui inverted table">
+              <table class="ui inverted table" align="left">
                 <thead>
                   <tr>
                     <th>Lead Title</th>
@@ -382,17 +358,13 @@
                   <tr *ngFor="let up of ac.upcoming | contactpersons">
                     <td>{{ac.lead_title}}</td>
                     <td>{{ac.company_name}}</td>
-                    <td><app-assignedtonameget name="{{ac.opportunity_assignedto}}"> </app-assignedtonameget></td>
-                    <td><app-assignedtonameget name="{{ac.lead_assigned_to}}"> </app-assignedtonameget></td>
+                    <td><app-assignedtonameget name="{{ac.opportunity_assignedto}}"></app-assignedtonameget></td>
+                    <td><app-assignedtonameget name="{{ac.lead_assigned_to}}"></app-assignedtonameget></td>
                     <td>{{returnruppeamount(ac.value)}}</td>   
                     <td>{{ac.product_name}} - {{ac.quantity}}</td> 
-                    <td>
-                    {{getupcomingtext(up.next_meeting_type)}}
-                    </td>
-                    <td> 
-                    {{up.next_meeting_date | date: 'longDate' }} </td>
-                    <td>
-                    {{up.created_at  | date: 'medium'}} </td>
+                    <td>{{getupcomingtext(up.next_meeting_type)}}</td>
+                    <td>{{up.next_meeting_date | date: 'longDate'}}</td>
+                    <td>{{up.created_at  | date: 'medium'}}</td>
                   </tr>
                 </tbody>
               </table>

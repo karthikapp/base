@@ -102,7 +102,9 @@ export class ReportsComponent implements  OnInit, OnDestroy {
      });
   }
 
-
+removewhitespaces(data: string){
+  return data ? data.replace(/^\s+|\s+$/gm, '') : '';
+}
 
 exportTableToCSV(filename, id) {
     var csv = [];

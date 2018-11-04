@@ -100,6 +100,9 @@ export class ReportsLeadsComponent implements OnInit, OnDestroy {
   }
 
 
+removewhitespaces(data: string){
+  return data ? data.replace(/^\s+|\s+$/gm, '') : '';
+}
 
 exportTableToCSVLead(filename, id) {
     var csv = [];
